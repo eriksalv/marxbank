@@ -1,7 +1,7 @@
 package it1901;
 
-public abstract class SavingsAccount implements IAccount{
-    
+public class SavingsAccount implements IAccount {
+
     private double balance = 0;
     private final double INTEREST_RATE; //I prosent
 
