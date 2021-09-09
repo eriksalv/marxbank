@@ -6,6 +6,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>core</module>
+        <module>marxbankfx</module>
+    </modules>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>16</maven.compiler.source>
@@ -13,26 +18,47 @@
         <skipTests>false</skipTests>
     </properties>
 
+    <!-- Er bare for modulene som trenger dette at vi har det her -->
     <dependencyManagement>
         <dependencies>
+
+            <!-- Junit 5 -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>5.7.2</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>5.7.2</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
                 <version>5.7.2</version>
                 <scope>test</scope>
             </dependency>
+
+            <!-- Testfx -->
+            <dependency>
+                <groupId>org.testfx</groupId>
+                <artifactId>testfx-core</artifactId>
+                <version>4.0.16-alpha</version>
+                <scope>test</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.testfx</groupId>
+                <artifactId>testfx-junit5</artifactId>
+                <version>4.0.16-alpha</version>
+                <scope>test</scope>
+            </dependency>
+    
         </dependencies>
     </dependencyManagement>
 
@@ -58,9 +84,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <modules>
-        <module>core</module>
-        <module>marxbankfx</module>
-    </modules>
 </project>
