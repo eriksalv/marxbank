@@ -20,7 +20,8 @@ public class AccountController {
     }
 
     private void initTemporaryTestData() {
-        account = new SavingsAccount(3.0);
+        account = new SavingsAccount(3);
         account.deposit(5000);
+        ((SavingsAccount) account).addInterest();
     }
 }
