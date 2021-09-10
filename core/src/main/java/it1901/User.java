@@ -9,14 +9,6 @@ class User {
     private String password;
     private ArrayList<IAccount> accounts = new ArrayList<IAccount>();
 
-    public User(String id, String username, String email, String password) {
-        setId(id);
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
-    }
-
-    public User() {}
 
     public void setId(String newId) {
         this.id = newId;
@@ -42,10 +34,10 @@ class User {
     public String getPassword() {
         return this.password;
     }
-    public void setAccounts(ArrayList <IAccount> newAccountsList) {
+    public void setAccounts(ArrayList<IAccount> newAccountsList) {
         this.accounts = newAccountsList;
     }
-    public ArrayList <IAccount> getAccounts() {
+    public ArrayList<IAccount> getAccounts() {
         return this.accounts;
     }
 
