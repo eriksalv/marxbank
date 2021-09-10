@@ -28,7 +28,7 @@ public class SavingsAccount implements IAccount {
     }
 
     public void addInterest() {
-        balance+=balance*INTEREST_RATE/100;
+        deposit(getBalance()*getInterestRate()/100);
     }
     
     @Override
