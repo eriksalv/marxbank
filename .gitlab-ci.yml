@@ -2,7 +2,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 default:
-  image: maven:3.8.2-openjdk-16
+  image: maven:adoptopenjdk:16-jdk-openj9
   cache:
     key: maven-cache
     paths:
