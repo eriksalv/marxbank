@@ -5,7 +5,7 @@ default:
   image: maven:3.6-adoptopenjdk-16-openj9
   cache:
     key: maven-cache
-    path:
+    paths:
     - .m2/repository
   before_script:
     - apt-get update
