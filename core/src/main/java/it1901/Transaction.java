@@ -6,14 +6,21 @@ import java.util.Locale;
 
 public class Transaction {
     
-    private Account from;
-    private Account reciever;
-    private double amount;
-    private Date transactionDate;
-    private String dateString;
+    private final Account from;
+    private final Account reciever;
+    private final double amount;
+    private final Date transactionDate;
+    private final String dateString;
 
-    //formaterer dato til lesbar norsk tekststreng automatisk
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE dd MMMMM yyyy HH:mm:ss", new Locale("nb")); 
+    //autoformats the date to a readable norwegian text-string 
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE dd MMMMM yyyy HH:mm:ss", new Locale("nb"));
+    
+    /**
+     * 
+     * @param from - Account that money is transfered from
+     * @param reciever - Account that recieves money
+     * @param amount - Amount of money in transaction
+     */
 
     public Transaction(Account from, Account reciever, double amount) {
         this.from=from;
@@ -21,14 +28,33 @@ public class Transaction {
         this.amount=amount;
         transactionDate=new Date();
         dateString=dateFormat.format(transactionDate);
+        commitTransaction();
     }
 
     public String getDateString() {
         return dateString;
     }
 
+    public Account getFrom() {
+        return from;
+    }
+
+    public Account getReciever() {
+        return reciever;
+    }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
     public void commitTransaction() {
-        //TODO
+        if (from == null || reciever == null) {
+            throw new IllegalStateException("Cannot commit transaction");
+        }
+        from.withdraw(this.amount);
+        reciever.deposit(this.amount);
+        from.addTransaction(this);
+        reciever.addTransaction(this);
     }
 
     public static void main(String[] args) {

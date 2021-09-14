@@ -40,4 +40,8 @@ public abstract class Account {
     public double getInterestRate() {
         return INTEREST_RATE;
     }
+
+    public void addTransaction(Transaction t) {
+        this.transactions.add(t);
+    }
 }
