@@ -1,0 +1,22 @@
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+default:
+  image: maven:3.8.2-adoptopenjdk-16-openj9
+  cache:
+    key: maven-cache
+    paths:
+    - .m2/repository
+  before_script:
+    - apt-get update
+    - apt-get install -y xvfb libpangoft2-1.0-0
+
+workflow: #Kjører kun når du pusher til en gren
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+test:
+  stage: test
+  script: xvfb-run mvn "-DargLine=-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw" verify
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
