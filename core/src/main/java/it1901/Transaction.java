@@ -16,12 +16,12 @@ public class Transaction {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE dd MMMMM yyyy HH:mm:ss", new Locale("nb"));
     
     /**
+     * Initializes transaction object and runs the commitTransaction method.
      * 
      * @param from - Account that money is transfered from
      * @param reciever - Account that recieves money
      * @param amount - Amount of money in transaction
      */
-
     public Transaction(Account from, Account reciever, double amount) {
         this.from=from;
         this.reciever=reciever;
@@ -47,6 +47,12 @@ public class Transaction {
         return this.amount;
     }
 
+    /**
+     * Commits transaction by withdrawing from and depositing to the respective
+     * accounts, and adding this transaction object to their history.
+     * 
+     * @exception - Throws IllegalStateException if either of the accounts are null 
+     */    
     public void commitTransaction() {
         if (from == null || reciever == null) {
             throw new IllegalStateException("Cannot commit transaction");
