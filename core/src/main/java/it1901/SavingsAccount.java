@@ -2,7 +2,7 @@ package it1901;
 
 public class SavingsAccount extends Account {
 
-    public SavingsAccount(double interestRate) {
-        super(interestRate);
+    public SavingsAccount(User user, double interestRate) {
+        super(user, interestRate);
     } 
 }

@@ -21,9 +21,9 @@ public class UserTest {
     @DisplayName("test setAccounts")
     public void testSetAccounts() {
         ArrayList<Account> testAccounts = new ArrayList<Account>(3);
-        testAccounts.add(new SavingsAccount(5.0));
-        testAccounts.add(new SavingsAccount(0.0));
-        testAccounts.add(new SavingsAccount(2.0));
+        testAccounts.add(new SavingsAccount(new User(), 5.0));
+        testAccounts.add(new SavingsAccount(new User(), 0.0));
+        testAccounts.add(new SavingsAccount(new User(), 2.0));
 
         user.setAccounts(testAccounts);
 
@@ -33,7 +33,7 @@ public class UserTest {
     @Test
     @DisplayName("test addAccount")
     public void testAddAccount() {
-        Account t = new SavingsAccount(5.0);
+        Account t = new SavingsAccount(new User(), 5.0);
         user.addAccount(t);
         assertArrayEquals(new Account[] {t}, user.getAccounts().toArray());
     }
@@ -42,9 +42,9 @@ public class UserTest {
     @DisplayName("test removeAccount")
     public void testRemoveAccount() {
         ArrayList<Account> testAccounts = new ArrayList<Account>(3);
-        testAccounts.add(new SavingsAccount(5.0));
-        testAccounts.add(new SavingsAccount(0.0));
-        testAccounts.add(new SavingsAccount(2.0));
+        testAccounts.add(new SavingsAccount(new User(), 5.0));
+        testAccounts.add(new SavingsAccount(new User(), 0.0));
+        testAccounts.add(new SavingsAccount(new User(), 2.0));
 
         user.setAccounts(testAccounts);
 

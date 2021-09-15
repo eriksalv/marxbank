@@ -5,11 +5,13 @@ import java.util.List;
 
 public abstract class Account {
     
+    private final User user;
     private List<Transaction> transactions = new LinkedList<Transaction>();
     private double balance = 0;
     private final double interestRate; //I prosent
 
-    public Account(final double interestRate) {
+    public Account(User user, double interestRate) {
+        this.user = user;
         this.interestRate = interestRate;
     }
 
@@ -31,6 +33,10 @@ public abstract class Account {
 
     public void addInterest() {
         deposit(getBalance()*getInterestRate()/100);
+    }
+
+    public User getUser() {
+        return this.user;
     }
     
     public double getBalance() {

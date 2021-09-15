@@ -63,9 +63,9 @@ public class Transaction {
     }
 
     public static void main(String[] args) {
-        Account a = new SavingsAccount(2);
+        Account a = new SavingsAccount(new User(), 2);
         a.deposit(300);
-        Transaction t = new Transaction(a, new SavingsAccount(2), 200);
+        Transaction t = new Transaction(a, new SavingsAccount(new User(), 2), 200);
         System.out.println(t.getDateString());
     }    
 }
