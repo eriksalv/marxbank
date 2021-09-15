@@ -1,5 +1,7 @@
 package it1901;
+
 import java.util.ArrayList;
+import java.util.List;
 
 class User {
 
@@ -7,7 +9,7 @@ class User {
     private String username;
     private String email;
     private String password;
-    private ArrayList<IAccount> accounts = new ArrayList<IAccount>();
+    private List<Account> accounts = new ArrayList<Account>();
 
 
     public void setId(String newId) {
@@ -34,21 +36,21 @@ class User {
     public String getPassword() {
         return this.password;
     }
-    public void setAccounts(ArrayList<IAccount> newAccountsList) {
+    public void setAccounts(ArrayList<Account> newAccountsList) {
         this.accounts = newAccountsList;
     }
-    public ArrayList<IAccount> getAccounts() {
-        return this.accounts;
+    public List<Account> getAccounts() {
+        return new ArrayList<>(this.accounts);
     }
 
-    public void addAccount(IAccount newAccount) {
+    public void addAccount(Account newAccount) {
         if (!accounts.contains(newAccount)) {
             accounts.add(newAccount);
         } else {
             throw new IllegalArgumentException("This account is already added.");
         }
     }
-    public void removeAccount(IAccount unwantedAccount) {
+    public void removeAccount(Account unwantedAccount) {
         if (accounts.contains(unwantedAccount)) {
             accounts.remove(unwantedAccount);
         } else {

@@ -13,7 +13,7 @@ public class SavingsAccountTest {
 
     @BeforeEach
     public void setup() {
-        account = new SavingsAccount(5.0);
+        account = new SavingsAccount(new User(), 5.0);
     }
 
     @Test

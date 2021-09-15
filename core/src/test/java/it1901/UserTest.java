@@ -20,10 +20,10 @@ public class UserTest {
     @Test
     @DisplayName("test setAccounts")
     public void testSetAccounts() {
-        ArrayList<IAccount> testAccounts = new ArrayList<IAccount>(3);
-        testAccounts.add(new SavingsAccount(5.0));
-        testAccounts.add(new SavingsAccount(0.0));
-        testAccounts.add(new SavingsAccount(2.0));
+        ArrayList<Account> testAccounts = new ArrayList<Account>(3);
+        testAccounts.add(new SavingsAccount(new User(), 5.0));
+        testAccounts.add(new SavingsAccount(new User(), 0.0));
+        testAccounts.add(new SavingsAccount(new User(), 2.0));
 
         user.setAccounts(testAccounts);
 
@@ -33,18 +33,18 @@ public class UserTest {
     @Test
     @DisplayName("test addAccount")
     public void testAddAccount() {
-        IAccount t = new SavingsAccount(5.0);
+        Account t = new SavingsAccount(new User(), 5.0);
         user.addAccount(t);
-        assertArrayEquals(new IAccount[] {t}, user.getAccounts().toArray());
+        assertArrayEquals(new Account[] {t}, user.getAccounts().toArray());
     }
 
     @Test
     @DisplayName("test removeAccount")
     public void testRemoveAccount() {
-        ArrayList<IAccount> testAccounts = new ArrayList<IAccount>(3);
-        testAccounts.add(new SavingsAccount(5.0));
-        testAccounts.add(new SavingsAccount(0.0));
-        testAccounts.add(new SavingsAccount(2.0));
+        ArrayList<Account> testAccounts = new ArrayList<Account>(3);
+        testAccounts.add(new SavingsAccount(new User(), 5.0));
+        testAccounts.add(new SavingsAccount(new User(), 0.0));
+        testAccounts.add(new SavingsAccount(new User(), 2.0));
 
         user.setAccounts(testAccounts);
 
