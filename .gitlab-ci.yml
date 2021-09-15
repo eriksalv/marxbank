@@ -18,7 +18,7 @@ workflow: #Kjører kun når du pusher til en gren
 test:
   stage: test
   script: 
-    - mkdir -r data/users
+    - mkdir -p data/users
     - mkdir data/accounts
     - mkdir data/transactions
     - xvfb-run mvn "-DargLine=-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw" verify
