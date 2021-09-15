@@ -12,3 +12,17 @@ så for å starte frontenden kjør
 
 ``` mvn javafx:run -pl marxbankfx ```
 
+# Jacoco code coverage
+
+### Installasjon
+
+Åpne terminalen i VSCode og kjør ` mvn install ` og ` mvn clean jacoco:prepare-agent install jacoco:report `
+
+### For å se rapporten
+
+Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. Velg den modulen du vil ha rapport fra). Kopier stien til filen og lim den inn i nettleser.
+
+
+
+
+
