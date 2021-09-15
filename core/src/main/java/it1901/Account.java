@@ -7,10 +7,10 @@ public abstract class Account {
     
     private List<Transaction> transactions = new LinkedList<Transaction>();
     private double balance = 0;
-    private final double INTEREST_RATE; //I prosent
+    private final double interestRate; //I prosent
 
     public Account(final double interestRate) {
-        INTEREST_RATE = interestRate;
+        this.interestRate = interestRate;
     }
 
     public void deposit(double amount) {
@@ -38,10 +38,17 @@ public abstract class Account {
     }
 
     public double getInterestRate() {
-        return INTEREST_RATE;
+        return this.interestRate;
     }
 
     public void addTransaction(Transaction t) {
+        if (this.transactions.contains(t)) {
+            throw new IllegalStateException("Transaction is already registered");
+        }
         this.transactions.add(t);
+    }
+
+    public List<Transaction> getTransactions() {
+        return new LinkedList<>(this.transactions);
     }
 }

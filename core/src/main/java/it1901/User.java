@@ -1,5 +1,7 @@
 package it1901;
+
 import java.util.ArrayList;
+import java.util.List;
 
 class User {
 
@@ -7,7 +9,7 @@ class User {
     private String username;
     private String email;
     private String password;
-    private ArrayList<Account> accounts = new ArrayList<Account>();
+    private List<Account> accounts = new ArrayList<Account>();
 
 
     public void setId(String newId) {
@@ -37,8 +39,8 @@ class User {
     public void setAccounts(ArrayList<Account> newAccountsList) {
         this.accounts = newAccountsList;
     }
-    public ArrayList<Account> getAccounts() {
-        return this.accounts;
+    public List<Account> getAccounts() {
+        return new ArrayList<>(this.accounts);
     }
 
     public void addAccount(Account newAccount) {

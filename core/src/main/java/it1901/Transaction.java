@@ -1,19 +1,18 @@
 package it1901;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     
     private final Account from;
     private final Account reciever;
     private final double amount;
-    private final Date transactionDate;
+    private final LocalDateTime transactionDate;
     private final String dateString;
 
     //autoformats the date to a readable norwegian text-string 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE dd MMMMM yyyy HH:mm:ss", new Locale("nb"));
+    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     
     /**
      * Initializes transaction object and runs the commitTransaction method.
@@ -23,11 +22,11 @@ public class Transaction {
      * @param amount - Amount of money in transaction
      */
     public Transaction(Account from, Account reciever, double amount) {
-        this.from=from;
-        this.reciever=reciever;
-        this.amount=amount;
-        transactionDate=new Date();
-        dateString=dateFormat.format(transactionDate);
+        this.from = from;
+        this.reciever = reciever;
+        this.amount = amount;
+        transactionDate = LocalDateTime.now();
+        dateString = dateFormat.format(transactionDate);
         commitTransaction();
     }
 
@@ -64,7 +63,9 @@ public class Transaction {
     }
 
     public static void main(String[] args) {
-        Transaction t = new Transaction(new SavingsAccount(2), new SavingsAccount(2), 200);
+        Account a = new SavingsAccount(2);
+        a.deposit(300);
+        Transaction t = new Transaction(a, new SavingsAccount(2), 200);
         System.out.println(t.getDateString());
     }    
 }
