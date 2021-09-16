@@ -5,23 +5,23 @@ import javafx.scene.control.Label;
 
 public class AccountController {
 
-    @FXML private Label accountType;
-    @FXML private Label balance;
+    // @FXML private Label accountType;
+    // @FXML private Label balance;
     
-    private IAccount account;
+    // private IAccount account;
 
-    @FXML
-    private void initialize() {
-        initTemporaryTestData();
-        if (account instanceof SavingsAccount) {
-            accountType.setText("Sparekonto");
-        }
-        balance.setText("" + account.getBalance());
-    }
+    // @FXML
+    // private void initialize() {
+    //     initTemporaryTestData();
+    //     if (account instanceof SavingsAccount) {
+    //         accountType.setText("Sparekonto");
+    //     }
+    //     balance.setText("" + account.getBalance());
+    // }
 
-    private void initTemporaryTestData() {
-        account = new SavingsAccount(3);
-        account.deposit(5000);
-        ((SavingsAccount) account).addInterest();
-    }
+    // private void initTemporaryTestData() {
+    //     account = new SavingsAccount(3);
+    //     account.deposit(5000);
+    //     ((SavingsAccount) account).addInterest();
+    // }
 }

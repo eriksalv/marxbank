@@ -1,22 +1,22 @@
 package it1901;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 class User {
 
     private String id;
     private String username;
     private String email;
     private String password;
-    private ArrayList<IAccount> accounts = new ArrayList<IAccount>();
+    @JsonManagedReference
+    private ArrayList<Account> accounts = new ArrayList<Account>();
 
     public User(String id, String username, String email, String password) {
         this.id = id;
@@ -59,15 +59,15 @@ class User {
         return this.password;
     }
 
-    public void setAccounts(ArrayList<IAccount> newAccountsList) {
+    public void setAccounts(ArrayList<Account> newAccountsList) {
         this.accounts = newAccountsList;
     }
 
-    public ArrayList<IAccount> getAccounts() {
+    public ArrayList<Account> getAccounts() {
         return this.accounts;
     }
 
-    public void addAccount(IAccount newAccount) {
+    public void addAccount(Account newAccount) {
         if (!accounts.contains(newAccount)) {
             accounts.add(newAccount);
         } else {
@@ -75,7 +75,7 @@ class User {
         }
     }
 
-    public void removeAccount(IAccount unwantedAccount) {
+    public void removeAccount(Account unwantedAccount) {
         if (accounts.contains(unwantedAccount)) {
             accounts.remove(unwantedAccount);
         } else {
@@ -115,8 +115,11 @@ class User {
 
     }
 
+    /**
+     * saves user to local storage
+     */
     public void saveUser() {
-        if(this.id == null || this.username == null || this.email == null || this.password == null) throw new IllegalArgumentException("User fields can not be null.");
+        if(this.id == null || this.username == null || this.email == null || this.password == null) throw new IllegalStateException("User fields can not be null.");
         ObjectMapper objectMapper = new ObjectMapper();
 
         File userFile = new File(String.format("../data/users/%s.%s.json", this.id, this.username));
@@ -145,27 +148,34 @@ class User {
      */
     public static User readUser(String path) throws FileNotFoundException {
         // check if path is valid
-        if(!isValidPath(path)) throw new IllegalArgumentException("path is not valid");
+        if(!ValidPath.isValidPath(path)) throw new IllegalArgumentException("path is not valid");
         // check if file exists
         if(!new File(path).exists()) throw new FileNotFoundException("No File with that path exists.");
 
         ObjectMapper objectMapper = new ObjectMapper();
-        User user;
 
         File userFile = new File(path);
 
         try {
-            user = objectMapper.readValue(userFile, User.class);
+            User user = objectMapper.readValue(userFile, User.class);
+            return user;
         } catch (Exception e) {
-            user = null;
+            System.out.println(String.format("Error: %s", e));
         }
 
-        return user;
+        return null;
     }
 
+    /**
+     * reads user file to this user object
+     * @param path to user file
+     * @throws IllegalArgumentException if path is not valid
+     * @throws FileNotFoundException if file was not found
+     * @throws IllegalStateException if there was an error reading the user correctly
+     */
     public void readUserToUser(String path) throws FileNotFoundException {
         // check if path is valid
-        if(!isValidPath(path)) throw new IllegalArgumentException("path is not valid");
+        if(!ValidPath.isValidPath(path)) throw new IllegalArgumentException("path is not valid");
         // check if file exists
         if(!new File(path).exists()) throw new FileNotFoundException("No File with that path exists.");
 
@@ -179,12 +189,13 @@ class User {
             user = null;
         }
 
-        if(user == null) throw new IllegalStateException("user is null");
+        if(user == null) throw new IllegalStateException("user file could not be read correctly");
 
         this.setId(user.getId());
         this.setUsername(user.getUsername());
         this.setEmail(user.getEmail());
         this.setPassword(user.getPassword());
+        this.setAccounts(user.getAccounts());
     }
 
     @Override
@@ -192,24 +203,25 @@ class User {
         return String.format("id:%s, username:%s", this.getId(), this.getUsername());
     }
 
-    /**
-     * tests if a path is valid or not
-     * @param path to test if its valid
-     * @return true if path is valid, otherwise false
-     */
-    private static Boolean isValidPath(String path) {
-        try {
-            Paths.get(path);
-        } catch (InvalidPathException e) {
-            return false;
-        }
-
-        return true;
-    }
-
     public static void main(String... args) {
         User u = new User("2", "testUsername", "test@email.com", "password");
+        u.addAccount(new SavingsAccount("1", u, 5.0));
+        u.addAccount(new SavingsAccount("2", u, 8.0));
         u.saveUser();
+
+        //System.out.println(new File("data/users/2.testUsername.json").exists());
+
+        try {
+            User b;
+            b = User.readUser("data/users/2.testUsername.json");
+            System.out.println(b.getId());
+            System.out.println(b.getUsername());
+            System.out.println(b.getAccounts().size());
+        } catch (FileNotFoundException e) {
+            System.out.println(String.format("Error: %s", e));
+        }
+        
+        
     }
 
 }

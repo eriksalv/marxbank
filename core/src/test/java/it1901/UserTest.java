@@ -8,16 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 public class UserTest {
 
@@ -39,10 +36,10 @@ public class UserTest {
     @Test
     @DisplayName("test setAccounts")
     public void testSetAccounts() {
-        ArrayList<IAccount> testAccounts = new ArrayList<IAccount>(3);
-        testAccounts.add(new SavingsAccount(5.0));
-        testAccounts.add(new SavingsAccount(0.0));
-        testAccounts.add(new SavingsAccount(2.0));
+        ArrayList<Account> testAccounts = new ArrayList<Account>(3);
+        testAccounts.add(new SavingsAccount("1", user, 5.0));
+        testAccounts.add(new SavingsAccount("2", user, 0.0));
+        testAccounts.add(new SavingsAccount("3", user, 2.0));
 
         user.setAccounts(testAccounts);
 
@@ -52,9 +49,9 @@ public class UserTest {
     @Test
     @DisplayName("test addAccount")
     public void testAddAccount() {
-        IAccount t = new SavingsAccount(5.0);
+        Account t = new SavingsAccount("99", user, 5.0);
         user.addAccount(t);
-        assertArrayEquals(new IAccount[] {t}, user.getAccounts().toArray());
+        assertArrayEquals(new Account[] {t}, user.getAccounts().toArray());
 
         assertThrows(IllegalArgumentException.class, () -> {
             user.addAccount(t);
@@ -64,10 +61,10 @@ public class UserTest {
     @Test
     @DisplayName("test removeAccount")
     public void testRemoveAccount() {
-        ArrayList<IAccount> testAccounts = new ArrayList<IAccount>(3);
-        testAccounts.add(new SavingsAccount(5.0));
-        testAccounts.add(new SavingsAccount(0.0));
-        testAccounts.add(new SavingsAccount(2.0));
+        ArrayList<Account> testAccounts = new ArrayList<Account>(3);
+        testAccounts.add(new SavingsAccount("1",user, 5.0));
+        testAccounts.add(new SavingsAccount("2", user, 0.0));
+        testAccounts.add(new SavingsAccount("3", user, 2.0));
 
         user.setAccounts(testAccounts);
 
@@ -78,13 +75,13 @@ public class UserTest {
         assertArrayEquals(testAccounts.toArray(), user.getAccounts().toArray());
 
         assertThrows(IllegalArgumentException.class, () -> {
-            user.removeAccount(new SavingsAccount(8.0));
+            user.removeAccount(new SavingsAccount("99", user, 8.0));
         });
     }
 
     @Test
     @DisplayName("test saveUser")
-    public void testSaveUser(@TempDir Path tempDir) throws Exception {
+    public void testSaveUser() {
         File file = new File("../data/users/99999.testUsername.json");
 
         assertAll(
@@ -95,6 +92,10 @@ public class UserTest {
                 User.saveUser(user);
             })
         );
+
+        assertThrows(IllegalStateException.class, () -> {
+            user.saveUser();
+        });
 
         user.setId("99999");
         user.setUsername("testUsername");
@@ -116,6 +117,22 @@ public class UserTest {
     @Test
     @DisplayName("test readUser")
     public void testReadUser() throws FileNotFoundException {
+
+        assertAll(
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                User.readUser("not?a?valid?path");
+            }),
+            () -> assertThrows(FileNotFoundException.class, () -> {
+                User.readUser("../data/users/doesnt.exists.json");
+            }),
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                user.readUserToUser("not?a?valid?path");
+            }),
+            () -> assertThrows(FileNotFoundException.class, () -> {
+                user.readUserToUser("../data/users.doesnt.exists.json");
+            })
+        );
+
         user.setId("99999");
         user.setUsername("testUsername");
         user.setEmail("test@testemail.com");
