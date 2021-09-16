@@ -11,6 +11,6 @@ public class LogInController {
     @FXML private TextField typeUsername;
     @FXML private TextField typePassword;
     @FXML private Button registerButton;
-    
+    @FXML private Button logInButton;
 
 }
