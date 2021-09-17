@@ -2,21 +2,15 @@ package it1901;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
+import it1901.util.ValidPath;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Account {
@@ -25,10 +19,8 @@ public abstract class Account {
         SAVING
     }
 
-    @JsonBackReference
     private User user;
     private String id;
-    @JsonManagedReference
     private List<Transaction> transactions = new LinkedList<Transaction>();
     private double balance = 0;
     private double interestRate; //I prosent
@@ -40,6 +32,8 @@ public abstract class Account {
         this.id = id;
         this.type = type;
     }
+
+    public Account() {}
 
     public void deposit(double amount) {
         if (amount<=0) {
@@ -129,7 +123,7 @@ public abstract class Account {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        File accountFile = new File(String.format("..data/accounts/%s.%s.json", account.getId(), account.getUser().getUsername()));
+        File accountFile = new File(String.format("../data/accounts/%s.%s.json", account.getId(), account.getUser().getUsername()));
 
         try {
             objectMapper.writeValue(accountFile, account);
@@ -235,13 +229,5 @@ public abstract class Account {
         this.setBalance(account.getBalance());
         this.setInterestRate(account.getInterestRate());
         this.setTransactions(account.getTransactions());
-    }
-
-    
-
-    public static void main(String... args) {
-        User u = new User("1", "username", "email@email.com", "password");
-        Account a = new SavingsAccount("1", u, 5.0);
-        a.saveAccount();
     }
 }

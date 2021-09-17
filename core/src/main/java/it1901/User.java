@@ -4,9 +4,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import it1901.util.ValidPath;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 class User {
@@ -15,9 +17,16 @@ class User {
     private String username;
     private String email;
     private String password;
-    @JsonManagedReference
+    @JsonDeserialize(using = AccountDeserializer.class)
     private ArrayList<Account> accounts = new ArrayList<Account>();
 
+    /**
+     * Constructor for user with arguments
+     * @param id of user
+     * @param username of user
+     * @param email of user
+     * @param password of user
+     */
     public User(String id, String username, String email, String password) {
         this.id = id;
         this.username = username;
@@ -158,6 +167,7 @@ class User {
 
         try {
             User user = objectMapper.readValue(userFile, User.class);
+            user.getAccounts().forEach(e -> e.setUser(user));
             return user;
         } catch (Exception e) {
             System.out.println(String.format("Error: %s", e));
@@ -185,6 +195,7 @@ class User {
 
         try {
             user = objectMapper.readValue(userFile, User.class);
+            user.getAccounts().forEach(e -> e.setUser(this));
         } catch (Exception e) {
             user = null;
         }
@@ -203,25 +214,31 @@ class User {
         return String.format("id:%s, username:%s", this.getId(), this.getUsername());
     }
 
-    public static void main(String... args) {
-        User u = new User("2", "testUsername", "test@email.com", "password");
-        u.addAccount(new SavingsAccount("1", u, 5.0));
-        u.addAccount(new SavingsAccount("2", u, 8.0));
-        u.saveUser();
+    // public static void main(String... args) {
+    //     User u = new User("2", "testUsername", "test@email.com", "password");
+    //     u.addAccount(new SavingsAccount("1", u, 5.0));
+    //     u.addAccount(new SavingsAccount("2", u, 8.0));
+    //     u.addAccount(new SavingsAccount("3", u, 3.0));
+    //     u.addAccount(new SavingsAccount("4", u, 6.0));
+    //     u.addAccount(new SavingsAccount("5", u, 2.0));
+    //     u.saveUser();
 
-        //System.out.println(new File("data/users/2.testUsername.json").exists());
+    //     //User u2 = User.readUserFromId("2");
+    //     //System.out.println(u2);
 
-        try {
-            User b;
-            b = User.readUser("data/users/2.testUsername.json");
-            System.out.println(b.getId());
-            System.out.println(b.getUsername());
-            System.out.println(b.getAccounts().size());
-        } catch (FileNotFoundException e) {
-            System.out.println(String.format("Error: %s", e));
-        }
+    //     //System.out.println(new File("data/users/2.testUsername.json").exists());
+
+    //     try {
+    //         User b = new User();
+    //         b.readUserToUser("data/users/2.testUsername.json");
+    //         System.out.println(b.getId());
+    //         System.out.println(b.getUsername());
+    //         b.getAccounts().forEach((a -> System.out.println(a.getId())));
+    //     } catch (FileNotFoundException e) {
+    //         System.out.println(String.format("Error: %s", e));
+    //     }
         
         
-    }
+    // }
 
 }
