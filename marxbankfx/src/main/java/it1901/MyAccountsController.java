@@ -20,16 +20,11 @@ public class MyAccountsController {
 
     @FXML
     private void initialize() {
-        initTemporaryTestData();
-        createAccountButtons();
     }
 
-    private void initTemporaryTestData() {
-        user = new User();
-        Account a = new SavingsAccount(user, 8);
-        a.deposit(500);
-        user.addAccount(new SavingsAccount(user, 3));
-        user.addAccount(a);
+    public void initData(User user) {
+        this.user = user;
+        createAccountButtons();
     }
 
     /**
