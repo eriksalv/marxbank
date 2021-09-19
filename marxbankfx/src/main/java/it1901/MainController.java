@@ -9,7 +9,12 @@ import javafx.scene.control.TabPane;
 public class MainController {
 
     @FXML private TabPane tabs;
-
+    @FXML private Tab home;
+    @FXML private Tab accounts;
+    @FXML private Tab transaction;
+    @FXML private Tab history;
+    @FXML private Tab profile;
+    
     @FXML
     private void initialize() {
         int i = 0;

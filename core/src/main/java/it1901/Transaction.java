@@ -5,6 +5,11 @@ import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     
+    /*The purpose of the transaction class is to store information about a transaction between
+    two accounts. The information stored should never be changed, so it essentially functions
+    as a record, but it is also responsible for withdrawing and depositing the correct amount
+    of balance between the accounts.*/
+
     private final Account from;
     private final Account reciever;
     private final double amount;

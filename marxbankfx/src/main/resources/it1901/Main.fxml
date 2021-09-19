@@ -9,27 +9,27 @@
    <children>
       <TabPane fx:id="tabs" maxWidth="640.0" minWidth="90.0" prefHeight="480.0" prefWidth="640.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Hovedoversikt">
+          <Tab fx:id="home" text="Hovedoversikt">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="165.0" />
             </content>
           </Tab>
-          <Tab text="Mine kontoer">
+          <Tab fx:id="accounts" text="Mine kontoer">
                <content>
-                  <fx:include fx:id="account" source="Account.fxml" />
+                  <fx:include fx:id="myAccounts" source="MyAccounts.fxml" />
                </content>
           </Tab>
-            <Tab text="Overføring">
+            <Tab fx:id="transaction" text="Overføring">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab text="Betalingsoversikt">
+            <Tab fx:id="history" text="Betalingsoversikt">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab text="Min profil">
+            <Tab fx:id="profile" text="Min profil">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>

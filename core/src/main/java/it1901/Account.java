@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Account {
-    
+
+    private String name;
+    private final int accountNumber;    
     private final User user;
     private List<Transaction> transactions = new LinkedList<Transaction>();
     private double balance = 0;
@@ -13,6 +15,23 @@ public abstract class Account {
     public Account(User user, double interestRate) {
         this.user = user;
         this.interestRate = interestRate;
+        this.name = "Ny konto";
+        this.accountNumber = generateAccountNumber();
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        if (name==null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+        this.name=name;
+    }
+
+    public int getAccountNumber() {
+        return this.accountNumber;
     }
 
     public void deposit(double amount) {
@@ -57,4 +76,10 @@ public abstract class Account {
     public List<Transaction> getTransactions() {
         return new LinkedList<>(this.transactions);
     }
+
+    public int getNumberOfTransactions() {
+        return getTransactions().size();
+    }
+
+    abstract int generateAccountNumber();
 }

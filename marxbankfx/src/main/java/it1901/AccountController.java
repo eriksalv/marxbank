@@ -12,16 +12,12 @@ public class AccountController {
 
     @FXML
     private void initialize() {
-        initTemporaryTestData();
-        /*if (account instanceof SavingsAccount) {
-            accountType.setText("Sparekonto");
-        }*/
-        balance.setText("" + account.getBalance());
+
     }
 
-    private void initTemporaryTestData() {
-        account = new SavingsAccount(new User(), 3);
-        account.deposit(5000);
+    public void initData(Account a) {
+        account = a;
+        balance.setText("" + account.getBalance());
         /*((SavingsAccount) account).addInterest();*/
     }
 }
