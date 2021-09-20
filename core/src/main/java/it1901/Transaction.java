@@ -1,28 +1,33 @@
 package it1901;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Transaction {
     
     private String id;
+    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
     private Account from;
+    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
     private Account reciever;
     private double amount;
+    @JsonIgnore
     private LocalDateTime transactionDate;
     private String dateString;
+    @JsonIgnore
+    private DataManager dm;
 
     //autoformats the date to a readable norwegian text-string 
     DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
-    public Transaction() {}
 
     /**
      * Initializes transaction object and runs the commitTransaction method.
@@ -30,15 +35,22 @@ public class Transaction {
      * @param from - Account that money is transfered from
      * @param reciever - Account that recieves money
      * @param amount - Amount of money in transaction
+     * @param commit - commit the transaction
      */
-    public Transaction(String id, Account from, Account reciever, double amount) {
+    public Transaction(String id, Account from, Account reciever, double amount, boolean commit, DataManager dm) {
         this.id = id;
         this.from = from;
         this.reciever = reciever;
-        this.amount = amount;
+        this.amount = validateAmount(amount);
         transactionDate = LocalDateTime.now();
         dateString = dateFormat.format(transactionDate);
-        commitTransaction();
+        this.dm = dm;
+        if(commit) commitTransaction();
+        else {
+            this.from.addTransaction(this);
+            this.reciever.addTransaction(this);
+        }
+        this.dm.addTransaction(this);
     }
 
     public String getId() {
@@ -53,9 +65,14 @@ public class Transaction {
         return dateString;
     }
 
+    public LocalDateTime getTransactionDate() {
+        return this.transactionDate;
+    }
+
     public void setTransactionDate(LocalDateTime date) {
         this.transactionDate = date;
         this.dateString = dateFormat.format(date);
+        updateTransaction();
     }
 
     public Account getFrom() {
@@ -64,6 +81,7 @@ public class Transaction {
 
     public void setFrom(Account from) {
         this.from = from;
+        updateTransaction();
     }
 
     public Account getReciever() {
@@ -72,6 +90,7 @@ public class Transaction {
 
     public void setReciever(Account reciever) {
         this.reciever = reciever;
+        updateTransaction();
     }
 
     public double getAmount() {
@@ -79,7 +98,14 @@ public class Transaction {
     }
 
     public void setAmount(double amount) {
+        System.out.println(amount);
         this.amount = amount;
+        updateTransaction();
+    }
+
+    public double validateAmount(double amount) {
+        if(amount < 1) throw new IllegalArgumentException("Amount cannot be negative");
+        return amount;
     }
 
     /**
@@ -98,78 +124,21 @@ public class Transaction {
         reciever.addTransaction(this);
     }
 
-    /**
-     * static function to save passed in Transaction object
-     * @param transaction to save
-     * @throws IllegalArgumentException if transaction is null
-     * @throws IllegalArgumentException if transction object fields are null
-     */
-    public static void saveTransaction(Transaction transaction) {
-        if (transaction == null) throw new IllegalArgumentException("Transaction cannot be null.");
-        if (transaction.getFrom() == null || transaction.getReciever() == null || transaction.getDateString() == null) throw new IllegalArgumentException("Transaction fields cannot be null");
-    
-        ObjectMapper objectMapper = new ObjectMapper();
-        File transactionFile = new File(String.format("../data/transactions/%s.%s.%s.json", transaction.getId(), transaction.getFrom().getId(), transaction.getDateString().replaceAll("\\s", "")));
-
-        try {
-            objectMapper.writeValue(transactionFile, transaction);
-        } catch (Exception e) {
-            if(e instanceof FileNotFoundException) {
-                try {
-                    transactionFile = new File(String.format("data/transactions/%s.%s.%s.json", transaction.getId(), transaction.getFrom().getId(), transaction.getDateString().replaceAll("\\s", "")));
-                    objectMapper.writeValue(transactionFile, transaction);
-                } catch (Exception a) {
-                    System.out.println(String.format("Error: %s", a));
-                }
-            } else {
-                System.out.println(String.format("Error: %s", e));
-            }
-        }
+    private void updateTransaction() {
+        this.dm.updateTransaction(this.id, this);
     }
 
-
-    /**
-     * saves the transaction object
-     * @throws IllegalStateException if one ore more of the objects fields are null
-     */
-    public void saveTransaction() {
-        if (this.from == null || this.reciever == null || this.dateString == null) throw new IllegalStateException("From, Reciever and date cannot be empty");
-        ObjectMapper objectMapper = new ObjectMapper();
-        File transactionFile = new File(String.format("../data/transactions/%s.%s.%s.json", this.id, this.from.getId(), this.dateString.replaceAll("\\s", "").replaceAll(":", ".")));
-
-        try {
-            objectMapper.writeValue(transactionFile, this);
-        } catch (Exception e) {
-            if(e instanceof FileNotFoundException) {
-                try {
-                    transactionFile = new File(String.format("data/transactions/%s.%s.%s.json", this.id, this.from.getId(), this.dateString.replaceAll("\\s", "").replaceAll(":", ".")));
-                    objectMapper.writeValue(transactionFile, this);
-                } catch (Exception a) {
-                    System.out.println(String.format("Error: %s", a));
-                }
-            } else {
-                System.out.println(String.format("Error: %s", e));
-            }
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
-    // public static void main(String[] args) {
-    //     User u = new User("1", "testUser", "test@email.com", "password");
-    //     User u2 = new User("2", "testUser2", "test2@email.com", "password2");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transaction)) return false;
+        Transaction transaction = (Transaction) o;
+        return Objects.equals(id, transaction.getId());
+    }
 
-    //     Account a1 = new SavingsAccount("1", u, 2.0);
-    //     Account a2 = new SavingsAccount("2", u2, 3.0);
-
-    //     u.addAccount(a1);
-    //     a1.deposit(5000);
-    //     u2.addAccount(a2);
-
-    //     Transaction t = new Transaction("1", a1, a2, 500);
-
-    //     u.saveUser();
-    //     u2.saveUser();
-    //     a1.saveAccount();
-    //     a2.saveAccount();
-    //     t.saveTransaction();
-    // }    
 }

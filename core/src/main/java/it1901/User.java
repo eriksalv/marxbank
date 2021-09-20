@@ -1,24 +1,24 @@
 package it1901;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import it1901.util.ValidPath;
-
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-class User {
+public class User {
 
     private String id;
     private String username;
     private String email;
     private String password;
-    @JsonDeserialize(using = AccountDeserializer.class)
-    private ArrayList<Account> accounts = new ArrayList<Account>();
+    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
+    private List<Account> accounts = new ArrayList<Account>();
+    @JsonIgnore
+    private DataManager dm;
 
     /**
      * Constructor for user with arguments
@@ -27,14 +27,15 @@ class User {
      * @param email of user
      * @param password of user
      */
-    public User(String id, String username, String email, String password) {
+    public User(String id, String username, String email, String password, DataManager dm) {
         this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
+        this.username = validateUsername(username);
+        this.email = validateEmail(email);
+        this.password = password; // going to get hashed later
+        this.dm = dm;
 
-    public User() {}
+        this.dm.addUser(this);
+    }
 
     public void setId(String newId) {
         this.id = newId;
@@ -46,6 +47,7 @@ class User {
 
     public void setUsername(String newUsername) {
         this.username = newUsername;
+        updateUser();
     }
 
     public String getUsername() {
@@ -54,6 +56,7 @@ class User {
 
     public void setEmail(String newEmail) {
         this.email = newEmail;
+        updateUser();
     }
 
     public String getEmail() {
@@ -62,6 +65,7 @@ class User {
 
     public void setPassword(String newPassword) {
         this.password = newPassword;
+        updateUser();
     }
 
     public String getPassword() {
@@ -70,15 +74,17 @@ class User {
 
     public void setAccounts(ArrayList<Account> newAccountsList) {
         this.accounts = newAccountsList;
+        updateUser();
     }
 
     public ArrayList<Account> getAccounts() {
-        return this.accounts;
+        return (ArrayList<Account>) this.accounts;
     }
 
     public void addAccount(Account newAccount) {
         if (!accounts.contains(newAccount)) {
             accounts.add(newAccount);
+            updateUser();
         } else {
             throw new IllegalArgumentException("This account is already added.");
         }
@@ -87,158 +93,55 @@ class User {
     public void removeAccount(Account unwantedAccount) {
         if (accounts.contains(unwantedAccount)) {
             accounts.remove(unwantedAccount);
+            updateUser();
         } else {
             throw new IllegalArgumentException("This account does not exist in your accounts.");
         }
     }
 
-    /**
-     * saves a user to a jsonfile in data/users/
-     * The filename is structured like this: id.username.json
-     * @param user to be saved
-     * @throws IllegalArgumentException if user is null, or some of its fields are null
-     */
-    public static void saveUser(User user) {
-        // check if user is null
-        if(user == null) throw new IllegalArgumentException("User cannot be null");
-        // check if user fields are null
-        if(user.getId() == null || user.getUsername() == null || user.getEmail() == null || user.getPassword() == null) throw new IllegalArgumentException("User fields cannot be null");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        File userFile = new File(String.format("../data/users/%s.%s.json", user.getId(), user.getUsername()));
-        try {
-            objectMapper.writeValue(userFile, user);
-        } catch (Exception e) {
-            if(e instanceof FileNotFoundException) {
-                try {
-                    userFile = new File(String.format("data/users/%s.%s.json", user.getId(), user.getUsername()));
-                    objectMapper.writeValue(userFile, user);
-                } catch (Exception a) {
-                    System.out.println(String.format("Error: %s", a));
-                }
-            } else {
-                System.out.println(String.format("Error: %s", e));
-            }
+   public String saveUser() {
+       try {
+            return (new ObjectMapper()).writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-
-    }
-
-    /**
-     * saves user to local storage
-     */
-    public void saveUser() {
-        if(this.id == null || this.username == null || this.email == null || this.password == null) throw new IllegalStateException("User fields can not be null.");
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        File userFile = new File(String.format("../data/users/%s.%s.json", this.id, this.username));
-        try {
-            objectMapper.writeValue(userFile, this);
-        } catch (Exception e) {
-            if(e instanceof FileNotFoundException) {
-                try {
-                    userFile = new File(String.format("data/users/%s.%s.json", this.id, this.username));
-                    objectMapper.writeValue(userFile, this);
-                } catch (Exception a) {
-                    System.out.println(String.format("Error: %s", a));
-                }
-            } else {
-                System.out.println(String.format("Error: %s", e));
-            }
-        }
-    }
-
-    /**
-     * Reads a user from a given path to a jsonfile
-     * @param path to user
-     * @return the user at the given location or null if there is an error
-     * @throws FileNotFoundException if no userfile was found at path
-     * @throws IllegalArgumentException if path is not a valid path
-     */
-    public static User readUser(String path) throws FileNotFoundException {
-        // check if path is valid
-        if(!ValidPath.isValidPath(path)) throw new IllegalArgumentException("path is not valid");
-        // check if file exists
-        if(!new File(path).exists()) throw new FileNotFoundException("No File with that path exists.");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        File userFile = new File(path);
-
-        try {
-            User user = objectMapper.readValue(userFile, User.class);
-            user.getAccounts().forEach(e -> e.setUser(user));
-            return user;
-        } catch (Exception e) {
-            System.out.println(String.format("Error: %s", e));
-        }
-
         return null;
-    }
+   }
 
-    /**
-     * reads user file to this user object
-     * @param path to user file
-     * @throws IllegalArgumentException if path is not valid
-     * @throws FileNotFoundException if file was not found
-     * @throws IllegalStateException if there was an error reading the user correctly
-     */
-    public void readUserToUser(String path) throws FileNotFoundException {
-        // check if path is valid
-        if(!ValidPath.isValidPath(path)) throw new IllegalArgumentException("path is not valid");
-        // check if file exists
-        if(!new File(path).exists()) throw new FileNotFoundException("No File with that path exists.");
+   private String validateUsername(String username) {
+       if(username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");
+       if(username.length() > 30) throw new IllegalArgumentException("username is too long, must be 30 characters maximum.");
+       if(!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
+       if(username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        User user;
-        File userFile = new File(path);
+       return username;
+   }
 
-        try {
-            user = objectMapper.readValue(userFile, User.class);
-            user.getAccounts().forEach(e -> e.setUser(this));
-        } catch (Exception e) {
-            user = null;
-        }
+   private String validateEmail(String email) {
+       if(!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) throw new IllegalArgumentException("Email is not valid");
+       return email;
+   }
 
-        if(user == null) throw new IllegalStateException("user file could not be read correctly");
-
-        this.setId(user.getId());
-        this.setUsername(user.getUsername());
-        this.setEmail(user.getEmail());
-        this.setPassword(user.getPassword());
-        this.setAccounts(user.getAccounts());
-    }
+   private void updateUser() {
+       this.dm.updateUser(this.id, this);
+   }
 
     @Override
     public String toString() {
         return String.format("id:%s, username:%s", this.getId(), this.getUsername());
     }
 
-    // public static void main(String... args) {
-    //     User u = new User("2", "testUsername", "test@email.com", "password");
-    //     u.addAccount(new SavingsAccount("1", u, 5.0));
-    //     u.addAccount(new SavingsAccount("2", u, 8.0));
-    //     u.addAccount(new SavingsAccount("3", u, 3.0));
-    //     u.addAccount(new SavingsAccount("4", u, 6.0));
-    //     u.addAccount(new SavingsAccount("5", u, 2.0));
-    //     u.saveUser();
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
 
-    //     //User u2 = User.readUserFromId("2");
-    //     //System.out.println(u2);
-
-    //     //System.out.println(new File("data/users/2.testUsername.json").exists());
-
-    //     try {
-    //         User b = new User();
-    //         b.readUserToUser("data/users/2.testUsername.json");
-    //         System.out.println(b.getId());
-    //         System.out.println(b.getUsername());
-    //         b.getAccounts().forEach((a -> System.out.println(a.getId())));
-    //     } catch (FileNotFoundException e) {
-    //         System.out.println(String.format("Error: %s", e));
-    //     }
-        
-        
-    // }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.getId());
+    }
 
 }

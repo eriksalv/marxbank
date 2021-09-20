@@ -1,159 +1,85 @@
 package it1901;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.nio.file.Path;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class UserTest {
 
     private User user;
-    
+    private DataManager dm;
+
+    @TempDir
+    static Path tempDir;
+
+    @BeforeAll
+    public static void init() throws IOException {
+        Files.createDirectory(tempDir.resolve("data"));
+    }
+
     @BeforeEach
-    public void setup() {
-        user = new User();
-    }
-
-    @AfterEach
-    public void cleanUp() {
-        File f = new File("../data/users/99999.testUsername.json");
-        if(f.exists()) {
-          f.delete();  
-        }
+    public void beforeEachSetup() throws IOException {
+        String path = tempDir.toFile().getCanonicalPath();
+        dm = new DataManager(path);
     }
 
     @Test
-    @DisplayName("test setAccounts")
-    public void testSetAccounts() {
-        ArrayList<Account> testAccounts = new ArrayList<Account>(3);
-        testAccounts.add(new SavingsAccount("1", user, 5.0));
-        testAccounts.add(new SavingsAccount("2", user, 0.0));
-        testAccounts.add(new SavingsAccount("3", user, 2.0));
-
-        user.setAccounts(testAccounts);
-
-        assertArrayEquals(testAccounts.toArray(), user.getAccounts().toArray());
-    }
-
-    @Test
-    @DisplayName("test addAccount")
-    public void testAddAccount() {
-        Account t = new SavingsAccount("99", user, 5.0);
-        user.addAccount(t);
-        assertArrayEquals(new Account[] {t}, user.getAccounts().toArray());
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            user.addAccount(t);
-        });
-    }
-
-    @Test
-    @DisplayName("test removeAccount")
-    public void testRemoveAccount() {
-        ArrayList<Account> testAccounts = new ArrayList<Account>(3);
-        testAccounts.add(new SavingsAccount("1",user, 5.0));
-        testAccounts.add(new SavingsAccount("2", user, 0.0));
-        testAccounts.add(new SavingsAccount("3", user, 2.0));
-
-        user.setAccounts(testAccounts);
-
-        user.removeAccount(testAccounts.get(0));
-
-        testAccounts.remove(0);
-
-        assertArrayEquals(testAccounts.toArray(), user.getAccounts().toArray());
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            user.removeAccount(new SavingsAccount("99", user, 8.0));
-        });
-    }
-
-    @Test
-    @DisplayName("test saveUser")
-    public void testSaveUser() {
-        File file = new File("../data/users/99999.testUsername.json");
-
+    @DisplayName("test constructor")
+    public void testConstructor() {
         assertAll(
             () -> assertThrows(IllegalArgumentException.class, () -> {
-                User.saveUser(null);
+                new User("test", " notvalidusername", "email@test.com", "test password", this.dm);
             }),
             () -> assertThrows(IllegalArgumentException.class, () -> {
-                User.saveUser(user);
+                new User("id", "user name", "email@email.com", "password", this.dm);
+            }),
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                new User("id", "username ", "email@email.com", "password", this.dm);
+            }),
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                new User("id", "us", "email@email.com", "password", this.dm);
+            }),
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                new User("id", "usernameiswaaaaaaaayyyyytooooooooooooooooooooooooooooooooooooooolooooooooooooooooooooooooooooooooong", "email@email.com", "password", this.dm);
+            }),
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                new User("id", "username", ".email@emai..com", "password", this.dm);
             })
         );
 
-        assertThrows(IllegalStateException.class, () -> {
-            user.saveUser();
-        });
-
-        user.setId("99999");
-        user.setUsername("testUsername");
-        user.setEmail("test@testemail.com");
-        user.setPassword("testpassword");
-
-        // test save user non static
-        user.saveUser();
-        assertTrue(Files.exists(file.toPath()), "File should exist");
-
-        // cleanup
-        cleanUp();
-
-        // test save user static
-        User.saveUser(user);
-        assertTrue(Files.exists(file.toPath()), "File should exist");
-    }
-
-    @Test
-    @DisplayName("test readUser")
-    public void testReadUser() throws FileNotFoundException {
-
-        assertAll(
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                User.readUser("not?a?valid?path");
-            }),
-            () -> assertThrows(FileNotFoundException.class, () -> {
-                User.readUser("../data/users/doesnt.exists.json");
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                user.readUserToUser("not?a?valid?path");
-            }),
-            () -> assertThrows(FileNotFoundException.class, () -> {
-                user.readUserToUser("../data/users.doesnt.exists.json");
-            })
-        );
-
-        user.setId("99999");
-        user.setUsername("testUsername");
-        user.setEmail("test@testemail.com");
-        user.setPassword("testpassword");
-
-        user.saveUser();
-        User t = User.readUser("../data/users/99999.testUsername.json");
-        assertAll(
-            () -> assertEquals(user.getId(), t.getId()),
-            () -> assertEquals(user.getUsername(), t.getUsername()),
-            () -> assertEquals(user.getEmail(), t.getEmail()),
-            () -> assertEquals(user.getPassword(), t.getPassword())
-        );
+        user = new User("id", "username", "email@email.com", "password", this.dm);
+        assertEquals(this.dm.getUsers().get(0), user);
         
-        User r = new User();
-        r.readUserToUser("../data/users/99999.testUsername.json");
-        assertAll(
-            () -> assertEquals(user.getId(), r.getId()),
-            () -> assertEquals(user.getUsername(), r.getUsername()),
-            () -> assertEquals(user.getEmail(), r.getEmail()),
-            () -> assertEquals(user.getPassword(), r.getPassword())
-        );
     }
+
+    @Test
+    @DisplayName("test account management")
+    public void testAccountManagement() {
+        user = new User("id", "username", "email@email.com", "password", this.dm);
+        Account a = new SavingsAccount("id", user, 5.0, this.dm);
+        assertEquals(user.getAccounts().get(0), a);
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            user.addAccount(a);
+        });
+
+        user.removeAccount(a);
+        assertEquals(0, user.getAccounts().size());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            user.removeAccount(a);
+        });
+    }
+
+    
 }
