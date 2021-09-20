@@ -7,7 +7,7 @@ public class AccountController {
 
     @FXML private Label accountType;
     @FXML private Label balance;
-    
+
     private Account account;
 
     @FXML
@@ -16,12 +16,12 @@ public class AccountController {
         /*if (account instanceof SavingsAccount) {
             accountType.setText("Sparekonto");
         }*/
-        balance.setText("" + account.getBalance());
+        //balance.setText("" + account.getBalance());
     }
 
     private void initTemporaryTestData() {
-        account = new SavingsAccount(new User(), 3);
-        account.deposit(5000);
+        // account = new SavingsAccount(new User(), 3);
+        // account.deposit(5000);
         /*((SavingsAccount) account).addInterest();*/
     }
 }
