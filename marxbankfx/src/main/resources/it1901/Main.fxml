@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="main" alignment="CENTER" prefHeight="480.0" prefWidth="640.0" spacing="20.0" stylesheets="/style/MainStyle.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.MainController">
+<AnchorPane fx:id="main" prefHeight="480.0" prefWidth="640.0" stylesheets="/style/MainStyle.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.MainController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="480.0" prefWidth="640.0">
+      <VBox alignment="CENTER" prefHeight="480.0" prefWidth="640.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="480.0" prefWidth="144.0">
+            <HBox alignment="CENTER_LEFT">
                <children>
-                  <Button mnemonicParsing="false" text="Hovedoversikt" onAction="#handleHome"/>
-                  <Button mnemonicParsing="false" text="Mine kontoer" onAction="#handleMyAccounts"/>
-                  <Button mnemonicParsing="false" text="Overføring" />
-                  <Button mnemonicParsing="false" text="Betalingsoversikt" />
-                  <Button mnemonicParsing="false" text="Min profil" />
+                  <VBox fx:id="menuContainer" alignment="CENTER" prefHeight="480.0" prefWidth="144.0">
+                     <children>
+                        <Button fx:id="menuBtn1" mnemonicParsing="false" onAction="#handleHome" prefHeight="96.0" prefWidth="144.0" text="Hovedoversikt" />
+                        <Button fx:id="menuBtn2" mnemonicParsing="false" onAction="#handleMyAccounts" prefHeight="96.0" prefWidth="144.0" text="Mine kontoer" />
+                        <Button fx:id="menuBtn3" mnemonicParsing="false" prefHeight="96.0" prefWidth="144.0" text="Overføring" />
+                        <Button fx:id="menuBtn4" mnemonicParsing="false" prefHeight="96.0" prefWidth="144.0" text="Betalingsoversikt" />
+                        <Button fx:id="menuBtn5" mnemonicParsing="false" prefHeight="96.0" prefWidth="144.0" text="Min profil" />
+                     </children>
+                  </VBox>
+                  <Pane fx:id="content" prefHeight="480.0" prefWidth="540.0" />
                </children>
-            </VBox>
-            <Pane fx:id="content" prefHeight="480.0" prefWidth="540.0" />
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>

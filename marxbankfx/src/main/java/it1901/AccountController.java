@@ -17,7 +17,8 @@ public class AccountController {
 
     public void initData(Account a) {
         account = a;
-        balance.setText("" + account.getBalance());
+        accountType.setText(a.getAccountType());
+        balance.setText("Disponibelt beløp: " + account.getBalance());
         /*((SavingsAccount) account).addInterest();*/
     }
 }

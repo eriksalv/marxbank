@@ -35,7 +35,7 @@ public class MyAccountsController {
         for (Account a : accounts) {
             Button accountBtn = new Button();
             accountBtn.getStyleClass().add("accBtn");
-            accountBtn.setText("" + a.getAccountNumber());
+            accountBtn.setText("Kontonummer: " + a.getAccountNumber());
             accountBtn.setOnAction(ev -> {
                 account = a;
                 try {

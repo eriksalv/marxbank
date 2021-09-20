@@ -82,4 +82,7 @@ public abstract class Account {
     }
 
     abstract int generateAccountNumber();
+
+    abstract String getAccountType();
+    
 }
