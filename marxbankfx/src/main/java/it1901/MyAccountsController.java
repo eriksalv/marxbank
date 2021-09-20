@@ -20,16 +20,11 @@ public class MyAccountsController {
 
     @FXML
     private void initialize() {
-        initTemporaryTestData();
-        createAccountButtons();
     }
 
-    private void initTemporaryTestData() {
-        user = new User();
-        Account a = new SavingsAccount(user, 8);
-        a.deposit(500);
-        user.addAccount(new SavingsAccount(user, 3));
-        user.addAccount(a);
+    public void initData(User user) {
+        this.user = user;
+        createAccountButtons();
     }
 
     /**
@@ -40,7 +35,7 @@ public class MyAccountsController {
         for (Account a : accounts) {
             Button accountBtn = new Button();
             accountBtn.getStyleClass().add("accBtn");
-            accountBtn.setText("" + a.getAccountNumber());
+            accountBtn.setText("Kontonummer: " + a.getAccountNumber());
             accountBtn.setOnAction(ev -> {
                 account = a;
                 try {

@@ -9,5 +9,11 @@ public class SavingsAccount extends Account {
     @Override
     int generateAccountNumber() {
         return (int)Math.round(10000+getInterestRate()); //temporary
+    }
+
+    @Override
+    String getAccountType() {
+        return "Sparekonto";
     } 
+    
 }
