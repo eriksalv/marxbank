@@ -18,6 +18,8 @@ public abstract class Account {
     @JsonIdentityReference(alwaysAsId = true)
     @JsonIgnoreProperties({"username", "email", "password", "accounts"})
     private User user;
+    private final int accountNumber;
+    private String name; 
     private String id;
     @JsonIgnoreProperties({"from", "reciever", "amount", "transactionDate", "dateString", "dm"})
     private List<Transaction> transactions = new LinkedList<Transaction>();
@@ -33,9 +35,26 @@ public abstract class Account {
         this.id = id;
         this.type = type;
         this.dm = dm;
+        this.name = "Ny konto";
+        this.accountNumber = generateAccountNumber();
 
         this.user.addAccount(this);
         this.dm.addAccount(this);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        if (name==null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+        this.name=name;
+    }
+
+    public int getAccountNumber() {
+        return this.accountNumber;
     }
 
     public void deposit(double amount) {
@@ -143,4 +162,12 @@ public abstract class Account {
     Account account = (Account) o;
     return Objects.equals(id, account.getId());
    }
+    public int getNumberOfTransactions() {
+        return getTransactions().size();
+    }
+
+    abstract int generateAccountNumber();
+
+    abstract String getAccountType();
+    
 }

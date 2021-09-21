@@ -3,19 +3,37 @@ package it1901;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class TransactionTest {
 
+    private Account a1;
+    private Account a2;
+
     private Transaction transaction;    
 
-    Account a1 = new SavingsAccount(new User(), 2);
-    Account a2 = new SavingsAccount(new User(), 3);
+    private DataManager dm;
 
-    @BeforeEach
-    public void setup() {
+    @TempDir
+    static Path tempDir;
+
+    @BeforeAll
+    public static void init() throws IOException {
+        Files.createDirectory(tempDir.resolve("data"));
+    }
+
+    public void setup() throws IOException {
+        this.dm = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
+        a1 = new SavingsAccount("id1", new User("id", "username", "email@email.com", "password", dm), 2, dm);
+        a2 = new SavingsAccount("id2", new User("id2", "username2", "email@gmail.com", "password2", dm), 3, dm);
         a1.deposit(100);
         a2.deposit(100);
     }
@@ -23,8 +41,9 @@ public class TransactionTest {
     
     @Test
     @DisplayName("test commitTransaction with a1 and a2 as param")
-    public void testCommitTransaction1() {
-        transaction = new Transaction(a1, a2, 50);
+    public void testCommitTransaction1() throws IOException {
+        setup();
+        transaction = new Transaction("t", a1, a2, 50, dm);
 
         assertEquals(transaction.getFrom(), a1);
         assertEquals(transaction.getReciever(), a2);
@@ -39,9 +58,10 @@ public class TransactionTest {
 
     @Test
     @DisplayName("test commitTransaction with a1 and null as param")
-    public void testCommitTransaction2() {
+    public void testCommitTransaction2() throws IOException {
+        setup();
         assertThrows(IllegalStateException.class, () -> {
-            transaction = new Transaction(a1, null, 50);;
+            transaction = new Transaction("t", a1, null, 50, dm);;
         });
 
         assertEquals(a1.getBalance(), 100);
