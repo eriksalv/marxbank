@@ -23,7 +23,7 @@ public class TransactionController {
     @FXML private TextField amountText;
     @FXML private Label transactionCompleteMsg;
 
-    EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
+    private EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent e)
         {
@@ -63,6 +63,12 @@ public class TransactionController {
             amount = Integer.parseInt(amountText.getText());
             Transaction t = new Transaction("id", from, reciever, amount, dm);
             transactionCompleteMsg.setVisible(true);
+            try {
+                dm.save();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } catch (NumberFormatException e) {
             System.err.println("Input is not a number " + e.getMessage());
         } catch (IllegalArgumentException e) {
