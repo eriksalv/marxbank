@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="412.0" style="-fx-background-color: lightblue;" fx:controller="it1901.components.TransactionComponent.java">
+    <children>
+       <Label layoutX="14.0" layoutY="2.0" text="Dato">
+          <font>
+             <Font size="16.0" />
+          </font>
+       </Label>
+       <Label fx:id="date" layoutX="14.0" layoutY="23.0" text="12.09.21">
+          <font>
+             <Font size="14.0" />
+          </font>
+       </Label>
+       <Label layoutX="77.0" layoutY="2.0" text="Fra">
+          <font>
+             <Font size="16.0" />
+          </font>
+       </Label>
+       <Label fx:id="fromAccountNumber" layoutX="77.0" layoutY="23.0" text="Kontonummer">
+          <font>
+             <Font size="14.0" />
+          </font>
+       </Label>
+       <Label layoutX="185.0" layoutY="2.0" text="Til">
+          <font>
+             <Font size="16.0" />
+          </font>
+       </Label>
+       <Label fx:id="toAccountNumber" layoutX="185.0" layoutY="23.0" text="Kontonummer">
+          <font>
+             <Font size="14.0" />
+          </font>
+       </Label>
+       <Label layoutX="296.0" layoutY="2.0" text="Overført">
+          <font>
+             <Font size="16.0" />
+          </font>
+       </Label>
+       <Label fx:id="amount" layoutX="296.0" layoutY="23.0" text="1,000kr">
+          <font>
+             <Font size="14.0" />
+          </font>
+       </Label>
+    </children>
+</Pane>
