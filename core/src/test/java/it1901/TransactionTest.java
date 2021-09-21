@@ -48,9 +48,5 @@ public class TransactionTest {
         assertEquals(a1.getTransactions().size(), 0);
 
     }
-    
-    
-    
-
-
 }
+
