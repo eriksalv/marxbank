@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="transaction" fx:controller="it1901.TransactionController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Overføring">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label text="Fra (kontonummer)" />
+            <MenuButton fx:id="myAccountsList" mnemonicParsing="false" text="Velg konto">
+              <items>
+              </items>
+            </MenuButton>
+            <Label text="Til (kontonummer)" />
+            <TextField fx:id="recieverText" text="" />
+            <Label text="Forfallsdato (dd-MM-yyyy)" />
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <TextField fx:id="dateText"/>
+               </children>
+            </HBox>
+            <Label text="Beløp" />
+            <TextField fx:id="amountText" text="" />
+            <Button mnemonicParsing="false" text="Overfør" onAction="#handleCommitTransaction"/>
+            <Label fx:id="transactionCompleteMsg" text="Overføringen var vellykket" visible="false"/>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -40,6 +40,7 @@ public abstract class Account {
 
         this.user.addAccount(this);
         this.dm.addAccount(this);
+        Bank.getInstanceBank().addAccount(this);
     }
 
     public String getName() {

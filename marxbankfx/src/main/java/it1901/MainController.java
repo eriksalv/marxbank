@@ -70,4 +70,15 @@ public class MainController {
 
         content.getChildren().setAll(pane);
     }
+
+    @FXML 
+    private void handleTransaction(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Transaction.fxml"));
+        AnchorPane pane = loader.load();
+        TransactionController controller = loader.getController();
+        controller.initData(user, dm);
+
+        content.getChildren().setAll(pane);
+    }
 }
