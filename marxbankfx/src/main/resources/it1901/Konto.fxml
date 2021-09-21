@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.HomeController">
+   <children>
+      <Label fx:id="kontonavn" layoutX="109.0" layoutY="29.0" text="Kontonavn">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="kontonummer" layoutX="109.0" layoutY="91.0" text="Kontonummer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="kontotype" layoutX="109.0" layoutY="118.0" text="Kontotype">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="disponibelt" layoutX="414.0" layoutY="91.0" text="Disponibelt">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="109.0" layoutY="183.0" text="Aktivitet">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="109.0" layoutY="210.0" prefHeight="190.0" prefWidth="414.0">
+         <content>
+            <Pane fx:id="overforingsContainer" prefHeight="324.0" prefWidth="399.0">
+               <children>
+                  <Pane prefHeight="45.0" prefWidth="412.0" style="-fx-background-color: lightblue;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="2.0" text="Dato">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="23.0" text="12.09.21">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="2.0" text="Fra">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="2.0" text="Til">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="2.0" text="Overført">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="23.0" text="1,000kr">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="45.0" prefHeight="45.0" prefWidth="412.0" style="-fx-background-color: lightblue;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="2.0" text="Dato">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="23.0" text="12.09.21">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="2.0" text="Fra">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="2.0" text="Til">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="2.0" text="Overført">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="23.0" text="1,000kr">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="90.0" prefHeight="45.0" prefWidth="412.0" style="-fx-background-color: lightblue;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="2.0" text="Dato">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="23.0" text="12.09.21">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="2.0" text="Fra">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="2.0" text="Til">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="2.0" text="Overført">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="23.0" text="1,000kr">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="135.0" prefHeight="45.0" prefWidth="412.0" style="-fx-background-color: lightblue;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="2.0" text="Dato">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="23.0" text="12.09.21">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="2.0" text="Fra">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="2.0" text="Til">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="2.0" text="Overført">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="23.0" text="1,000kr">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="180.0" prefHeight="45.0" prefWidth="412.0" style="-fx-background-color: lightblue;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="2.0" text="Dato">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="23.0" text="12.09.21">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="2.0" text="Fra">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="77.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="2.0" text="Til">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="185.0" layoutY="23.0" text="Kontonummer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="2.0" text="Overført">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="296.0" layoutY="23.0" text="1,000kr">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
