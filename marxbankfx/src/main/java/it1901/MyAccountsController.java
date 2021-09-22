@@ -63,7 +63,7 @@ public class MyAccountsController {
         loader.setLocation(getClass().getResource("Account.fxml"));
         AnchorPane pane = loader.load();
         AccountController controller = loader.getController();
-        controller.initData(account, dm);
+        controller.initData(account);
 
         myAccounts.getChildren().setAll(pane);
     }
