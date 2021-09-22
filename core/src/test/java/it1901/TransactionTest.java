@@ -30,6 +30,7 @@ public class TransactionTest {
         Files.createDirectory(tempDir.resolve("data"));
     }
 
+    @BeforeEach
     public void setup() throws IOException {
         this.dm = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
         a1 = new SavingsAccount("id1", new User("id", "username", "email@email.com", "password", dm), 2, dm);
@@ -42,7 +43,6 @@ public class TransactionTest {
     @Test
     @DisplayName("test commitTransaction with a1 and a2 as param")
     public void testCommitTransaction1() throws IOException {
-        setup();
         transaction = new Transaction("t", a1, a2, 50, dm);
 
         assertEquals(transaction.getFrom(), a1);
@@ -59,7 +59,6 @@ public class TransactionTest {
     @Test
     @DisplayName("test commitTransaction with a1 and null as param")
     public void testCommitTransaction2() throws IOException {
-        setup();
         assertThrows(IllegalStateException.class, () -> {
             transaction = new Transaction("t", a1, null, 50, dm);;
         });

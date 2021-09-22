@@ -74,6 +74,7 @@ public class DataManagerTest {
 
         DataManager dm2 = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
         dm2.parse();
+
         assertEquals(this.dm.getUsers(), dm2.getUsers());
         assertEquals(this.dm.getAccounts(), dm2.getAccounts());
         assertEquals(this.dm.getTransactions(), dm2.getTransactions());
