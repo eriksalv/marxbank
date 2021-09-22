@@ -28,6 +28,6 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="changePasswordButton" layoutX="441.0" layoutY="148.0" mnemonicParsing="false" text="Endre passord" />
+      <Button fx:id="changePasswordButton" layoutX="441.0" layoutY="148.0" mnemonicParsing="false" text="Endre passord" onAction="#handleChangePassword"/>
    </children>
 </AnchorPane>
