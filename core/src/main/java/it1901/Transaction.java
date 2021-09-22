@@ -17,7 +17,7 @@ public class Transaction {
     as a record, but it is also responsible for withdrawing and depositing the correct amount
     of balance between the accounts.*/
 
-    private String id;
+    private final String id;
     @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
     private final Account from;
     @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
@@ -34,13 +34,14 @@ public class Transaction {
 
     /**
      * Initializes transaction object and runs the commitTransaction method.
-     * 
+     * @param id - id of transaction
      * @param from - Account that money is transfered from
      * @param reciever - Account that recieves money
      * @param amount - Amount of money in transaction
-     * @param commit - commit the transaction
+     * @param dm - datamanager object for local storage
+     * @param commit - commits the transaction of money between accounts if true
      */
-    public Transaction(String id, Account from, Account reciever, double amount, DataManager dm) {
+    public Transaction(String id, Account from, Account reciever, double amount, DataManager dm, boolean commit) {
         this.id = id;
         this.from = from;
         this.reciever = reciever;
@@ -48,20 +49,17 @@ public class Transaction {
         transactionDate = LocalDateTime.now();
         dateString = dateFormat.format(transactionDate);
         this.dm = dm;
-        commitTransaction();
-        /*else {
+        if(commit) {
+            commitTransaction();
+        } else {
             this.from.addTransaction(this);
             this.reciever.addTransaction(this);
         }
-        this.dm.addTransaction(this);*/
+        this.dm.addTransaction(this);
     }
 
     public String getId() {
         return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDateString() {
@@ -72,39 +70,17 @@ public class Transaction {
         return this.transactionDate;
     }
 
-    /*public void setTransactionDate(LocalDateTime date) {
-        this.transactionDate = date;
-        this.dateString = dateFormat.format(date);
-        updateTransaction();
-    }*/
-
     public Account getFrom() {
         return from;
     }
-
-   /* public void setFrom(Account from) {
-        this.from = from;
-        updateTransaction();
-    }*/
 
     public Account getReciever() {
         return reciever;
     }
 
-    /*public void setReciever(Account reciever) {
-        this.reciever = reciever;
-        updateTransaction();
-    }*/
-
     public double getAmount() {
         return this.amount;
     }
-
-    /*public void setAmount(double amount) {
-        System.out.println(amount);
-        this.amount = amount;
-        updateTransaction();
-    }*/
 
     public double validateAmount(double amount) {
         if(amount < 1) throw new IllegalArgumentException("Amount cannot be negative");
@@ -126,10 +102,6 @@ public class Transaction {
         from.addTransaction(this);
         reciever.addTransaction(this);
     }
-
-    /*private void updateTransaction() {
-        this.dm.updateTransaction(this.id, this);
-    }*/
 
     @Override
     public int hashCode() {

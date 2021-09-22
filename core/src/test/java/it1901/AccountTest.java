@@ -70,7 +70,7 @@ public class AccountTest {
         Account a = new SavingsAccount("id", user, 5.0, dm);
         Account a2 = new SavingsAccount("id2", user, 5.0, dm);
         a.deposit(5000);
-        Transaction t = new Transaction("id", a, a2, 500, dm);
+        Transaction t = new Transaction("id", a, a2, 500, dm, true);
 
         assertThrows(IllegalStateException.class, () -> {
             a.addTransaction(t);

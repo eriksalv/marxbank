@@ -11,7 +11,6 @@ import java.nio.file.Path;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,7 +62,7 @@ public class DataManagerTest {
         Account a = new SavingsAccount("test1", user, 5.0, this.dm);
         a.deposit(5000.0);
         Account a2 = new SavingsAccount("test2", user, 10.0, this.dm);
-        Transaction t = new Transaction("test", a, a2, 500, this.dm);
+        Transaction t = new Transaction("test", a, a2, 500, this.dm, true);
 
         this.dm.save();
 
@@ -95,7 +94,7 @@ public class DataManagerTest {
         Account a2 = new SavingsAccount("testId", user, 8.0, this.dm);
         a2.deposit(5000);
 
-        Transaction t = new Transaction("id", a2, a, 500, this.dm);
+        Transaction t = new Transaction("id", a2, a, 500, this.dm, true);
         //t.setAmount(12345);
         //assertEquals(t, this.dm.getTransaction("id"));
         

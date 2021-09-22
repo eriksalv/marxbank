@@ -160,6 +160,7 @@ public abstract class Account {
     if (this == o) return true;
     if (!(o instanceof Account)) return false;
     Account account = (Account) o;
+    if (this.balance != account.getBalance()) return false;
     return Objects.equals(id, account.getId());
    }
     public int getNumberOfTransactions() {

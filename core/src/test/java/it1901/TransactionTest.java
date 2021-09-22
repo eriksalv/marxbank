@@ -43,7 +43,7 @@ public class TransactionTest {
     @Test
     @DisplayName("test commitTransaction with a1 and a2 as param")
     public void testCommitTransaction1() throws IOException {
-        transaction = new Transaction("t", a1, a2, 50, dm);
+        transaction = new Transaction("t", a1, a2, 50, dm, true);
 
         assertEquals(transaction.getFrom(), a1);
         assertEquals(transaction.getReciever(), a2);
@@ -60,7 +60,7 @@ public class TransactionTest {
     @DisplayName("test commitTransaction with a1 and null as param")
     public void testCommitTransaction2() throws IOException {
         assertThrows(IllegalStateException.class, () -> {
-            transaction = new Transaction("t", a1, null, 50, dm);;
+            transaction = new Transaction("t", a1, null, 50, dm, true);
         });
 
         assertEquals(a1.getBalance(), 100);
