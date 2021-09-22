@@ -20,7 +20,7 @@ test:
   script: 
     - mvn verify
     - ls
-    - cd marxbankfx && ls
+    - ls marxbankfx/target
     - cat marxbankfx/target/site/index.html
   rules:
     - if: '$CI_COMMIT_BRANCH != "master"'
