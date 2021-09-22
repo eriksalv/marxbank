@@ -61,7 +61,18 @@ public class TransactionController {
             from = Bank.getInstanceBank().getAccount(Integer.parseInt(myAccountsList.getText()));
             reciever = Bank.getInstanceBank().getAccount(Integer.parseInt(recieverText.getText()));
             amount = Integer.parseInt(amountText.getText());
-            Transaction t = new Transaction("id", from, reciever, amount, dm);
+
+            // id må være unik for hver ellers så kaster DataManager expcetions
+            String lastId;
+            try {
+                lastId = this.dm.getTransactions().get(this.dm.getTransactions().size() - 1).getId();
+            } catch (IndexOutOfBoundsException e) {
+                lastId = "-1";
+            }
+            
+            System.out.println(lastId);
+            int id = Integer.parseInt(lastId);
+            Transaction t = new Transaction(String.format("%d", (id + 1)), from, reciever, amount, dm, true);
             transactionCompleteMsg.setVisible(true);
             try {
                 dm.save();
