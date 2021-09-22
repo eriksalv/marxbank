@@ -16,7 +16,7 @@
                      <children>
                         <Button fx:id="menuBtn1" mnemonicParsing="false" onAction="#handleHome" prefHeight="96.0" prefWidth="144.0" text="Hovedoversikt" />
                         <Button fx:id="menuBtn2" mnemonicParsing="false" onAction="#handleMyAccounts" prefHeight="96.0" prefWidth="144.0" text="Mine kontoer" />
-                        <Button fx:id="menuBtn3" mnemonicParsing="false" prefHeight="96.0" prefWidth="144.0" text="Overføring" />
+                        <Button fx:id="menuBtn3" mnemonicParsing="false" onAction="#handleTransaction" prefHeight="96.0" prefWidth="144.0" text="Overføring" />
                         <Button fx:id="menuBtn4" mnemonicParsing="false" prefHeight="96.0" prefWidth="144.0" text="Betalingsoversikt" />
                         <Button fx:id="menuBtn5" mnemonicParsing="false" prefHeight="96.0" prefWidth="144.0" text="Min profil" />
                      </children>
