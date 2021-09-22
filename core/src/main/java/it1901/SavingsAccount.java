@@ -11,6 +11,19 @@ public class SavingsAccount extends Account {
         super(id, user, interestRate, AccountType.SAVING, dm);
     }
 
+    //second constructor with default value of 3 as interest rate
+    public SavingsAccount(String id, User user, DataManager dm) {
+        super(id, user, 3, AccountType.SAVING, dm);
+    }
+
+    public SavingsAccount(String id, User user, DataManager dm, String name) {
+        super(id, user, 3, AccountType.SAVING, dm, name);
+    }
+
+    /**
+     * Generates a unique account number. For SavingsAccount, the account number always
+     * starts with a "1".
+     */
     @Override
     int generateAccountNumber() {
         String accNumberString = "1";

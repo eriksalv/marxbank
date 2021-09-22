@@ -133,7 +133,7 @@ public abstract class Account {
     public void setInterestRate(double i) {
         this.interestRate = i;
         updateAccount();
-    }
+    } 
 
     public void setTransactions(List<Transaction> t) {
         this.transactions = t;
