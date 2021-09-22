@@ -1,5 +1,8 @@
 package it1901;
 
+import java.util.Random;
+import java.util.UUID;
+
 import it1901.util.AccountType;
 
 public class SavingsAccount extends Account {
@@ -10,7 +13,15 @@ public class SavingsAccount extends Account {
 
     @Override
     int generateAccountNumber() {
-        return (int)Math.round(10000+getInterestRate()); //temporary
+        String accNumberString = "1";
+        for (int i=0;i<3;i++) {
+            accNumberString += "" + (new Random()).nextInt(10);
+        }
+        int accNumber = Integer.valueOf(accNumberString);
+        if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
+            generateAccountNumber();
+        }
+        return accNumber; //temporary
     }
 
     @Override
