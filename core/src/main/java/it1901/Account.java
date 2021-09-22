@@ -43,6 +43,11 @@ public abstract class Account {
         Bank.getInstanceBank().addAccount(this);
     }
 
+    public Account(String id, User user, double interestRate, AccountType type, DataManager dm, String name) {
+        this(id, user, interestRate, type, dm);
+        this.name=name;
+    }
+
     public String getName() {
         return this.name;
     }
