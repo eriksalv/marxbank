@@ -17,6 +17,8 @@ public class TransactionController {
     private double amount;
     private DataManager dm;
 
+    private Transaction t;
+
     @FXML private MenuButton myAccountsList;
     @FXML private TextField recieverText;
     @FXML private TextField dateText;
@@ -72,7 +74,7 @@ public class TransactionController {
             
             System.out.println(lastId);
             int id = Integer.parseInt(lastId);
-            Transaction t = new Transaction(String.format("%d", (id + 1)), from, reciever, amount, dm, true);
+            t = new Transaction(String.format("%d", (id + 1)), from, reciever, amount, dm, true);
             transactionCompleteMsg.setVisible(true);
             try {
                 dm.save();

@@ -49,6 +49,7 @@ public class AccountController {
     public void initData(Account a, DataManager dm) {
         this.dm = dm;
         account = a;
+        accountName.setText(a.getName());
         accountType.setText(a.getAccountType());
         balance.setText("Disponibelt beløp: " + account.getBalance());
         accountNumber.setText("Kontonummer: " + account.getAccountNumber());

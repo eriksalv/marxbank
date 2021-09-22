@@ -28,7 +28,7 @@ public class Bank {
     }
 
     public Map<Integer, Account> getAccounts() {
-        return accounts;
+        return new HashMap<Integer, Account>(accounts);
     }
 
     public void addAccount(Account a) {
@@ -39,6 +39,6 @@ public class Bank {
         if (!accounts.containsKey(accountNumber)) {
             throw new IllegalArgumentException("Account number does not match any registered account");
         }
-        return accounts.get(accountNumber);
+        return getAccounts().get(accountNumber);
     }
 }

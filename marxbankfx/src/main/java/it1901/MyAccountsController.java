@@ -57,12 +57,24 @@ public class MyAccountsController {
      * @param e
      * @throws IOException
      */
+    @FXML
     private void handleSelectAccount(ActionEvent e) throws IOException {       
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Account.fxml"));
         AnchorPane pane = loader.load();
         AccountController controller = loader.getController();
         controller.initData(account, dm);
+
+        myAccounts.getChildren().setAll(pane);
+    }
+
+    @FXML
+    private void handleCreateNewAccount(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("createNewAccount.fxml"));
+        createNewAccountController controller = new createNewAccountController(user, dm);
+        loader.setController(controller);
+        AnchorPane pane = loader.load();
 
         myAccounts.getChildren().setAll(pane);
     }
