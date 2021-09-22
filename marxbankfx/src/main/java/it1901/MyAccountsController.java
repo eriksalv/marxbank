@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -14,6 +15,7 @@ public class MyAccountsController {
 
     private User user;
     private Account account;
+    private DataManager dm;
     
     @FXML private VBox myAccounts;
     @FXML private VBox accountBtns;
@@ -22,8 +24,9 @@ public class MyAccountsController {
     private void initialize() {
     }
 
-    public void initData(User user) {
+    public void initData(User user, DataManager dm) {
         this.user = user;
+        this.dm = dm;
         createAccountButtons();
     }
 
@@ -57,9 +60,9 @@ public class MyAccountsController {
     private void handleSelectAccount(ActionEvent e) throws IOException {       
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Account.fxml"));
-        HBox pane = loader.load();
+        AnchorPane pane = loader.load();
         AccountController controller = loader.getController();
-        controller.initData(account);
+        controller.initData(account, dm);
 
         myAccounts.getChildren().setAll(pane);
     }

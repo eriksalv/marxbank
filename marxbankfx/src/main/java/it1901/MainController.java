@@ -66,7 +66,7 @@ public class MainController {
         loader.setLocation(getClass().getResource("MyAccounts.fxml"));
         VBox pane = loader.load();
         MyAccountsController controller = loader.getController();
-        controller.initData(user);
+        controller.initData(user, dm);
 
         content.getChildren().setAll(pane);
     }
