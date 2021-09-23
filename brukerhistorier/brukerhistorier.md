@@ -21,7 +21,7 @@ Som en bankkunde ønsker jeg muligheten til å opprette ulike kontoer i banken s
 * Navn på konto
 
 ### Illustrerende skjermbilde
-![test](./Illustration1.png "Text to show on mouseover")
+![Test](/Bilder/Brukerhistorier/Betaling.png "Tomt")
 
 
 ## Betaling (#2) – høy prioritet
