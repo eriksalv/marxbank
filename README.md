@@ -27,6 +27,10 @@ så for å starte frontenden kjør
 
 Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. Velg den modulen du vil ha rapport fra). Kopier stien til filen og lim den inn i nettleser.
 
+# Klassediagram 
+
+![](diagrammer/marxBankUml.png)
+
 
 
 
