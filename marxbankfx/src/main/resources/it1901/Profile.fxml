@@ -3,31 +3,32 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.ProfileController">
    <children>
-      <Label fx:id="nameLabel" layoutX="97.0" layoutY="29.0" text="Navn Navn" textFill="#cd0000">
+      <Label fx:id="nameLabel" layoutX="16.0" layoutY="30.0" text="Navn Navn" textFill="#cd0000">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label fx:id="IDLabel" layoutX="97.0" layoutY="87.0" text="Unik ID: ">
+      <Label fx:id="IDLabel" layoutX="16.0" layoutY="88.0" text="Unik ID: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="usernameLabel" layoutX="97.0" layoutY="115.0" text="\@brukernavn">
+      <Label fx:id="usernameLabel" layoutX="16.0" layoutY="116.0" text="\@brukernavn">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="passwordLabel" layoutX="95.0" layoutY="151.0" text="Passord: *****">
+      <Label fx:id="passwordLabel" layoutX="14.0" layoutY="152.0" text="Passord: *****">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="changePasswordButton" layoutX="441.0" layoutY="148.0" mnemonicParsing="false" text="Endre passord" onAction="#handleChangePassword"/>
+      <Button fx:id="changePasswordButton" layoutX="360.0" layoutY="149.0" mnemonicParsing="false" onAction="#handleChangePassword" text="Endre passord" />
+      <Pane fx:id="newPane" layoutY="177.0" prefHeight="200.0" prefWidth="574.0" />
    </children>
 </AnchorPane>

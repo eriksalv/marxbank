@@ -2,7 +2,11 @@ package it1901;
 
 import java.io.IOException;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -21,23 +25,30 @@ public class ProfileController {
 
     private User user;
 
-    @FXML
-    private void intitialize(){
+    public void initData(User u) {
+        this.user = u;
         nameLabel.setText(user.getEmail());
         IDLabel.setText(user.getId());
         usernameLabel.setText(user.getUsername());
         passwordLabel.setText(user.getPassword());
-
     }
+
+    @FXML
     private void handleChangePassword(ActionEvent e) throws IOException {       
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ChangePassword.fxml"));
         AnchorPane pane = loader.load();
         ChangePasswordController controller = loader.getController();
-        controller.initData(user);
+        controller.initData(user, this);
 
         newPane.getChildren().setAll(pane);
     }
 
+    public void updatePassword() {
+        passwordLabel.setText(user.getPassword());
+    }
 
+    public void closeChangePassword() {
+        newPane.getChildren().clear();
+    }
 }

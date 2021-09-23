@@ -21,8 +21,8 @@ public class TransactionComponent extends Pane {
     private void initialize() {
 
         date.setText(transaction.getDateString().split(" ")[0]);
-        fromAccountNumber.setText(String.format("%o",transaction.getFrom().getAccountNumber()));
-        toAccountNumber.setText(String.format("%o", transaction.getReciever().getAccountNumber()));
+        fromAccountNumber.setText(String.format("%d",transaction.getFrom().getAccountNumber()));
+        toAccountNumber.setText(String.format("%d", transaction.getReciever().getAccountNumber()));
         amount.setText(String.format("%.2f", transaction.getAmount()));
         setStyle("-fx-padding: 0px; -fx-margin: 0px;");
     }

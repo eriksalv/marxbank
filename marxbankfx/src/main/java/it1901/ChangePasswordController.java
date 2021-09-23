@@ -15,19 +15,24 @@ public class ChangePasswordController {
     @FXML private Label confirmNewPasswordLabel;
     @FXML private TextField confirmNewPasswordField;
     @FXML private Button saveButton;
+    @FXML private Button closeButton;
 
     private User user;
+    private ProfileController controller;
 
-    @FXML
-    private void intitialize(){
-    }
-    public void initData(User user) {
+    public void initData(User user, ProfileController c) {
+        this.controller = c;
         this.user = user;
     }
 
     public void handleSave(){
         user.setPassword(newPasswordField.getText());
         saveButton.setText("Oppdatert");
+        controller.updatePassword();
+    }
+
+    public void handleClose() {
+        controller.closeChangePassword();
     }
 
 }
