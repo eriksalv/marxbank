@@ -19,8 +19,9 @@ workflow: #Kjører kun når du pusher til en gren og når du sammenfletter med m
 test:
   stage: test
   script: 
-    - mvn clean jacoco:prepare-agent install jacoco:report
-    - cat marxbankfx/target/site/jacoco-aggregate/index.html
+    - xvfb-run mvn "-DargLine=-Djava.awt.headless=true -DTestfx.robot=glass -Dtestfx.headless=true" clean jacoco:prepare-agent install jacoco:report
+    - cat marxbankfx/target/site/jacoco/index.html
+    - cat core/target/site/jacoco/index.html
   rules:
     - if: '$CI_COMMIT_BRANCH != "master"'
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
