@@ -21,7 +21,7 @@ Som en bankkunde ønsker jeg muligheten til å opprette ulike kontoer i banken s
 * Navn på konto
 
 ### Illustrerende skjermbilde
-![](2021-09-23-14-29-44.png)
+![](Illustration-us1.png)
 
 
 ## Overføre (#2) – høy prioritet
@@ -39,7 +39,7 @@ Som en bankkunde ønsker jeg muligheten til overføre penger slik at jeg kan bet
 * Forfallsdato
 
 ### Illustrerende skjermbilde
-![](2021-09-23-14-30-41.png)
+![](Illustration-us2.png)
 
 
 ## Betalingsoversikt (#3) – middels prioritet
@@ -55,7 +55,7 @@ Som en bankkunde ønsker jeg muligheten til ha oversikt over betalinger både ti
 * Dato for hver enkelt transaksjon
 
 ### Illustrerende skjermbilde
-![](2021-09-23-14-31-47.png)
+![](Illustration-us3.png)
 
 
 ## Logg ut (#4) – lav prioritet
