@@ -18,6 +18,11 @@ public class MainController {
 
     private DataManager dm = new DataManager("../data");
 
+    // public MainController(User user, DataManager dm) {
+    //     this.user=user;
+    //     this.dm=dm;
+    // }
+
     @FXML private AnchorPane main;
     @FXML private Pane content;
     @FXML private VBox menuContainer;

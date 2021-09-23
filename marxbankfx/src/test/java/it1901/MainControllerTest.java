@@ -31,4 +31,9 @@ public class MainControllerTest extends ApplicationTest {
     public void testController_main() {
         assertNotNull(controller);
     }
+
+    @Test
+    public void handleHomeTest() {
+        clickOn("#menuBtn1");
+    }
 }
