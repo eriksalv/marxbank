@@ -11,3 +11,6 @@ For å teste core kjører du `mvn test -pl core`
 ## Testdekningsgrad med JaCoCo
 For testdekningsgraden til Core bruker vi JaCoCo.
 For å finne ut testdekningsgraden kjører du mvn clean `jacoco:prepare-agent install jacoco:report` også finner du rapport filen som heter `index.html` under `core/target/site`.
+
+## Klassediagram
+![](../diagrammer/marxBankUml.png)
