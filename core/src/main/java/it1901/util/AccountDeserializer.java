@@ -34,7 +34,7 @@ public class AccountDeserializer extends StdDeserializer<Account> {
         if(type == AccountType.SAVING) {
             if(!dm.checkIfUserExists(node.get("user").get("id").asText())) throw new IllegalStateException("user doesn't exist");
             User owner = dm.getUser(node.get("user").get("id").asText());
-            Account account = new SavingsAccount(node.get("id").asText(), owner, node.get("interestRate").asDouble(), dm);
+            Account account = new SavingsAccount(node.get("id").asText(), owner, node.get("interestRate").asDouble(), dm, node.get("name").asText(),node.get("accountNumber").asInt());
             account.setBalance(node.get("balance").asDouble());
             dm.updateUser(owner.getId(), owner);
             return account;
