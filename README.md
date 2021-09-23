@@ -1,5 +1,10 @@
 # Marxbank
 
+[![pipeline status](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/badges/43-legge-til-code-coverage-report-til-main-readme/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/-/commits/master)
+
+
+[![coverage report](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/badges/master/coverage.svg)](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/-/commits/master) 
+
 Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 studenter. Appen er en bank-app som har vanlige bankfunksjoner som å overføre penger, sette inn penger, flytte penger mellom sine egne kontoer, se de forskjellige type kontoene de har og lage nye kontoer.
 
 # Hvordan å kjøre appen

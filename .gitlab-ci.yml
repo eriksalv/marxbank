@@ -11,13 +11,16 @@ default:
     - apt-get update
     - apt-get install -y xvfb libpangoft2-1.0-0
 
-workflow: #Kjører kun når du pusher til en gren
+workflow: #Kjører kun når du pusher til en gren og når du sammenfletter med master
   rules:
     - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
 
 test:
   stage: test
   script: 
-    - xvfb-run mvn "-DargLine=-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw" verify
+    - mvn clean jacoco:prepare-agent install jacoco:report
+    - cat marxbankfx/target/site/jacoco-aggregate/index.html
   rules:
     - if: '$CI_COMMIT_BRANCH != "master"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
