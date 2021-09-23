@@ -29,7 +29,7 @@ Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. V
 
 # Klassediagram 
 
-![](marxBankUml.png)
+![](diagrammer/marxBankUml.png)
 
 
 
