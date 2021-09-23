@@ -21,25 +21,25 @@ Som en bankkunde ønsker jeg muligheten til å opprette ulike kontoer i banken s
 * Navn på konto
 
 ### Illustrerende skjermbilde
-![Test](/Bilder/Brukerhistorier/Betaling.png "Tomt")
+![](2021-09-23-14-29-44.png)
 
 
-## Betaling (#2) – høy prioritet
-Som en bankkunde ønsker jeg muligheten til betaling i banken slik at jeg kan overføre penger fra en av mine kontoer til en annen konto. 
+## Overføre (#2) – høy prioritet
+Som en bankkunde ønsker jeg muligheten til overføre penger slik at jeg kan betale fra en av mine kontoer til en annen konto. 
 
 ### Viktig å kunne gjøre
-* Velge hvem jeg skal betale til
+* Velge hvem jeg skal overføre til
 * Velge beløp
 * Velge forfallsdato
 * Mulighet å kansellere planlagt betaling
 
 ### Viktig å kunne se
-* Hvem jeg betaler til
+* Hvem jeg overfører til
 * Beløp
 * Forfallsdato
 
 ### Illustrerende skjermbilde
-(kommer)
+![](2021-09-23-14-30-41.png)
 
 
 ## Betalingsoversikt (#3) – middels prioritet
@@ -55,7 +55,7 @@ Som en bankkunde ønsker jeg muligheten til ha oversikt over betalinger både ti
 * Dato for hver enkelt transaksjon
 
 ### Illustrerende skjermbilde
-(kommer)
+![](2021-09-23-14-31-47.png)
 
 
 ## Logg ut (#4) – lav prioritet
