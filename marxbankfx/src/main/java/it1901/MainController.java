@@ -28,9 +28,10 @@ public class MainController {
     @FXML private Button menuBtn5;
     
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         setSizeScaling();
         initData();
+        handleHome();
     }
 
     private void setSizeScaling() {
@@ -49,13 +50,16 @@ public class MainController {
         Account a2 = new SavingsAccount("id2", user, 7, this.dm);
         a1.deposit(666);
         a2.deposit(1337);
+
     }
 
     @FXML
-    private void handleHome(ActionEvent e) throws IOException {
+    private void handleHome() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Home.fxml"));
         AnchorPane pane = loader.load();
+        HomeController homeController = loader.getController();
+        homeController.initData(user, dm);
 
         content.getChildren().setAll(pane);
     }
@@ -88,6 +92,17 @@ public class MainController {
         loader.setLocation(getClass().getResource("MyTransactions.fxml"));
         Pane pane = loader.load();
         MyTransactionsController controller = loader.getController();
+        controller.initData(user);
+
+        content.getChildren().setAll(pane);
+    }
+    
+    @FXML
+    private void handleMyProfile(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Profile.fxml"));
+        AnchorPane pane = loader.load();
+        ProfileController controller = loader.getController();
         controller.initData(user);
 
         content.getChildren().setAll(pane);

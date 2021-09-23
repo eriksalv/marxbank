@@ -5,34 +5,33 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.HomeController">
+<AnchorPane fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.HomeController">
    <children>
-      <Label fx:id="HomeLabel" layoutX="109.0" layoutY="23.0" text="Favoritter">
+      <Label fx:id="HomeLabel" layoutX="14.0" layoutY="28.0" text="Favoritter">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="AccountButton" layoutX="109.0" layoutY="69.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="395.0" />
-      <Label fx:id="AccountLabel" layoutX="132.0" layoutY="78.0" text="Kontonavn">
+      <Button fx:id="AccountButton" layoutX="14.0" layoutY="74.0" mnemonicParsing="false" onAction="#handleSelectAccount" prefHeight="57.0" prefWidth="395.0" />
+      <Label fx:id="AccountLabel" layoutX="37.0" layoutY="83.0" text="Kontonavn">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="AccountNumberLabel" layoutX="132.0" layoutY="98.0" text="Kontonummer" />
-      <Label fx:id="AmountLabel" layoutX="440.0" layoutY="87.0" text="Disp.">
+      <Label fx:id="AccountNumberLabel" layoutX="37.0" layoutY="103.0" text="Kontonummer" />
+      <Label fx:id="AmountLabel" layoutX="345.0" layoutY="92.0" text="Disp.">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="LastActivityLabel" layoutX="109.0" layoutY="200.0" text="Nylig Aktivitet">
+      <Label fx:id="LastActivityLabel" layoutX="14.0" layoutY="205.0" text="Nylig Aktivitet">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="DateLabel" layoutX="109.0" layoutY="243.0" text="dd/mm/åå" textFill="#707070" />
-      <Label fx:id="LAaccountLabel" layoutX="418.0" layoutY="232.0" prefHeight="39.0" prefWidth="146.0" text="Konto du fikk på/betalte fra" />
-      <Label fx:id="otherAccountLabel" layoutX="109.0" layoutY="271.0" text="den andre parten" />
-      <Label fx:id="LAamountLabel" layoutX="453.0" layoutY="271.0" text="+/- beløp" />
+      <Label fx:id="DateLabel" layoutX="14.0" layoutY="248.0" text="dd/mm/åå" textFill="#707070" />
+      <Label fx:id="LAaccountLabel" layoutX="323.0" layoutY="237.0" prefHeight="39.0" prefWidth="146.0" text="Konto du fikk på/betalte fra" />
+      <Label fx:id="OtherAccountLabel" layoutX="14.0" layoutY="276.0" text="den andre parten" />
+      <Label fx:id="LAamountLabel" layoutX="358.0" layoutY="276.0" text="+/- beløp" />
    </children>
 </AnchorPane>
