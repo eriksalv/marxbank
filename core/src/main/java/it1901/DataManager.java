@@ -32,11 +32,7 @@ public class DataManager {
      */
     public DataManager(String path) {
         if(!ValidPath.isValidPath(path)) throw new IllegalArgumentException("Path is not valid");
-        try {
-            System.out.println(new File(path).getCanonicalPath());
-        } catch (IOException e) {
-            System.out.println("yeeet");
-        }
+        
         if(!new File(path).exists()) throw new IllegalArgumentException("Storage Directory does not exist");
         if(!new File(path).isDirectory()) throw new IllegalArgumentException("Path is not a directory");
         this.path = path;

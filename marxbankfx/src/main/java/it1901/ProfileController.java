@@ -29,6 +29,7 @@ public class ProfileController {
         passwordLabel.setText(user.getPassword());
 
     }
+    @FXML
     private void handleChangePassword(ActionEvent e) throws IOException {       
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ChangePassword.fxml"));
