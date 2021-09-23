@@ -2,6 +2,8 @@ package it1901;
 
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
@@ -14,14 +16,15 @@ public class HomeController {
 
     private User user;
     private DataManager dm;
-
+    
+    @FXML private AnchorPane home;
     @FXML private Label HomeLabel;
     @FXML private Label AccountLabel;
     @FXML private Label AccountNumberLabel;
     @FXML private Label AmountLabel;
     @FXML private Label LastActivityLabel;
     @FXML private Label DateLabel;
-    @FXML private Label otherAccountLabel;
+    @FXML private Label OtherAccountLabel;
     @FXML private Label LAaccountLabel;
     @FXML private Label LAamountLabel;
     @FXML private Button AccountButton;
@@ -31,6 +34,7 @@ public class HomeController {
     private void initialize() {
     }
 
+
     public void initData(User user, DataManager dm) {
         this.user = user;
         this.dm = dm;
@@ -38,8 +42,8 @@ public class HomeController {
         recentActivity();
     }
 
-    private void createFavorites() {
-        if (user.getAccounts().size() > 0) {
+    private void createFavorites() { // Legger første konto hos bruker som favoritt
+        if (user != null && user.getAccounts().size() > 0 ) {    
             Account a = user.getAccounts().get(0);
             AccountLabel.setText(a.getName());
             AccountNumberLabel.setText(Integer.toString(a.getAccountNumber()));
@@ -48,26 +52,39 @@ public class HomeController {
     }
 
 
-    private void recentActivity() {
-        if (user.getAccounts().size() > 0) {
-            int index = user.getAccounts().get(0).getNumberOfTransactions();
-            Transaction recentTransaction = user.getAccounts().get(0).getTransactions().get(index-1);
-
-            for (int i = 1; i < user.getAccounts().size(); i++) {
-                int lastIndex = user.getAccounts().get(i).getNumberOfTransactions();
-                Transaction lastTransactionOnAccount = user.getAccounts().get(i).getTransactions().get(lastIndex - 1);
-
-                if (lastTransactionOnAccount.getTransactionDate().isAfter(recentTransaction.getTransactionDate())) {
-                    recentTransaction = lastTransactionOnAccount;
+    private void recentActivity() {   // Finner nyeste transaksjon/aktivitet hos brukeren
+        if (user != null && user.getAccounts().size() > 0) {
+            List<Transaction> transactions = new ArrayList<>();
+            
+            for (Account acc : user.getAccounts()) {
+                if (acc.getNumberOfTransactions() != 0) {
+                    int index = acc.getNumberOfTransactions() - 1;
+                    transactions.add(acc.getTransactions().get(index));
                 }
             }
 
-            DateLabel.setText(recentTransaction.getDateString());
-            otherAccountLabel.setText(recentTransaction.getReciever().getName());
-            LAaccountLabel.setText(recentTransaction.getFrom().getName());
-            LAamountLabel.setText(Double.toString(recentTransaction.getAmount()));
-        }
+            if (transactions.size() > 0) {
+                Transaction recentTransaction = transactions.get(0);
 
+                for (int i = 1; i < transactions.size(); i++) {
+                    if (transactions.get(i).getTransactionDate().isAfter(recentTransaction.getTransactionDate())) {
+                        recentTransaction = transactions.get(i);
+                    }
+                } 
+                DateLabel.setText(recentTransaction.getDateString());
+                OtherAccountLabel.setText("Til: " + recentTransaction.getReciever().getName());
+                LAaccountLabel.setText("Fra: " + recentTransaction.getFrom().getName());
+                LAamountLabel.setText("kr " + Double.toString(recentTransaction.getAmount()));
+            }
+
+            else {
+                DateLabel.setText("Ingen nylig aktivitet");
+                OtherAccountLabel.setText("");
+                LAaccountLabel.setText("");
+                LAamountLabel.setText("");
+            }
+            
+        }
     }
 
 
@@ -85,9 +102,9 @@ public class HomeController {
         loader.setLocation(getClass().getResource("Account.fxml"));
         AnchorPane pane = loader.load();
         AccountController controller = loader.getController();
-        controller.initData(user.getAccounts().get(0), dm);
+        controller.initData(Bank.getInstanceBank().getAccount(Integer.valueOf(AccountNumberLabel.getText())), dm);
 
-        //myAccounts.getChildren().setAll(pane);
+        home.getChildren().setAll(pane);
     }
 
 }
