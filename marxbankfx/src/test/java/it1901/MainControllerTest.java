@@ -1,9 +1,13 @@
 package it1901;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.io.IOException;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -32,8 +36,20 @@ public class MainControllerTest extends ApplicationTest {
         assertNotNull(controller);
     }
 
-    @Test
-    public void handleHomeTest() {
-        clickOn("#menuBtn1");
+    @ParameterizedTest
+    @MethodSource("provideStringsForHandleClickBtnsTest")
+    public void handleClickBtnsTest(String operation, String expected) {
+        clickOn(operation);
+        assertEquals(expected, controller.getCurrentContent());
+    }
+
+    private static Stream<Arguments> provideStringsForHandleClickBtnsTest() {
+        return Stream.of(
+            Arguments.of("#menuBtn2", "MyAccounts"),
+            Arguments.of("#menuBtn3", "Transaction"),
+            Arguments.of("#menuBtn4", "MyTransactions"),
+            Arguments.of("#menuBtn5", "MyProfile"),
+            Arguments.of("#menuBtn1", "Home")
+        );
     }
 }

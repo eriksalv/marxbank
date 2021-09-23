@@ -18,6 +18,8 @@ public class MainController {
 
     private DataManager dm = new DataManager("../data");
 
+    private String currentContent = "Home"; //used for testing
+
     // public MainController(User user, DataManager dm) {
     //     this.user=user;
     //     this.dm=dm;
@@ -37,6 +39,10 @@ public class MainController {
         setSizeScaling();
         initData();
         handleHome();
+    }
+
+    public String getCurrentContent() {
+        return this.currentContent;
     }
 
     private void setSizeScaling() {
@@ -67,6 +73,7 @@ public class MainController {
         homeController.initData(user, dm);
 
         content.getChildren().setAll(pane);
+        currentContent="Home";
     }
 
     @FXML
@@ -78,6 +85,7 @@ public class MainController {
         controller.initData(user, dm);
 
         content.getChildren().setAll(pane);
+        currentContent="MyAccounts";
     }
 
     @FXML 
@@ -89,6 +97,7 @@ public class MainController {
         controller.initData(user, dm);
 
         content.getChildren().setAll(pane);
+        currentContent="Transaction";
     }
 
     @FXML
@@ -100,6 +109,7 @@ public class MainController {
         controller.initData(user);
 
         content.getChildren().setAll(pane);
+        currentContent="MyTransactions";
     }
     
     @FXML
@@ -111,5 +121,6 @@ public class MainController {
         controller.initData(user);
 
         content.getChildren().setAll(pane);
+        currentContent="MyProfile";
     }
 }
