@@ -20,6 +20,10 @@ public class SavingsAccount extends Account {
         super(id, user, 3, AccountType.SAVING, dm, name);
     }
 
+    public SavingsAccount(String id, User user, double interestRate, DataManager dm, String name, int accountNumber) {
+        super(id, user, interestRate, AccountType.SAVING, dm, accountNumber, name);
+    }
+
     /**
      * Generates a unique account number. For SavingsAccount, the account number always
      * starts with a "1".

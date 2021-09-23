@@ -53,6 +53,21 @@ public abstract class Account {
         Bank.getInstanceBank().addAccount(this);
     }
 
+    public Account(String id, User user, double interestRate, AccountType type, DataManager dm, int accountNumber, String name) {
+        this.user = user;
+        this.interestRate = validateIntereset(interestRate);
+        this.id = id;
+        this.type = type;
+        this.dm = dm;
+        this.name = "Ny konto";
+        this.accountNumber = accountNumber;
+        this.name = name;
+
+        this.user.addAccount(this);
+        this.dm.addAccount(this);
+        Bank.getInstanceBank().addAccount(this);
+    }
+
     public Account(String id, User user, double interestRate, AccountType type, DataManager dm, String name) {
         this(id, user, interestRate, type, dm);
         this.name=name;
@@ -200,17 +215,17 @@ public abstract class Account {
     @Override
     public int hashCode() {
        return Objects.hash(this.id);
-    }
+   }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
-        Account account = (Account) o;
-        if (this.balance != account.getBalance()) return false;
-        return Objects.equals(id, account.getId());
-    }
-
+   @Override
+   public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Account)) return false;
+    Account account = (Account) o;
+    if (this.balance != account.getBalance()) return false;
+    if (this.accountNumber != account.getAccountNumber()) return false;
+    return Objects.equals(id, account.getId());
+   }
     public int getNumberOfTransactions() {
         return getTransactions().size();
     }

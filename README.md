@@ -1,13 +1,21 @@
 # Marxbank
 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt)
+
 [![pipeline status](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/badges/43-legge-til-code-coverage-report-til-main-readme/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/-/commits/master)
 
 
 [![coverage report](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/badges/master/coverage.svg)](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/it1901-prosjekt/-/commits/master) 
 
-Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 studenter. Appen er en bank-app som har vanlige bankfunksjoner som å overføre penger, sette inn penger, flytte penger mellom sine egne kontoer, se de forskjellige type kontoene de har og lage nye kontoer.
+Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 studenter. Appen er en bank-app som har vanlige bankfunksjoner som å overføre penger, flytte penger mellom sine egne kontoer, se de forskjellige type kontoene de har og lage nye kontoer.
 
-# Hvordan å kjøre appen
+# Innhold 
+
+### Kodingsprosjektet
+
+Kodingsprosjektet består foreløpig av to moduler: core og marxbankfx. Se egne readmes i disse mappene for mer detaljer om hva de består av.
+
+# Hvordan kjøre appen
 
 Først kjør
 
@@ -26,10 +34,6 @@ så for å starte frontenden kjør
 ### For å se rapporten
 
 Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. Velg den modulen du vil ha rapport fra). Kopier stien til filen og lim den inn i nettleser.
-
-# Klassediagram 
-
-![](diagrammer/marxBankUml.png)
 
 
 
