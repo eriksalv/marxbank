@@ -24,11 +24,21 @@ public abstract class Account {
     @JsonIgnoreProperties({"from", "reciever", "amount", "transactionDate", "dateString", "dm"})
     private List<Transaction> transactions = new LinkedList<Transaction>();
     private double balance = 0;
-    private double interestRate; //I prosent
+    private double interestRate; // In percent
     private AccountType type;
     @JsonIgnore
     private DataManager dm;
 
+
+    /**
+     * Constructur for class Account.
+     * 
+     * @param id
+     * @param user
+     * @param interestRate
+     * @param type
+     * @param dm
+     */
     public Account(String id, User user, double interestRate, AccountType type, DataManager dm) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
@@ -63,6 +73,12 @@ public abstract class Account {
         return this.accountNumber;
     }
 
+    /**
+     * Deposits an amount to this account.
+     * 
+     * @param amount
+     * @exception IllegalArgumentException if amount is negative.
+     */
     public void deposit(double amount) {
         if (amount<=0) {
 			throw new IllegalArgumentException("Deposit must be positive");
@@ -71,6 +87,13 @@ public abstract class Account {
         updateAccount();
     }
 
+    /**
+     * Withdraw an amount from this account.
+     * 
+     * @param amount
+     * @exception IllegalArgumentException if amount is negative.
+     * @exception IllegalStateException if it is not enough balance on the account.
+     */
     public void withdraw(double amount) {
         if (amount<=0) {
 			throw new IllegalArgumentException("Must withdraw a positive amount");
@@ -81,11 +104,20 @@ public abstract class Account {
         updateAccount();
     }
 
+    /**
+     * Checks if interest rate is positive.
+     * 
+     * @param ir
+     * @return interest rate.
+     */
     public double validateIntereset(double ir) {
         if(ir < 0) throw new IllegalArgumentException("Interest rate cannot be negative");
         return ir;
     }
 
+    /**
+     * Adds interest rate to the balance on this account.
+     */
     public void addInterest() {
         deposit(getBalance()*getInterestRate()/100);
         updateAccount();
@@ -140,6 +172,12 @@ public abstract class Account {
         updateAccount();
     }
 
+    /**
+     * Adds transaction in the list "transactions"
+     * 
+     * @param t
+     * @exception IllegalStateException if the transaction already is registered.
+     */
     public void addTransaction(Transaction t) {
         if (this.transactions.contains(t)) {
             throw new IllegalStateException("Transaction is already registered");
@@ -152,23 +190,27 @@ public abstract class Account {
         return new LinkedList<>(this.transactions);
     }
 
-   private void updateAccount() {
+    /**
+     * Update all variables on this account.
+     */
+    private void updateAccount() {
        this.dm.updateAccount(this.id, this);
-   }
+    }
 
-   @Override
-   public int hashCode() {
+    @Override
+    public int hashCode() {
        return Objects.hash(this.id);
-   }
+    }
 
-   @Override
-   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Account)) return false;
-    Account account = (Account) o;
-    if (this.balance != account.getBalance()) return false;
-    return Objects.equals(id, account.getId());
-   }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        if (this.balance != account.getBalance()) return false;
+        return Objects.equals(id, account.getId());
+    }
+
     public int getNumberOfTransactions() {
         return getTransactions().size();
     }
