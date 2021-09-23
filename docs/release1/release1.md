@@ -36,4 +36,7 @@ I release 1 skal det være mulig å:
 2) Lage nye kontoer
 3) Overføre beløp mellom kontoer
 4) Se aktivitet (transaksjoner)
-5) Endre passord til bruker
+
+### Tester
+
+Vi har laget ferdig en rekke tester for core modulen som dekker mestparten av koden (72% testdekningsgrad). I marxbankfx modulen er det bare en test så langt, så implementasjon av flere fxtester blir prioritert høyt fremover.
