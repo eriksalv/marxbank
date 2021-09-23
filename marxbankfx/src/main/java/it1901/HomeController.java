@@ -42,17 +42,21 @@ public class HomeController {
         recentActivity();
     }
 
-    private void createFavorites() { // Legger første konto hos bruker som favoritt
-        if (user != null && user.getAccounts().size() > 0 ) {    
-            Account a = user.getAccounts().get(0);
-            AccountLabel.setText(a.getName());
-            AccountNumberLabel.setText(Integer.toString(a.getAccountNumber()));
-            AmountLabel.setText("kr " + Double.toString(a.getBalance()));
-        }
+    /**
+     * Adding the first account of the user's accounts into the favorite label at the home side. 
+     */
+    private void createFavorites() {   
+        Account a = user.getAccounts().get(0);
+        AccountLabel.setText(a.getName());
+        AccountNumberLabel.setText(Integer.toString(a.getAccountNumber()));
+        AmountLabel.setText("kr " + Double.toString(a.getBalance()));
     }
 
 
-    private void recentActivity() {   // Finner nyeste transaksjon/aktivitet hos brukeren
+    /**
+     * Finding the recent transaction that the user is involved in. 
+     */
+    private void recentActivity() {   
         if (user != null && user.getAccounts().size() > 0) {
             List<Transaction> transactions = new ArrayList<>();
             
