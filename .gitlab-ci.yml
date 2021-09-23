@@ -22,7 +22,7 @@ test:
     # - mvn $MAVEN_CLI_OPTS test
     - xvfb-run mvn "-DargLine=-Djava.awt.headless=true -DTestfx.robot=glass -Dtestfx.headless=true" clean jacoco:prepare-agent install jacoco:report
     - cat marxbankfx/target/site/jacoco-aggregate/index.html
-    - cd it1901-prosjekt
+    - cd ~
     - cat core/target/site/jacoco/index.html
   rules:
     - if: '$CI_COMMIT_BRANCH != "master"'
