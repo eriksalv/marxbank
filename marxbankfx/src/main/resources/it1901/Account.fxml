@@ -12,31 +12,31 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.AccountController">
    <children>
-      <Label fx:id="accountName" layoutX="109.0" layoutY="29.0" text="Kontonavn">
+      <Label fx:id="accountName" layoutX="14.0" layoutY="30.0" text="Kontonavn">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="accountNumber" layoutX="109.0" layoutY="91.0" text="Kontonummer">
+      <Label fx:id="accountNumber" layoutX="14.0" layoutY="92.0" text="Kontonummer">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="accountType" layoutX="109.0" layoutY="118.0" text="Kontotype">
+      <Label fx:id="accountType" layoutX="14.0" layoutY="119.0" text="Kontotype">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="balance" layoutX="414.0" layoutY="91.0" text="Disponibelt">
+      <Label fx:id="balance" layoutX="255.0" layoutY="92.0" text="Disponibelt">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="109.0" layoutY="183.0" text="Aktivitet">
+      <Label layoutX="14.0" layoutY="184.0" text="Aktivitet">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <ListView fx:id="transactionContainer" layoutX="109.0" layoutY="210.0" prefHeight="189.0" prefWidth="415.0"/>
+      <ListView fx:id="transactionContainer" layoutX="14.0" layoutY="211.0" prefHeight="189.0" prefWidth="415.0" />
    </children>
 </AnchorPane>

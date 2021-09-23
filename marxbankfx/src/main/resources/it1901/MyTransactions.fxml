@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.MyTransactionsController">
    <children>
-      <Label layoutX="56.0" layoutY="85.0" text="Overføringer">
+      <Label layoutX="20.0" layoutY="85.0" text="Overføringer">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <ListView fx:id="overforingsContainer" layoutX="56.0" layoutY="115.0" prefHeight="285.0" prefWidth="493.0" />
+      <ListView fx:id="transactionsContainer" layoutX="20.0" layoutY="115.0" prefHeight="285.0" prefWidth="493.0" />
    </children>
 </Pane>
