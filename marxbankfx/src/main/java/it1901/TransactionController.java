@@ -1,5 +1,7 @@
 package it1901;
 
+import java.util.UUID;
+
 import it1901.util.TextFieldFormatter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -63,18 +65,8 @@ public class TransactionController {
             from = Bank.getInstanceBank().getAccount(Integer.parseInt(myAccountsList.getText()));
             reciever = Bank.getInstanceBank().getAccount(Integer.parseInt(recieverText.getText()));
             amount = Integer.parseInt(amountText.getText());
-
-            // id må være unik for hver ellers så kaster DataManager expcetions
-            String lastId;
-            try {
-                lastId = this.dm.getTransactions().get(this.dm.getTransactions().size() - 1).getId();
-            } catch (IndexOutOfBoundsException e) {
-                lastId = "-1";
-            }
             
-            System.out.println(lastId);
-            int id = Integer.parseInt(lastId);
-            t = new Transaction(String.format("%d", (id + 1)), from, reciever, amount, dm, true);
+            t = new Transaction(UUID.randomUUID().toString(), from, reciever, amount, dm, true);
             transactionCompleteMsg.setVisible(true);
             try {
                 dm.save();

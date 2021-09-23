@@ -45,12 +45,23 @@ public class MainController {
     }
 
     private void initData() {
-        user = new User("id", "username", "email@email.com", "password", this.dm);
-        Account a1 = new SavingsAccount("id1", user, 5, this.dm);
-        Account a2 = new SavingsAccount("id2", user, 7, this.dm);
-        a1.deposit(666);
-        a2.deposit(1337);
-
+        try {
+            this.dm.parse();
+            this.user = this.dm.getUsers().get(0);
+            
+        } catch (Exception e) {
+            //if no prior data is saved, create some default data to run the application
+            e.printStackTrace();
+            try {
+                user = new User("id", "username", "email@email.com", "password", this.dm);
+                Account a1 = new SavingsAccount("id1", user, 5, this.dm);
+                Account a2 = new SavingsAccount("id2", user, 7, this.dm);
+                a1.deposit(666);
+                a2.deposit(1337);
+            } catch (IllegalArgumentException ex) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
