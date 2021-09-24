@@ -39,22 +39,13 @@ public class HomeControllerTest extends ApplicationTest{
     public void setup(){
         DataManager dm = new DataManager("");
         User user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
-        Account account1 = new Account("56789", user, 1.5, null, dm, 123456, "Annas brukskonto"){
-
-            @Override
-            int generateAccountNumber() {
-                return 10;
-            }
-
-            @Override
-            String getAccountType() {
-                return null;
-            }
-            
-        };
+        Account account1 = new SavingsAccount("56789", user, 1.5, dm);
         account1.setBalance(100.0);
+        account1.setName("Annas sparekonto");
         user.addAccount(account1);
         controller.initData(user, dm);
+
+        
     }
 
     @Test
@@ -64,16 +55,12 @@ public class HomeControllerTest extends ApplicationTest{
     }
 
     @Test
-    public void testAccountNumber(){
-        Label label = lookup("#AccountNumberLabel").query();
-        assertTrue(label.getText().equals(Integer.toString(10)));
-    }
-
-    @Test
     public void testBalance(){
         Label label = lookup("#AmountLabel").query();
         assertTrue(label.getText().equals(Double.toString(100.0)));
     }
+
+
 
 
 }
