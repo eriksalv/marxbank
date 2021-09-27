@@ -3,6 +3,7 @@ package it1901;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -53,6 +54,7 @@ public abstract class Account {
         Bank.getInstanceBank().addAccount(this);
     }
 
+    
     public Account(String id, User user, double interestRate, AccountType type, DataManager dm, int accountNumber, String name) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
@@ -68,8 +70,8 @@ public abstract class Account {
         Bank.getInstanceBank().addAccount(this);
     }
 
-    public Account(String id, User user, double interestRate, AccountType type, DataManager dm, String name) {
-        this(id, user, interestRate, type, dm);
+    public Account(User user, double interestRate, AccountType type, DataManager dm, String name) {
+        this(UUID.randomUUID().toString(), user, interestRate, type, dm);
         this.name=name;
     }
 
