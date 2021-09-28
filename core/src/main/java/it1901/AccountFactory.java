@@ -14,8 +14,8 @@ public class AccountFactory {
     public static Account create(String accountType, User user, DataManager dm, String name) {
         if ("Sparekonto".equalsIgnoreCase(accountType)) {
             return new SavingsAccount(user, dm, name);
-        } else if ("Duck".equalsIgnoreCase(accountType)) {
-            return null;
+        } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
+            return new CheckingAccount(user, dm, name);
         }
 
         return null;
@@ -25,8 +25,8 @@ public class AccountFactory {
     public static Account createFrom(String accountType, String id, User user, DataManager dm, String name, int accountNumber) {
         if ("Sparekonto".equalsIgnoreCase(accountType)) {
             return new SavingsAccount(id, user,3, dm, name, accountNumber);
-        } else if ("Duck".equalsIgnoreCase(accountType)) {
-            return null;
+        } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
+            return new CheckingAccount(id, user, 0.5, dm, name, accountNumber);
         }
 
         return null;
