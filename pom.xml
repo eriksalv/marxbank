@@ -110,6 +110,22 @@
                         </execution>
                     </executions>
                 </plugin>
+            <!-- spotbugs -->
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.2.0</version>
+                    <dependencies>
+                      <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>4.4.1</version>
+                      </dependency>
+                    </dependencies>
+                    <configuration>
+                        <failOnError>false</failOnError>
+                    </configuration>
+                  </plugin>
             </plugins>
         </pluginManagement>
     </build>
