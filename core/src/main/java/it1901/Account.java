@@ -210,7 +210,7 @@ public abstract class Account {
     /**
      * Update all variables on this account.
      */
-    private void updateAccount() {
+    protected void updateAccount() {
        this.dm.updateAccount(this.id, this);
     }
 

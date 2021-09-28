@@ -16,7 +16,7 @@ public class MarxAccount extends Account {
 
     private final static double MAX_BALANCE = 500;
     private final static double DEFAULT_INTEREST = 0.01;
-
+    
     public MarxAccount(String id, User user, double interestRate, DataManager dm) {
         super(id, user, interestRate, AccountType.MARX, dm);
     }
@@ -58,7 +58,8 @@ public class MarxAccount extends Account {
     /**
      * Deposits the specified amount, and then checks if max balance has been exceeded.
      * If that is the case, creates a new transaction instance from this to the account
-     * with the lowest registered balance to get rid of the excess amount.
+     * with the lowest registered balance to get rid of the excess amount. If such an account
+     * cannot be found, the balance will be kept.
      */
     @Override
     public void deposit(double amount) {
@@ -71,9 +72,13 @@ public class MarxAccount extends Account {
             Account reciever = Bank.getInstanceBank().getAccounts().values().stream()
             .filter(acc -> !(acc instanceof MarxAccount))
             .min(Comparator.comparing(Account::getBalance))
-            .orElseThrow(NoSuchElementException::new);
+            .orElse(null);
+
+            // If no appropriate reciever can be found, the balance is kept
+            if (reciever==null) return; 
 
             Transaction t = new Transaction(this, reciever, newAmount, this.dm);
         }
+        updateAccount();
     }
 }
