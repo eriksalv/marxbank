@@ -5,11 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.TestInstances;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import it1901.util.AccountType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,6 +16,9 @@ import javafx.stage.Stage;
 public class HomeControllerTest extends ApplicationTest{
     
     private HomeController controller;
+    DataManager dm = new DataManager("");
+    User user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
+    Account account1 = new SavingsAccount("56789", user, 1.5, dm);
     
     @Override
     public void start(final Stage stage) throws Exception {
@@ -37,9 +37,6 @@ public class HomeControllerTest extends ApplicationTest{
 
     @BeforeAll
     public void setup(){
-        DataManager dm = new DataManager("");
-        User user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
-        Account account1 = new SavingsAccount("56789", user, 1.5, dm);
         account1.setBalance(100.0);
         account1.setName("Annas sparekonto");
         user.addAccount(account1);
@@ -58,6 +55,12 @@ public class HomeControllerTest extends ApplicationTest{
     public void testBalance(){
         Label label = lookup("#AmountLabel").query();
         assertTrue(label.getText().equals(Double.toString(100.0)));
+    }
+
+    @Test
+    public void testAccountNumber(){
+        Label label = lookup("#AccountNumberLabel").query();
+        assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
     }
 
 
