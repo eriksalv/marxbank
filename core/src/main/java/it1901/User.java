@@ -1,8 +1,10 @@
 package it1901;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,6 +37,10 @@ public class User {
         this.dm = dm;
 
         this.dm.addUser(this);
+    }
+
+    public User(String username, String email, String password, DataManager dm) {
+        this(UUID.randomUUID().toString(), username, email, password, dm);
     }
 
     public void setId(String newId) {
