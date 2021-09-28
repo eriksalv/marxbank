@@ -119,6 +119,8 @@
                         <encoding>utf-8</encoding>
                         <violationSeverity>warning</violationSeverity>
                         <linkXRef>false</linkXRef>
+                        <failOnError>false</failOnError>
+                        <failOnViolation>false</failOnViolation>
                     </configuration>
                     <dependencies>
                         <dependency>
