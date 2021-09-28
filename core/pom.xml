@@ -91,6 +91,11 @@
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
         </plugin>
+
+        <!-- checkstyle -->
+        <plugin>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
