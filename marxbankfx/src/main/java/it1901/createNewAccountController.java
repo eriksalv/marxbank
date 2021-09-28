@@ -53,10 +53,7 @@ public class createNewAccountController {
     @FXML
     private void handleCreateAccount() {
         accName = accountName.getText();
-        switch (selectAccountType.getText()) { //er det en bedre måte å gjøre dette på???
-            case "Sparekonto":
-                acc = new SavingsAccount(UUID.randomUUID().toString(), user, dm, accName); //trenger ikke håndtere exceptions her pga implementasjonen til Account
-        }
+        acc = AccountFactory.create(selectAccountType.getText(), user, dm, accName);
         if (acc==null) {
             System.err.println("No account type selected");
             return;

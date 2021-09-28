@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import it1901.Account;
+import it1901.AccountFactory;
 import it1901.DataManager;
 import it1901.User;
 import it1901.SavingsAccount;
@@ -31,16 +32,15 @@ public class AccountDeserializer extends StdDeserializer<Account> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         AccountType type = AccountType.valueOf(node.get("type").asText());
-        if(type == AccountType.SAVING) {
-            if(!dm.checkIfUserExists(node.get("user").get("id").asText())) throw new IllegalStateException("user doesn't exist");
-            User owner = dm.getUser(node.get("user").get("id").asText());
-            Account account = new SavingsAccount(node.get("id").asText(), owner, node.get("interestRate").asDouble(), dm, node.get("name").asText(),node.get("accountNumber").asInt());
-            account.setBalance(node.get("balance").asDouble());
-            dm.updateUser(owner.getId(), owner);
-            return account;
+        if(!dm.checkIfUserExists(node.get("user").get("id").asText())) throw new IllegalStateException("user doesn't exist");
+        User owner = dm.getUser(node.get("user").get("id").asText());
+        Account account = AccountFactory.createFrom(type.getTypeString(), node.get("id").asText(), owner, dm, node.get("name").asText(), node.get("accountNumber").asInt());
+        if (account==null) {
+            return null;
         }
-
-        return null;
+        account.setBalance(node.get("balance").asDouble());
+        dm.updateUser(owner.getId(), owner);
+        return account;
     }
     
 }
