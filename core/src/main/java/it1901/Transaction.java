@@ -3,6 +3,7 @@ package it1901;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,10 @@ public class Transaction {
             this.reciever.addTransaction(this);
         }
         this.dm.addTransaction(this);
+    }
+
+    public Transaction(Account from, Account reciever, double amount, DataManager dm) {
+        this(UUID.randomUUID().toString(), from, reciever, amount, dm, true);
     }
 
     public String getId() {

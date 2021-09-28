@@ -16,6 +16,8 @@ public class AccountFactory {
             return new SavingsAccount(user, dm, name);
         } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
             return new CheckingAccount(user, dm, name);
+        } else if ("Marxkonto".equalsIgnoreCase(accountType)) {
+            return new MarxAccount(user, dm, name);
         }
 
         return null;
@@ -27,6 +29,8 @@ public class AccountFactory {
             return new SavingsAccount(id, user,3, dm, name, accountNumber);
         } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
             return new CheckingAccount(id, user, 0.5, dm, name, accountNumber);
+        } else if ("Marxkonto".equalsIgnoreCase(accountType)) {
+            return new MarxAccount(id, user, 0, dm, name, accountNumber);
         }
 
         return null;

@@ -28,7 +28,7 @@ public abstract class Account {
     private double interestRate; // In percent
     private AccountType type;
     @JsonIgnore
-    private DataManager dm;
+    protected DataManager dm;
 
 
     /**

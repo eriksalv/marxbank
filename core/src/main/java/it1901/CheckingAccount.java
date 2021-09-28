@@ -10,7 +10,7 @@ public class CheckingAccount extends Account {
         super(id, user, interestRate, AccountType.CHECKING, dm);
     }
 
-    //second constructor with default value of 3 as interest rate
+    //second constructor with default value of 0.5 as interest rate
     public CheckingAccount(String id, User user, DataManager dm) {
         super(id, user, 0.5, AccountType.CHECKING, dm);
     }

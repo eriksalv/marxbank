@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 public enum AccountType {
     SAVING("Sparekonto"),
     CHECKING("Brukskonto"),
+    MARX("Marxkonto"),
     ;
 
     private String typeString;
