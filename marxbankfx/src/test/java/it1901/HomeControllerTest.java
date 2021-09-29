@@ -3,10 +3,17 @@ package it1901;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,21 +26,60 @@ public class HomeControllerTest extends ApplicationTest{
      * Creating a user and a belonging account to test with.
      */
     private HomeController controller;
-    DataManager dm = new DataManager("");
-    User user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
-    Account account1 = new SavingsAccount("56789", user, 1.5, dm);
-    Account account2 = new SavingsAccount("12345", user, dm);
-    Transaction transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
+    private DataManager dm;
+    private User user;
+    private Account account1;
+    private Account account2;
+    private Transaction transaction;
+    private Parent root;
+    
+    @TempDir
+    static Path tempDir;
     
     @Override
     public void start(final Stage stage) throws Exception {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
-        final Parent root = loader.load();
+        this.root = loader.load();
         this.controller = loader.getController();
         stage.setScene(new Scene(root));
         stage.show();
     }
 
+    /**
+     * sets up tempDir for DataMananger
+     * @throws IOException
+     */
+    @BeforeAll
+    static void setup() throws IOException {
+        Files.createDirectories(tempDir.resolve("data"));
+    }
+
+    /**
+     * Sets up all the data that is getting used in the test
+     * @throws IOException
+     */
+    @BeforeEach
+    void beforeEachSetup() throws IOException {
+        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
+        this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
+        this.account1 = new SavingsAccount("56789", user, dm, "Annas brukskonto");
+        this.account1.deposit(500);
+        this.account2 = new SavingsAccount("12345", user, dm);
+        this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
+    }
+
+    /**
+     * Setting up some necessary values for the account and user to be tested.
+     */
+    // @BeforeAll
+    // public void setup(){
+    //     account1.setBalance(100.0);
+    //     account1.setName("Annas sparekonto");
+    //     user.addAccount(account1);
+    //     account1.addTransaction(transaction);
+    //     account2.addTransaction(transaction);
+    //     controller.initData(user, dm);
+    // }
 
     /**
      * Testing if the controller exists and works.
@@ -43,26 +89,22 @@ public class HomeControllerTest extends ApplicationTest{
         assertNotNull(controller);
     }
 
-   /**
-     * Setting up some necessary values for the account and user to be tested.
-     */
-    @BeforeAll
-    public void setup(){
-        account1.setBalance(100.0);
-        account1.setName("Annas sparekonto");
-        user.addAccount(account1);
-        account1.addTransaction(transaction);
-        account2.addTransaction(transaction);
-        controller.initData(user, dm);
-    }
-
     /**
      * Testing whether the account name label matches the actual name of the account.
      */
     @Test
     public void testAccountName(){
-        Label label = lookup("#AccountLabel").query();
-        assertTrue(label.getText().equals("Annas brukskonto"));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#AccountLabel").query();
+                assertNotNull(label);
+                assertTrue(label.getText().equals("Annas brukskonto"));
+            }
+        });
+
     }
 
     /**
@@ -70,8 +112,16 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @Test
     public void testBalance(){
-        Label label = lookup("#AmountLabel").query();
-        assertTrue(label.getText().equals(Double.toString(100.0)));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#AmountLabel").query();
+                assertTrue(label.getText().equals(String.format("kr %.1f", account1.getBalance())));
+            }
+        });
+
     }
 
     /**
@@ -79,8 +129,16 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @Test
     public void testAccountNumber(){
-        Label label = lookup("#AccountNumberLabel").query();
-        assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#AccountNumberLabel").query();
+                assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
+            }
+        });
+
     }
 
    /**
@@ -88,8 +146,16 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @Test
     public void testDate(){
-        Label label = lookup("#DateLabel").query();
-        assertTrue(label.getText().equals(transaction.getDateString()));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#DateLabel").query();
+                assertTrue(label.getText().equals(transaction.getDateString()));
+            }
+        });
+
     }
 
     /**
@@ -97,8 +163,16 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @Test
     public void testRelevantAccount(){
-        Label label = lookup("#LAaccountLabel").query();
-        assertTrue(label.getText().equals(transaction.getReciever().getName()));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#LAaccountLabel").query();
+                assertTrue(label.getText().equals("Fra: " + transaction.getFrom().getName()));
+            }
+        });
+
     }
 
     /**
@@ -106,8 +180,16 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @Test
     public void testOtherAccount(){
-        Label label = lookup("#OtherAccountLabel").query();
-        assertTrue(label.getText().equals(transaction.getFrom().getName()));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#OtherAccountLabel").query();
+                assertTrue(label.getText().equals("Til: " + transaction.getReciever().getName()));
+            }
+        });
+
     }
 
     /**
@@ -115,13 +197,16 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @Test
     public void testAmount(){
-        Label label = lookup("#LAamountLabel").query();
-        assertTrue(label.getText().equals(Double.toString(transaction.getAmount())));
+
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                controller.initData(user, dm);
+                Label label = lookup("#LAamountLabel").query();
+                assertTrue(label.getText().equals("kr " + Double.toString(transaction.getAmount())));
+            }
+        });
+
     }
-
-
-
-
-
 
 }
