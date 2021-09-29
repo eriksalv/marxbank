@@ -43,4 +43,8 @@ public class Bank {
         }
         return getAccounts().get(accountNumber);
     }
+
+    public void clearAccounts() {
+        accounts=new HashMap<Integer, Account>();
+    }
 }

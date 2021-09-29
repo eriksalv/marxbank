@@ -13,8 +13,18 @@ import it1901.util.AccountType;
 */
 public class MarxAccount extends Account {
 
-    private final static double MAX_BALANCE = 500;
-    private final static double DEFAULT_INTEREST = 0.01;
+    public final static double MAX_BALANCE = 500;
+    public final static double DEFAULT_INTEREST = 0.01;
+
+    /**
+     * MarxAccount "default" constructor
+     * @param user
+     * @param dm
+     * @param name
+     */
+    public MarxAccount(User user, DataManager dm, String name) {
+        super(user, DEFAULT_INTEREST, AccountType.MARX, dm, name);
+    }
     
     public MarxAccount(String id, User user, double interestRate, DataManager dm) {
         super(id, user, interestRate, AccountType.MARX, dm);
@@ -23,10 +33,6 @@ public class MarxAccount extends Account {
     //second constructor with default value of 0 as interest rate
     public MarxAccount(String id, User user, DataManager dm) {
         super(id, user, DEFAULT_INTEREST, AccountType.MARX, dm);
-    }
-
-    public MarxAccount(User user, DataManager dm, String name) {
-        super(user, DEFAULT_INTEREST, AccountType.MARX, dm, name);
     }
 
     public MarxAccount(String id, User user, double interestRate, DataManager dm, String name, int accountNumber) {
@@ -74,7 +80,9 @@ public class MarxAccount extends Account {
             .orElse(null);
 
             // If no appropriate reciever can be found, the balance is kept
-            if (reciever==null) return; 
+            if (reciever==null) {
+                return;
+            }
 
             Transaction t = new Transaction(this, reciever, newAmount, this.dm);
         }
