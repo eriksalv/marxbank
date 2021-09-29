@@ -62,7 +62,7 @@ public class HomeControllerTest extends ApplicationTest{
     void beforeEachSetup() throws IOException {
         this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
         this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
-        this.account1 = new SavingsAccount("56789", user, dm, "Annas brukskonto");
+        this.account1 = new SavingsAccount(user, dm, "Annas brukskonto");
         this.account1.deposit(500);
         this.account2 = new SavingsAccount("12345", user, dm);
         this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
@@ -118,7 +118,7 @@ public class HomeControllerTest extends ApplicationTest{
             public void run() {
                 controller.initData(user, dm);
                 Label label = lookup("#AmountLabel").query();
-                assertTrue(label.getText().equals(String.format("kr %.1f", account1.getBalance())));
+                assertTrue(label.getText().equals("kr " + account1.getBalance()));
             }
         });
 
