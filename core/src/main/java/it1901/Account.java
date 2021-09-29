@@ -28,7 +28,7 @@ public abstract class Account {
     private double interestRate; // In percent
     private AccountType type;
     @JsonIgnore
-    private DataManager dm;
+    protected DataManager dm;
 
 
     /**
@@ -210,7 +210,7 @@ public abstract class Account {
     /**
      * Update all variables on this account.
      */
-    private void updateAccount() {
+    protected void updateAccount() {
        this.dm.updateAccount(this.id, this);
     }
 

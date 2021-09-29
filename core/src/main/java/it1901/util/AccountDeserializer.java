@@ -12,7 +12,6 @@ import it1901.Account;
 import it1901.AccountFactory;
 import it1901.DataManager;
 import it1901.User;
-import it1901.SavingsAccount;
 
 public class AccountDeserializer extends StdDeserializer<Account> {
 
