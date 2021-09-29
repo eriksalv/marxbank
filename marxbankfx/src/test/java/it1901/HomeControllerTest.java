@@ -83,6 +83,42 @@ public class HomeControllerTest extends ApplicationTest{
         assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
     }
 
+   /**
+     * Testing whether the date for the transaction is represented with the correct label.
+     */
+    @Test
+    public void testDate(){
+        Label label = lookup("#DateLabel").query();
+        assertTrue(label.getText().equals(transaction.getDateString()));
+    }
+
+    /**
+     * Testing whether the label for the account that has recieved or been deducted money from matches the correct account.
+     */
+    @Test
+    public void testRelevantAccount(){
+        Label label = lookup("#LAaccountLabel").query();
+        assertTrue(label.getText().equals(transaction.getReciever().getName()));
+    }
+
+    /**
+     * Testing whether the label for the account that money was sent from/to matches the actual account.
+     */
+    @Test
+    public void testOtherAccount(){
+        Label label = lookup("#OtherAccountLabel").query();
+        assertTrue(label.getText().equals(transaction.getFrom().getName()));
+    }
+
+    /**
+     * Testing whether the label for the account that money was sent from/to matches the actual account.
+     */
+    @Test
+    public void testAmount(){
+        Label label = lookup("#LAamountLabel").query();
+        assertTrue(label.getText().equals(Double.toString(transaction.getAmount())));
+    }
+
 
 
 
