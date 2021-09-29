@@ -1,7 +1,6 @@
 package it1901;
 
 import java.util.Comparator;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 import it1901.util.AccountType;

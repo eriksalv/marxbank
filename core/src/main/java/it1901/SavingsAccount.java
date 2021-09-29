@@ -1,11 +1,12 @@
 package it1901;
 
 import java.util.Random;
-import java.util.UUID;
 
 import it1901.util.AccountType;
 
 public class SavingsAccount extends Account {
+
+    private final static double DEFAULT_INTEREST = 3;
 
     public SavingsAccount(String id, User user, double interestRate, DataManager dm) {
         super(id, user, interestRate, AccountType.SAVING, dm);
@@ -13,11 +14,11 @@ public class SavingsAccount extends Account {
 
     //second constructor with default value of 3 as interest rate
     public SavingsAccount(String id, User user, DataManager dm) {
-        super(id, user, 3, AccountType.SAVING, dm);
+        super(id, user, DEFAULT_INTEREST, AccountType.SAVING, dm);
     }
 
     public SavingsAccount(User user, DataManager dm, String name) {
-        super(user, 3, AccountType.SAVING, dm, name);
+        super(user, DEFAULT_INTEREST, AccountType.SAVING, dm, name);
     }
 
     public SavingsAccount(String id, User user, double interestRate, DataManager dm, String name, int accountNumber) {

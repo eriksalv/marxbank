@@ -1,7 +1,5 @@
 package it1901;
 
-import java.util.UUID;
-
 import it1901.util.AccountType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
