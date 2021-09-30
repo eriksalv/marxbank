@@ -53,14 +53,16 @@ public class MainController {
     }
 
     public void initData(DataManager dm) {
+        this.initData(dm, dm.getLoggedInUser());
+    }
+
+    public void initData(DataManager dm, User user) {
         this.dm = dm;
-        this.user = dm.getLoggedInUser();
-        setSizeScaling();
-        try {
-            handleHome();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (user==null) {
+            throw new IllegalArgumentException("user cannot be null");
         }
+        this.user = user;
+        setSizeScaling();
     }
 
     @FXML
