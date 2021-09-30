@@ -16,7 +16,7 @@ public class User {
     private String username;
     private String email;
     private String password;
-    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
+    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm", "accountNumber", "name", "numberOfTransactions"})
     private List<Account> accounts = new ArrayList<Account>();
     @JsonIgnore
     private DataManager dm;

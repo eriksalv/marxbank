@@ -25,6 +25,7 @@ public class ChangePasswordController {
         this.user = user;
     }
 
+    @FXML
     public void handleSave(){
         user.setPassword(newPasswordField.getText());
         saveButton.setText("Oppdatert");

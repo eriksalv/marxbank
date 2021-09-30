@@ -16,7 +16,7 @@ public class MainController {
 
     private User user;
 
-    private DataManager dm = new DataManager("../data");
+    private DataManager dm;
 
     private String currentContent = "Home"; //used for testing
 
@@ -36,9 +36,6 @@ public class MainController {
     
     @FXML
     private void initialize() throws IOException {
-        setSizeScaling();
-        initData();
-        handleHome();
     }
 
     public String getCurrentContent() {
@@ -55,23 +52,14 @@ public class MainController {
         });
     }
 
-    private void initData() {
+    public void initData(DataManager dm) {
+        this.dm = dm;
+        this.user = dm.getLoggedInUser();
+        setSizeScaling();
         try {
-            this.dm.parse();
-            this.user = this.dm.getUsers().get(0);
-            
-        } catch (Exception e) {
-            //if no prior data is saved, create some default data to run the application
+            handleHome();
+        } catch (IOException e) {
             e.printStackTrace();
-            try {
-                user = new User("id", "username", "email@email.com", "password", this.dm);
-                Account a1 = new SavingsAccount("id1", user, 5, this.dm);
-                Account a2 = new SavingsAccount("id2", user, 7, this.dm);
-                a1.deposit(666);
-                a2.deposit(1337);
-            } catch (IllegalArgumentException ex) {
-                e.printStackTrace();
-            }
         }
     }
 
