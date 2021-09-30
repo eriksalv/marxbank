@@ -2,14 +2,12 @@ package it1901;
 
 import java.util.HashMap;
 import java.util.Map;
-
-public class Bank {
-
-    /**
+/**
      * Bank is on the top of the object hierarchy in the application.
-     * Only one bank instance can exist at one time, and the singleton pattern (Lazy implementation)
-     * is used to achieve this. 
+     * Only one bank instance can exist at one time, and the singleton pattern
+     * (Thread safe with double checked locking) is used to achieve this. 
      */
+public class Bank {
     
     private static Bank bankInstance = null;
 
@@ -17,12 +15,16 @@ public class Bank {
     private Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 
     private Bank() {
-
+        System.out.println("instance created");
     }
 
     public static Bank getInstanceBank() {
-        if (bankInstance == null) {
-            bankInstance = new Bank();
+        if(bankInstance == null){
+            synchronized (Bank.class) {
+                if(bankInstance == null){
+                    bankInstance = new Bank();
+                }
+            }
         }
         return bankInstance;
     }
@@ -40,5 +42,9 @@ public class Bank {
             throw new IllegalArgumentException("Account number does not match any registered account");
         }
         return getAccounts().get(accountNumber);
+    }
+
+    public void clearAccounts() {
+        accounts=new HashMap<Integer, Account>();
     }
 }
