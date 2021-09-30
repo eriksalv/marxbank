@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="register" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" fx:controller="it1901.RegisterController" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" layoutX="256.0" layoutY="27.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,16 +21,16 @@
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Brukernavn" />
-                  <TextField />
+                  <TextField fx:id="usernameText"/>
                   <Label text="Epost" />
-                  <TextField />
+                  <TextField fx:id="emailText"/>
                   <Label text="Passord" />
-                  <PasswordField />
+                  <PasswordField fx:id="password1Text" />
                   <Label text="Gjenta passord" />
-                  <PasswordField />
+                  <PasswordField fx:id="password2Text"/>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" text="Registrer" />
+            <Button mnemonicParsing="false" text="Registrer" onAction="#handleRegister"/>
          </children>
       </VBox>
    </children>

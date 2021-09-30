@@ -76,7 +76,11 @@ public class LogInController {
     }
 
     @FXML
-    private void handleRegisterButton() {
-        System.out.println("todo: add register");
+    private void handleRegisterButton() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Register.fxml"));
+        AnchorPane pane = loader.load();
+
+        ((AnchorPane) root).getChildren().setAll(pane);
     }
 }

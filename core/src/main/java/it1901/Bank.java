@@ -47,4 +47,5 @@ public class Bank {
     public void clearAccounts() {
         accounts=new HashMap<Integer, Account>();
     }
+
 }

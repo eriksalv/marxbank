@@ -43,7 +43,7 @@ public class DataManager {
     /**
      * Adds user to userlist
      * @param u user to add
-     * @throws IllegalArgumentException is user already exists in userList
+     * @throws IllegalArgumentException user already exists in userList
      */
     public void addUser(User u) {
         if(this.userList.contains(u)) throw new IllegalArgumentException("User already in userList");
@@ -121,6 +121,18 @@ public class DataManager {
         if(this.userList.contains(u)) return true;
         return false;
     }
+
+    /**
+     * Checks if a users password is already taken
+     * @param u user to check for
+     * @return true if found, false otherwise
+     */
+    public boolean checkIfPasswordIsTaken(String password) {
+        if(this.userList.stream().anyMatch(user -> user.getPassword().equals(password))) {
+            return true;
+        }
+        return false;
+    } 
 
     /**
      * checks if a User exists in userList given its id
