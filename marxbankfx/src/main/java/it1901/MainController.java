@@ -16,7 +16,7 @@ public class MainController {
 
     private User user;
 
-    private DataManager dm = new DataManager("../data");
+    private DataManager dm;
 
     @FXML private AnchorPane main;
     @FXML private Pane content;
@@ -29,9 +29,6 @@ public class MainController {
     
     @FXML
     private void initialize() throws IOException {
-        setSizeScaling();
-        initData();
-        handleHome();
     }
 
     private void setSizeScaling() {
@@ -44,13 +41,15 @@ public class MainController {
         });
     }
 
-    private void initData() {
-        user = new User("id", "username", "email@email.com", "password", this.dm);
-        Account a1 = new SavingsAccount("id1", user, 5, this.dm);
-        Account a2 = new SavingsAccount("id2", user, 7, this.dm);
-        a1.deposit(666);
-        a2.deposit(1337);
-
+    public void initData(DataManager dm) {
+        this.dm = dm;
+        this.user = dm.getLoggedInUser();
+        setSizeScaling();
+        try {
+            handleHome();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

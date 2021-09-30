@@ -21,6 +21,8 @@ public class DataManager {
     
     private String path;
 
+    private User loggedInUser;
+
     private List<User> userList = new ArrayList<User>();
     private List<Account> accountList = new ArrayList<Account>();
     private List<Transaction> transactionList = new ArrayList<Transaction>();
@@ -183,6 +185,22 @@ public class DataManager {
     }
 
     /**
+     * gets logged in user
+     * @return user that is logged in
+     */
+    public User getLoggedInUser() {
+        return this.loggedInUser;
+    }
+
+    /**
+     * set logged in user
+     * @param u to be logged in
+     */
+    public void setLoggedInUser(User u) {
+        this.loggedInUser = u;
+    }
+
+    /**
      * Gets User object given its id
      * @param id of User object
      * @return User object if found, null otherwise
@@ -190,6 +208,15 @@ public class DataManager {
     public User getUser(String id) {
         if(checkIfUserExists(id)) return this.userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
         return null;
+    }
+
+    public User getUserByUsername(String username) {
+        try {
+            User u = this.userList.stream().filter(e -> e.getUsername().equals(username)).findFirst().get();
+            return u;
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
@@ -327,7 +354,7 @@ public class DataManager {
                     if(checkIfUserExists(u)) continue;
                     // otherwise update old account
                     User u2 = getUser(u.getId());
-                    if(u2.getUsername() == u.getUsername() && u2.getEmail() == u.getEmail()) {
+                    if(u2.getUsername().equals(u.getUsername()) && u2.getEmail().equals(u.getEmail())) {
                         updateUser(u2.getId(), u);
                     }
                 } else {
