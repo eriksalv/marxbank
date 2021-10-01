@@ -46,6 +46,20 @@ public class DataManagerTest {
         );
     }
 
+
+    //@Test
+    @DisplayName("test password has been taken")
+    public void testPassword() throws Exception {
+        this.dm = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
+
+        this.dm.parse();
+        assertThrows(IllegalArgumentException.class, () -> {
+            User user1 = new User("username", "email@email.com", "samePassword", dm);
+            User user2 = new User("username2", "email@gmail.com", "samePassword", dm);
+            this.dm.save();
+        });
+    }
+
     @Test
     @DisplayName("test parse and Save")
     public void testParseAndSave() throws Exception {
