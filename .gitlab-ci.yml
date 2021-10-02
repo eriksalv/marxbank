@@ -22,6 +22,7 @@ build:
 
 test:
   stage: test
+  needs: [build]
   script:
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
@@ -29,6 +30,7 @@ test:
 
 test_manual:
   stage: test_master
+  needs: [build]
   script:
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
