@@ -9,22 +9,30 @@ default:
     - .m2/repository
   before_script:
     - apt-get update
-    - apt-get install -y xvfb libpangoft2-1.0-0
 
-workflow: #Kjører kun når du pusher til en gren og når du sammenfletter med master
-  rules:
-    - if: '$CI_COMMIT_BRANCH'
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+stages:
+  - build
+  - test
+  - test_master
+
+build:
+  stage: build
+  script: 
+    - mvn clean compile
 
 test:
   stage: test
-  script: 
-    # - mvn $MAVEN_CLI_OPTS test
-    #- xvfb-run mvn "-DargLine=-Djava.awt.headless=true -DTestfx.robot=glass -Dtestfx.headless=true" clean jacoco:prepare-agent install jacoco:report
-    - mvn clean install -DskipTests
+  script:
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
     - cat core/target/site/jacoco/index.html
-  rules:
-    - if: '$CI_COMMIT_BRANCH != "master"'
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+
+test_manual:
+  stage: test_master
+  script:
+    - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
+    - cat marxbankfx/target/site/jacoco/index.html
+    - cat core/target/site/jacoco/index.html
+  when: manual
+
+  
