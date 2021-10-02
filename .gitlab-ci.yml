@@ -13,7 +13,6 @@ default:
 stages:
   - build
   - test
-  - test_master
 
 build:
   stage: build
@@ -24,7 +23,7 @@ test:
   stage: test
   needs: [build]
   script:
-    - mvn clean compile
+    - mvn clean install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
     - cat core/target/site/jacoco/index.html
@@ -33,7 +32,7 @@ test_manual:
   stage: test_master
   needs: [build]
   script:
-    - mvn clean compile
+    - mvn clean install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
     - cat core/target/site/jacoco/index.html
