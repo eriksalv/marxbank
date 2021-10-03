@@ -9,6 +9,8 @@ default:
     - .m2/repository
   before_script:
     - apt-get update
+    - apt-get install -y openjfx --no-install-recommends
+    - rm -rf /var/lib/apt/lists/*
 
 stages:
   - build
