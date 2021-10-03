@@ -27,6 +27,7 @@ test_core:
   stage: test_core
   needs: [build]
   script:
+    - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl core jacoco:report
     - cat core/target/site/jacoco/index.html
 
