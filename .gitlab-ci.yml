@@ -35,7 +35,7 @@ test_fx:
   stage: test_fx
   needs: [build]
   script:
-    - mvn jacoco:prepare-agent test -pl marxbankfx jacoco:report
+    - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
 
 test_manual:
