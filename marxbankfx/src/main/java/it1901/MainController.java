@@ -119,7 +119,7 @@ public class MainController {
         loader.setLocation(getClass().getResource("Profile.fxml"));
         AnchorPane pane = loader.load();
         ProfileController controller = loader.getController();
-        controller.initData(user);
+        controller.initData(user, dm);
 
         content.getChildren().setAll(pane);
         currentContent="MyProfile";
