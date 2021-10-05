@@ -20,9 +20,11 @@ public class ProfileController {
     @FXML private Pane newPane;
 
     private User user;
+    private DataManager dm;
 
-    public void initData(User u) {
+    public void initData(User u, DataManager dm) {
         this.user = u;
+        this.dm = dm;
         nameLabel.setText(user.getEmail());
         IDLabel.setText(user.getId());
         usernameLabel.setText(user.getUsername());
@@ -35,7 +37,7 @@ public class ProfileController {
         loader.setLocation(getClass().getResource("ChangePassword.fxml"));
         AnchorPane pane = loader.load();
         ChangePasswordController controller = loader.getController();
-        controller.initData(user, this);
+        controller.initData(user, this, dm);
 
         newPane.getChildren().setAll(pane);
     }

@@ -19,17 +19,38 @@ public class ChangePasswordController {
 
     private User user;
     private ProfileController controller;
+    private DataManager dm;
 
-    public void initData(User user, ProfileController c) {
+    public void initData(User user, ProfileController c, DataManager dm) {
         this.controller = c;
         this.user = user;
+        this.dm = dm;
     }
 
     @FXML
     public void handleSave(){
-        user.setPassword(newPasswordField.getText());
-        saveButton.setText("Oppdatert");
-        controller.updatePassword();
+        if (dm.checkIfPasswordIsTaken(newPasswordField.getText())) {
+            System.err.println("password is already taken");
+            return;
+        }
+        if (!currentPasswordField.getText().equals(user.getPassword())) {
+            saveButton.setText("Feil passord");
+            return;
+        }
+        if (!(newPasswordField.getText().equals(user.getPassword()))){
+            user.setPassword(newPasswordField.getText());
+            saveButton.setText("Oppdatert");
+            controller.updatePassword();
+            try {
+                dm.save();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else {
+            saveButton.setText("Ugyldig passord");
+        }
     }
 
     public void handleClose() {
