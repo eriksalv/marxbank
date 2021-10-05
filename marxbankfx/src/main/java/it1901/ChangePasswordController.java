@@ -27,9 +27,16 @@ public class ChangePasswordController {
 
     @FXML
     public void handleSave(){
+        if (!(newPasswordField.getText().equals(user.getPassword()))){
+
         user.setPassword(newPasswordField.getText());
         saveButton.setText("Oppdatert");
         controller.updatePassword();
+        }
+        else {
+            saveButton.setText("Ugyldig passord");
+            throw new IllegalArgumentException("You cannot change into a password that is already used.");
+        }
     }
 
     public void handleClose() {
