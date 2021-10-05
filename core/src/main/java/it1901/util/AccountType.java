@@ -6,6 +6,7 @@ public enum AccountType {
     SAVING("Sparekonto"),
     CHECKING("Brukskonto"),
     MARX("Marxkonto"),
+    CREDIT("Kredittkonto"),
     ;
 
     private String typeString;
