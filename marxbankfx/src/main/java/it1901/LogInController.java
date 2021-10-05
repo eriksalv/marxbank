@@ -83,4 +83,9 @@ public class LogInController {
 
         ((AnchorPane) root).getChildren().setAll(pane);
     }
+
+    // only used for testing purposes
+    public DataManager getDM() {
+        return this.dm;
+    }
 }
