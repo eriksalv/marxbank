@@ -1,5 +1,6 @@
 package it1901;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,11 @@ public class LogInControllerTest extends ApplicationTest {
     @DisplayName("test logIn")
     public void testLogIn() {
 
+    }
+
+    @AfterAll
+    static void cleanUp() {
+        
     }
 
 }
