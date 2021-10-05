@@ -76,5 +76,5 @@ public class MarxAccountTest {
 
     public void resetSingleton() {
         Bank.getInstanceBank().clearAccounts();
-     }
+    }
 }
