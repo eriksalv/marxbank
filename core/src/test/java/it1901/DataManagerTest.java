@@ -6,8 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -107,10 +112,41 @@ public class DataManagerTest {
         assertEquals(this.dm.getAccounts(), dm2.getAccounts());
         assertEquals(this.dm.getTransactions(), dm2.getTransactions());
 
-        System.out.println(dm2.getUsers());
-        dm2.getAccounts().forEach(e -> System.out.println(e));
-        dm2.getUsers().get(0).getAccounts().forEach(e -> System.out.println(e));
-        dm2.getUsers().get(0).getAccounts().forEach(e -> e.getTransactions().forEach(o -> System.out.println(o)));
+        assertThrows(Exception.class, () -> {
+            File mockFile = mock(File.class);
+            when(mockFile.exists()).thenReturn(false);
+            this.dm.parseUsers(mockFile);
+        });
+
+        assertThrows(Exception.class, () -> {
+            File mockFile = mock(File.class);
+            when(mockFile.exists()).thenReturn(false);
+            this.dm.parseAccounts(mockFile);
+        });
+
+        assertThrows(Exception.class, () -> {
+            File mockFile = mock(File.class);
+            when(mockFile.exists()).thenReturn(false);
+            this.dm.parseTransactions(mockFile);
+        });
+
+        assertThrows(Exception.class, () -> {
+            File f = tempDir.resolve("userDir").toFile();
+            f.mkdir();
+            this.dm.parseUsers(f);
+        });
+
+        assertThrows(Exception.class, () -> {
+            File f = tempDir.resolve("userDir").toFile();
+            f.mkdir();
+            this.dm.parseAccounts(f);
+        });
+
+        assertThrows(Exception.class, () -> {
+            File f = tempDir.resolve("userDir").toFile();
+            f.mkdir();
+            this.dm.parseTransactions(f);
+        });
     }
 
     @Test
@@ -129,9 +165,9 @@ public class DataManagerTest {
         User u2 = new User("yeet", "testYeet", "test@yeet.com", "passyeet", this.dm);
         
         assertThrows(Exception.class, () -> {
-            File f = tempDir.resolve("data/users.json").toFile();
-            f.setReadOnly();
-            this.dm.saveUsers(f);
+            DataManager testDm = mock(DataManager.class);
+            doThrow(new Exception()).when(testDm).save();
+            testDm.save();
         });
 
         assertFalse(Files.exists(tempDir.resolve("data/accounts.json")));
@@ -147,13 +183,41 @@ public class DataManagerTest {
         assertFalse(Files.exists(tempDir.resolve("data/transactions.json")));
         this.dm.saveTransactions(tempDir.resolve("data/transactions.json").toFile());
         assertTrue(Files.exists(tempDir.resolve("data/transactions.json")));
-        tempDir.resolve("data/transactions.json").toFile().setReadOnly();
         Transaction t3 = new Transaction(a, a2, 5.0, this.dm);
 
+        // save Users to path already existing
         assertThrows(Exception.class, () -> {
-            this.dm.saveUsers(tempDir.resolve("data/transactions.json").toFile());
+            this.dm.saveUsers(tempDir.resolve("data").toFile());
         });
 
+        assertThrows(Exception.class, () -> {
+            this.dm.saveAccounts(tempDir.resolve("data").toFile());
+        });
+
+        assertThrows(Exception.class, () -> {
+            this.dm.saveTransactions(tempDir.resolve("data").toFile());
+        });
+
+        assertThrows(Exception.class, () -> {
+            File mockFile = mock(File.class);
+            when(mockFile.exists()).thenReturn(false);
+            when(mockFile.createNewFile()).thenReturn(true);
+            this.dm.saveUsers(mockFile);
+        });
+        
+        assertThrows(Exception.class, () -> {
+            File mockFile = mock(File.class);
+            when(mockFile.exists()).thenReturn(false);
+            when(mockFile.createNewFile()).thenReturn(true);
+            this.dm.saveAccounts(mockFile);
+        });
+
+        assertThrows(Exception.class, () -> {
+            File mockFile = mock(File.class);
+            when(mockFile.exists()).thenReturn(false);
+            when(mockFile.createNewFile()).thenReturn(true);
+            this.dm.saveTransactions(mockFile);
+        });
 
     }
 
@@ -322,5 +386,4 @@ public class DataManagerTest {
 
 
     }
-
 }
