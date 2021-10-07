@@ -125,10 +125,11 @@ public class DataManagerTest {
         assertFalse(Files.exists(tempDir.resolve("data/users.json")));
         this.dm.saveUsers(tempDir.resolve("data/users.json").toFile());
         assertTrue(Files.exists(tempDir.resolve("data/users.json")));
-        tempDir.resolve("data/users.json").toFile().setReadOnly();
         User u2 = new User("yeet", "testYeet", "test@yeet.com", "passyeet", this.dm);
         
         assertThrows(Exception.class, () -> {
+            tempDir.resolve("data/users.json").toFile().setReadOnly();
+            tempDir.resolve("data/users.json").toFile().setWritable(false);
             this.dm.saveUsers(tempDir.resolve("data/users.json").toFile());
         });
 
