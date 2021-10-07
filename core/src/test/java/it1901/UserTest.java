@@ -2,11 +2,15 @@ package it1901;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,6 +83,38 @@ public class UserTest {
         assertThrows(IllegalArgumentException.class, () -> {
             user.removeAccount(a);
         });
+    }
+
+    @Test
+    @DisplayName("test setters and stuff")
+    public void testSetters() {
+        user = new User("id", "username", "email@email.com", "password", this.dm);
+        assertEquals(Objects.hash(user.getId()), user.hashCode());
+
+        user.setEmail("newEmail@email.com");
+        assertTrue(user.getEmail().equals("newEmail@email.com"));
+
+        user.setUsername("newUsername");
+        assertTrue(user.getUsername().equals("newUsername"));
+
+        user.setPassword("newPassword");
+        assertTrue(user.getPassword().equals("newPassword"));
+
+        ArrayList<Account> a = new ArrayList<Account>();
+
+        a.add(new SavingsAccount("id", user, dm));
+
+        user.setAccounts(a);
+        assertEquals(a, user.getAccounts());
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            user.setId(null);
+        });
+
+        user.setId("newId");
+        assertTrue(user.getId().equals("newId"));
+
+        assertFalse(user.equals(new SavingsAccount("a", user, dm)));
     }
 
     

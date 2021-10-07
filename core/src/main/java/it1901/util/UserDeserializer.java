@@ -29,7 +29,7 @@ public class UserDeserializer extends StdDeserializer<User> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         
-        return new User(node.get("id").asText(), node.get("username").asText(), node.get("email").asText() ,node.get("password").asText(), dm);
+        return new User(node.get("id").asText(), node.get("username").asText(), node.get("email").asText() ,node.get("password").asText(), dm, false);
     }
     
 }

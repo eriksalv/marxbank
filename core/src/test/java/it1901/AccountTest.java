@@ -1,11 +1,15 @@
 package it1901;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +54,19 @@ public class AccountTest {
     public void testDepositWithdraw() {
         Account a = new SavingsAccount("id", user, 5.0, dm);
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            a.deposit(-500.0);
+        });
+
+        assertAll(
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                a.withdraw(-50.0);
+            }),
+            () -> assertThrows(IllegalStateException.class, () -> {
+                a.withdraw(500.0);
+            })
+        );
+
         a.deposit(5000);
         assertEquals(this.dm.getAccounts().get(0).getBalance(), a.getBalance());
         assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
@@ -80,4 +97,46 @@ public class AccountTest {
         assertEquals(500, a2.getBalance());
     }
 
+    @Test
+    @DisplayName("test setters and equals")
+    public void testSetters() {
+        Account a = new SavingsAccount("id", user, 5.0, dm);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            a.setName(null);
+        });
+
+        a.setName("yeet");
+        assertTrue(a.getName().equals("yeet"));
+
+        assertFalse(a.equals(new User("username", "email@email.com", "password", dm)));
+        
+        assertAll(
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                a.setId(null);
+            }),
+            () -> assertThrows(IllegalArgumentException.class, () -> {
+                Account b = new SavingsAccount("id2", user, dm);
+                a.setId("id2");
+            })
+        );
+
+        a.setId("idNooneElseHas");
+        assertTrue(a.getId().equals("idNooneElseHas"));
+
+        User u = new User("kristina", "kristina@kristina.no", "password", dm);
+        assertThrows(IllegalArgumentException.class, () -> {
+            a.setUser(null);
+        });
+
+        a.setUser(u);
+        assertEquals(u, a.getUser());
+
+        ArrayList<Transaction> t = new ArrayList<Transaction>();
+        Account b = new SavingsAccount("iddddd", user, dm);
+        a.deposit(100.0);
+        t.add(new Transaction("id", a, b, 10, dm, true));
+        a.setTransactions(t);
+        assertEquals(t, a.getTransactions());
+    }
 }
