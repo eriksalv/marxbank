@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -128,9 +129,9 @@ public class DataManagerTest {
         User u2 = new User("yeet", "testYeet", "test@yeet.com", "passyeet", this.dm);
         
         assertThrows(Exception.class, () -> {
-            tempDir.resolve("data/users.json").toFile().setReadOnly();
-            tempDir.resolve("data/users.json").toFile().setWritable(false);
-            this.dm.saveUsers(tempDir.resolve("data/users.json").toFile());
+            File f = tempDir.resolve("data/users.json").toFile();
+            f.setReadOnly();
+            this.dm.saveUsers(f);
         });
 
         assertFalse(Files.exists(tempDir.resolve("data/accounts.json")));
