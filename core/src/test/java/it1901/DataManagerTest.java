@@ -173,11 +173,12 @@ public class DataManagerTest {
         assertFalse(Files.exists(tempDir.resolve("data/accounts.json")));
         this.dm.saveAccounts(tempDir.resolve("data/accounts.json").toFile());
         assertTrue(Files.exists(tempDir.resolve("data/accounts.json")));
-        tempDir.resolve("data/accounts.json").toFile().setReadOnly();
         Account a3 = new SavingsAccount("test3", user, this.dm);
-
+        
         assertThrows(Exception.class, () -> {
-            this.dm.saveUsers(tempDir.resolve("data/accounts.json").toFile());
+            File f = tempDir.resolve("data/accounts.json").toFile();
+            f.setReadOnly();
+            this.dm.saveUsers(f);
         });
         
         assertFalse(Files.exists(tempDir.resolve("data/transactions.json")));
