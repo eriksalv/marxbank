@@ -29,10 +29,6 @@ public class ChangePasswordController {
 
     @FXML
     public void handleSave(){
-        if (dm.checkIfPasswordIsTaken(newPasswordField.getText())) {
-            System.err.println("password is already taken");
-            return;
-        }
         if (!currentPasswordField.getText().equals(user.getPassword())) {
             saveButton.setText("Feil passord");
             return;
