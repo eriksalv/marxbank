@@ -8,7 +8,7 @@ import javafx.scene.control.TextFormatter.Change;
 public class TextFieldFormatter {
 
     /**
-     * returns a TextFormatter that only allows numbers in text fields
+     * returns a TextFormatter that only allows numbers in text fields.
      */    
     public static TextFormatter<String> getNumberFormatter() {
         UnaryOperator<Change> filter = change -> {
@@ -20,6 +20,22 @@ public class TextFieldFormatter {
         
             return null;
         };
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter); 
+        return textFormatter;
+    }
+
+    /**
+     * returns a TextFormatter that only allows numbers and commas (decimals) in text fields.
+     */  
+    public static TextFormatter<String> getDecimalFormatter() {
+        UnaryOperator<Change> filter = change -> {
+            String text = change.getText();
+            if (text.matches("[0-9]*,*[0-9]*")) { 
+                return change;
+            }
+            return null;
+        };
+        
         TextFormatter<String> textFormatter = new TextFormatter<>(filter); 
         return textFormatter;
     }
