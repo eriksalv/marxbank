@@ -33,7 +33,7 @@ public class RegisterController {
             System.err.println("passwords dont match");
             return;
         }
-        if (dm.checkIfUsernameIsTaken(usernameText.getText())) {
+        if (dm.checkIfUsernameIsTaken(usernameText.getText()))  {
             System.err.println("Username is already taken");
             return;
         }
