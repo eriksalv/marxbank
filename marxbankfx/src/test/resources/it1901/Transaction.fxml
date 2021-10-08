@@ -37,6 +37,7 @@
             <TextField fx:id="amountText" text="" />
             <Button fx:id="transactionBtn" mnemonicParsing="false" text="Overfør" onAction="#handleCommitTransaction"/>
             <Label fx:id="transactionCompleteMsg" text="Overføringen var vellykket" visible="false"/>
+            <Label fx:id="transactionFailedMsg" text="" visible="false"/>
          </children>
       </VBox>
    </children>
