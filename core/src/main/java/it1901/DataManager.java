@@ -127,12 +127,12 @@ public class DataManager {
      * @param u user to check for
      * @return true if found, false otherwise
      */
-    public boolean checkIfPasswordIsTaken(String password) {
-        if(this.userList.stream().anyMatch(user -> user.getPassword().equals(password))) {
+    public boolean checkIfUsernameIsTaken(String username) {
+        if(this.userList.stream().anyMatch(user -> user.getUsername().equals(username))) {
             return true;
         }
         return false;
-    } 
+    }
 
     /**
      * checks if a User exists in userList given its id
@@ -299,18 +299,6 @@ public class DataManager {
         int index = getIndexOfAccount(a);
         this.accountList.set(index, account);
     }
-
-    /**
-     * Updates Transaction with new parameteres
-     * @param id of Transaction
-     * @param transaction Transaction object
-     */
-    public void updateTransaction(String id, Transaction transaction) {
-        Transaction t = getTransaction(id);
-        int index = getIndexOfTransaction(t);
-        this.transactionList.set(index, transaction);
-    }
-
     /**
      * Parses Users, Accounts and Transactions from storage
      * @throws Exception if it cannot read or create storage files
@@ -329,7 +317,7 @@ public class DataManager {
         parseTransactions(transactionDir);
     }
 
-    private void parseUsers(File userFile) throws Exception {
+    public void parseUsers(File userFile) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         // add user deserialzer
         SimpleModule module = new SimpleModule();
@@ -338,13 +326,8 @@ public class DataManager {
         // check for user dir in data directory
         // if directory doesn't exist, make a new one
         if(!userFile.exists()){
-            try {
-                userFile.createNewFile();
-                // exit because file has just been created
-                return;
-            } catch (IOException e) {
-                throw new Exception("Cannot create users.json");
-            }
+            if(userFile.createNewFile()) return;
+            else throw new Exception("Cannot create users.json");
         }
 
         JsonNode masterUserNode;
@@ -378,7 +361,7 @@ public class DataManager {
         }
     }
 
-    private void parseAccounts(File accountFile) throws Exception {
+    public void parseAccounts(File accountFile) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         // add account deserialzer
         SimpleModule module = new SimpleModule();
@@ -386,12 +369,8 @@ public class DataManager {
         objectMapper.registerModule(module);
 
         if(!accountFile.exists()) {
-            try {
-                accountFile.createNewFile();
-                return;
-            } catch (IOException e) {
-                throw new Exception("Cannot create accounts.json");
-            }
+            if(accountFile.createNewFile()) return;
+            else throw new Exception("Cannot create accounts.json");
         }
 
         JsonNode masterNode;
@@ -422,7 +401,7 @@ public class DataManager {
         }
     }
 
-    private void parseTransactions(File transactionFile) throws Exception {
+    public void parseTransactions(File transactionFile) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         // add transaction deserialzer
         SimpleModule module = new SimpleModule();
@@ -430,12 +409,8 @@ public class DataManager {
         objectMapper.registerModule(module);
 
         if(!transactionFile.exists()) {
-            try {
-                transactionFile.createNewFile();
-                return;
-            } catch (IOException e) {
-                throw new Exception("Cannot create transactions.json");
-            }
+            if(transactionFile.createNewFile()) return;
+            else throw new Exception("Cannot create transactions.json");
         }
 
         JsonNode masterTransactionNode;
@@ -455,7 +430,6 @@ public class DataManager {
                 if(checkIfTransactionExists(transaction.getId())) {
                     Transaction t2 = getTransaction(transaction.getId());
                     if(t2.getFrom() == transaction.getFrom() && t2.getReciever() == transaction.getReciever() && t2.getTransactionDate() == transaction.getTransactionDate()) continue;
-                    updateTransaction(t2.getId(), transaction);
                 } else {
                     addTransaction(transaction);
                 }
@@ -480,7 +454,7 @@ public class DataManager {
         saveTransactions(transactionFile);
     }
 
-    private void saveUsers(File userFile) throws Exception {
+    public void saveUsers(File userFile) throws Exception {
         FileWriter userFileWriter;
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -490,10 +464,8 @@ public class DataManager {
                     userFileWriter = new FileWriter(userFile);
                     userFileWriter.write(String.format("{\"users\":%s}", objectMapper.writeValueAsString(this.userList)));
                     userFileWriter.close();
-                } else {
-                    throw new Exception("cannot create users.json file");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new Exception("Cannot create users.json file");
             }
         } else {
@@ -507,7 +479,7 @@ public class DataManager {
         }
     }
 
-    private void saveAccounts(File accountFile) throws Exception {
+    public void saveAccounts(File accountFile) throws Exception {
         FileWriter accountFileWriter;
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -517,10 +489,8 @@ public class DataManager {
                     accountFileWriter = new FileWriter(accountFile);
                     accountFileWriter.write(String.format("{\"accounts\":%s}", objectMapper.writeValueAsString(this.accountList)));
                     accountFileWriter.close();
-                } else {
-                    throw new Exception("cannot create accounts.json file");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new Exception("Cannot create accounts.json file");
             }
         } else {
@@ -534,7 +504,7 @@ public class DataManager {
         }
     }
 
-    private void saveTransactions(File transactionFile) throws Exception {
+    public void saveTransactions(File transactionFile) throws Exception {
         FileWriter transactionFileWriter;
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -544,10 +514,8 @@ public class DataManager {
                     transactionFileWriter = new FileWriter(transactionFile);
                     transactionFileWriter.write(String.format("{\"transactions\":%s}", objectMapper.writeValueAsString(this.transactionList)));
                     transactionFileWriter.close();
-                } else {
-                    throw new Exception("Cannot create transactions.json file");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new Exception("Cannot create transactions.json file");
             }
         } else {

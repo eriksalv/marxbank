@@ -54,7 +54,6 @@ public abstract class Account {
         Bank.getInstanceBank().addAccount(this);
     }
 
-    
     public Account(String id, User user, double interestRate, AccountType type, DataManager dm, int accountNumber, String name) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
@@ -64,7 +63,6 @@ public abstract class Account {
         this.name = "Ny konto";
         this.accountNumber = accountNumber;
         this.name = name;
-
         this.user.addAccount(this);
         this.dm.addAccount(this);
         Bank.getInstanceBank().addAccount(this);
@@ -144,16 +142,17 @@ public abstract class Account {
         return this.type;
     }
 
-    public void setType(AccountType type) {
-        this.type = type;
-        updateAccount();
-    }
+    // public void setType(AccountType type) {
+    //     this.type = type;
+    //     updateAccount();
+    // }
 
     public User getUser() {
         return this.user;
     }
 
     public void setUser(User user) {
+        if(user == null) throw new IllegalArgumentException("User cannot be null");
         this.user = user;
         updateAccount();
     }
@@ -167,12 +166,19 @@ public abstract class Account {
         updateAccount();
     }
 
+    public void setBalanceNoUpdate(double balance) {
+        this.balance = balance;
+    }
+
     public String getId() {
         return this.id;
     }
 
     public void setId(String id) {
+        if(this.dm.checkIfAccountExists(id)) throw new IllegalArgumentException("There already is another user with this id");
+        if(id == null) throw new IllegalArgumentException("new Id cannot be null");
         this.id = id;
+        updateAccount();
     }
 
     public double getInterestRate() {

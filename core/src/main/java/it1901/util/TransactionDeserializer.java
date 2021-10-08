@@ -39,8 +39,8 @@ public class TransactionDeserializer extends StdDeserializer<Transaction> {
             from = dm.getAccount(node.get("from").asText());
             reciever = dm.getAccount(node.get("reciever").asText());
         }
-
-        return new Transaction(node.get("id").asText(), from, reciever, node.get("amount").asDouble(), dm, false);
+        return new Transaction(node.get("id").asText(), from, reciever, node.get("amount").asDouble(), dm, false, false);
+        
     }
     
 }

@@ -53,7 +53,6 @@ public class MarxAccountTest {
     public void testDeposit() {
         //Case 1: account a is the only registered account
         Account a = new MarxAccount(user, dm, "name");
-        System.out.println(Bank.getInstanceBank().getAccounts());
         double maxBalance = MarxAccount.MAX_BALANCE;
         a.deposit(maxBalance);
         assertEquals(maxBalance, a.getBalance());
