@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Window;
 
 public class LogInController {
     @FXML private TextField typeUsername;
@@ -33,16 +34,17 @@ public class LogInController {
     }
 
     @FXML
-    private void intitialize(){
-    }
-
-    @FXML
     private void handleLogInButton() throws IOException{
 
         usernameError.setText("");
         passwordError.setText("");
 
         String username = typeUsername.getText();
+
+        if(username == "" || username == null || username.trim().equals("")) {
+            usernameError.setText("Username cannot be blank");
+            return;
+        }
 
         if(!username.trim().equals(username)) {
             usernameError.setText("Username cannot contain spaces");
@@ -57,6 +59,11 @@ public class LogInController {
         }
 
         String password = typePassword.getText();
+
+        if(password == "" || password == null || password.trim().equals("")) {
+            passwordError.setText("Password cannot be empty");
+            return;
+        }
 
         if(!u.getPassword().equals(password)) {
             passwordError.setText("Password is wrong");
@@ -82,5 +89,10 @@ public class LogInController {
         AnchorPane pane = loader.load();
 
         ((AnchorPane) root).getChildren().setAll(pane);
+    }
+
+    // only used for testing purposes
+    public DataManager getDM() {
+        return this.dm;
     }
 }
