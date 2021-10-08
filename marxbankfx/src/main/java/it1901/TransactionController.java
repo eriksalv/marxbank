@@ -50,6 +50,7 @@ public class TransactionController {
     private void createMyAccountsListItems() {
         user.getAccounts().forEach(acc -> {
             MenuItem item = new MenuItem(String.valueOf(acc.getAccountNumber()));
+            item.setId(String.valueOf(acc.getAccountNumber()));
             item.setOnAction(accountsMenuEvent);
             myAccountsList.getItems().add(item);
         });
