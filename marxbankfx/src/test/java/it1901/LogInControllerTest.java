@@ -97,7 +97,7 @@ public class LogInControllerTest extends ApplicationTest {
         clickOn("#typeUsername").write("testUser");
         clickOn("#typePassword").write("password");
         clickOn("#logInButton");
-        //assertEquals(user, controller.getDM().getLoggedInUser());
+        assertEquals(user, controller.getDM().getLoggedInUser());
     }
 
     @Test
