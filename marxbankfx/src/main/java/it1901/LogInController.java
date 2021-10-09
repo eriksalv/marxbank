@@ -2,15 +2,20 @@ package it1901;
 
 import java.io.IOException;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.scene.Node;
 
 public class LogInController {
     @FXML private TextField typeUsername;
@@ -34,7 +39,7 @@ public class LogInController {
     }
 
     @FXML
-    private void handleLogInButton() throws IOException{
+    private void handleLogInButton(MouseEvent e) throws IOException{
 
         usernameError.setText("");
         passwordError.setText("");
@@ -74,12 +79,19 @@ public class LogInController {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Main.fxml"));
-        AnchorPane pane = loader.load();
+        Parent tableViewParent = loader.load();
+        
+        Scene tableViewScene = new Scene(tableViewParent);
+        
+        //Access the controller and call a method
         MainController controller = loader.getController();
         controller.initData(dm);
-
-        ((AnchorPane) root).getChildren().setAll(pane);
-
+        
+        //Get stage information
+        Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
+        
+        window.setScene(tableViewScene);
+        window.show();
     }
 
     @FXML
