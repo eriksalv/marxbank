@@ -8,30 +8,19 @@ public class SavingsCalc {
             return Math.round(sum);
         }
 
-        double interestRatePerYear = interestRate / 12;
-
-        double sum = lumpAmount;
+        double lumpAmountSum = lumpAmount;
+        double monthlyAmountSum = 0;
 
         for (int i = 0; i < period; i++) {
-            for (int j = 0; j < 12; j++) {
-                sum += monthlyAmount;
-                sum *= (1 + (interestRatePerYear / 100));
+            monthlyAmountSum *= (1 + interestRate);
+            lumpAmountSum *= (1 + interestRate);
+            for (int j = 1; j <= 12; j++) {
+                monthlyAmountSum += monthlyAmount * (1 + (j * interestRate / 12));
             }
             
         }
-        return Math.round(sum);
+        return Math.round(lumpAmountSum + monthlyAmountSum);
     }
 
-
-
-    public static void main(String[] args) {
-        int a = 5;
-        int b = 2;
-        double c = 0.003;
-        int d = 5;
-        
-        double s = SavingsCalc.calculation(a, b, c, d);
-        System.out.println(s);
-    }
 }
 
