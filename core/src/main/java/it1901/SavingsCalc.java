@@ -3,7 +3,8 @@ package it1901;
 public class SavingsCalc {
 
     /**
-     * Caclulates the total amount of the savings after a period.
+     * Caclulates the total amount of the savings after a period. 
+     * If the period text field is equal to 0, then we change it to 1.
      * 
      * @param monthlyAmount
      * @param lumpAmount
@@ -11,7 +12,10 @@ public class SavingsCalc {
      * @param period
      * @return the total amount after the given period.
      */
-    public static long calculation(int monthlyAmount, int lumpAmount, double interestRate, int period) {
+    public static int calculation(int monthlyAmount, int lumpAmount, double interestRate, int period) {
+        if (period == 0) 
+            period = 1;
+        
         double lumpAmountSum = lumpAmount;
         double monthlyAmountSum = 0;
 
@@ -22,8 +26,9 @@ public class SavingsCalc {
                 monthlyAmountSum += monthlyAmount * (1 + (j * interestRate / 12));
             }
         }
-        
-        return Math.round(lumpAmountSum + monthlyAmountSum);
+
+        double sum = lumpAmountSum + monthlyAmountSum;
+        return (int) Math.round(sum) / 1;
     }
 
 }
