@@ -128,10 +128,7 @@ public class DataManager {
      * @return true if found, false otherwise
      */
     public boolean checkIfUsernameIsTaken(String username) {
-        if(this.userList.stream().anyMatch(user -> user.getUsername().equals(username))) {
-            return true;
-        }
-        return false;
+        return this.userList.stream().anyMatch(user -> user.getUsername().equals(username));
     }
 
     /**

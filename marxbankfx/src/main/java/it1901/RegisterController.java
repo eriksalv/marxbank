@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
@@ -14,6 +16,8 @@ public class RegisterController {
     @FXML private TextField password1Text;
     @FXML private TextField password2Text;
     @FXML private AnchorPane register;
+    @FXML private Button registerBtn;
+    @FXML private Label registerFailedMsg;
     
     
     private DataManager dm;
@@ -28,13 +32,35 @@ public class RegisterController {
     }
 
     @FXML
+    private void initialize() {
+        registerFailedMsg.setVisible(false);
+        registerFailedMsg.setText("");
+    }
+
+    public DataManager getDM() {
+        return this.dm;
+    }
+
+    protected void setDM(DataManager dm) {
+        if (dm!=null) {
+            this.dm=dm;
+        } else {
+            throw new IllegalArgumentException("dm cannot be null");
+        }
+    }
+
+    @FXML
     private void handleRegister() throws IOException {
         if (!password1Text.getText().equals(password2Text.getText())) {
             System.err.println("passwords dont match");
+            registerFailedMsg.setVisible(true);
+            registerFailedMsg.setText("Passwords dont match");
             return;
         }
         if (dm.checkIfUsernameIsTaken(usernameText.getText()))  {
             System.err.println("Username is already taken");
+            registerFailedMsg.setVisible(true);
+            registerFailedMsg.setText("Username is already taken");
             return;
         }
         try {
@@ -43,6 +69,8 @@ public class RegisterController {
             initialAccount.deposit(200);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
+            registerFailedMsg.setVisible(true);
+            registerFailedMsg.setText(e.getMessage());
             return;
         }
         try {

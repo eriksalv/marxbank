@@ -53,7 +53,6 @@ public class MainControllerTest extends ApplicationTest {
         resetSingleton();
         this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
         User user = new User("username", "email@email.com", "password", dm);
-        Account a = new CheckingAccount(user, dm, "testacc");
         controller.initData(dm,user);
     }
 
@@ -75,8 +74,7 @@ public class MainControllerTest extends ApplicationTest {
             Arguments.of("#menuBtn2", "MyAccounts"),
             Arguments.of("#menuBtn3", "Transaction"),
             Arguments.of("#menuBtn4", "MyTransactions"),
-            Arguments.of("#menuBtn5", "MyProfile"),
-            Arguments.of("#menuBtn1", "Home")
+            Arguments.of("#menuBtn5", "MyProfile")
         );
     }
 

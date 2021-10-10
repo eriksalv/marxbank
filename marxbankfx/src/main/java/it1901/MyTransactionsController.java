@@ -16,7 +16,9 @@ public class MyTransactionsController {
 
     public void initData(User user) {
 
-        System.out.println(user.getAccounts().get(0).getTransactions());
+        if (user.getAccounts().size()==0) {
+            return;
+        }
 
         List<Transaction> ml = new ArrayList<Transaction>();
         List<TransactionComponent> l = new ArrayList<TransactionComponent>();

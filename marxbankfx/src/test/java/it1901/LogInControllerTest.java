@@ -17,6 +17,7 @@ public class LogInControllerTest extends ApplicationTest {
 
     private static LogInController controller;
     private User user;
+    private Account acc;
     private Scene s;
     private Stage st;
 
@@ -34,6 +35,7 @@ public class LogInControllerTest extends ApplicationTest {
     @BeforeEach
     void setup() throws Exception {
         user = new User("tu", "testUser", "test@email.com", "password", controller.getDM());
+        acc = new SavingsAccount(user, controller.getDM(), "name");
     }
 
     @Test
