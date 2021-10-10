@@ -1,7 +1,16 @@
 package it1901;
 
 public class SavingsCalc {
-    
+
+    /**
+     * Caclulates the total amount of the savings after a period.
+     * 
+     * @param monthlyAmount
+     * @param lumpAmount
+     * @param interestRate
+     * @param period
+     * @return the total amount after the period.
+     */
     public static long calculation(int monthlyAmount, int lumpAmount, double interestRate, int period) {
         double lumpAmountSum = lumpAmount;
         double monthlyAmountSum = 0;
@@ -15,11 +24,6 @@ public class SavingsCalc {
         }
         
         return Math.round(lumpAmountSum + monthlyAmountSum);
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(SavingsCalc.calculation(0, 1000, 0.10, 5));
     }
 
 }
