@@ -9,7 +9,7 @@ public class SavingsCalc {
      * @param lumpAmount
      * @param interestRate
      * @param period
-     * @return the total amount after the period.
+     * @return the total amount after the given period.
      */
     public static long calculation(int monthlyAmount, int lumpAmount, double interestRate, int period) {
         double lumpAmountSum = lumpAmount;
