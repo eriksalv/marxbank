@@ -30,6 +30,7 @@ public class SavingsCalcController {
         setText();
     }
 
+
     private void setText() {
         interestRate.setText("1");
         interestRate.setText("");
@@ -46,17 +47,19 @@ public class SavingsCalcController {
 
 
     /**
-     * setting the findTotalAmount button disable if one of the textfields are empty
+     * Setting the findTotalAmount button disable if one of the textfields are empty
      * or if the interestRate text field is not on a decimal format.
      */
     @FXML
     private void findTotalAmountAble() {
         findTotalAmount.setDisable(monthlyAmount.getText().isEmpty() || lumpAmount.getText().isEmpty() || period.getText().isEmpty() || interestRate.getText().isEmpty() || !interestRateFieldValid());
     }
+
     
-    
-    @FXML
-    private void handleFindTotalAmount(ActionEvent ev) {
+    /**
+     * Calculates the total amount based on the values in text fields
+     */
+    private double calculateTotalAmount() {
         int ma = Integer.parseInt(monthlyAmount.getText());
         int la = Integer.parseInt(lumpAmount.getText());
         double ir = interestRateFieldConverter();
@@ -64,9 +67,15 @@ public class SavingsCalcController {
 
         double calc = SavingsCalc.calculation(ma, la, ir, p);
 
-
-        totalAmountText.setText("Totalbeløp etter perioden: kr " + Integer.toString((int) calc));;
+        return calc;
     }
+
+
+    @FXML
+    private void handleFindTotalAmount(ActionEvent ev) {
+        totalAmountText.setText("Totalbeløp etter perioden: kr " + Integer.toString((int) calculateTotalAmount()));;
+    }
+
 
     /**
      * Check if the text on the interestRate field is on decimal format.
@@ -105,7 +114,6 @@ public class SavingsCalcController {
         String string = list.get(0) + "." + list.get(1);
 
         return Double.parseDouble(string);
-    }
-    
-}
+    } 
 
+}
