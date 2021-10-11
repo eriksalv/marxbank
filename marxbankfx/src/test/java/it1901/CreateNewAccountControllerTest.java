@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class CreateNewAccountControllerTest extends ApplicationTest{
-    private MainController controller;
+    private createNewAccountController controller;
     private DataManager dm;
     private User user;
     private Account account1;
@@ -39,7 +39,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
 
     @Override
     public void start(final Stage stage) throws Exception {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("Main_test.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("createNewAccount.fxml"));
         Parent root = loader.load();
         this.controller = loader.getController();
         stage.setScene(new Scene(root));
@@ -63,7 +63,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
         this.account1.deposit(500);
         this.account2 = new SavingsAccount("12345", user, dm);
         this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
-        this.controller.initData(dm, user);
+        this.controller.initData(user, dm);
     }
 
     private void resetSingleton() {
@@ -73,8 +73,8 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     @Test
     @DisplayName("test create new account no name")
     public void testCreateNewAccountNoName() {
-        clickOn("#menuBtn2");
-        clickOn("#createNewAccountButton");
+        //clickOn("#menuBtn2");
+        //clickOn("#createNewAccountButton");
         clickOn("#handleCreateAccountButton");
         assertEquals("Account needs a name.", lookup("#errorMsg").queryAs(Label.class).getText());
     }
@@ -82,8 +82,8 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     @Test
     @DisplayName("test create new account no account type")
     public void testCreateNewAccountNoType() {
-        clickOn("#menuBtn2");
-        clickOn("#createNewAccountButton");
+        //clickOn("#menuBtn2");
+        //clickOn("#createNewAccountButton");
         clickOn("#accountName").write("hello");
         clickOn("#handleCreateAccountButton");
         assertEquals("No account type selected.", lookup("#errorMsg").queryAs(Label.class).getText());
@@ -92,8 +92,8 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     @Test
     @DisplayName("test create new account succesfull")
     public void testCreateNewAccount() {
-        clickOn("#menuBtn2");
-        clickOn("#createNewAccountButton");
+        //clickOn("#menuBtn2");
+        //clickOn("#createNewAccountButton");
         Label completeLabel = (Label) lookup("#creationCompleteMsg").queryLabeled();
         clickOn("#accountName").write("hello");
         MenuButton b = lookup("#selectAccountType").queryAs(MenuButton.class);

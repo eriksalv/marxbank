@@ -68,8 +68,8 @@ public class MyAccountsController {
     private void handleCreateNewAccount(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("createNewAccount.fxml"));
-        createNewAccountController controller = new createNewAccountController(user, dm);
-        loader.setController(controller);
+        createNewAccountController controller = loader.getController();
+        controller.initData(user, dm);
         AnchorPane pane = loader.load();
 
         myAccounts.getChildren().setAll(pane);

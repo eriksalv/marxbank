@@ -30,7 +30,7 @@ public class createNewAccountController {
         }
     };
 
-    public createNewAccountController(User user, DataManager dm) {
+    public void initData(User user, DataManager dm) {
         this.user = user;
         this.dm = dm;
     }
