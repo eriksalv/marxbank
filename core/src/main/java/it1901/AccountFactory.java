@@ -25,8 +25,17 @@ public class AccountFactory {
         return null;
     }
 
-    //second create method, primarily intended to be used when reading in account from file/database instead of creating a new account
-    public static Account createFrom(String accountType, String id, User user, DataManager dm, String name, int accountNumber, boolean add) {
+    /**
+     * second create method, primarily intended to be used when reading in account from file/database instead of creating a new account
+     * @param accountType
+     * @param id
+     * @param user
+     * @param dm
+     * @param name
+     * @param accountNumber
+     * @return
+     */
+    public static Account createFrom(String accountType, String id, User user, DataManager dm, String name, int accountNumber) {
         if ("Sparekonto".equalsIgnoreCase(accountType)) {
             return new SavingsAccount(id, user,3, dm, name, accountNumber);
         } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
