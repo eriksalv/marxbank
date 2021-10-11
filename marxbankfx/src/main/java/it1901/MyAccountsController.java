@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class MyAccountsController {
@@ -19,10 +18,6 @@ public class MyAccountsController {
     
     @FXML private VBox myAccounts;
     @FXML private VBox accountBtns;
-
-    @FXML
-    private void initialize() {
-    }
 
     public void initData(User user, DataManager dm) {
         this.user = user;
@@ -39,6 +34,7 @@ public class MyAccountsController {
             Button accountBtn = new Button();
             accountBtn.getStyleClass().add("accBtn");
             accountBtn.setText("Kontonummer: " + a.getAccountNumber());
+            accountBtn.setId(String.format("%d", a.getAccountNumber()));
             accountBtn.setOnAction(ev -> {
                 account = a;
                 try {
@@ -58,7 +54,7 @@ public class MyAccountsController {
      * @throws IOException
      */
     @FXML
-    private void handleSelectAccount(ActionEvent e) throws IOException {       
+    private void handleSelectAccount(ActionEvent e) throws IOException {    
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Account.fxml"));
         AnchorPane pane = loader.load();

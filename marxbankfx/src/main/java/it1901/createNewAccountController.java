@@ -14,6 +14,7 @@ public class createNewAccountController {
     @FXML private MenuButton selectAccountType;
     @FXML private TextField accountName;
     @FXML private Label creationCompleteMsg;
+    @FXML private Label errorMsg;
 
     private User user;
     private DataManager dm;
@@ -51,9 +52,14 @@ public class createNewAccountController {
     @FXML
     private void handleCreateAccount() {
         accName = accountName.getText();
+        errorMsg.setText("");
+        if(accName == "") {
+            errorMsg.setText("Account needs a name.");
+            return;
+        }
         acc = AccountFactory.create(selectAccountType.getText(), user, dm, accName);
         if (acc==null) {
-            System.err.println("No account type selected");
+            errorMsg.setText("No account type selected.");
             return;
         }
         creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: " + acc.getName() + " ble opprettet");

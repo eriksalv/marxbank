@@ -16,7 +16,7 @@
                </font>
             </Label>
             <VBox fx:id="accountBtns" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" />
-            <Button mnemonicParsing="false" text="Opprett ny konto" onAction="#handleCreateNewAccount">
+            <Button fx:id="createNewAccountButton" mnemonicParsing="false" text="Opprett ny konto" onAction="#handleCreateNewAccount">
                <font>
                   <Font size="15.0" />
                </font>
