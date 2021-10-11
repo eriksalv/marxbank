@@ -32,6 +32,9 @@ public class HomeController {
 
     @FXML
     private void initialize() {
+        if(user != null) {
+            createFavorites();
+        }
     }
 
 

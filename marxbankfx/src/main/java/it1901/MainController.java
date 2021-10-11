@@ -52,11 +52,11 @@ public class MainController {
         });
     }
 
-    public void initData(DataManager dm) {
+    public void initData(DataManager dm) throws IOException {
         this.initData(dm, dm.getLoggedInUser());
     }
 
-    public void initData(DataManager dm, User user) {
+    public void initData(DataManager dm, User user) throws IOException {
         this.dm = dm;
         if (user==null) {
             throw new IllegalArgumentException("user cannot be null");
