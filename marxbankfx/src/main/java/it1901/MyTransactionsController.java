@@ -16,6 +16,10 @@ public class MyTransactionsController {
 
     public void initData(User user) {
 
+        if (user.getAccounts().size()==0) {
+            return;
+        }
+
         List<Transaction> ml = new ArrayList<Transaction>();
         List<TransactionComponent> l = new ArrayList<TransactionComponent>();
         user.getAccounts().stream().forEach(e -> {

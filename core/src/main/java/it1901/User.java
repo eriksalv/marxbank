@@ -7,9 +7,6 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class User {
 
     private String id;
@@ -28,22 +25,27 @@ public class User {
      * @param email of user
      * @param password of user
      */
-    public User(String id, String username, String email, String password, DataManager dm) {
+    public User(String id, String username, String email, String password, DataManager dm, boolean add) {
         this.id = id;
         this.username = validateUsername(username);
         this.email = validateEmail(email);
         this.password = password; // going to get hashed later
         this.dm = dm;
+        if(add) this.dm.addUser(this);
+    }
 
-        this.dm.addUser(this);
+    public User(String id, String username, String email, String password, DataManager dm) {
+        this(id, username, email, password, dm, true);
     }
 
     public User(String username, String email, String password, DataManager dm) {
-        this(UUID.randomUUID().toString(), username, email, password, dm);
+        this(UUID.randomUUID().toString(), username, email, password, dm, true);
     }
 
     public void setId(String newId) {
+        if(newId == null) throw new IllegalArgumentException("Id cannot be null");
         this.id = newId;
+        updateUser();
     }
 
     public String getId() {
@@ -51,7 +53,7 @@ public class User {
     }
 
     public void setUsername(String newUsername) {
-        this.username = newUsername;
+        this.username = validateUsername(newUsername);
         updateUser();
     }
 
@@ -60,7 +62,7 @@ public class User {
     }
 
     public void setEmail(String newEmail) {
-        this.email = newEmail;
+        this.email = validateEmail(newEmail);
         updateUser();
     }
 
@@ -102,15 +104,6 @@ public class User {
             throw new IllegalArgumentException("This account does not exist in your accounts.");
         }
     }
-
-   public String saveUser() {
-       try {
-            return (new ObjectMapper()).writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-   }
 
    private String validateUsername(String username) {
        if(username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");

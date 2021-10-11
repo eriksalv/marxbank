@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
 public class MainController {
 
@@ -35,7 +36,8 @@ public class MainController {
     @FXML private Button menuBtn5;
     
     @FXML
-    private void initialize() throws IOException {
+    private void initialize() {
+        setSizeScaling();
     }
 
     public String getCurrentContent() {
@@ -52,14 +54,18 @@ public class MainController {
         });
     }
 
-    public void initData(DataManager dm) {
+    public void initData(DataManager dm) throws IOException {
+        this.initData(dm, dm.getLoggedInUser());
+    }
+
+    public void initData(DataManager dm, User user) throws IOException {
         this.dm = dm;
-        this.user = dm.getLoggedInUser();
-        setSizeScaling();
-        try {
+        if (user==null) {
+            throw new IllegalArgumentException("user cannot be null");
+        }
+        this.user = user;
+        if (this.user.getAccounts().size()>0) {
             handleHome();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -76,7 +82,7 @@ public class MainController {
     }
 
     @FXML
-    private void handleMyAccounts(ActionEvent e) throws IOException {
+    private void handleMyAccounts() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("MyAccounts.fxml"));
         VBox pane = loader.load();
@@ -88,7 +94,7 @@ public class MainController {
     }
 
     @FXML 
-    private void handleTransaction(ActionEvent e) throws IOException {
+    private void handleTransaction() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Transaction.fxml"));
         AnchorPane pane = loader.load();
@@ -100,7 +106,7 @@ public class MainController {
     }
 
     @FXML
-    private void handleMyTransactions(ActionEvent e) throws IOException {
+    private void handleMyTransactions() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("MyTransactions.fxml"));
         Pane pane = loader.load();
@@ -112,12 +118,12 @@ public class MainController {
     }
     
     @FXML
-    private void handleMyProfile(ActionEvent e) throws IOException {
+    private void handleMyProfile() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Profile.fxml"));
         AnchorPane pane = loader.load();
         ProfileController controller = loader.getController();
-        controller.initData(user);
+        controller.initData(user, dm);
 
         content.getChildren().setAll(pane);
         currentContent="MyProfile";

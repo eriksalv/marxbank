@@ -19,9 +19,9 @@ public class Transaction {
     of balance between the accounts.*/
 
     private final String id;
-    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
+    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm", "accountNumber", "name"})
     private final Account from;
-    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm"})
+    @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm", "accountNumber", "name"})
     private final Account reciever;
     private final double amount;
     @JsonIgnore
@@ -42,6 +42,18 @@ public class Transaction {
      * @param dm - datamanager object for local storage
      * @param commit - commits the transaction of money between accounts if true
      */
+    public Transaction(String id, Account from, Account reciever, double amount, DataManager dm, boolean commit, boolean add) {
+        this.id = id;
+        this.from = from;
+        this.reciever = reciever;
+        this.amount = validateAmount(amount);
+        transactionDate = LocalDateTime.now();
+        dateString = dateFormat.format(transactionDate);
+        this.dm = dm;
+        if(commit) commitTransaction();
+        if(add) this.dm.addTransaction(this);
+    }
+
     public Transaction(String id, Account from, Account reciever, double amount, DataManager dm, boolean commit) {
         this.id = id;
         this.from = from;
@@ -60,7 +72,7 @@ public class Transaction {
     }
 
     public Transaction(Account from, Account reciever, double amount, DataManager dm) {
-        this(UUID.randomUUID().toString(), from, reciever, amount, dm, true);
+        this(UUID.randomUUID().toString(), from, reciever, amount, dm, true, true);
     }
 
     public String getId() {
