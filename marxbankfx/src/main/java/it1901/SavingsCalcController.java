@@ -59,13 +59,13 @@ public class SavingsCalcController {
     /**
      * Calculates the total amount based on the values in text fields
      */
-    private double calculateTotalAmount() {
+    private int calculateTotalAmount() {
         int ma = Integer.parseInt(monthlyAmount.getText());
         int la = Integer.parseInt(lumpAmount.getText());
-        double ir = interestRateFieldConverter();
         int p = Integer.parseInt(period.getText());
-
-        double calc = SavingsCalc.calculation(ma, la, ir, p);
+        double ir = interestRateFieldConverter();
+        
+        int calc = SavingsCalc.calculation(ma, la, p, ir);
 
         return calc;
     }
@@ -73,7 +73,7 @@ public class SavingsCalcController {
 
     @FXML
     private void handleFindTotalAmount(ActionEvent ev) {
-        totalAmountText.setText("Totalbeløp etter perioden: kr " + Integer.toString((int) calculateTotalAmount()));;
+        totalAmountText.setText("Totalbeløp etter perioden: kr " + Integer.toString(calculateTotalAmount()));
     }
 
 
