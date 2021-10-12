@@ -12,7 +12,7 @@ public class SavingsCalc {
      * @param period 
      * @return the total amount after the given period.
      */
-    public static int calculation(int monthlyAmount, int lumpAmount, int period, double interestRate) {
+    public static double calculation(int monthlyAmount, int lumpAmount, int period, double interestRate) {
         if (period == 0) 
             period = 1;
         
@@ -31,8 +31,10 @@ public class SavingsCalc {
 
         double sum = lumpAmountSum + monthlyAmountSum;
 
-        return (int) Math.round(sum) / 1;
+        return Math.round(sum);
     }
+
+
 
 }
 
