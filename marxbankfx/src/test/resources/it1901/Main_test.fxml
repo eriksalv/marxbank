@@ -18,6 +18,7 @@
                         <Button fx:id="menuBtn2" mnemonicParsing="false" onAction="#handleMyAccounts" prefHeight="96.0" prefWidth="144.0" text="Mine kontoer" />
                         <Button fx:id="menuBtn3" mnemonicParsing="false" onAction="#handleTransaction" prefHeight="96.0" prefWidth="144.0" text="Overføring" />
                         <Button fx:id="menuBtn4" mnemonicParsing="false" onAction="#handleMyTransactions" prefHeight="96.0" prefWidth="144.0" text="Betalingsoversikt" />
+                        <Button fx:id="savingsCalcMenuBtn" mnemonicParsing="false" onAction="#handleSavingsCalc" prefHeight="80.0" prefWidth="144.0" text="Sparekalkulator" />
                         <Button fx:id="menuBtn5" mnemonicParsing="false" onAction="#handleMyProfile" prefHeight="96.0" prefWidth="144.0" text="Min profil" />
                      </children>
                   </VBox>

@@ -9,7 +9,9 @@ public class TextFieldFormatter {
 
     /**
      * returns a TextFormatter that only allows numbers in text fields.
-     */    
+     * @return if the change matches the criterea of the 
+     * number formatter, return change, else return null
+    */    
     public static TextFormatter<String> getNumberFormatter() {
         UnaryOperator<Change> filter = change -> {
             String text = change.getText();
@@ -25,8 +27,11 @@ public class TextFieldFormatter {
     }
 
     /**
-     * returns a TextFormatter that only allows numbers and commas (decimals) in text fields.
-     */  
+     * returns a TextFormatter that only allows numbers and commas
+     * (decimals) in text fields.
+     * @return if the change matches the criterea of the 
+     * decimal formatter, return change, else return null
+    */  
     public static TextFormatter<String> getDecimalFormatter() {
         UnaryOperator<Change> filter = change -> {
             String text = change.getText();

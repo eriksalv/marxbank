@@ -4,39 +4,61 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.SavingsCalcController">
    <children>
-      <TextField fx:id="monthlyAmount" layoutX="145.0" layoutY="90.0" onTextChange="#findTotalAmountAble" />
-      <TextField fx:id="lumpAmount" layoutX="145.0" layoutY="132.0" onTextChange="#findTotalAmountAble" />
-      <TextField fx:id="period" layoutX="145.0" layoutY="175.0" onTextChange="#findTotalAmountAble" prefHeight="25.0" prefWidth="74.0" />
-      <TextField fx:id="interestRate" layoutX="145.0" layoutY="216.0" onTextChange="#findTotalAmountAble" prefHeight="25.0" prefWidth="74.0" />
-
-      <Label layoutX="26.0" layoutY="94.0" text="Fast månedlig beløp:" />
-      <Label layoutX="76.0" layoutY="220.0" text="Årlig rente:" />
-      <Label layoutX="61.0" layoutY="179.0" text="Spareperiode:" />
-      <Label layoutX="59.0" layoutY="136.0" text="Engangsbeløp:" />
-
-      <Label layoutX="300.0" layoutY="94.0" prefHeight="17.0" prefWidth="41.0" text="kr" />
-      <Label layoutX="300.0" layoutY="136.0" prefHeight="17.0" prefWidth="41.0" text="kr" />
-      <Label layoutX="224.0" layoutY="179.0" prefHeight="17.0" prefWidth="41.0" text="år" />
-      <Label layoutX="224.0" layoutY="220.0" prefHeight="17.0" prefWidth="41.0" text="\%" />
-
-      <Label layoutX="26.0" layoutY="26.0" prefHeight="17.0" prefWidth="262.0" text="Sparekalkulator">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
-      <Label fx:id="totalAmountText" layoutX="76.0" layoutY="332.0" prefHeight="30.0" prefWidth="451.0" text="Totalbeløp etter perioden">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Button fx:id="findTotalAmount" layoutX="78.0" layoutY="265.0" mnemonicParsing="false" onAction="#handleFindTotalAmount" prefHeight="30.0" prefWidth="133.0" text="Finn totalbeløp">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
+      <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+      
+            <Label prefHeight="17.0" prefWidth="262.0" text="Sparekalkulator">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
+               <children>
+            
+                  <Label text="Fast månedlig beløp:" />
+                  <TextField fx:id="monthlyAmount" onTextChange="#findTotalAmountAble" />
+            
+                  <Label prefHeight="17.0" prefWidth="41.0" text="kr" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
+               <children>
+                  <Label text="Engangsbeløp:" />
+                  <TextField fx:id="lumpAmount" onTextChange="#findTotalAmountAble" />
+                  <Label prefHeight="17.0" prefWidth="41.0" text="kr" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
+               <children>
+                  <Label text="Spareperiode:" />
+                  <TextField fx:id="period" onTextChange="#findTotalAmountAble" prefHeight="25.0" prefWidth="74.0" />
+                  <Label prefHeight="17.0" prefWidth="41.0" text="år" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0">
+               <children>
+                  <Label text="Årlig rente:" />
+                  <TextField fx:id="interestRate" onTextChange="#findTotalAmountAble" prefHeight="25.0" prefWidth="74.0" />
+                  <Label prefHeight="17.0" prefWidth="41.0" text="\%" />
+               </children>
+            </HBox>
+            <Button fx:id="findTotalAmount" mnemonicParsing="false" onAction="#handleFindTotalAmount" prefHeight="30.0" prefWidth="133.0" text="Finn totalbeløp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="totalAmountText" prefHeight="100.0" prefWidth="451.0" text="Totalbeløp etter perioden">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
