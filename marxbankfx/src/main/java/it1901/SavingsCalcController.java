@@ -50,13 +50,6 @@ public class SavingsCalcController {
      * Setting the findTotalAmount button disable if one of the textfields are empty
      * or if the interestRate text field is not on a decimal format.
      */
-
-    /*
-    @FXML
-    private void findTotalAmountAble() {
-        findTotalAmount.setDisable(monthlyAmount.getText().isEmpty() || lumpAmount.getText().isEmpty() || period.getText().isEmpty() || interestRate.getText().isEmpty() || !interestRateFieldValid());
-    }
-    */
     @FXML
     private void findTotalAmountAble() {
         findTotalAmount.setDisable(monthlyAmount.getText().isEmpty() || lumpAmount.getText().isEmpty() || period.getText().isEmpty() || interestRate.getText().isEmpty() || !interestRateFieldValid());
