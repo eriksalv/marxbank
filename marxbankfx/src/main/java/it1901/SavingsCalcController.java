@@ -74,6 +74,9 @@ public class SavingsCalcController {
     @FXML
     private void handleFindTotalAmount(ActionEvent ev) {
         totalAmountText.setText("Totalbeløp etter perioden: kr " + Integer.toString(calculateTotalAmount()));
+        
+        if (Integer.parseInt(period.getText()) == 0)
+            period.setText("1");
     }
 
 
