@@ -57,6 +57,10 @@ public class SavingsCalcController {
         findTotalAmount.setDisable(monthlyAmount.getText().isEmpty() || lumpAmount.getText().isEmpty() || period.getText().isEmpty() || interestRate.getText().isEmpty() || !interestRateFieldValid());
     }
     */
+    @FXML
+    private void findTotalAmountAble() {
+        findTotalAmount.setDisable(monthlyAmount.getText().isEmpty() || lumpAmount.getText().isEmpty() || period.getText().isEmpty() || interestRate.getText().isEmpty());
+    }
 
     
     /**
