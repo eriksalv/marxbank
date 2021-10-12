@@ -5,10 +5,14 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class ProfileController {
     
@@ -48,5 +52,20 @@ public class ProfileController {
 
     public void closeChangePassword() {
         newPane.getChildren().clear();
+    }
+
+    @FXML
+    private void handleSignOut(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("LogIn.fxml"));
+        Parent tableViewParent = loader.load();
+        
+        Scene tableViewScene = new Scene(tableViewParent);
+        
+        //Get stage information
+        Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
+        
+        window.setScene(tableViewScene);
+        window.show();
     }
 }
