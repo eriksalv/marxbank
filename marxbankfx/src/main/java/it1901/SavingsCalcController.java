@@ -65,9 +65,9 @@ public class SavingsCalcController {
         int p = Integer.parseInt(period.getText());
         double ir = interestRateFieldConverter();
         
-        int calc = SavingsCalc.calculation(ma, la, p, ir);
+        double calc = SavingsCalc.calculation(ma, la, p, ir);
 
-        return calc;
+        return (int) Math.round(calc) / 1;
     }
 
 
