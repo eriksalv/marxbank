@@ -9,6 +9,7 @@
     <modules>
         <module>core</module>
         <module>marxbankfx</module>
+        <module>json</module>
     </modules>
 
     <properties>
