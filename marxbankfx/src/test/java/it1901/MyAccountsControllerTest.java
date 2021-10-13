@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.Semaphore;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -53,19 +53,16 @@ public class MyAccountsControllerTest extends ApplicationTest {
     }
 
     @BeforeEach
-    public void beforeEachSetup() throws IOException {
+    public void beforeEachSetup() throws IOException, InterruptedException {
         resetSingleton();
         this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
+        this.user = new User("567891", "annaos", "anna.ostmo@gmail.com", "passord", dm);
         this.account1 = new SavingsAccount(user, dm, "Annas brukskonto");
         this.account1.deposit(500);
         this.account2 = new SavingsAccount("12345", user, dm);
         this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
-        Platform.runLater(new Runnable(){
-            @Override public void run() {
-                controller.initData(user, dm);
-            }
-        });
+        controller.initData(user, dm);
+        waitForRunLater();
     }
 
     @Test
@@ -74,7 +71,7 @@ public class MyAccountsControllerTest extends ApplicationTest {
     }
 
 
-    //@Test
+    @Test
     @DisplayName("Test handle Select Account")
     public void testHandleSelectAccount() {
         //clickOn("#menuBtn2");
@@ -85,17 +82,23 @@ public class MyAccountsControllerTest extends ApplicationTest {
         assertEquals("accountName", ((AnchorPane)content.getChildren().get(0)).getChildren().get(0).getId());
     }
 
-    //@Test
+    @Test
     @DisplayName("Test handle create new account")
     public void testHandleCreateNewAccount() {
         //clickOn("#menuBtn2");
         VBox content = lookup("#myAccounts").queryAs(VBox.class);
         clickOn("#createNewAccountButton");
-        assertEquals("createNewAccount", ((AnchorPane)content.getChildren().get(0)).getChildren().get(0).getId());
+        assertEquals("createNewAccount", (((AnchorPane)content.getChildren().get(0)).getId()));
     }
 
     private void resetSingleton() {
         Bank.getInstanceBank().clearAccounts();
+    }
+
+    public static void waitForRunLater() throws InterruptedException {
+        Semaphore semaphore = new Semaphore(0);
+        Platform.runLater(() -> semaphore.release());
+        semaphore.acquire();    
     }
 
 }
