@@ -47,9 +47,9 @@ public class SavingsCalcController {
 
 
     /**
-     * Setting the findTotalAmount button disable if one of the textfields are empty
+     * Setting the findTotalAmount button disabled if one of the textfields are empty
      * or if the interestRate text field is not on a decimal format.
-     */
+    */
     @FXML
     private void findTotalAmountAble() {
         findTotalAmount.setDisable(monthlyAmount.getText().isEmpty() || lumpAmount.getText().isEmpty() || period.getText().isEmpty() || interestRate.getText().isEmpty() || !interestRateFieldValid());
@@ -58,7 +58,7 @@ public class SavingsCalcController {
     
     /**
      * Calculates the total amount based on the values in text fields
-     */
+    */
     private int calculateTotalAmount() {
         int ma = Integer.parseInt(monthlyAmount.getText());
         int la = Integer.parseInt(lumpAmount.getText());
@@ -83,9 +83,9 @@ public class SavingsCalcController {
     /**
      * Check if the text on the interestRate field is on decimal format.
      * 
-     * @return true if a string containing only numbers has no comm in itself or if
+     * @return true if a string containing only numbers has no comma in itself or if
      * a string containing numbers on both side of one comma between them. 
-     */
+    */
     private boolean interestRateFieldValid() {
         String s = interestRate.getText();
 
