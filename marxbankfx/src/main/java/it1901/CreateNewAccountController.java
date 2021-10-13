@@ -1,16 +1,15 @@
 package it1901;
 
+import javafx.event.EventHandler;
 import it1901.util.AccountType;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.MenuItem;
 
-public class createNewAccountController {
-    
+public class CreateNewAccountController {
     @FXML private MenuButton selectAccountType;
     @FXML private TextField accountName;
     @FXML private Label creationCompleteMsg;
@@ -21,6 +20,10 @@ public class createNewAccountController {
     private String accName;
 
     private Account acc;
+
+    public CreateNewAccountController() {
+        
+    }
 
     private EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
         @Override
@@ -71,5 +74,4 @@ public class createNewAccountController {
             e.printStackTrace();
         }
     }
-
 }

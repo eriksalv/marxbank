@@ -16,6 +16,10 @@ public class MyTransactionsController {
 
     public void initData(User user) {
 
+        for (Account a : user.getAccounts()) {
+            System.out.println(a.getTransactions());
+        }
+
         if (user.getAccounts().size()==0) {
             return;
         }

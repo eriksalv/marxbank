@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class CreateNewAccountControllerTest extends ApplicationTest{
-    private createNewAccountController controller;
+    private CreateNewAccountController controller;
     private DataManager dm;
     private User user;
     private Account account1;
@@ -39,7 +39,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
 
     @Override
     public void start(final Stage stage) throws Exception {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("createNewAccount.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateNewAccount.fxml"));
         Parent root = loader.load();
         this.controller = loader.getController();
         stage.setScene(new Scene(root));

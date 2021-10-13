@@ -3,6 +3,7 @@ package it1901;
 import java.io.IOException;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +23,11 @@ public class MyAccountsController {
     public void initData(User user, DataManager dm) {
         this.user = user;
         this.dm = dm;
-        createAccountButtons();
+        Platform.runLater(new Runnable(){
+            @Override public void run() {
+                createAccountButtons();;
+            }
+        });
     }
 
     /**
@@ -67,10 +72,11 @@ public class MyAccountsController {
     @FXML
     private void handleCreateNewAccount(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("createNewAccount.fxml"));
-        createNewAccountController controller = loader.getController();
-        controller.initData(user, dm);
+        loader.setLocation(getClass().getResource("CreateNewAccount.fxml"));
+
         AnchorPane pane = loader.load();
+        CreateNewAccountController controller = loader.getController();
+        controller.initData(user, dm);
 
         myAccounts.getChildren().setAll(pane);
     }
