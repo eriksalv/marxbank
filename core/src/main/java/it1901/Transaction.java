@@ -1,7 +1,9 @@
 package it1901;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,14 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+/**
+ * The purpose of the transaction class is to store information about a transaction between
+    two accounts. The information stored should never be changed, so it essentially functions
+    as a record, but it is also responsible for withdrawing and depositing the correct amount
+    of balance between the accounts.
+*/
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Transaction {
     
-    /*The purpose of the transaction class is to store information about a transaction between
-    two accounts. The information stored should never be changed, so it essentially functions
-    as a record, but it is also responsible for withdrawing and depositing the correct amount
-    of balance between the accounts.*/
-
     private final String id;
     @JsonIgnoreProperties({"user", "transactions", "balance", "interestRate", "type", "dm", "accountNumber", "name"})
     private final Account from;
@@ -31,7 +34,7 @@ public class Transaction {
     private DataManager dm;
 
     //autoformats the date text-string 
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     /**
      * Initializes transaction object and runs the commitTransaction method.
@@ -39,19 +42,33 @@ public class Transaction {
      * @param from - Account that money is transfered from
      * @param reciever - Account that recieves money
      * @param amount - Amount of money in transaction
+     * @param date - date that the transaction took place
      * @param dm - datamanager object for local storage
      * @param commit - commits the transaction of money between accounts if true
-     */
-    public Transaction(String id, Account from, Account reciever, double amount, DataManager dm, boolean commit, boolean add) {
+    */
+    public Transaction(String id, Account from, Account reciever, double amount, String date, DataManager dm, boolean commit, boolean add) {
         this.id = id;
         this.from = from;
         this.reciever = reciever;
         this.amount = validateAmount(amount);
-        transactionDate = LocalDateTime.now();
-        dateString = dateFormat.format(transactionDate);
+        if (date==null) {
+            this.transactionDate=LocalDateTime.now();
+            this.dateString=DATE_FORMATTER.format(transactionDate);
+        } else {
+            this.transactionDate = convertToDate(date);
+            this.dateString = DATE_FORMATTER.format(transactionDate);
+        }
         this.dm = dm;
         if(commit) commitTransaction();
-        if(add) this.dm.addTransaction(this);
+        if(add) {
+            this.dm.addTransaction(this);
+            this.from.addTransaction(this);
+            this.reciever.addTransaction(this);
+        }
+    }
+
+    public Transaction(String id, Account from, Account reciever, double amount, DataManager dm, boolean commit, boolean add) {
+        this(id, from, reciever, amount, null, dm, commit, add);
     }
 
     public Transaction(String id, Account from, Account reciever, double amount, DataManager dm, boolean commit) {
@@ -60,14 +77,13 @@ public class Transaction {
         this.reciever = reciever;
         this.amount = validateAmount(amount);
         transactionDate = LocalDateTime.now();
-        dateString = dateFormat.format(transactionDate);
+        dateString = DATE_FORMATTER.format(transactionDate);
         this.dm = dm;
         if(commit) {
             commitTransaction();
-        } else {
-            this.from.addTransaction(this);
-            this.reciever.addTransaction(this);
         }
+        this.from.addTransaction(this);
+        this.reciever.addTransaction(this);
         this.dm.addTransaction(this);
     }
 
@@ -116,13 +132,33 @@ public class Transaction {
         }
         from.withdraw(this.amount);
         reciever.deposit(this.amount);
-        from.addTransaction(this);
-        reciever.addTransaction(this);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(this.id);
+    }
+
+    /**
+     * Checks if a date input is valid according to the formatter of this class
+     * @param dateString input date as string
+     * @return true if valid, else false.
+    */
+    public static boolean isValidDate(String dateString) {
+        try {
+            DATE_FORMATTER.parse(dateString);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static LocalDateTime convertToDate(String dateString) {
+        if (!isValidDate(dateString)) {
+            throw new IllegalArgumentException("Invalid date format");
+        }
+        String date[] = dateString.split("-");
+        return LocalDateTime.of(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), 0,0);
     }
 
     @Override

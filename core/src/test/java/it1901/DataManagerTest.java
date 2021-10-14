@@ -39,6 +39,7 @@ public class DataManagerTest {
 
     @BeforeEach
     public void cleanUpBetween() {
+        resetSingleton();
         try {
             tempDir.resolve("data/users.json").toFile().delete();
             tempDir.resolve("data/accounts.json").toFile().delete();
@@ -157,7 +158,7 @@ public class DataManagerTest {
         Account a = new SavingsAccount("test1", user, 5.0, this.dm);
         a.deposit(5000.0);
         Account a2 = new SavingsAccount("test2", user, 10.0, this.dm);
-        Transaction t = new Transaction("test", a, a2, 500, this.dm, true);
+        Transaction t2 = new Transaction("test", a, a2, 500, this.dm, true);
 
         assertFalse(Files.exists(tempDir.resolve("data/users.json")));
         this.dm.saveUsers(tempDir.resolve("data/users.json").toFile());
@@ -251,14 +252,14 @@ public class DataManagerTest {
         Account account2 = new SavingsAccount(user, dm, "name2");
 
 
-        Transaction t = new Transaction(account, account2, 50, dm);
-        Transaction t1 = new Transaction(account, account2, 100, dm);
+        Transaction t4 = new Transaction(account, account2, 50, dm);
+        Transaction t5 = new Transaction(account, account2, 100, dm);
 
         // save user stuff
         this.dm.save();
         this.dm.deleteUser(user2);
         this.dm.deleteAccount(deleteAccount);
-        this.dm.deleteTransaction(t1);
+        this.dm.deleteTransaction(t5);
         this.dm.save();
 
         DataManager dm2 = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
@@ -270,16 +271,16 @@ public class DataManagerTest {
         assertTrue(dm2.getIndexOfAccount(deleteAccount) == -1);
         assertTrue(dm2.getIndexOfAccount(account) == 0);
 
-        assertTrue(dm2.getIndexOfTransaction(t1) == -1);
-        assertTrue(dm2.getIndexOfTransaction(t) == 0);
+        assertTrue(dm2.getIndexOfTransaction(t5) == -1);
+        assertTrue(dm2.getIndexOfTransaction(t4) == 0);
 
-        DataManager dm3 = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
-        dm3.addUser(user);
-        dm3.addAccount(account);
-        dm3.addAccount(account2);
-        dm3.addTransaction(t);
+        // DataManager dm3 = new DataManager(tempDir.resolve("data").toFile().getCanonicalPath());
+        // dm3.addUser(user);
+        // dm3.addAccount(account);
+        // dm3.addAccount(account2);
+        // dm3.addTransaction(t4);
 
-        dm3.parse();
+        // dm3.parse();
     }
 
     @Test
@@ -300,7 +301,7 @@ public class DataManagerTest {
         Account account = new SavingsAccount(user, dm, "name");
         account.deposit(500);
         Account account2 = new SavingsAccount(user, dm, "name");
-        Transaction t = new Transaction(account, account2, 50, this.dm);
+        Transaction t6 = new Transaction(account, account2, 50, this.dm);
 
         this.dm.setLoggedInUser(user);
         assertEquals(user, this.dm.getLoggedInUser());
@@ -311,7 +312,7 @@ public class DataManagerTest {
         assertEquals(account, this.dm.getAccount(account.getId()));
         assertNull(this.dm.getAccount("DoesNotExist"));
 
-        assertEquals(t, this.dm.getTransaction(t.getId()));
+        assertEquals(t6, this.dm.getTransaction(t6.getId()));
         assertNull(this.dm.getTransaction("DoesNotExist"));
     }
 
@@ -331,9 +332,9 @@ public class DataManagerTest {
         Account account2 = new SavingsAccount("2", user, 5.0, dm, "name", 100055);
 
         account.deposit(500);
-        Transaction t = new Transaction(account, account2, 50, this.dm);
+        Transaction t7 = new Transaction(account, account2, 50, this.dm);
         assertThrows(IllegalArgumentException.class, () -> {
-            this.dm.addTransaction(t);
+            this.dm.addTransaction(t7);
         });
 
         this.dm.deleteUser(user);
@@ -346,9 +347,9 @@ public class DataManagerTest {
             this.dm.deleteAccount(account);
         });
 
-        this.dm.deleteTransaction(t);
+        this.dm.deleteTransaction(t7);
         assertThrows(IllegalArgumentException.class, () -> {
-            this.dm.deleteTransaction(t);
+            this.dm.deleteTransaction(t7);
         });
     }
 
@@ -374,17 +375,21 @@ public class DataManagerTest {
         Account account2 = new SavingsAccount(user, dm, "name");
         Account account3 = new SavingsAccount(user, dm, "name");
         account2.deposit(500);
-        Transaction t = new Transaction(account2, account3, 50, this.dm);
-        assertTrue(this.dm.checkIfTransactionExists(t));
-        assertTrue(this.dm.checkIfTransactionExists(t.getId()));
-        this.dm.deleteTransaction(t);
-        assertFalse(this.dm.checkIfTransactionExists(t));
-        assertFalse(this.dm.checkIfTransactionExists(t.getId()));
+        Transaction t8 = new Transaction(account2, account3, 50, this.dm);
+        assertTrue(this.dm.checkIfTransactionExists(t8));
+        assertTrue(this.dm.checkIfTransactionExists(t8.getId()));
+        this.dm.deleteTransaction(t8);
+        assertFalse(this.dm.checkIfTransactionExists(t8));
+        assertFalse(this.dm.checkIfTransactionExists(t8.getId()));
 
         assertTrue(this.dm.checkIfUserExists(user));
         this.dm.deleteUser(user);
         assertFalse(this.dm.checkIfUserExists(user));
 
 
+    }
+
+    public void resetSingleton() {
+        Bank.getInstanceBank().clearAccounts();
     }
 }
