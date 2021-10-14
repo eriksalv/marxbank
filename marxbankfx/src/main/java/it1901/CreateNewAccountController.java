@@ -56,13 +56,13 @@ public class CreateNewAccountController {
     private void handleCreateAccount() {
         accName = accountName.getText();
         errorMsg.setText("");
-        if(accName == "") {
-            errorMsg.setText("Account needs a name.");
+        if(accName.isBlank()) {
+            errorMsg.setText("Konto trenger et navn.");
             return;
         }
         acc = AccountFactory.create(selectAccountType.getText(), user, dm, accName);
         if (acc==null) {
-            errorMsg.setText("No account type selected.");
+            errorMsg.setText("Ingen kontotype valgt.");
             return;
         }
         creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: " + acc.getName() + " ble opprettet");
