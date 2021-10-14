@@ -34,7 +34,7 @@ public class Transaction {
     private DataManager dm;
 
     //autoformats the date text-string 
-    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * Initializes transaction object and runs the commitTransaction method.
