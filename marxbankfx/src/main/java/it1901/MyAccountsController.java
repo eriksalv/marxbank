@@ -23,11 +23,7 @@ public class MyAccountsController {
     public void initData(User user, DataManager dm) {
         this.user = user;
         this.dm = dm;
-        Platform.runLater(new Runnable(){
-            @Override public void run() {
-                createAccountButtons();;
-            }
-        });
+        createAccountButtons();
     }
 
     /**

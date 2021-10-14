@@ -33,19 +33,18 @@ public class ChangePasswordController {
             saveButton.setText("Feil passord");
             return;
         }
-        if (!(newPasswordField.getText().equals(user.getPassword()))){
-            user.setPassword(newPasswordField.getText());
-            saveButton.setText("Oppdatert");
-            controller.updatePassword();
-            try {
-                dm.save();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        if (!newPasswordField.getText().equals(confirmNewPasswordField.getText())) {
+            saveButton.setText("Passordene stemmer ikke");
+            return;
         }
-        else {
-            saveButton.setText("Ugyldig passord");
+        user.setPassword(newPasswordField.getText());
+        saveButton.setText("Oppdatert");
+        controller.updatePassword();
+        try {
+            dm.save();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

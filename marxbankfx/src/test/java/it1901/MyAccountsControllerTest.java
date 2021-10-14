@@ -61,7 +61,11 @@ public class MyAccountsControllerTest extends ApplicationTest {
         this.account1.deposit(500);
         this.account2 = new SavingsAccount("12345", user, dm);
         this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
-        controller.initData(user, dm);
+        Platform.runLater(new Runnable(){
+            @Override public void run() {
+                controller.initData(user, dm);
+            }
+        });
         waitForRunLater();
     }
 

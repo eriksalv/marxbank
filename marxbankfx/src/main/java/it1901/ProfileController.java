@@ -56,6 +56,8 @@ public class ProfileController {
 
     @FXML
     private void handleSignOut(ActionEvent e) throws IOException {
+        dm.setLoggedInUser(null);
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("LogIn.fxml"));
         Parent tableViewParent = loader.load();
