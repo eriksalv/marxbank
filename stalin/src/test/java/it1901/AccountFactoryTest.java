@@ -10,34 +10,16 @@ import it1901.model.SavingsAccount;
 import it1901.model.User;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 public class AccountFactoryTest {
     
-    private DataManager dm;
     private User user;
-    private Account account;
-    private AccountFactory accf;
-
-    @TempDir
-    static Path tempDir;
-
-    @BeforeAll
-    public static void init() throws IOException {
-        Files.createDirectory(tempDir.resolve("data"));
-    }
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        String path = tempDir.toFile().getCanonicalPath();
-        dm = new DataManager(path);
         user = new User("id", "username", "email@email.com", "password");
     }
 

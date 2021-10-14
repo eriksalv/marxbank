@@ -35,7 +35,7 @@ public class CreditAccount extends Account {
 
 
     @Override
-    int generateAccountNumber() {
+    public int generateAccountNumber() {
         String accNumberString = "69";
         for (int i=0;i<3;i++) {
             accNumberString += "" + (new Random()).nextInt(10);
@@ -48,7 +48,7 @@ public class CreditAccount extends Account {
     }
 
     @Override
-    String getAccountType() {
+    public String getAccountType() {
         return "Kredittkonto";
     }
     

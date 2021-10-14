@@ -28,19 +28,8 @@ public class Transaction {
      * @param from - Account that money is transfered from
      * @param reciever - Account that recieves money
      * @param amount - Amount of money in transaction
-     * @param dm - datamanager object for local storage
      * @param commit - commits the transaction of money between accounts if true
      */
-    public Transaction(String id, Account from, Account reciever, double amount, boolean commit, boolean add) {
-        this.id = id;
-        this.from = from;
-        this.reciever = reciever;
-        this.amount = validateAmount(amount);
-        transactionDate = LocalDateTime.now();
-        dateString = dateFormat.format(transactionDate);
-        if(commit) commitTransaction();
-    }
-
     public Transaction(String id, Account from, Account reciever, double amount, boolean commit) {
         this.id = id;
         this.from = from;
@@ -57,7 +46,7 @@ public class Transaction {
     }
 
     public Transaction(Account from, Account reciever, double amount) {
-        this(UUID.randomUUID().toString(), from, reciever, amount, true, true);
+        this(UUID.randomUUID().toString(), from, reciever, amount, true);
     }
 
     public String getId() {

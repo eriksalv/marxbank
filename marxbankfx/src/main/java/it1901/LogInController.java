@@ -2,7 +2,7 @@ package it1901;
 
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
+import it1901.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.scene.Node;
 
 public class LogInController {
@@ -27,12 +26,11 @@ public class LogInController {
     @FXML private Pane newPane;
     @FXML private Parent root;
 
-    private DataManager dm;
 
     public LogInController() {
-        this.dm = new DataManager("../data");
+        DataManager.manager().setPath("../data");
         try {
-            dm.parse();
+            DataManager.manager().parse();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,6 +41,9 @@ public class LogInController {
 
         usernameError.setText("");
         passwordError.setText("");
+
+        System.out.println(typeUsername.getText());
+        System.out.println(typePassword.getText());
 
         String username = typeUsername.getText();
 
@@ -56,7 +57,7 @@ public class LogInController {
             return;
         }
 
-        User u = dm.getUserByUsername(username);
+        User u = DataManager.manager().getUserByUsername(username);
 
         if(u == null) {
             usernameError.setText("Username is wrong");
@@ -75,7 +76,7 @@ public class LogInController {
             return;
         }
 
-        this.dm.setLoggedInUser(u);
+        DataManager.manager().setLoggedInUser(u);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Main.fxml"));
@@ -85,7 +86,7 @@ public class LogInController {
         
         //Access the controller and call a method
         MainController controller = loader.getController();
-        controller.initData(dm);
+        controller.initData();
         
         //Get stage information
         Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
@@ -101,10 +102,5 @@ public class LogInController {
         AnchorPane pane = loader.load();
 
         ((AnchorPane) root).getChildren().setAll(pane);
-    }
-
-    // only used for testing purposes
-    public DataManager getDM() {
-        return this.dm;
     }
 }

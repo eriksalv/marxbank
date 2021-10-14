@@ -17,14 +17,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import it1901.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainControllerTest extends ApplicationTest {
-    
-    private DataManager dm;
+
     private MainController controller;
 
     @TempDir
@@ -51,9 +51,9 @@ public class MainControllerTest extends ApplicationTest {
     @BeforeEach
     private void beforeEach() throws IOException {
         resetSingleton();
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        User user = new User("username", "email@email.com", "password", dm);
-        controller.initData(dm,user);
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+        User user = new User("username", "email@email.com", "password");
+        controller.initData(user);
     }
 
 

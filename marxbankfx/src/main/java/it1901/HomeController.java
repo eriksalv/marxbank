@@ -20,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 public class HomeController {
 
     private User user;
-    private DataManager dm;
     
     @FXML private AnchorPane home;
     @FXML private Label HomeLabel;
@@ -43,9 +42,8 @@ public class HomeController {
     }
 
 
-    public void initData(User user, DataManager dm) {
+    public void initData(User user) {
         this.user = user;
-        this.dm = dm;
         createFavorites();
         recentActivity();
     }

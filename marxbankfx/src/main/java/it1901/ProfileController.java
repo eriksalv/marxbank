@@ -2,6 +2,7 @@ package it1901;
 
 import java.io.IOException;
 
+import it1901.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +21,9 @@ public class ProfileController {
     @FXML private Pane newPane;
 
     private User user;
-    private DataManager dm;
 
-    public void initData(User u, DataManager dm) {
+    public void initData(User u) {
         this.user = u;
-        this.dm = dm;
         nameLabel.setText(user.getEmail());
         IDLabel.setText(user.getId());
         usernameLabel.setText(user.getUsername());
@@ -37,7 +36,7 @@ public class ProfileController {
         loader.setLocation(getClass().getResource("ChangePassword.fxml"));
         AnchorPane pane = loader.load();
         ChangePasswordController controller = loader.getController();
-        controller.initData(user, this, dm);
+        controller.initData(user, this);
 
         newPane.getChildren().setAll(pane);
     }

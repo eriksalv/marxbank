@@ -15,15 +15,15 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import it1901.model.Account;
 import it1901.model.CheckingAccount;
+import it1901.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
-public class TransactionControllerTest extends ApplicationTest{
+public class MyTransactionControllerTest extends ApplicationTest{
     
-    private DataManager dm;
     private TransactionController controller;
     private Account a;
     private Account b;
@@ -53,11 +53,11 @@ public class TransactionControllerTest extends ApplicationTest{
     @BeforeEach
     private void beforeEach() throws IOException {
         resetSingleton();
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        user = new User("username", "email@email.com", "password", dm);
-        a = new CheckingAccount(user, dm, "test1");
-        b = new CheckingAccount(user, dm, "test2");
-        controller.initData(user,dm);
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+        user = new User("username", "email@email.com", "password");
+        a = new CheckingAccount(user, "test1");
+        b = new CheckingAccount(user, "test2");
+        controller.initData(user);
     }
 
     @Test

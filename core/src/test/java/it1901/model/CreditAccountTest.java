@@ -4,35 +4,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import it1901.Bank;
-import it1901.DataManager;
 
 public class CreditAccountTest {
-    private DataManager dm;
+
     private User user;
-
-    @TempDir
-    static Path tempDir;
-
-    @BeforeAll
-    public static void init() throws IOException {
-        Files.createDirectory(tempDir.resolve("data"));
-    }
 
     @BeforeEach
     public void beforeEach() throws IOException {
         resetSingleton();
-        String path = tempDir.toFile().getCanonicalPath();
-        dm = new DataManager(path);
         user = new User("id", "username", "email@email.com", "password");
     }
 
@@ -46,7 +30,6 @@ public class CreditAccountTest {
         String name = "kredittkonto";
 
         CreditAccount a = new CreditAccount(user, name);
-        assertEquals(this.dm.getAccounts().get(0), a);
         assertEquals(this.user.getAccounts().get(0), a);
         assertEquals(200, a.getCreditLimit());
     }

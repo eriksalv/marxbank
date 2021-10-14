@@ -26,7 +26,7 @@ public class TransactionSerializer extends StdSerializer<Transaction> {
         gen.writeStringField("id", transaction.getFrom().getId());
         gen.writeEndObject();
         gen.writeObjectFieldStart("reciever");
-        gen.writeStringField("id", transaction.getFrom().getId());
+        gen.writeStringField("id", transaction.getReciever().getId());
         gen.writeEndObject();
         gen.writeStringField("dateString", transaction.getDateString());
         gen.writeEndObject();

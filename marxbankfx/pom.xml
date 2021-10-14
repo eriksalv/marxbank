@@ -26,7 +26,7 @@
 
         <dependency>
             <groupId>it1901</groupId>
-            <artifactId>json</artifactId>
+            <artifactId>stalin</artifactId>
             <version>1.0-final</version>
         </dependency>
 

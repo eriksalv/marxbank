@@ -27,7 +27,7 @@ public class CheckingAccount extends Account {
     }
 
     @Override
-    int generateAccountNumber() {
+    public int generateAccountNumber() {
         String accNumberString = "2";
         for (int i=0;i<3;i++) {
             accNumberString += "" + (new Random()).nextInt(10);
@@ -40,7 +40,7 @@ public class CheckingAccount extends Account {
     }
 
     @Override
-    String getAccountType() {
+    public String getAccountType() {
         return "Brukskonto";
     }
     

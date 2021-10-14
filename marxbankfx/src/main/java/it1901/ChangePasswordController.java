@@ -1,5 +1,6 @@
 package it1901;
 
+import it1901.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,12 +20,10 @@ public class ChangePasswordController {
 
     private User user;
     private ProfileController controller;
-    private DataManager dm;
 
-    public void initData(User user, ProfileController c, DataManager dm) {
+    public void initData(User user, ProfileController c) {
         this.controller = c;
         this.user = user;
-        this.dm = dm;
     }
 
     @FXML
@@ -38,7 +37,7 @@ public class ChangePasswordController {
             saveButton.setText("Oppdatert");
             controller.updatePassword();
             try {
-                dm.save();
+                DataManager.manager().save();
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

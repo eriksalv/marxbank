@@ -16,14 +16,12 @@ public class MyAccountsController {
 
     private User user;
     private Account account;
-    private DataManager dm;
     
     @FXML private VBox myAccounts;
     @FXML private VBox accountBtns;
 
-    public void initData(User user, DataManager dm) {
+    public void initData(User user) {
         this.user = user;
-        this.dm = dm;
         createAccountButtons();
     }
 
@@ -71,7 +69,7 @@ public class MyAccountsController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("createNewAccount.fxml"));
         createNewAccountController controller = loader.getController();
-        controller.initData(user, dm);
+        controller.initData(user);
         AnchorPane pane = loader.load();
 
         myAccounts.getChildren().setAll(pane);

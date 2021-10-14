@@ -10,14 +10,14 @@ import it1901.util.AccountType;
 
 public abstract class Account {
 
-    private User user;
-    private final int accountNumber;
-    private String name; 
     private String id;
+    private final int accountNumber;
+    private AccountType type;
+    private User user;
+    private String name; 
     private List<Transaction> transactions = new LinkedList<Transaction>();
     private double balance = 0;
     private double interestRate; // In percent
-    private AccountType type;
     
     /**
      * Constructur for class Account.
@@ -35,9 +35,8 @@ public abstract class Account {
         this.type = type;
         this.name = "Ny konto";
         this.accountNumber = generateAccountNumber();
-
-        this.user.addAccount(this);
         Bank.getInstanceBank().addAccount(this);
+        this.user.addAccount(this);
     }
 
     public Account(String id, User user, double interestRate, AccountType type, int accountNumber, String name) {
@@ -145,10 +144,6 @@ public abstract class Account {
         this.balance = balance;
     }
 
-    public void setBalanceNoUpdate(double balance) {
-        this.balance = balance;
-    }
-
     public String getId() {
         return this.id;
     }
@@ -209,8 +204,8 @@ public abstract class Account {
         return getTransactions().size();
     }
 
-    abstract int generateAccountNumber();
+    public abstract int generateAccountNumber();
 
-    abstract String getAccountType();
+    public abstract String getAccountType();
     
 }

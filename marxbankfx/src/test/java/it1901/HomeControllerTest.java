@@ -30,7 +30,6 @@ public class HomeControllerTest extends ApplicationTest{
      * Creating a user and a belonging account to test with.
      */
     private HomeController controller;
-    private DataManager dm;
     private User user;
     private Account account1;
     private Account account2;
@@ -64,7 +63,7 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @BeforeEach
     void beforeEachSetup() throws IOException {
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
         this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord");
         this.account1 = new SavingsAccount(user, "Annas brukskonto");
         this.account1.deposit(500);
@@ -102,7 +101,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#AccountLabel").query();
                 assertNotNull(label);
                 assertTrue(label.getText().equals("Annas brukskonto"));
@@ -120,7 +119,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#AmountLabel").query();
                 assertTrue(label.getText().equals("kr " + account1.getBalance()));
             }
@@ -137,7 +136,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#AccountNumberLabel").query();
                 assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
             }
@@ -154,7 +153,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#DateLabel").query();
                 assertTrue(label.getText().equals(transaction.getDateString()));
             }
@@ -171,7 +170,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#LAaccountLabel").query();
                 assertTrue(label.getText().equals("Fra: " + transaction.getFrom().getName()));
             }
@@ -188,7 +187,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#OtherAccountLabel").query();
                 assertTrue(label.getText().equals("Til: " + transaction.getReciever().getName()));
             }
@@ -205,7 +204,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#LAamountLabel").query();
                 assertTrue(label.getText().equals("kr " + Double.toString(transaction.getAmount())));
             }

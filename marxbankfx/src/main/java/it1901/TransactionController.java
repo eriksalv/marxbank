@@ -3,6 +3,8 @@ package it1901;
 import java.util.UUID;
 
 import it1901.model.Account;
+import it1901.model.Transaction;
+import it1901.model.User;
 import it1901.util.TextFieldFormatter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,8 +20,6 @@ public class TransactionController {
     private Account from;
     private Account reciever;
     private double amount;
-    private DataManager dm;
-
     private Transaction t;
 
     @FXML private MenuButton myAccountsList;
@@ -44,9 +44,8 @@ public class TransactionController {
         setNumericOnlyTextFields();
     }
 
-    public void initData(User user, DataManager dm) {
+    public void initData(User user) {
         this.user = user;
-        this.dm = dm;
         createMyAccountsListItems();
     }
 
@@ -70,11 +69,11 @@ public class TransactionController {
             reciever = Bank.getInstanceBank().getAccount(Integer.parseInt(recieverText.getText()));
             amount = Integer.parseInt(amountText.getText());
             
-            t = new Transaction(UUID.randomUUID().toString(), from, reciever, amount, dm, true);
-            transactionCompleteMsg.setVisible(true);
+            t = DataManager.manager().createTransaction(from, reciever, amount);
             transactionFailedMsg.setVisible(false);
+            transactionCompleteMsg.setVisible(true);
             try {
-                dm.save();
+                DataManager.manager().save();
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

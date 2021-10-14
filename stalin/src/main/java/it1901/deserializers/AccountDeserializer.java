@@ -29,17 +29,15 @@ public class AccountDeserializer extends StdDeserializer<Account> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         AccountType type = AccountType.valueOf(node.get("type").asText());
-        //if(!dm.checkIfUserExists(node.get("user").get("id").asText())) throw new IllegalStateException("user doesn't exist");
-        //User owner = dm.getUser(node.get("user").get("id").asText());
 
-        // TODO: fiks opp med ny
+        if(!DataManager.manager().checkIfUserExists(node.get("user").get("id").asText())) throw new IllegalStateException("user doesn't exist");
+        User owner = DataManager.manager().getUser(node.get("user").get("id").asText());
 
         Account account = AccountFactory.createFrom(type.getTypeString(), node.get("id").asText(), owner, node.get("name").asText(), node.get("accountNumber").asInt());
         if (account==null) {
             return null;
         }
-        account.setBalanceNoUpdate(node.get("balance").asDouble());
-        dm.updateUser(owner.getId(), owner);
+        account.setBalance(node.get("balance").asDouble());
         return account;
     }
     

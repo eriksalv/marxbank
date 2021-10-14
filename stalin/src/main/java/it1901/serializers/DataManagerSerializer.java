@@ -1,7 +1,6 @@
 package it1901.serializers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +8,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import it1901.DataManager;
 import it1901.wrappers.ArrayAccountWrapper;
 import it1901.wrappers.ArrayUserWrapper;
 import it1901.wrappers.DataManagerWrapper;

@@ -8,20 +8,17 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-import it1901.DataManager;
 import it1901.model.User;
 
 public class UserDeserializer extends StdDeserializer<User> {
 
-    private DataManager dm;
 
-    public UserDeserializer(DataManager dm) {
-        this(null, dm);
+    public UserDeserializer() {
+        this(null);
     }
 
-    public UserDeserializer(Class<?> vc, DataManager dm) {
+    public UserDeserializer(Class<?> vc) {
         super(vc);
-        this.dm = dm;
     }
 
     @Override
@@ -29,7 +26,7 @@ public class UserDeserializer extends StdDeserializer<User> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         
-        return new User(node.get("id").asText(), node.get("username").asText(), node.get("email").asText() ,node.get("password").asText(), false);
+        return new User(node.get("id").asText(), node.get("username").asText(), node.get("email").asText(), node.get("password").asText());
     }
     
 }

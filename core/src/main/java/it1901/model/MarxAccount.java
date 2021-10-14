@@ -44,7 +44,7 @@ public class MarxAccount extends Account {
      * generates a unique account number starting with "48"
      */
     @Override
-    int generateAccountNumber() {
+    public int generateAccountNumber() {
         String accNumberString = "48";
         for (int i=0;i<3;i++) {
             accNumberString += "" + (new Random()).nextInt(10);
@@ -57,7 +57,7 @@ public class MarxAccount extends Account {
     }
 
     @Override
-    String getAccountType() {
+    public String getAccountType() {
         return "Marxkonto";
     }
 

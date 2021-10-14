@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import it1901.model.User;
 import it1901.model.Account;
@@ -14,7 +15,7 @@ public class DataManager {
     
     private static DataManager dataInstance = null;
 
-    private String path;
+    private String path = "data";
 
     private User loggedInUser;
 
@@ -24,7 +25,11 @@ public class DataManager {
 
     private DataManager() {}
 
-    public DataManager manager() {
+    /**
+     * Get DataManager instance
+     * @return the DataManager instance, and creates it if it doesn't exist
+     */
+    public static DataManager manager() {
         if(dataInstance == null) {
             synchronized (DataManager.class) {
                 if(dataInstance == null) {
@@ -36,9 +41,54 @@ public class DataManager {
         return dataInstance;
     }
 
+    /**
+     * Sets path for DataManager to use the standard storage directory should not be used
+     * @param path to storage directory
+     */
     public void setPath(String path) {
         if(!ValidPath.isValidPath(path)) throw new IllegalArgumentException("Not a valid path.");
         this.path = path;
+    }
+
+    /**
+     * Creates a new User and returns it
+     * @param username of User
+     * @param email of User
+     * @param password of User
+     * @return the created User
+     * @throws IllegalArguementException if username is already taken
+     */
+    public User createUser(String username, String email, String password) {
+        if(checkIfUsernameIsTaken(username)) throw new IllegalArgumentException("Username is already taken");
+        User u = new User(username, email, password);
+        addUser(u);
+        return u;
+    }
+
+    /**
+     * Creates a new Account and returns it
+     * @param type of account
+     * @param user owner of account
+     * @param name of account
+     * @return account that has been created
+     */
+    public Account createAccount(String type, User user, String name) {
+        Account a = AccountFactory.create(type, user, name);
+        addAccount(a);
+        return a;
+    }
+
+    /**
+     * Creates a new transaction and returns it
+     * @param from account transaction is sent from
+     * @param reciever account transaction is sent to
+     * @param amount of money
+     * @return transaction that has been created
+     */
+    public Transaction createTransaction(Account from, Account reciever, double amount) {
+        Transaction t = new Transaction(from, reciever, amount);
+        addTransaction(t);
+        return t;
     }
 
     /**
@@ -79,6 +129,11 @@ public class DataManager {
     public void deleteAccount(Account a) {
         if(!this.accountList.contains(a)) throw new IllegalArgumentException("Account doesn't exist");
         accountList.remove(a);
+        for(User u : userList) {
+            if(u.getAccounts().contains(a)) {
+                u.getAccounts().remove(a);
+            }
+        }
     }
 
     /**
@@ -99,6 +154,11 @@ public class DataManager {
     public void deleteTransaction(Transaction t) {
         if(!this.transactionList.contains(t)) throw new IllegalArgumentException("Transaction doesn't exist");
         transactionList.remove(t);
+        for(Account a : accountList) {
+            if(a.getTransactions().contains(t)) {
+                a.getTransactions().remove(t);
+            }
+        }
     }
 
     public List<User> getUsers() {
@@ -201,6 +261,19 @@ public class DataManager {
     }
 
     /**
+     * Finds user by its username
+     * @param username of user
+     * @return User if found, otherwise null
+     */
+    public User getUserByUsername(String username) {
+        try {
+            return this.userList.stream().filter(u -> u.getUsername().equals(username)).findFirst().get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    /**
      * Gets User object given its id
      * @param id of User object
      * @return User object if found, null otherwise
@@ -260,19 +333,28 @@ public class DataManager {
     /**
      * Saves all data in the DataManager to local storage
      * @throws IllegalStateException if it cannot save data
-     * @deprecated
      */
     public void save() {
-        //if(!DataHandler.save(this, this.path)) throw new IllegalStateException();
+        boolean saved = DataHandler.save(this, this.path);
+        if(!saved) throw new IllegalStateException();
     }
 
     /**
      * Reads all locally saved data to DataManager
      * @throws IllegalStateException if it cannot read data
-     * @deprecated
      */
     public void parse() {
-        //if(!DataHandler.parse(this, this.path)) throw new IllegalStateException();
+        boolean parsed = DataHandler.parse(this, this.path);
+        if(!parsed) throw new IllegalStateException();
+    }
+
+    /**
+     * Used to clear all data in the DataManager, used mostly for testing
+     */
+    public void resetData() {
+        this.userList = new ArrayList<User>();
+        this.accountList = new ArrayList<Account>();
+        this.transactionList = new ArrayList<Transaction>();
     }
 
 }

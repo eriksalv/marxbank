@@ -31,7 +31,7 @@ public class SavingsAccount extends Account {
      * starts with a "1".
      */
     @Override
-    int generateAccountNumber() {
+    public int generateAccountNumber() {
         String accNumberString = "1";
         for (int i=0;i<3;i++) {
             accNumberString += "" + (new Random()).nextInt(10);
@@ -44,7 +44,7 @@ public class SavingsAccount extends Account {
     }
 
     @Override
-    String getAccountType() {
+    public String getAccountType() {
         return "Sparekonto";
     } 
 }

@@ -6,40 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import it1901.DataManager;
-import it1901.model.Account;
-import it1901.model.SavingsAccount;
 
 public class UserTest {
 
     private User user;
-    private DataManager dm;
-
-    @TempDir
-    static Path tempDir;
-
-    @BeforeAll
-    public static void init() throws IOException {
-        Files.createDirectory(tempDir.resolve("data"));
-    }
-
-    @BeforeEach
-    public void beforeEachSetup() throws IOException {
-        String path = tempDir.toFile().getCanonicalPath();
-        dm = new DataManager(path);
-    }
 
     @Test
     @DisplayName("test constructor")
@@ -66,8 +42,6 @@ public class UserTest {
         );
 
         user = new User("id", "username", "email@email.com", "password");
-        assertEquals(this.dm.getUsers().get(0), user);
-        
     }
 
     @Test
@@ -119,6 +93,8 @@ public class UserTest {
         assertTrue(user.getId().equals("newId"));
 
         assertFalse(user.equals(new SavingsAccount("a", user)));
+
+        assertFalse(user.equals(new User("nope", "username", "email@email.com", "password")));
     }
 
     
