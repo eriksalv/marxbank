@@ -1,5 +1,6 @@
 package it1901;
 
+import it1901.model.Account;
 import it1901.util.AccountType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

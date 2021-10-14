@@ -2,6 +2,7 @@ package it1901;
 
 import java.util.UUID;
 
+import it1901.model.Account;
 import it1901.util.TextFieldFormatter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

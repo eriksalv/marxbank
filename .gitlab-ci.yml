@@ -15,6 +15,7 @@ default:
 stages:
   - build
   - test_core
+  - test_json
   - test_fx
   - test_manual
 
@@ -31,10 +32,19 @@ test_core:
     - mvn jacoco:prepare-agent test -pl core jacoco:report
     - cat core/target/site/jacoco/index.html
 
+test_json:
+  stage: test_json
+  needs: [build]
+  script:
+    - mvn install -DskipTests
+    - mvn jacoco:prepare-agent test -pl json jacoco:report
+    - cat json/target/site/jacoco/index.html
+
 test_fx:
   stage: test_fx
   needs: [build]
   script:
+    - mvn install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
 

@@ -3,6 +3,8 @@ package it1901;
 import java.io.IOException;
 import java.util.List;
 
+import it1901.model.Account;
+import it1901.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import it1901.model.Account;
+import it1901.model.SavingsAccount;
+import it1901.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,8 +37,8 @@ public class LogInControllerTest extends ApplicationTest {
 
     @BeforeEach
     void setup() throws Exception {
-        user = new User("tu", "testUser", "test@email.com", "password", controller.getDM());
-        acc = new SavingsAccount(user, controller.getDM(), "name");
+        user = new User("tu", "testUser", "test@email.com", "password");
+        acc = new SavingsAccount(user, "name");
     }
 
     @Test

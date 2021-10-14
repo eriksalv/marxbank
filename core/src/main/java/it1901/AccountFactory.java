@@ -1,5 +1,12 @@
 package it1901;
 
+import it1901.model.User;
+import it1901.model.Account;
+import it1901.model.CheckingAccount;
+import it1901.model.CreditAccount;
+import it1901.model.MarxAccount;
+import it1901.model.SavingsAccount;
+
 public class AccountFactory {
     
     /**
@@ -11,15 +18,15 @@ public class AccountFactory {
      * @param name
      * @return - if none of the text strings match the input string, null will be returned
      */
-    public static Account create(String accountType, User user, DataManager dm, String name) {
+    public static Account create(String accountType, User user, String name) {
         if ("Sparekonto".equalsIgnoreCase(accountType)) {
-            return new SavingsAccount(user, dm, name);
+            return new SavingsAccount(user, name);
         } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
-            return new CheckingAccount(user, dm, name);
+            return new CheckingAccount(user, name);
         } else if ("Marxkonto".equalsIgnoreCase(accountType)) {
-            return new MarxAccount(user, dm, name);
+            return new MarxAccount(user, name);
         } else if ("Kredittkonto".equalsIgnoreCase(accountType)) {
-            return new CreditAccount(user, dm, name);
+            return new CreditAccount(user, name);
         }
 
         return null;
@@ -35,15 +42,15 @@ public class AccountFactory {
      * @param accountNumber
      * @return
      */
-    public static Account createFrom(String accountType, String id, User user, DataManager dm, String name, int accountNumber) {
+    public static Account createFrom(String accountType, String id, User user, String name, int accountNumber) {
         if ("Sparekonto".equalsIgnoreCase(accountType)) {
-            return new SavingsAccount(id, user,3, dm, name, accountNumber);
+            return new SavingsAccount(id, user, 3, name, accountNumber);
         } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
-            return new CheckingAccount(id, user, 0.5, dm, name, accountNumber);
+            return new CheckingAccount(id, user, 0.5, name, accountNumber);
         } else if ("Marxkonto".equalsIgnoreCase(accountType)) {
-            return new MarxAccount(id, user, 0, dm, name, accountNumber);
+            return new MarxAccount(id, user, 0, name, accountNumber);
         } else if ("Kredittkonto".equalsIgnoreCase(accountType)) {
-            return new CreditAccount(id, user, 0, dm, name, accountNumber);
+            return new CreditAccount(id, user, 0, name, accountNumber);
         }
 
         return null;

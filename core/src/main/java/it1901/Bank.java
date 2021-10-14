@@ -2,6 +2,8 @@ package it1901;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import it1901.model.Account;
 /**
      * Bank is on the top of the object hierarchy in the application.
      * Only one bank instance can exist at one time, and the singleton pattern
