@@ -32,7 +32,7 @@ test_core:
     - mvn jacoco:prepare-agent test -pl core jacoco:report
     - cat core/target/site/jacoco/index.html
 
-test_json:
+test_stalin:
   stage: test_stalin
   needs: [build, test_core]
   script:
