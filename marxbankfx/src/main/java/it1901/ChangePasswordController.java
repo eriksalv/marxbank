@@ -1,5 +1,6 @@
 package it1901;
 
+import it1901.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,33 +20,42 @@ public class ChangePasswordController {
 
     private User user;
     private ProfileController controller;
-    private DataManager dm;
 
-    public void initData(User user, ProfileController c, DataManager dm) {
+    public void initData(User user, ProfileController c) {
         this.controller = c;
         this.user = user;
-        this.dm = dm;
     }
 
     @FXML
     public void handleSave(){
-        if (!currentPasswordField.getText().equals(user.getPassword())) {
+        if (!currentPasswordField.getText().equals(user.getPassword()) && !currentPasswordField.getText().equals("")) {
             saveButton.setText("Feil passord");
             return;
         }
-        if (!newPasswordField.getText().equals(confirmNewPasswordField.getText())) {
+        if((newPasswordField.getText().equals("") || confirmNewPasswordField.getText().equals("")) && !currentPasswordField.getText().equals("")) {
+            saveButton.setText("Passord kan ikke være tomt");
+            return;
+        }
+        if (newPasswordField.getText().equals(user.getPassword()) || confirmNewPasswordField.getText().equals(user.getPassword())){
+            saveButton.setText("Ikke et nytt passord");
+            return;
+        }
+        if (!(confirmNewPasswordField.getText().equals(newPasswordField.getText()))) {
             saveButton.setText("Passordene stemmer ikke");
             return;
         }
+
         user.setPassword(newPasswordField.getText());
         saveButton.setText("Oppdatert");
-        controller.updatePassword();
+        controller.updatePassword();    
         try {
-            dm.save();
+            DataManager.manager().save();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return;
+    
     }
 
     public void handleClose() {

@@ -17,19 +17,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import it1901.model.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class ProfileControllerTest extends ApplicationTest{
-    private DataManager dm;
     private ProfileController controller;
     private User user;
 
@@ -57,12 +56,12 @@ public class ProfileControllerTest extends ApplicationTest{
     @BeforeEach
     private void beforeEach() throws IOException, InterruptedException {
         resetSingleton();
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        user = new User("username", "email@email.com", "password", dm);
-        dm.setLoggedInUser(user);
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+        user = DataManager.manager().createUser("username", "email@email.com", "password");
+        DataManager.manager().setLoggedInUser(user);
         Platform.runLater(new Runnable(){
             @Override public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
             }
         });
         waitForRunLater();
@@ -87,11 +86,11 @@ public class ProfileControllerTest extends ApplicationTest{
 
     @Test
     public void testSignOut() {
-        assertEquals(user, dm.getLoggedInUser());
+        assertEquals(user, DataManager.manager().getLoggedInUser());
         clickOn("#signOutButton");
         AnchorPane logInScreen = lookup("#root").queryAs(AnchorPane.class);
         assertEquals(logInScreen.getId(), "root");
-        assertNull(dm.getLoggedInUser());
+        assertNull(DataManager.manager().getLoggedInUser());
     }
 
     @Test
@@ -104,12 +103,32 @@ public class ProfileControllerTest extends ApplicationTest{
     }
 
     @Test
-    public void testPasswordsDontMatch() {
+    public void testPasswordsEmpty() {
         clickOn("#changePasswordButton");
         clickOn("#currentPasswordField").write(user.getPassword());
         clickOn("#newPasswordField").write("newPassword");
         clickOn("#saveButton");
+        assertEquals("Passord kan ikke være tomt", lookup("#saveButton").queryAs(Button.class).getText());
+    }
+
+    @Test
+    public void testPasswordDoesNotMatch() {
+        clickOn("#changePasswordButton");
+        clickOn("#currentPasswordField").write(user.getPassword());
+        clickOn("#newPasswordField").write("newPassword");
+        clickOn("#confirmNewPasswordField").write("notNewPassword");
+        clickOn("#saveButton");
         assertEquals("Passordene stemmer ikke", lookup("#saveButton").queryAs(Button.class).getText());
+    }
+
+    @Test
+    public void testNotANewPassword() {
+        clickOn("#changePasswordButton");
+        clickOn("#currentPasswordField").write(user.getPassword());
+        clickOn("#newPasswordField").write(user.getPassword());
+        clickOn("#confirmNewPasswordField").write(user.getPassword());
+        clickOn("#saveButton");
+        assertEquals("Ikke et nytt passord", lookup("#saveButton").queryAs(Button.class).getText());
     }
 
     @Test
@@ -126,6 +145,7 @@ public class ProfileControllerTest extends ApplicationTest{
 
     private void resetSingleton() {
         Bank.getInstanceBank().clearAccounts();
+        DataManager.manager().resetData();
     }
 
     public static void waitForRunLater() throws InterruptedException {

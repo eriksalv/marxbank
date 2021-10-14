@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it1901.components.TransactionComponent;
+import it1901.model.Account;
+import it1901.model.Transaction;
+import it1901.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

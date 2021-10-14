@@ -25,6 +25,12 @@
         </dependency>
 
         <dependency>
+            <groupId>it1901</groupId>
+            <artifactId>stalin</artifactId>
+            <version>1.0-final</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>13</version>

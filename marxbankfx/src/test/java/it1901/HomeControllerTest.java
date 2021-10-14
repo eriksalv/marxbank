@@ -13,6 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import it1901.model.Account;
+import it1901.model.SavingsAccount;
+import it1901.model.Transaction;
+import it1901.model.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +30,6 @@ public class HomeControllerTest extends ApplicationTest{
      * Creating a user and a belonging account to test with.
      */
     private HomeController controller;
-    private DataManager dm;
     private User user;
     private Account account1;
     private Account account2;
@@ -60,12 +63,12 @@ public class HomeControllerTest extends ApplicationTest{
      */
     @BeforeEach
     void beforeEachSetup() throws IOException {
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord", dm);
-        this.account1 = new SavingsAccount(user, dm, "Annas brukskonto");
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+        this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord");
+        this.account1 = new SavingsAccount(user, "Annas brukskonto");
         this.account1.deposit(500);
-        this.account2 = new SavingsAccount("12345", user, dm);
-        this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
+        this.account2 = new SavingsAccount("12345", user);
+        this.transaction = new Transaction("4040", account1, account2, 20.0, true);
     }
 
     /**
@@ -98,7 +101,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#AccountLabel").query();
                 assertNotNull(label);
                 assertTrue(label.getText().equals("Annas brukskonto"));
@@ -116,7 +119,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#AmountLabel").query();
                 assertTrue(label.getText().equals("kr " + account1.getBalance()));
             }
@@ -133,7 +136,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#AccountNumberLabel").query();
                 assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
             }
@@ -150,7 +153,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#DateLabel").query();
                 assertTrue(label.getText().equals(transaction.getDateString()));
             }
@@ -167,7 +170,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#LAaccountLabel").query();
                 assertTrue(label.getText().equals("Fra: " + transaction.getFrom().getName()));
             }
@@ -184,7 +187,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#OtherAccountLabel").query();
                 assertTrue(label.getText().equals("Til: " + transaction.getReciever().getName()));
             }
@@ -201,7 +204,7 @@ public class HomeControllerTest extends ApplicationTest{
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
                 Label label = lookup("#LAamountLabel").query();
                 assertTrue(label.getText().equals("kr " + Double.toString(transaction.getAmount())));
             }

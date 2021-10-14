@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import it1901.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,7 +23,6 @@ import javafx.scene.control.Label;
 
 public class RegisterControllerTest extends ApplicationTest {
 
-    private DataManager dm;
     private RegisterController controller;
     private User existingUser;
 
@@ -50,9 +50,9 @@ public class RegisterControllerTest extends ApplicationTest {
     @BeforeEach
     private void beforeEach() throws IOException {
         resetSingleton();
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        existingUser = new User("username", "email@email.com", "password", dm);
-        controller.setDM(dm);
+        DataManager.manager().resetData();
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+        existingUser = DataManager.manager().createUser("username", "email@email.com", "password");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class RegisterControllerTest extends ApplicationTest {
         clickOn("#password1Text").write("password");
         clickOn("#password2Text").write("password");
         clickOn("#registerBtn");
-        assertTrue(dm.checkIfUserExists(existingUser) && dm.checkIfUsernameIsTaken("🎃🎃🎃🎃🎃"));
+        assertTrue(DataManager.manager().getIndexOfUser(existingUser) != -1 && DataManager.manager().checkIfUsernameIsTaken("🎃🎃🎃🎃🎃"));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class RegisterControllerTest extends ApplicationTest {
         clickOn("#password1Text").write("pass");
         clickOn("#password2Text").write("pass");
         clickOn("#registerBtn");
-        assertTrue(dm.checkIfUserExists(existingUser) && dm.getUsers().size()==1);
+        assertTrue(DataManager.manager().getIndexOfUser(existingUser) != -1 && DataManager.manager().getUsers().size()==1);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class RegisterControllerTest extends ApplicationTest {
         clickOn("#password1Text").write("pass");
         clickOn("#password2Text").write("pass");
         clickOn("#registerBtn");
-        assertTrue(dm.checkIfUserExists(existingUser) && dm.getUsers().size()==1);
+        assertTrue(DataManager.manager().getIndexOfUser(existingUser) != -1 && DataManager.manager().getUsers().size()==1);
         assertEquals("username is too long, must be 30 characters maximum.", ((Label) lookup("#registerFailedMsg").query()).getText());
     }
 
@@ -98,7 +98,7 @@ public class RegisterControllerTest extends ApplicationTest {
         clickOn("#password1Text").write("rightPassword");
         clickOn("#password2Text").write("wrongPassword");
         clickOn("#registerBtn");
-        assertTrue(dm.checkIfUserExists(existingUser) && dm.getUsers().size()==1);
+        assertTrue(DataManager.manager().getIndexOfUser(existingUser) != -1 && DataManager.manager().getUsers().size()==1);
         assertEquals("Passwords dont match", ((Label) lookup("#registerFailedMsg").query()).getText());
     }
 

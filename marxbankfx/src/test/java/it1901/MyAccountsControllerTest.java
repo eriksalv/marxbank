@@ -2,6 +2,7 @@ package it1901;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.contains;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,6 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import it1901.model.Account;
+import it1901.model.SavingsAccount;
+import it1901.model.Transaction;
+import it1901.model.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +31,6 @@ import javafx.stage.Stage;
 public class MyAccountsControllerTest extends ApplicationTest {
     
     private MyAccountsController controller;
-    private DataManager dm;
     private User user;
     private Account account1;
     private Account account2;
@@ -55,15 +59,15 @@ public class MyAccountsControllerTest extends ApplicationTest {
     @BeforeEach
     public void beforeEachSetup() throws IOException, InterruptedException {
         resetSingleton();
-        this.dm = new DataManager(tempDir.toFile().getCanonicalPath());
-        this.user = new User("567891", "annaos", "anna.ostmo@gmail.com", "passord", dm);
-        this.account1 = new SavingsAccount(user, dm, "Annas brukskonto");
+        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+        this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord");
+        this.account1 = new SavingsAccount(user, "Annas brukskonto");
         this.account1.deposit(500);
-        this.account2 = new SavingsAccount("12345", user, dm);
-        this.transaction = new Transaction("4040", account1, account2, 20.0, dm, true);
+        this.account2 = new SavingsAccount("12345", user);
+        this.transaction = new Transaction("4040", account1, account2, 20.0, true);
         Platform.runLater(new Runnable(){
             @Override public void run() {
-                controller.initData(user, dm);
+                controller.initData(user);
             }
         });
         waitForRunLater();

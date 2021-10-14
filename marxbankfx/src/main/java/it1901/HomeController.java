@@ -3,6 +3,11 @@ package it1901;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
+
+import it1901.model.Account;
+import it1901.model.Transaction;
+import it1901.model.User;
+
 import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
@@ -15,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 public class HomeController {
 
     private User user;
-    private DataManager dm;
     
     @FXML private AnchorPane home;
     @FXML private Label HomeLabel;
@@ -38,9 +42,8 @@ public class HomeController {
     }
 
 
-    public void initData(User user, DataManager dm) {
+    public void initData(User user) {
         this.user = user;
-        this.dm = dm;
         createFavorites();
         recentActivity();
     }

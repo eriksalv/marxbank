@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import it1901.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -14,8 +15,6 @@ import javafx.scene.layout.VBox;
 public class MainController {
 
     private User user;
-
-    private DataManager dm;
 
     private String currentContent = "Home"; //used for testing
 
@@ -53,12 +52,11 @@ public class MainController {
         });
     }
 
-    public void initData(DataManager dm) throws IOException {
-        this.initData(dm, dm.getLoggedInUser());
+    public void initData() throws IOException {
+        this.initData(DataManager.manager().getLoggedInUser());
     }
 
-    public void initData(DataManager dm, User user) throws IOException {
-        this.dm = dm;
+    public void initData(User user) throws IOException {
         if (user==null) {
             throw new IllegalArgumentException("user cannot be null");
         }
@@ -74,7 +72,7 @@ public class MainController {
         loader.setLocation(getClass().getResource("Home.fxml"));
         AnchorPane pane = loader.load();
         HomeController homeController = loader.getController();
-        homeController.initData(user, dm);
+        homeController.initData(user);
 
         content.getChildren().setAll(pane);
         currentContent="Home";
@@ -86,7 +84,7 @@ public class MainController {
         loader.setLocation(getClass().getResource("MyAccounts.fxml"));
         VBox pane = loader.load();
         MyAccountsController controller = loader.getController();
-        controller.initData(user, dm);
+        controller.initData(user);
 
         content.getChildren().setAll(pane);
         currentContent="MyAccounts";
@@ -98,7 +96,7 @@ public class MainController {
         loader.setLocation(getClass().getResource("Transaction.fxml"));
         AnchorPane pane = loader.load();
         TransactionController controller = loader.getController();
-        controller.initData(user, dm);
+        controller.initData(user);
 
         content.getChildren().setAll(pane);
         currentContent="Transaction";
@@ -132,7 +130,7 @@ public class MainController {
         loader.setLocation(getClass().getResource("Profile.fxml"));
         AnchorPane pane = loader.load();
         ProfileController controller = loader.getController();
-        controller.initData(user, dm);
+        controller.initData(user);
 
         content.getChildren().setAll(pane);
         currentContent="MyProfile";

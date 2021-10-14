@@ -1,6 +1,8 @@
 package it1901;
 
 import javafx.event.EventHandler;
+import it1901.model.Account;
+import it1901.model.User;
 import it1901.util.AccountType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +18,6 @@ public class CreateNewAccountController {
     @FXML private Label errorMsg;
 
     private User user;
-    private DataManager dm;
     private String accName;
 
     private Account acc;
@@ -33,9 +34,8 @@ public class CreateNewAccountController {
         }
     };
 
-    public void initData(User user, DataManager dm) {
+    public void initData(User user) {
         this.user = user;
-        this.dm = dm;
     }
 
     @FXML
@@ -55,12 +55,14 @@ public class CreateNewAccountController {
     @FXML
     private void handleCreateAccount() {
         accName = accountName.getText();
+        System.out.println(accountName.getText());
+
         errorMsg.setText("");
         if(accName == "") {
             errorMsg.setText("Account needs a name.");
             return;
         }
-        acc = AccountFactory.create(selectAccountType.getText(), user, dm, accName);
+        acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
         if (acc==null) {
             errorMsg.setText("No account type selected.");
             return;
@@ -68,7 +70,7 @@ public class CreateNewAccountController {
         creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: " + acc.getName() + " ble opprettet");
         creationCompleteMsg.setVisible(true);
         try {
-            dm.save();
+            DataManager.manager().save();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

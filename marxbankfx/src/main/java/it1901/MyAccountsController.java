@@ -3,7 +3,8 @@ package it1901;
 import java.io.IOException;
 import java.util.List;
 
-import javafx.application.Platform;
+import it1901.model.Account;
+import it1901.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,14 +16,12 @@ public class MyAccountsController {
 
     private User user;
     private Account account;
-    private DataManager dm;
     
     @FXML private VBox myAccounts;
     @FXML private VBox accountBtns;
 
-    public void initData(User user, DataManager dm) {
+    public void initData(User user) {
         this.user = user;
-        this.dm = dm;
         createAccountButtons();
     }
 
@@ -69,11 +68,9 @@ public class MyAccountsController {
     private void handleCreateNewAccount(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("CreateNewAccount.fxml"));
-
         AnchorPane pane = loader.load();
         CreateNewAccountController controller = loader.getController();
-        controller.initData(user, dm);
-
+        controller.initData(user);
         myAccounts.getChildren().setAll(pane);
     }
 

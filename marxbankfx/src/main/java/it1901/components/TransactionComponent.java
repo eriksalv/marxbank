@@ -2,7 +2,7 @@ package it1901.components;
 
 import java.io.IOException;
 
-import it1901.Transaction;
+import it1901.model.Transaction;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
