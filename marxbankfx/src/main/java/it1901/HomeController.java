@@ -112,7 +112,7 @@ public class HomeController {
         loader.setLocation(getClass().getResource("Account.fxml"));
         AnchorPane pane = loader.load();
         AccountController controller = loader.getController();
-        controller.initData(Bank.getInstanceBank().getAccount(Integer.valueOf(AccountNumberLabel.getText())));
+        controller.initData(Bank.getInstanceBank().getAccount(Integer.parseInt(AccountNumberLabel.getText())));
 
         home.getChildren().setAll(pane);
     }

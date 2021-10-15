@@ -47,7 +47,7 @@ public class LogInController {
 
         String username = typeUsername.getText();
 
-        if(username == "" || username == null || username.trim().equals("")) {
+        if(username.equals("") || username == null || username.trim().equals("")) {
             usernameError.setText("Username cannot be blank");
             return;
         }
@@ -66,7 +66,7 @@ public class LogInController {
 
         String password = typePassword.getText();
 
-        if(password == "" || password == null || password.trim().equals("")) {
+        if(password.equals("") || password == null || password.trim().equals("")) {
             passwordError.setText("Password cannot be empty");
             return;
         }
