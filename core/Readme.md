@@ -14,14 +14,10 @@ For å finne ut testdekningsgraden kjører du mvn clean `jacoco:prepare-agent in
 
 # Klassediagrammer
 
-## Diagram av den generelle klassestrukturen
+## Generell klassestruktur
 
 ![](../diagrammer/klassediagram_uten_dm.png)
 
-## Diagram av den generelle klassestrukturen med DataManager
-
-![](../diagrammer/klassediagram_med_dm.png)
-
-## Diagram av hvilke klasser som arver fra Account
+## Arv fra Account klassen
 
 ![](../diagrammer/klassediagram_konto_arv.png)
