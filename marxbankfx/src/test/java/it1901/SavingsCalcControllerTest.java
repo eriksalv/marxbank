@@ -88,7 +88,7 @@ public class SavingsCalcControllerTest extends ApplicationTest {
 
         Label label = lookup("#totalAmountText").query();
 
-        // Formatet skal være på: "Totalbeløp etter perioden: kr x"
+        // Format: "Totalbeløp etter perioden: kr x"
         assertTrue(label.getText().equals("Totalbeløp etter perioden: kr " + sum ));
 
         TextField period = lookup("#period").query();
@@ -133,7 +133,7 @@ public class SavingsCalcControllerTest extends ApplicationTest {
         clickOn("#interestRate").write("320,0");
         clickOn("#findTotalAmount");
 
-        // Formatet skal være på: "Totalbeløp etter perioden: Beløpet er utenfor rekkevidde"
+        // Format: "Totalbeløp etter perioden: Beløpet er utenfor rekkevidde!"
         Label label1 = lookup("#totalAmountText").query();
         assertTrue(label1.getText().equals("Totalbeløp etter perioden: Beløpet er utenfor rekkevidde!"));
 
