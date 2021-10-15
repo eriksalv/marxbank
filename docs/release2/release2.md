@@ -30,7 +30,7 @@ Vi har laget 2 nye brukerhistorier for bruk av sparekalkulator og å logge ut.
 
 ### Sekvens Diagram
 
-- Laget et sekvensdiagram av en overførsel mellom to kontoer. Finnes i readme fila i core modulen.
+- Laget et sekvensdiagram av en bruker som overfører penger mellom to kontoer. Finnes i readme fila i `marxbankfx` modulen.
 
 ### JSON format
 
