@@ -166,6 +166,8 @@ public class Transaction {
     public void commitTransaction() {
         if (from == null || reciever == null) {
             throw new IllegalStateException("Cannot commit transaction");
+        } else if (from.equals(reciever)) {
+            throw new IllegalArgumentException("Cannot transfer between the same account");
         }
         from.withdraw(this.amount);
         reciever.deposit(this.amount);
