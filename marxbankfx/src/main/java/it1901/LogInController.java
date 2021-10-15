@@ -28,12 +28,12 @@ public class LogInController {
 
 
     public LogInController() {
-        DataManager.manager().setPath("../data");
-        try {
-            DataManager.manager().parse();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // DataManager.manager().setPath("../data");
+        // try {
+        //     DataManager.manager().parse();
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
     }
 
     @FXML

@@ -20,6 +20,12 @@ public class App extends Application {
         scene = new Scene(loadFXML("LogIn"), 640, 480);
         stage.setScene(scene);
         stage.show();
+        DataManager.manager().setPath("../data");
+        try {
+            DataManager.manager().parse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static void setRoot(String fxml) throws IOException {
