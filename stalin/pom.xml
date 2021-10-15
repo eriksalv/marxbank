@@ -7,7 +7,7 @@
     <version>1.0-final</version>
 
     <parent>
-        <groupId>it1901</groupId>
+        <groupId>marxbank</groupId>
         <artifactId>marxbank</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
@@ -22,7 +22,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>it1901</groupId>
+            <groupId>marxbank</groupId>
             <artifactId>core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
