@@ -1,7 +1,10 @@
 package it1901.model;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import it1901.Bank;
 import it1901.util.AccountType;
@@ -45,11 +48,12 @@ public class MarxAccount extends Account {
      */
     @Override
     public int generateAccountNumber() {
+        Random rand = new SecureRandom();
         String accNumberString = "48";
         for (int i=0;i<3;i++) {
-            accNumberString += "" + (new Random()).nextInt(10);
+            accNumberString += String.valueOf(rand.nextInt(10));
         }
-        int accNumber = Integer.valueOf(accNumberString);
+        int accNumber = Integer.parseInt(accNumberString);
         if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
             generateAccountNumber();
         }
@@ -72,18 +76,13 @@ public class MarxAccount extends Account {
         super.deposit(amount);
         if (this.getBalance()>MAX_BALANCE) {
             double newAmount = getBalance()-MAX_BALANCE; //how much to send away
-
             //Account to send to (cannot be another marx account).
             //Finds the account with the lowest balance.
             Account reciever = Bank.getInstanceBank().getAccounts().values().stream()
             .filter(acc -> !(acc instanceof MarxAccount))
-            .min(Comparator.comparing(Account::getBalance))
-            .orElse(null);
+            .min(Comparator.comparing(Account::getBalance)).orElse(null);
 
-            // If no appropriate reciever can be found, the balance is kept
-            if (reciever==null) {
-                return;
-            }
+            if (reciever == null) return;
 
             Transaction t = new Transaction(this, reciever, newAmount);
         }

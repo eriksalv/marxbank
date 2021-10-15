@@ -219,12 +219,13 @@ public abstract class Account {
 
    @Override
    public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Account)) return false;
-    Account account = (Account) o;
-    if (this.balance != account.getBalance()) return false;
-    if (this.accountNumber != account.getAccountNumber()) return false;
-    return Objects.equals(id, account.getId());
+       double epsilon = 0.0000001;
+       if (this == o) return true;
+       if (!(o instanceof Account)) return false;
+       Account account = (Account) o;
+       if(Math.abs(this.getBalance() - account.getBalance()) < epsilon) return false;
+       if (this.accountNumber != account.getAccountNumber()) return false;
+       return Objects.equals(id, account.getId());
    }
     public int getNumberOfTransactions() {
         return getTransactions().size();
