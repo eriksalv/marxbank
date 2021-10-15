@@ -10,7 +10,7 @@ Det meste av nødvendig funksjonalitet ble ferdig implementert i `Release 1`, me
 - To brukere kan ikke ha samme brukernavn
 - Kan logge ut under profil-fanen
 - Laget en sparekalkulator med en egen fane i hovedmenyen
-### Nye klasser i Core
+### Nye klasser
 - Laget en AccountFactory klasse for å gjøre det lettere å opprette kontoer av en bestemt type 
 - Laget en SavingsCalc klasse for å håndtere logikk som brukes av sparekalkulatoren
 ### Modularisering
