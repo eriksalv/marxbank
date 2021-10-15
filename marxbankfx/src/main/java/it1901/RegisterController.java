@@ -4,12 +4,25 @@ import java.io.IOException;
 
 import it1901.model.Account;
 import it1901.model.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class RegisterController {
 
@@ -20,6 +33,7 @@ public class RegisterController {
     @FXML private AnchorPane register;
     @FXML private Button registerBtn;
     @FXML private Label registerFailedMsg;
+    @FXML private Button cancelBtn;
     
     public RegisterController() {
         // DataManager.manager().setPath("../data");
@@ -78,6 +92,23 @@ public class RegisterController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleCancel(ActionEvent e) throws IOException {
+        DataManager.manager().setLoggedInUser(null);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("LogIn.fxml"));
+        Parent tableViewParent = loader.load();
+        
+        Scene tableViewScene = new Scene(tableViewParent);
+        
+        //Get stage information
+        Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
+        
+        window.setScene(tableViewScene);
+        window.show();
     }
 
 }

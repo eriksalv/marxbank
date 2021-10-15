@@ -3,6 +3,7 @@ package it1901;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +21,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+
 
 public class RegisterControllerTest extends ApplicationTest {
 
@@ -101,6 +104,16 @@ public class RegisterControllerTest extends ApplicationTest {
         assertTrue(DataManager.manager().getIndexOfUser(existingUser) != -1 && DataManager.manager().getUsers().size()==1);
         assertEquals("Passwords dont match", ((Label) lookup("#registerFailedMsg").query()).getText());
     }
+
+
+    @Test
+    public void testCancel() {
+        clickOn("#cancelBtn");
+        AnchorPane logInScreen = lookup("#root").queryAs(AnchorPane.class);
+        assertEquals(logInScreen.getId(), "root");
+        assertNull(DataManager.manager().getLoggedInUser());
+    }
+
 
     private void resetSingleton() {
         Bank.getInstanceBank().clearAccounts();
