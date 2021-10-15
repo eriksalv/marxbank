@@ -5,6 +5,26 @@ DataManager.manager()
 ```
 Dette lar oss lett sende og hente data til og fra vår lokale database. Vi lagrer dataen vår i en egen fil kalt data.json med en slik struktur som vist under.
 
+## Installasjon og testing
+
+### Installasjon
+For å installere JSON kjører du `mvn install -DskipTests`
+
+### Testing av Stalin
+Testene er skrevet i Junit5 som er et rammeverk for testing av Java
+For å teste JSON kjører du `mvn test -pl stalin`
+
+### Testdekningsgrad med JaCoCo
+For testdekningsgraden til Core bruker vi JaCoCo.
+For å finne ut testdekningsgraden kjører du `mvn clean jacoco:prepare-agent test jacoco:report` også finner du rapport filen som heter `index.html` under `stalin/target/site`.
+Du kan også finne Testdekningsgrad på hovedsiden av Readme.
+
+## Struktur av Stalin
+
+Hele modulen er bygd rundt det å kunne lagre data lokalt til en json fil og lese data tilbake fra den json filen. Dette skjer gjennom bruk av flere Serializere og Deserializere som serialiserer og deserialserer dataen vår. Alle er egendefinerte og omhandler klasser fra Core. Under ser du hvordan funksjonskallet lagringen skjer i Stalin.
+
+![Lagrings kall](../diagrammer/stalinSerializeDiagram.svg)
+
 ## Lagring i Json
 
 ### struktur
@@ -22,17 +42,3 @@ En bruker lagres med disse datene: `id`, `username`, `email`, `password` som er 
 En konto lagres med disse dataene: `id`, `user` som er id-en til brukeren som eier kontoen, `accountNumber`, `name`, `transactions` som er et array med id-er til overføringene gjort på kontoen (det er da både de som er sendt til og fra), `balance`, `type`, `numberOfTransactions`.
 
 En overføring lagres med disse dataene: `id`, `from` som er id-en kontoen overføringen er sent fra, `reciever` som er id-en til kontoen overføringer er sent til, `amount`, og `dateString`.
-
-## Installasjon og testing
-
-### Installasjon
-For å installere JSON kjører du `mvn install -DskipTests`
-
-### Testing av Stalin
-Testene er skrevet i Junit5 som er et rammeverk for testing av Java
-For å teste JSON kjører du `mvn test -pl stalin`
-
-### Testdekningsgrad med JaCoCo
-For testdekningsgraden til Core bruker vi JaCoCo.
-For å finne ut testdekningsgraden kjører du `mvn clean jacoco:prepare-agent test jacoco:report` også finner du rapport filen som heter `index.html` under `stalin/target/site`.
-Du kan også finne Testdekningsgrad på hovedsiden av Readme.
