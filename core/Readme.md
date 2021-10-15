@@ -16,7 +16,7 @@ For å finne ut testdekningsgraden kjører du mvn clean `jacoco:prepare-agent in
 
 ## Generell klassestruktur
 
-![](../diagrammer/klassediagram_uten_dm.png)
+![](../diagrammer/marxBankClassDiagram1.png)
 
 ## Arv fra Account klassen
 
