@@ -22,7 +22,7 @@ public class Transaction {
     private final String dateString;
 
     //autoformats the date text-string 
-    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * Initializes transaction object and runs the commitTransaction method if commit is true.

@@ -21,11 +21,11 @@ public abstract class Account {
     
     /**
      * Constructur for class Account.
-     * @param id of account
-     * @param user owner of account
-     * @param interestRate intereserRate
-     * @param type of account
-     */
+     * @param id - unique id
+     * @param user - User that owns this account
+     * @param interestRate - Accounts interest rate in percent
+     * @param type - Account type
+    */
     public Account(String id, User user, double interestRate, AccountType type) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
@@ -38,14 +38,14 @@ public abstract class Account {
     }
 
     /**
-     * Constructor for class Account
-     * @param id of account
-     * @param user owner of account
-     * @param interestRate of account
-     * @param type of account
-     * @param accountNumber of account
-     * @param name of account
-     */
+     * Constructur for class Account with existing account number, instead of generating new.
+     * @param id - unique id
+     * @param user - User that owns this account
+     * @param interestRate - Accounts interest rate in percent
+     * @param type - Account type
+     * @param accountNumber - Existing account number 
+     * @param name - Name of the account
+    */
     public Account(String id, User user, double interestRate, AccountType type, int accountNumber, String name) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
@@ -59,21 +59,31 @@ public abstract class Account {
     }
 
     /**
-     * Constructor for class Account
-     * @param user owner of account
-     * @param interestRate interestRate
-     * @param type of Account
-     * @param name of account
-     */
+     * Constructur for class Account.
+     * @param id - unique id
+     * @param user - User that owns this account
+     * @param interestRate - Accounts interest rate in percent
+     * @param type - Account type
+     * @param name - Name of the account
+    */
     public Account(User user, double interestRate, AccountType type, String name) {
         this(UUID.randomUUID().toString(), user, interestRate, type);
         this.name = name;
     }
 
+    /**
+     * Getter for account name, does not have to be unique
+     * @return name
+    */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Setter for account name
+     * @param name - name of account
+     * @throws IllegalArgumentException if name is null
+    */
     public void setName(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name cannot be null");
@@ -81,15 +91,19 @@ public abstract class Account {
         this.name = name;
     }
 
+    /**
+     * Getter for unique account number
+     * @return
+    */
     public int getAccountNumber() {
         return this.accountNumber;
     }
 
     /**
      * Deposits an amount to this account.
-     * @param amount to deposit
+     * @param amount - amount to deposit
      * @exception IllegalArgumentException if amount is negative.
-     */
+    */
     public void deposit(double amount) {
         if (amount <= 0) {
 		    throw new IllegalArgumentException("Deposit must be positive");
@@ -99,7 +113,7 @@ public abstract class Account {
 
     /**
      * Withdraw an amount from this account.
-     * @param amount to withdraw
+     * @param amount
      * @exception IllegalArgumentException if amount is negative.
      * @exception IllegalStateException if it is not enough balance on the account.
      */
@@ -116,7 +130,7 @@ public abstract class Account {
      * Checks if interest rate is positive.
      * @param ir interestRate
      * @return interest rate.
-     */
+    */
     public double validateIntereset(double ir) {
         if(ir < 0) throw new IllegalArgumentException("Interest rate cannot be negative");
         return ir;
@@ -124,7 +138,7 @@ public abstract class Account {
 
     /**
      * Adds interest rate to the balance on this account.
-     */
+    */
     public void addInterest() {
         deposit(getBalance() * getInterestRate() / 100);
     }
@@ -175,7 +189,7 @@ public abstract class Account {
      * Adds transaction in the list "transactions"
      * @param t Transaction to add
      * @exception IllegalStateException if the transaction already is registered.
-     */
+    */
     public void addTransaction(Transaction t) {
         if (this.transactions.contains(t)) {
             throw new IllegalStateException("Transaction is already registered");
@@ -198,12 +212,13 @@ public abstract class Account {
 
    @Override
    public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Account)) return false;
-    Account account = (Account) o;
-    if (this.balance != account.getBalance()) return false;
-    if (this.accountNumber != account.getAccountNumber()) return false;
-    return Objects.equals(id, account.getId());
+       double epsilon = 0.0000001;
+       if (this == o) return true;
+       if (!(o instanceof Account)) return false;
+       Account account = (Account) o;
+       if(Math.abs(this.getBalance() - account.getBalance()) < epsilon) return false;
+       if (this.accountNumber != account.getAccountNumber()) return false;
+       return Objects.equals(id, account.getId());
    }
     public int getNumberOfTransactions() {
         return getTransactions().size();

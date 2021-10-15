@@ -1,5 +1,6 @@
 package marxbank.model;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import marxbank.Bank;
@@ -55,11 +56,12 @@ public class SavingsAccount extends Account {
      */
     @Override
     public int generateAccountNumber() {
+        Random rand = new SecureRandom();
         String accNumberString = "1";
-        for (int i = 0; i < 3; i++) {
-            accNumberString += "" + (new Random()).nextInt(10);
+        for (int i=0;i<3;i++) {
+            accNumberString += String.valueOf(rand.nextInt(10));
         }
-        int accNumber = Integer.valueOf(accNumberString);
+        int accNumber = Integer.parseInt(accNumberString);
         if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
             generateAccountNumber();
         }

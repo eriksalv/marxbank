@@ -1,6 +1,9 @@
 package marxbank;
 
 import marxbank.util.TextFieldFormatter;
+import marxbank.model.Account;
+import marxbank.model.Transaction;
+import marxbank.model.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

@@ -74,7 +74,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     @DisplayName("test create new account no name")
     public void testCreateNewAccountNoName() {
         clickOn("#handleCreateAccountButton");
-        assertEquals("Account needs a name.", lookup("#errorMsg").queryAs(Label.class).getText());
+        assertEquals("Konto trenger et navn.", lookup("#errorMsg").queryAs(Label.class).getText());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     public void testCreateNewAccountNoType() {
         clickOn("#accountName").write("hello");
         clickOn("#handleCreateAccountButton");
-        assertEquals("No account type selected.", lookup("#errorMsg").queryAs(Label.class).getText());
+        assertEquals("Ingen kontotype valgt.", lookup("#errorMsg").queryAs(Label.class).getText());
     }
 
     @Test
