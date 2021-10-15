@@ -26,13 +26,13 @@ public class SavingsCalcTest {
     @Test
     @DisplayName("test savings calculator with no monthly amount")
     public void testSavingsCalculator1() {
-        int c1 = SavingsCalc.calculation(0, 1000, 1, 10.0);
+        long c1 = SavingsCalc.calculation(0, 1000, 1, 10.0);
         assertEquals(c1, 1100);
 
-        int c2 = SavingsCalc.calculation(0, 1000, 5, 10.0);
-        assertEquals(c2, 1611);
+        long c2 = SavingsCalc.calculation(0, 1000, 5, 10.0);
+        assertEquals(c2, 1610);
 
-        int c3 = SavingsCalc.calculation(0, 123, 8, 7.5);
+        long c3 = SavingsCalc.calculation(0, 123, 8, 7.5);
         assertEquals(c3, 219);
     }
 
@@ -40,37 +40,45 @@ public class SavingsCalcTest {
     @Test
     @DisplayName("test savings calculator with no lump amount")
     public void testSavingsCalculator2() {
-        int c1 = SavingsCalc.calculation(100, 0, 1, 10.0);
+        long c1 = SavingsCalc.calculation(100, 0, 1, 10.0);
         assertEquals(c1, 1265);
 
-        int c2 = SavingsCalc.calculation(2500, 0, 4, 5.0);
-        assertEquals(c2, 132806);
+        long c2 = SavingsCalc.calculation(2500, 0, 4, 5.0);
+        assertEquals(c2, 132805);
 
-        int c3 = SavingsCalc.calculation(700, 0, 8, 6.6);
-        assertEquals(c3, 87988);
+        long c3 = SavingsCalc.calculation(700, 0, 8, 6.6);
+        assertEquals(c3, 87987);
     }
 
     @Test
     @DisplayName("test savings calculator with lump amount and monthly amount")
     public void testSavingsCalculator3() {
-        int c1 = SavingsCalc.calculation(100, 1000, 1, 2.0);
+        long c1 = SavingsCalc.calculation(100, 1000, 1, 2.0);
         assertEquals(c1, 2233);
 
-        int c2 = SavingsCalc.calculation(1000, 100, 9, 5.5);
+        long c2 = SavingsCalc.calculation(1000, 100, 9, 5.5);
         assertEquals(c2, 139261);
     }
 
     @Test
     @DisplayName("test savings calculator with no lump amount and no monthly amount")
     public void testSavingsCalculator4() {
-        int c1 = SavingsCalc.calculation(0, 0, 25, 10.0);
+        long c1 = SavingsCalc.calculation(0, 0, 25, 10.0);
         assertEquals(c1, 0);
     }
 
     @Test
     @DisplayName("test savings calculator with period equal to 0")
     public void testSavingsCalculator5() {
-        int c1 = SavingsCalc.calculation(100, 1000, 0, 2.0);
+        long c1 = SavingsCalc.calculation(100, 1000, 0, 2.0);
         assertEquals(c1, 2233);
-    }
+    } 
+
+
+    @Test
+    @DisplayName("test savings calculator with output out of range")
+    public void testSavingsCalculator6() {
+        long c1 = SavingsCalc.calculation(10000000, 1000000000, 30000000, 152.0);
+        assertEquals(c1, -1);
+    } 
 }

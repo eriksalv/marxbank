@@ -53,7 +53,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label fx:id="totalAmountText" prefHeight="100.0" prefWidth="451.0" text="Totalbeløp etter perioden">
+            <Label fx:id="totalAmountText" prefHeight="100.0" prefWidth="601.0" text="Totalbeløp etter perioden">
                <font>
                   <Font size="20.0" />
                </font>
