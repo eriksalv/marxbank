@@ -85,6 +85,10 @@ public class TransactionTest {
             transaction = new Transaction("t", a1, null, 50, true);
         });
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            transaction = new Transaction("t", a1, a1, 50, true);
+        });
+
         assertEquals(a1.getBalance(), 100);
         assertEquals(a1.getTransactions().size(), 0);
 
