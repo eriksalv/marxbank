@@ -138,5 +138,6 @@ public class SavingsCalcControllerTest extends ApplicationTest {
         assertTrue(label1.getText().equals("Totalbeløp etter perioden: Beløpet er utenfor rekkevidde!"));
 
     } 
+    
 }
 
