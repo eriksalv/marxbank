@@ -1,6 +1,5 @@
 package it1901;
 
-import it1901.SavingsCalc;
 import it1901.util.TextFieldFormatter;
 
 import java.util.Arrays;

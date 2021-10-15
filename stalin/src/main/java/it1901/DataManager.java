@@ -1,10 +1,8 @@
 package it1901;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 import it1901.model.User;
 import it1901.model.Account;

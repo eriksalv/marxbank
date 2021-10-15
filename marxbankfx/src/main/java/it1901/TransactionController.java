@@ -1,7 +1,5 @@
 package it1901;
 
-import java.util.UUID;
-
 import it1901.model.Account;
 import it1901.model.Transaction;
 import it1901.model.User;

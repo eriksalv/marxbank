@@ -55,5 +55,14 @@ public class AccountFactory {
 
         return null;
     }
+
+    /**
+     * Makes a copy of an account object
+     * @param a - account to copy
+     * @return Account
+    */
+    public static Account copy(Account a) {
+        return createFrom(a.getAccountType(), a.getId(), a.getUser(), a.getName(), a.getAccountNumber());
+    }
     
 }
