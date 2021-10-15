@@ -6,10 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class TransactionTest {
 
@@ -26,6 +31,25 @@ public class TransactionTest {
         a2.deposit(100);
     }
 
+
+    @Test
+    public void testConstructor() {
+        Transaction t1 = new Transaction(a1, a2, 100);
+        assertTrue(a1.getTransactions().contains(t1) && a2.getTransactions().contains(t1));
+        assertEquals(Transaction.DATE_FORMATTER.format(LocalDateTime.now()), t1.getDateString());
+        assertEquals(0, a1.getBalance());
+        assertEquals(200, a2.getBalance());
+        
+        Transaction t2 = new Transaction("id", a2, a1, 100, Transaction.DATE_FORMATTER.format(LocalDateTime.now().plusDays(2)), true, false);
+        assertFalse(a1.getTransactions().contains(t2) || a2.getTransactions().contains(t2));
+        assertEquals(Transaction.DATE_FORMATTER.format(LocalDateTime.now().plusDays(2)), t2.getDateString());
+        assertEquals(100, a1.getBalance());
+        assertEquals(100, a2.getBalance());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            transaction = new Transaction(a1, a2, -1);
+        });
+    }
     
     @Test
     @DisplayName("test commitTransaction with a1 and a2 as param")
@@ -75,5 +99,22 @@ public class TransactionTest {
         assertFalse(transaction.equals("yeet"));
         assertFalse(transaction.equals(new Transaction("t2", a1, a2, 5, false)));
     }
-}
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidDateStrings")
+    public void testConvertToInvalidDate(String dateString) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Transaction.convertToDate(dateString);
+        });
+    }
+
+    private static Stream<Arguments> provideInvalidDateStrings() {
+        return Stream.of(
+            Arguments.of("15-10-2021 22:00"),
+            Arguments.of("15/10/2021"),
+            Arguments.of("2021-10-15"),
+            Arguments.of("Ugyldig dato")
+        );
+    }
+ }
 
