@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="register" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" fx:controller="it1901.RegisterController" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="register" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it1901.RegisterController">
    <children>
       <VBox alignment="CENTER" layoutX="256.0" layoutY="27.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,17 +20,22 @@
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Brukernavn" />
-                  <TextField fx:id="usernameText"/>
+                  <TextField fx:id="usernameText" />
                   <Label text="Epost" />
-                  <TextField fx:id="emailText"/>
+                  <TextField fx:id="emailText" />
                   <Label text="Passord" />
                   <PasswordField fx:id="password1Text" />
                   <Label text="Gjenta passord" />
-                  <PasswordField fx:id="password2Text"/>
+                  <PasswordField fx:id="password2Text" />
                </children>
             </VBox>
-            <Button fx:id="registerBtn" mnemonicParsing="false" text="Registrer" onAction="#handleRegister"/>
-            <Label fx:id="registerFailedMsg" text=""/>
+            <Button fx:id="registerBtn" mnemonicParsing="false" onAction="#handleRegister" text="Registrer" />
+            <Label fx:id="registerFailedMsg" />
+            <VBox prefHeight="28.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" text="Avbryt" />
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>
