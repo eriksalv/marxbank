@@ -68,4 +68,19 @@ Som en bankkunde ønsker jeg muligheten til å logge ut slik at uvedkommende ikk
 * Funksjonen/symbolet for å logge ut
 
 ### Illustrerende skjermbilde
-(kommer)
+<img src="Illustration-us4.png" width="400">
+
+
+## Sparekalkulator (#5) – middels prioritet
+Som en bankkunde ønsker jeg å se hvor mye sparepengene mine kan vokse over en viss tid.
+
+### Viktig å kunne gjøre
+* Fylle inn startbeløp og fast månedlig beløp
+* Sette spareperiode (i år)
+* Sette rente
+
+### Viktig å kunne se
+* Totalbeløp etter perioden (uten skatt)
+
+### Illustrerende skjermbilde
+<img src="Illustration-us5.png" width="400">
