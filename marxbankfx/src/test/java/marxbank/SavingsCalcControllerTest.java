@@ -88,7 +88,7 @@ public class SavingsCalcControllerTest extends ApplicationTest {
 
         Label label = lookup("#totalAmountText").query();
 
-        // Formatet er på: "Totalbeløp etter perioden: kr x"
+        // Format: "Totalbeløp etter perioden: kr x"
         assertTrue(label.getText().equals("Totalbeløp etter perioden: kr " + sum ));
 
         TextField period = lookup("#period").query();
@@ -96,7 +96,7 @@ public class SavingsCalcControllerTest extends ApplicationTest {
         assertTrue(period.getText().equals("1"));
     }
 
-    
+
     /**
      * Testing whether the text field "totalAmountText" is empty when the paramters are invalid.
      */
@@ -119,5 +119,25 @@ public class SavingsCalcControllerTest extends ApplicationTest {
         assertTrue(label2.getText().equals(""));
     } 
 
+
+     /**
+     * Testing whether calculator will return a text "Beløpet er utenfor rekkevidde!"
+     * if the output is out of range.
+     */
+    @Test
+    @DisplayName("test a calculation with invalid parameters")
+    public void testCalculationWithOutputOutOfRange() {
+        clickOn("#monthlyAmount").write("1000000");
+        clickOn("#lumpAmount").write("100000000");
+        clickOn("#period").write("20000000");
+        clickOn("#interestRate").write("320,0");
+        clickOn("#findTotalAmount");
+
+        // Format: "Totalbeløp etter perioden: Beløpet er utenfor rekkevidde!"
+        Label label1 = lookup("#totalAmountText").query();
+        assertTrue(label1.getText().equals("Totalbeløp etter perioden: Beløpet er utenfor rekkevidde!"));
+
+    } 
+    
 }
 

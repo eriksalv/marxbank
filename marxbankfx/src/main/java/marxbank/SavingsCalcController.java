@@ -57,23 +57,31 @@ public class SavingsCalcController {
 
     
     /**
-     * Calculates the total amount based on the values in text fields
+     * Calculates the total amount based on the values in text fields.
+     * If the value of type long is out of range return -1.
     */
-    private int calculateTotalAmount() {
-        int ma = Integer.parseInt(monthlyAmount.getText());
-        int la = Integer.parseInt(lumpAmount.getText());
-        int p = Integer.parseInt(period.getText());
+    private long calculateTotalAmount() {
+        long ma = Integer.parseInt(monthlyAmount.getText());
+        long la = Integer.parseInt(lumpAmount.getText());
+        long p = Integer.parseInt(period.getText());
         double ir = interestRateFieldConverter();
         
-        double calc = SavingsCalc.calculation(ma, la, p, ir);
+        long calc = SavingsCalc.calculation(ma, la, p, ir);
 
-        return (int) Math.round(calc);
+        if (calc >= Long.MAX_VALUE)
+            return -1;
+
+
+        return calc;
     }
 
-
+    
     @FXML
     private void handleFindTotalAmount(ActionEvent ev) {
-        totalAmountText.setText("Totalbeløp etter perioden: kr " + calculateTotalAmount());
+        if (calculateTotalAmount() == -1)
+            totalAmountText.setText("Totalbeløp etter perioden: Beløpet er utenfor rekkevidde!");
+        else
+            totalAmountText.setText("Totalbeløp etter perioden: kr " + calculateTotalAmount());
         
         if (Integer.parseInt(period.getText()) == 0)
             period.setText("1");
@@ -104,7 +112,7 @@ public class SavingsCalcController {
     /**
      * Convert a decimal with comma to a decimal with point (double).
      * 
-     * @return a double value
+     * @return a long value
      */
     private double interestRateFieldConverter() {
         String s = interestRate.getText();
