@@ -26,7 +26,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import marxbank.Bank;
 import marxbank.model.User;
 
 public class ProfileControllerTest extends ApplicationTest{
@@ -71,7 +70,7 @@ public class ProfileControllerTest extends ApplicationTest{
     @Test
     public void testController() {
         assertNotNull(controller);
-        assertEquals(user.getId(), lookup("#IDLabel").queryAs(Label.class).getText());
+        assertEquals(user.getId(), Long.parseLong(lookup("#IDLabel").queryAs(Label.class).getText()));
         assertEquals(user.getUsername(), lookup("#usernameLabel").queryAs(Label.class).getText());
     }
 

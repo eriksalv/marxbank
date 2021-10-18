@@ -6,9 +6,12 @@ import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 /**
 * The purpose of the transaction class is to store information about a transaction between
 * two accounts. The information stored should never be changed, so it essentially functions
@@ -19,15 +22,23 @@ import javax.persistence.Id;
 public class Transaction {
     
     @Id @GeneratedValue
-    private final Long id;
-    private final Account from;
-    private final Account reciever;
-    private final double amount;
-    private final LocalDateTime transactionDate;
-    private final String dateString;
+    private Long id;
+    @ManyToOne
+    private Account from;
+    @ManyToOne
+    private Account reciever;
+    @Column
+    private double amount;
+    @Transient
+    private LocalDateTime transactionDate;
+    @Column
+    private String dateString;
 
     //autoformats the date text-string 
+    @Transient
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    public Transaction() {}
 
     /**
      * Initializes transaction object and runs the commitTransaction method if commit is true.

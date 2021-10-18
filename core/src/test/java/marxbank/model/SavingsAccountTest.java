@@ -9,31 +9,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import marxbank.model.SavingsAccount;
-import marxbank.model.User;
-
 public class SavingsAccountTest {
     
     private User user;
 
     @BeforeEach
     public void setup() throws IOException {
-        this.user = new User(Long.parseLong("id"), "username", "emai@email.com", "password");
+        this.user = new User((long) 1, "username", "emai@email.com", "password");
     }
 
     @Test
     @DisplayName("test of first constructor")
     public void testConstructors() {
-        SavingsAccount normalConstrutor = new SavingsAccount(Long.parseLong("1"), user, 3);
+        SavingsAccount normalConstrutor = new SavingsAccount((long) 1, user, 3);
         assertAll(
-            () -> assertEquals("1", normalConstrutor.getId()),
+            () -> assertEquals((long) 1, normalConstrutor.getId()),
             () -> assertEquals(user, normalConstrutor.getUser()),
             () ->  assertEquals(3.0, normalConstrutor.getInterestRate())
         );
 
-        SavingsAccount normalSetRateConstructor = new SavingsAccount(Long.parseLong("2"), user, 5.0);
+        SavingsAccount normalSetRateConstructor = new SavingsAccount((long) 2, user, 5.0);
         assertAll(
-            () -> assertEquals("2", normalSetRateConstructor.getId()),
+            () -> assertEquals((long) 2, normalSetRateConstructor.getId()),
             () -> assertEquals(user, normalSetRateConstructor.getUser()),
             () -> assertEquals(5.0, normalSetRateConstructor.getInterestRate())
         );
@@ -44,9 +41,9 @@ public class SavingsAccountTest {
             () -> assertEquals("name", noIdNameConstructor.getName())  
         );
 
-        SavingsAccount longConstructor = new SavingsAccount(Long.parseLong("3"), user, 5.0, "longConstructor", 5);
+        SavingsAccount longConstructor = new SavingsAccount((long) 3, user, 5.0, "longConstructor", 5);
         assertAll(
-            () -> assertEquals("3", longConstructor.getId()),
+            () -> assertEquals((long) 3, longConstructor.getId()),
             () -> assertEquals(user, longConstructor.getUser()),
             () -> assertEquals(5.0, longConstructor.getInterestRate()),
             () -> assertEquals("longConstructor", longConstructor.getName()),

@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import marxbank.Bank;
 import marxbank.util.AccountType;
@@ -17,14 +20,21 @@ public abstract class Account {
 
     @Id @GeneratedValue
     private Long id;
+    @Column
     private final int accountNumber;
+    @Column
     private AccountType type;
+    @ManyToOne
     private User user;
+    @Column
     private String name; 
+    @OneToMany(targetEntity = Transaction.class)
     private List<Transaction> transactions = new LinkedList<Transaction>();
+    @Column
     private double balance = 0;
+    @Column
     private double interestRate; // In percent
-    
+
     /**
      * Constructur for class Account.
      * @param id2 - unique id

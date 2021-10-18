@@ -20,7 +20,7 @@ public class AccountFactoryTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        user = new User("id", "username", "email@email.com", "password");
+        user = new User((long) 1, "username", "email@email.com", "password");
     }
 
     @Test
@@ -40,10 +40,10 @@ public class AccountFactoryTest {
     @Test
     @DisplayName("test createFromMethod")
     public void testCreateFromMethod() {
-        Account a1 = AccountFactory.createFrom("BSU", "id1", user, "Ola Nordmann", 1);
-        Account a2 = AccountFactory.createFrom("Sparekonto", "id2", user, "Ola Nordmann", 1);
-        Account a3 = AccountFactory.createFrom("Brukskonto", "id3", user, "Ola Nordmann", 1);
-        Account a4 = AccountFactory.createFrom("Marxkonto", "id4", user, "Ola Nordmann", 1);
+        Account a1 = AccountFactory.createFrom("BSU", (long) 2, user, "Ola Nordmann", 1);
+        Account a2 = AccountFactory.createFrom("Sparekonto", (long) 3, user, "Ola Nordmann", 1);
+        Account a3 = AccountFactory.createFrom("Brukskonto", (long) 4, user, "Ola Nordmann", 1);
+        Account a4 = AccountFactory.createFrom("Marxkonto", (long) 5, user, "Ola Nordmann", 1);
 
         assertEquals(a1, null);
         assertTrue(a2 instanceof SavingsAccount);

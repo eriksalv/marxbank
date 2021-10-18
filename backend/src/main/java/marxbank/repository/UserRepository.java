@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import marxbank.model.User;
 
-public interface UserRepository extends CrudRepository<User, String>{
+public interface UserRepository extends CrudRepository<User, Long>{
 
-    Optional<User> findByUserName(String username);
+    Optional<User> findByUsername(Long username);
 
 }

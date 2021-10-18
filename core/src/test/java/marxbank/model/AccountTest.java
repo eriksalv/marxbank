@@ -13,10 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import marxbank.model.Account;
-import marxbank.model.SavingsAccount;
-import marxbank.model.Transaction;
-import marxbank.model.User;
+import marxbank.Bank;
 
 public class AccountTest {
 
@@ -24,24 +21,25 @@ public class AccountTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        user = new User(Long.parseLong("id"), "username", "email@email.com", "password");
+        resetSingleton();
+        user = new User((long) 1, "username", "email@email.com", "password");
     }
 
     @Test
     @DisplayName("test constructor")
     public void testConstructor() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new SavingsAccount(Long.parseLong("id"), user, -5.0);
+            new SavingsAccount((long) 1, user, -5.0);
         });
 
-        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
+        Account a = new SavingsAccount((long) 1, user, 5.0);
         assertEquals(this.user.getAccounts().get(0), a);
     }
 
     @Test
     @DisplayName("test deposit withdraw addInterest")
     public void testDepositWithdraw() {
-        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
+        Account a = new SavingsAccount((long) 1, user, 5.0);
 
         assertThrows(IllegalArgumentException.class, () -> {
             a.deposit(-500.0);
@@ -70,10 +68,10 @@ public class AccountTest {
     @Test
     @DisplayName("test transactions")
     public void testTransactions() {
-        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
-        Account a2 = new SavingsAccount(Long.parseLong("id2"), user, 5.0);
+        Account a = new SavingsAccount((long) 1, user, 5.0);
+        Account a2 = new SavingsAccount((long) 2, user, 5.0);
         a.deposit(5000);
-        Transaction t = new Transaction(Long.parseLong("id"), a, a2, 500, true);
+        Transaction t = new Transaction((long) 1, a, a2, 500, true);
 
         assertThrows(IllegalStateException.class, () -> {
             a.addTransaction(t);
@@ -86,7 +84,7 @@ public class AccountTest {
     @Test
     @DisplayName("test setters and equals")
     public void testSetters() {
-        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
+        Account a = new SavingsAccount((long) 1, user, 5.0);
 
         assertThrows(IllegalArgumentException.class, () -> {
             a.setName(null);
@@ -101,8 +99,8 @@ public class AccountTest {
             a.setId(null);
         });
 
-        a.setId(Long.parseLong("idNooneElseHas"));
-        assertTrue(a.getId().equals(Long.parseLong("idNooneElseHas")));
+        a.setId((long) 99);
+        assertTrue(a.getId().equals((long) 99));
 
         User u = new User("kristina", "kristina@kristina.no", "password");
         assertThrows(IllegalArgumentException.class, () -> {
@@ -113,10 +111,14 @@ public class AccountTest {
         assertEquals(u, a.getUser());
 
         ArrayList<Transaction> t = new ArrayList<Transaction>();
-        Account b = new SavingsAccount(Long.parseLong("iddddd"), user);
+        Account b = new SavingsAccount((long) 5, user);
         a.deposit(100.0);
-        t.add(new Transaction(Long.parseLong("id"), a, b, 10, true));
+        t.add(new Transaction((long) 10, a, b, 10, true));
         a.setTransactions(t);
         assertEquals(t, a.getTransactions());
+    }
+
+    public void resetSingleton() {
+        Bank.getInstanceBank().clearAccounts();
     }
 }

@@ -16,10 +16,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import marxbank.model.Account;
-import marxbank.model.SavingsAccount;
-import marxbank.model.Transaction;
-import marxbank.model.User;
 
 public class TransactionTest {
 
@@ -30,8 +26,8 @@ public class TransactionTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        a1 = new SavingsAccount(Long.parseLong("id1"), new User(Long.parseLong("id"), "username", "email@email.com", "password"), 2);
-        a2 = new SavingsAccount(Long.parseLong("id2"), new User(Long.parseLong("id2"), "username2", "email@gmail.com", "password2"), 3);
+        a1 = new SavingsAccount((long) 1, new User((long) 1, "username", "email@email.com", "password"), 2);
+        a2 = new SavingsAccount((long) 2, new User((long) 2, "username2", "email@gmail.com", "password2"), 3);
         a1.deposit(100);
         a2.deposit(100);
     }
@@ -45,7 +41,7 @@ public class TransactionTest {
         assertEquals(0, a1.getBalance());
         assertEquals(200, a2.getBalance());
         
-        Transaction t2 = new Transaction(Long.parseLong("id"), a2, a1, 100, Transaction.DATE_FORMATTER.format(LocalDateTime.now().plusDays(2)), true, false);
+        Transaction t2 = new Transaction((long) 5, a2, a1, 100, Transaction.DATE_FORMATTER.format(LocalDateTime.now().plusDays(2)), true, false);
         assertFalse(a1.getTransactions().contains(t2) || a2.getTransactions().contains(t2));
         assertEquals(Transaction.DATE_FORMATTER.format(LocalDateTime.now().plusDays(2)), t2.getDateString());
         assertEquals(100, a1.getBalance());
@@ -59,7 +55,7 @@ public class TransactionTest {
     @Test
     @DisplayName("test commitTransaction with a1 and a2 as param")
     public void testCommitTransaction1() throws IOException {
-        transaction = new Transaction(Long.parseLong("t"), a1, a2, 50, true);
+        transaction = new Transaction((long) 90, a1, a2, 50, true);
         
         assertEquals(transaction.getFrom(), a1);
         assertEquals(transaction.getReciever(), a2);
@@ -70,7 +66,7 @@ public class TransactionTest {
         assertEquals(a1.getTransactions().size(), 1);
         assertEquals(a2.getTransactions().size(), 1);
 
-        Transaction t2 = new Transaction(Long.parseLong("t2"), a1, a2, 50.0, false);
+        Transaction t2 = new Transaction((long) 99, a1, a2, 50.0, false);
 
         assertEquals(t2.getFrom(), a1);
         assertEquals(t2.getReciever(), a2);
@@ -87,11 +83,11 @@ public class TransactionTest {
     @DisplayName("test commitTransaction with a1 and null as param")
     public void testCommitTransaction2() throws IOException {
         assertThrows(IllegalStateException.class, () -> {
-            transaction = new Transaction(Long.parseLong("t"), a1, null, 50, true);
+            transaction = new Transaction((long) 69, a1, null, 50, true);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            transaction = new Transaction(Long.parseLong("t"), a1, a1, 50, true);
+            transaction = new Transaction((long) 69, a1, a1, 50, true);
         });
 
         assertEquals(a1.getBalance(), 100);
@@ -102,11 +98,11 @@ public class TransactionTest {
     @Test
     @DisplayName("test equals")
     public void testEquals() {
-        transaction = new Transaction(Long.parseLong("t"), a1, a2, 50, true);
+        transaction = new Transaction((long) 69, a1, a2, 50, true);
 
         assertTrue(transaction.equals(transaction));
         assertFalse(transaction.equals("yeet"));
-        assertFalse(transaction.equals(new Transaction(Long.parseLong("t2"), a1, a2, 5, false)));
+        assertFalse(transaction.equals(new Transaction((long) 99, a1, a2, 5, false)));
     }
 
     @ParameterizedTest

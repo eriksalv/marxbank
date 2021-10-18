@@ -42,7 +42,7 @@ public class AccountFactory {
      * @param accountNumber
      * @return
      */
-    public static Account createFrom(String accountType, String id, User user, String name, int accountNumber) {
+    public static Account createFrom(String accountType, long id, User user, String name, int accountNumber) {
         if ("Sparekonto".equalsIgnoreCase(accountType)) {
             return new SavingsAccount(id, user, 3, name, accountNumber);
         } else if ("Brukskonto".equalsIgnoreCase(accountType)) {

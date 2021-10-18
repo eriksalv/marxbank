@@ -9,9 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import marxbank.Bank;
-import marxbank.model.Account;
-import marxbank.model.CreditAccount;
-import marxbank.model.User;
 
 public class CreditAccountTest {
 
@@ -20,14 +17,14 @@ public class CreditAccountTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         resetSingleton();
-        user = new User(Long.parseLong("id"), "username", "email@email.com", "password");
+        user = new User((long) 1, "username", "email@email.com", "password");
     }
 
     @Test
     @DisplayName("test contructor")
     public void testConstructor() {
         assertThrows(IllegalArgumentException.class, () -> {
-            Account a = new CreditAccount(Long.parseLong("id"), user, -5.0, "navn", 69000);
+            Account a = new CreditAccount((long) 1, user, -5.0, "navn", 69000);
         });
 
         String name = "kredittkonto";

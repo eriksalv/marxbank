@@ -24,6 +24,8 @@ public class User {
     @OneToMany(targetEntity = Account.class)
     private List<Account> accounts = new ArrayList<Account>();
 
+    public User() {}
+
     /**
      * Constructor for user with arguments
      * @param id of user

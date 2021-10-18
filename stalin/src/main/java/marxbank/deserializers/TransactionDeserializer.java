@@ -29,15 +29,15 @@ public class TransactionDeserializer extends StdDeserializer<Transaction> {
     public Transaction deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         JsonNode node = jp.getCodec().readTree(jp);
         try {
-            if(!DataManager.manager().checkIfAccountExists(node.get("from").get("id").asText()) || !DataManager.manager().checkIfAccountExists(node.get("reciever").get("id").asText())) throw new IllegalStateException("Accounts doesn't exist");
-            from = DataManager.manager().getAccount(node.get("from").get("id").asText());
-            reciever = DataManager.manager().getAccount(node.get("reciever").get("id").asText());
+            if(!DataManager.manager().checkIfAccountExists(node.get("from").get("id").asLong()) || !DataManager.manager().checkIfAccountExists(node.get("reciever").get("id").asLong())) throw new IllegalStateException("Accounts doesn't exist");
+            from = DataManager.manager().getAccount(node.get("from").get("id").asLong());
+            reciever = DataManager.manager().getAccount(node.get("reciever").get("id").asLong());
         } catch (NullPointerException e) {
-            if(!DataManager.manager().checkIfAccountExists(node.get("from").asText()) || !DataManager.manager().checkIfAccountExists(node.get("reciever").asText())) throw new IllegalStateException("Accounts doesn't exist");
-            from = DataManager.manager().getAccount(node.get("from").asText());
-            reciever = DataManager.manager().getAccount(node.get("reciever").asText());
+            if(!DataManager.manager().checkIfAccountExists(node.get("from").asLong()) || !DataManager.manager().checkIfAccountExists(node.get("reciever").asLong())) throw new IllegalStateException("Accounts doesn't exist");
+            from = DataManager.manager().getAccount(node.get("from").asLong());
+            reciever = DataManager.manager().getAccount(node.get("reciever").asLong());
         }
-        return new Transaction(node.get("id").asText(), from, reciever, node.get("amount").asDouble(), node.get("dateString").asText(), false, true);
+        return new Transaction(node.get("id").asLong(), from, reciever, node.get("amount").asDouble(), node.get("dateString").asText(), false, true);
         
     }
     
