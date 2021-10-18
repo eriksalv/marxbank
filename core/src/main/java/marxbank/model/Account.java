@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import marxbank.Bank;
@@ -14,8 +15,8 @@ import marxbank.util.AccountType;
 @Entity
 public abstract class Account {
 
-    @Id
-    private String id;
+    @Id @GeneratedValue
+    private Long id;
     private final int accountNumber;
     private AccountType type;
     private User user;
@@ -26,15 +27,15 @@ public abstract class Account {
     
     /**
      * Constructur for class Account.
-     * @param id - unique id
+     * @param id2 - unique id
      * @param user - User that owns this account
      * @param interestRate - Accounts interest rate in percent
      * @param type - Account type
     */
-    public Account(String id, User user, double interestRate, AccountType type) {
+    public Account(Long id2, User user, double interestRate, AccountType type) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
-        this.id = id;
+        this.id = id2;
         this.type = type;
         this.name = "Ny konto";
         this.accountNumber = generateAccountNumber();
@@ -51,7 +52,7 @@ public abstract class Account {
      * @param accountNumber - Existing account number 
      * @param name - Name of the account
     */
-    public Account(String id, User user, double interestRate, AccountType type, int accountNumber, String name) {
+    public Account(Long id, User user, double interestRate, AccountType type, int accountNumber, String name) {
         this.user = user;
         this.interestRate = validateIntereset(interestRate);
         this.id = id;
@@ -72,7 +73,7 @@ public abstract class Account {
      * @param name - Name of the account
     */
     public Account(User user, double interestRate, AccountType type, String name) {
-        this(UUID.randomUUID().toString(), user, interestRate, type);
+        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, user, interestRate, type);
         this.name = name;
     }
 
@@ -169,11 +170,11 @@ public abstract class Account {
         this.balance = balance;
     }
 
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         if (id == null) throw new IllegalArgumentException("new Id cannot be null");
         this.id = id;
     }

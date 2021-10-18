@@ -64,11 +64,11 @@ public class HomeControllerTest extends ApplicationTest{
     @BeforeEach
     void beforeEachSetup() throws IOException {
         DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
-        this.user = new User("56789", "annaost", "anna.ostmo@gmail.com", "passord");
+        this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
         this.account1 = new SavingsAccount(user, "Annas brukskonto");
         this.account1.deposit(500);
-        this.account2 = new SavingsAccount("12345", user);
-        this.transaction = new Transaction("4040", account1, account2, 20.0, true);
+        this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
+        this.transaction = new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
     }
 
     /**

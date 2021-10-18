@@ -21,14 +21,14 @@ public class MarxAccountTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         resetSingleton();
-        user = new User("id", "username", "email@email.com", "password");
+        user = new User(Long.parseLong("id"), "username", "email@email.com", "password");
     }
 
     @Test
     @DisplayName("test constructor")
     public void testConstructor() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new MarxAccount("id", user, -5.0);
+            new MarxAccount(Long.parseLong("id"), user, -5.0);
         });
 
         Account a = new MarxAccount(user, "name");

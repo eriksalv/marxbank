@@ -35,7 +35,7 @@ public class MarxAccount extends Account {
      * @param user owner of account
      * @param interestRate of account
      */
-    public MarxAccount(String id, User user, double interestRate) {
+    public MarxAccount(Long id, User user, double interestRate) {
         super(id, user, interestRate, AccountType.MARX);
     }
 
@@ -44,7 +44,7 @@ public class MarxAccount extends Account {
     * @param id of account
     * @param user owner of account
     */
-    public MarxAccount(String id, User user) {
+    public MarxAccount(Long id, User user) {
         super(id, user, DEFAULT_INTEREST, AccountType.MARX);
     }
 
@@ -56,7 +56,7 @@ public class MarxAccount extends Account {
      * @param name of account
      * @param accountNumber of account
      */
-    public MarxAccount(String id, User user, double interestRate, String name, int accountNumber) {
+    public MarxAccount(Long id, User user, double interestRate, String name, int accountNumber) {
         super(id, user, interestRate, AccountType.MARX, accountNumber, name);
     }
 
@@ -64,7 +64,7 @@ public class MarxAccount extends Account {
      * generates a unique account number starting with "48"
      */
     @Override
-    public int generateAccountNumber() {
+    public int generateAccountNumber() {    
         Random rand = new SecureRandom();
         String accNumberString = "48";
         for (int i=0;i<3;i++) {

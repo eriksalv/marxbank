@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 /**
 * The purpose of the transaction class is to store information about a transaction between
@@ -17,8 +18,8 @@ import javax.persistence.Id;
 @Entity
 public class Transaction {
     
-    @Id
-    private final String id;
+    @Id @GeneratedValue
+    private final Long id;
     private final Account from;
     private final Account reciever;
     private final double amount;
@@ -39,7 +40,7 @@ public class Transaction {
      * @param commit - commits the transaction of money between accounts if true
      * @param add - adds this transaction to from and recievers transaction list if true
     */
-    public Transaction(String id, Account from, Account reciever, double amount, String date, boolean commit, boolean add) {
+    public Transaction(Long id, Account from, Account reciever, double amount, String date, boolean commit, boolean add) {
         this.id = id;
         this.from = from;
         this.reciever = reciever;
@@ -69,7 +70,7 @@ public class Transaction {
      * @param commit - commits the transaction of money between accounts if true
      * @param add - adds this transaction to from and recievers transaction list if true
     */
-    public Transaction(String id, Account from, Account reciever, double amount, boolean commit, boolean add) {
+    public Transaction(Long id, Account from, Account reciever, double amount, boolean commit, boolean add) {
         this(id, from, reciever, amount, null, commit, add);
     }
 
@@ -84,7 +85,7 @@ public class Transaction {
      * @param dm - datamanager object for local storage
      * @param commit - commits the transaction of money between accounts if true
     */
-    public Transaction(String id, Account from, Account reciever, double amount, boolean commit) {
+    public Transaction(Long id, Account from, Account reciever, double amount, boolean commit) {
         this(id, from, reciever, amount, null, commit, true);
     }
 
@@ -97,14 +98,14 @@ public class Transaction {
      * @param amount - Amount of money in transaction
     */
     public Transaction(Account from, Account reciever, double amount) {
-        this(UUID.randomUUID().toString(), from, reciever, amount, null, true, true);
+        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, from, reciever, amount, null, true, true);
     }
 
     /**
      * Getter for unique transaction id
      * @return transaction id
     */
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 

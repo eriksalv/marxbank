@@ -24,24 +24,24 @@ public class AccountTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        user = new User("id", "username", "email@email.com", "password");
+        user = new User(Long.parseLong("id"), "username", "email@email.com", "password");
     }
 
     @Test
     @DisplayName("test constructor")
     public void testConstructor() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new SavingsAccount("id", user, -5.0);
+            new SavingsAccount(Long.parseLong("id"), user, -5.0);
         });
 
-        Account a = new SavingsAccount("id", user, 5.0);
+        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
         assertEquals(this.user.getAccounts().get(0), a);
     }
 
     @Test
     @DisplayName("test deposit withdraw addInterest")
     public void testDepositWithdraw() {
-        Account a = new SavingsAccount("id", user, 5.0);
+        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
 
         assertThrows(IllegalArgumentException.class, () -> {
             a.deposit(-500.0);
@@ -70,10 +70,10 @@ public class AccountTest {
     @Test
     @DisplayName("test transactions")
     public void testTransactions() {
-        Account a = new SavingsAccount("id", user, 5.0);
-        Account a2 = new SavingsAccount("id2", user, 5.0);
+        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
+        Account a2 = new SavingsAccount(Long.parseLong("id2"), user, 5.0);
         a.deposit(5000);
-        Transaction t = new Transaction("id", a, a2, 500, true);
+        Transaction t = new Transaction(Long.parseLong("id"), a, a2, 500, true);
 
         assertThrows(IllegalStateException.class, () -> {
             a.addTransaction(t);
@@ -86,7 +86,7 @@ public class AccountTest {
     @Test
     @DisplayName("test setters and equals")
     public void testSetters() {
-        Account a = new SavingsAccount("id", user, 5.0);
+        Account a = new SavingsAccount(Long.parseLong("id"), user, 5.0);
 
         assertThrows(IllegalArgumentException.class, () -> {
             a.setName(null);
@@ -101,8 +101,8 @@ public class AccountTest {
             a.setId(null);
         });
 
-        a.setId("idNooneElseHas");
-        assertTrue(a.getId().equals("idNooneElseHas"));
+        a.setId(Long.parseLong("idNooneElseHas"));
+        assertTrue(a.getId().equals(Long.parseLong("idNooneElseHas")));
 
         User u = new User("kristina", "kristina@kristina.no", "password");
         assertThrows(IllegalArgumentException.class, () -> {
@@ -113,9 +113,9 @@ public class AccountTest {
         assertEquals(u, a.getUser());
 
         ArrayList<Transaction> t = new ArrayList<Transaction>();
-        Account b = new SavingsAccount("iddddd", user);
+        Account b = new SavingsAccount(Long.parseLong("iddddd"), user);
         a.deposit(100.0);
-        t.add(new Transaction("id", a, b, 10, true));
+        t.add(new Transaction(Long.parseLong("id"), a, b, 10, true));
         a.setTransactions(t);
         assertEquals(t, a.getTransactions());
     }

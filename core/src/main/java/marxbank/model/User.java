@@ -7,14 +7,14 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 @Entity
 public class User {
-    @Id
-    private String id; 
+    @Id @GeneratedValue
+    private Long id; 
     @Column
     private String username;
     @Column
@@ -31,7 +31,7 @@ public class User {
      * @param email of user
      * @param password of user
      */
-    public User(String id, String username, String email, String password) {
+    public User(Long id, String username, String email, String password) {
         this.id = id;
         this.username = validateUsername(username);
         this.email = validateEmail(email);
@@ -39,15 +39,15 @@ public class User {
     }
 
     public User(String username, String email, String password) {
-        this(UUID.randomUUID().toString(), username, email, password);
+       this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, username, email, password);
     }
 
-    public void setId(String newId) {
+    public void setId(Long newId) {
         if (newId == null) throw new IllegalArgumentException("Id cannot be null");
         this.id = newId;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

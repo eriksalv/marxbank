@@ -20,14 +20,14 @@ public class CreditAccountTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         resetSingleton();
-        user = new User("id", "username", "email@email.com", "password");
+        user = new User(Long.parseLong("id"), "username", "email@email.com", "password");
     }
 
     @Test
     @DisplayName("test contructor")
     public void testConstructor() {
         assertThrows(IllegalArgumentException.class, () -> {
-            Account a = new CreditAccount("id", user, -5.0, "navn", 69000);
+            Account a = new CreditAccount(Long.parseLong("id"), user, -5.0, "navn", 69000);
         });
 
         String name = "kredittkonto";

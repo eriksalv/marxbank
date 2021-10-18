@@ -18,20 +18,20 @@ public class SavingsAccountTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        this.user = new User("id", "username", "emai@email.com", "password");
+        this.user = new User(Long.parseLong("id"), "username", "emai@email.com", "password");
     }
 
     @Test
     @DisplayName("test of first constructor")
     public void testConstructors() {
-        SavingsAccount normalConstrutor = new SavingsAccount("1", user, 3);
+        SavingsAccount normalConstrutor = new SavingsAccount(Long.parseLong("1"), user, 3);
         assertAll(
             () -> assertEquals("1", normalConstrutor.getId()),
             () -> assertEquals(user, normalConstrutor.getUser()),
             () ->  assertEquals(3.0, normalConstrutor.getInterestRate())
         );
 
-        SavingsAccount normalSetRateConstructor = new SavingsAccount("2", user, 5.0);
+        SavingsAccount normalSetRateConstructor = new SavingsAccount(Long.parseLong("2"), user, 5.0);
         assertAll(
             () -> assertEquals("2", normalSetRateConstructor.getId()),
             () -> assertEquals(user, normalSetRateConstructor.getUser()),
@@ -44,7 +44,7 @@ public class SavingsAccountTest {
             () -> assertEquals("name", noIdNameConstructor.getName())  
         );
 
-        SavingsAccount longConstructor = new SavingsAccount("3", user, 5.0, "longConstructor", 5);
+        SavingsAccount longConstructor = new SavingsAccount(Long.parseLong("3"), user, 5.0, "longConstructor", 5);
         assertAll(
             () -> assertEquals("3", longConstructor.getId()),
             () -> assertEquals(user, longConstructor.getUser()),
