@@ -10,6 +10,7 @@
         <module>core</module>
         <module>marxbankfx</module>
         <module>stalin</module>
+        <module>backend</module>
     </modules>
 
     <properties>

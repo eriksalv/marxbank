@@ -5,15 +5,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 /**
 * The purpose of the transaction class is to store information about a transaction between
 * two accounts. The information stored should never be changed, so it essentially functions
 * as a record, but it is also responsible for withdrawing and depositing the correct amount
 * of balance between the accounts.
 */
-
+@Entity
 public class Transaction {
     
+    @Id
     private final String id;
     private final Account from;
     private final Account reciever;

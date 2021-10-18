@@ -5,12 +5,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
-    private String id;
+@Entity
+public class User {
+    @Id
+    private String id; 
+    @Column
     private String username;
+    @Column
     private String email;
+    @Column
     private String password;
+    @OneToMany(targetEntity = Account.class)
     private List<Account> accounts = new ArrayList<Account>();
 
     /**

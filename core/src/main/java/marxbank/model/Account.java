@@ -5,11 +5,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import marxbank.Bank;
 import marxbank.util.AccountType;
 
+@Entity
 public abstract class Account {
 
+    @Id
     private String id;
     private final int accountNumber;
     private AccountType type;
