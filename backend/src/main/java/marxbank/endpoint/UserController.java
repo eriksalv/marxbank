@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import marxbank.API.UserResponse;
 import marxbank.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,14 @@ public class UserController {
 
     @GetMapping
     @Transactional
-    public List<User> findAll() {
-        List<User> result = new ArrayList<User>();
-        userRepository.findAll().forEach(u -> result.add(u));
+    public List<UserResponse> findAll() {
+        List<UserResponse> result = new ArrayList<UserResponse>();
+        userRepository.findAll().forEach(u -> result.add(UserResponse(u)));
         return result;
+    }
+
+    private UserResponse UserResponse(User u) {
+        return null;
     }
 
     @GetMapping("/{id}")
