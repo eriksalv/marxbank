@@ -40,4 +40,7 @@ public class UserController {
         return userRepository.findById(id).orElseThrow(Exception::new);
     }
 
-}
+    // POST 
+    // data -> god sturktur -> sjekke data i strukturen -> lagre data hvis god -> gi beskjed om at den er lagret
+
+}   
