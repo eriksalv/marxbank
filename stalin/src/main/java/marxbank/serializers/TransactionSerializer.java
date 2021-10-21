@@ -20,13 +20,13 @@ public class TransactionSerializer extends StdSerializer<Transaction> {
     @Override
     public void serialize(Transaction transaction, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", transaction.getId());
+        gen.writeNumberField("id", transaction.getId());
         gen.writeNumberField("amount", transaction.getAmount());
         gen.writeObjectFieldStart("from");
-        gen.writeStringField("id", transaction.getFrom().getId());
+        gen.writeNumberField("id", transaction.getFrom().getId());
         gen.writeEndObject();
         gen.writeObjectFieldStart("reciever");
-        gen.writeStringField("id", transaction.getReciever().getId());
+        gen.writeNumberField("id", transaction.getReciever().getId());
         gen.writeEndObject();
         gen.writeStringField("dateString", transaction.getDateString());
         gen.writeEndObject();

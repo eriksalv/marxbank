@@ -22,7 +22,7 @@ public class UserSerializer extends StdSerializer<User> {
     @Override
     public void serialize(User u, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", u.getId());
+        gen.writeNumberField("id", u.getId());
         gen.writeStringField("username", u.getUsername());
         gen.writeStringField("email", u.getEmail());
         gen.writeStringField("password", u.getPassword());
@@ -30,7 +30,7 @@ public class UserSerializer extends StdSerializer<User> {
         gen.writeStartArray();
         for(Account a : u.getAccounts()) {
             gen.writeStartObject();
-            gen.writeStringField("id", a.getId());
+            gen.writeNumberField("id", a.getId());
             gen.writeEndObject();
         }
         gen.writeEndArray();

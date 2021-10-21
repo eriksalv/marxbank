@@ -29,7 +29,7 @@ public class ProfileController {
     public void initData(User u) {
         this.user = u;
         nameLabel.setText(user.getEmail());
-        IDLabel.setText(user.getId());
+        IDLabel.setText(user.getId().toString());
         usernameLabel.setText(user.getUsername());
         passwordLabel.setText(user.getPassword());
     }

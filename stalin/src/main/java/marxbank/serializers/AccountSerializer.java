@@ -22,9 +22,9 @@ public class AccountSerializer extends  StdSerializer<Account> {
     @Override
     public void serialize(Account account, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", account.getId());
+        gen.writeNumberField("id", account.getId());
         gen.writeObjectFieldStart("user");
-        gen.writeStringField("id", account.getUser().getId());
+        gen.writeNumberField("id", account.getUser().getId());
         gen.writeEndObject();
         gen.writeNumberField("accountNumber", account.getAccountNumber());
         gen.writeStringField("name", account.getName());
@@ -35,7 +35,7 @@ public class AccountSerializer extends  StdSerializer<Account> {
         gen.writeStartArray();
         for(Transaction t : account.getTransactions()) {
             gen.writeStartObject();
-            gen.writeStringField("id", t.getId());
+            gen.writeNumberField("id", t.getId());
             gen.writeEndObject();
         }
         gen.writeEndArray();

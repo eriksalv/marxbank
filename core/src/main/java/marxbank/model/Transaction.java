@@ -5,24 +5,40 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 /**
 * The purpose of the transaction class is to store information about a transaction between
 * two accounts. The information stored should never be changed, so it essentially functions
 * as a record, but it is also responsible for withdrawing and depositing the correct amount
 * of balance between the accounts.
 */
-
+@Entity
 public class Transaction {
     
-    private final String id;
-    private final Account from;
-    private final Account reciever;
-    private final double amount;
-    private final LocalDateTime transactionDate;
-    private final String dateString;
+    @Id @GeneratedValue
+    private Long id;
+    @ManyToOne
+    private Account from;
+    @ManyToOne
+    private Account reciever;
+    @Column
+    private double amount;
+    @Transient
+    private LocalDateTime transactionDate;
+    @Column
+    private String dateString;
 
     //autoformats the date text-string 
+    @Transient
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    public Transaction() {}
 
     /**
      * Initializes transaction object and runs the commitTransaction method if commit is true.
@@ -35,7 +51,7 @@ public class Transaction {
      * @param commit - commits the transaction of money between accounts if true
      * @param add - adds this transaction to from and recievers transaction list if true
     */
-    public Transaction(String id, Account from, Account reciever, double amount, String date, boolean commit, boolean add) {
+    public Transaction(Long id, Account from, Account reciever, double amount, String date, boolean commit, boolean add) {
         this.id = id;
         this.from = from;
         this.reciever = reciever;
@@ -65,7 +81,7 @@ public class Transaction {
      * @param commit - commits the transaction of money between accounts if true
      * @param add - adds this transaction to from and recievers transaction list if true
     */
-    public Transaction(String id, Account from, Account reciever, double amount, boolean commit, boolean add) {
+    public Transaction(Long id, Account from, Account reciever, double amount, boolean commit, boolean add) {
         this(id, from, reciever, amount, null, commit, add);
     }
 
@@ -80,7 +96,7 @@ public class Transaction {
      * @param dm - datamanager object for local storage
      * @param commit - commits the transaction of money between accounts if true
     */
-    public Transaction(String id, Account from, Account reciever, double amount, boolean commit) {
+    public Transaction(Long id, Account from, Account reciever, double amount, boolean commit) {
         this(id, from, reciever, amount, null, commit, true);
     }
 
@@ -93,14 +109,14 @@ public class Transaction {
      * @param amount - Amount of money in transaction
     */
     public Transaction(Account from, Account reciever, double amount) {
-        this(UUID.randomUUID().toString(), from, reciever, amount, null, true, true);
+        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, from, reciever, amount, null, true, true);
     }
 
     /**
      * Getter for unique transaction id
      * @return transaction id
     */
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 

@@ -16,7 +16,7 @@ public class SavingsAccount extends Account {
      * @param user owner of account
      * @param interestRate interestReate
      */
-    public SavingsAccount(String id, User user, double interestRate) {
+    public SavingsAccount(Long id, User user, double interestRate) {
         super(id, user, interestRate, AccountType.SAVING);
     }
 
@@ -25,7 +25,7 @@ public class SavingsAccount extends Account {
      * @param id of account
      * @param user owner of account
      */
-    public SavingsAccount(String id, User user) {
+    public SavingsAccount(Long id, User user) {
         super(id, user, DEFAULT_INTEREST, AccountType.SAVING);
     }
 
@@ -46,7 +46,7 @@ public class SavingsAccount extends Account {
      * @param name of account
      * @param accountNumber of account
      */
-    public SavingsAccount(String id, User user, double interestRate, String name, int accountNumber) {
+    public SavingsAccount(Long id, User user, double interestRate, String name, int accountNumber) {
         super(id, user, interestRate, AccountType.SAVING, accountNumber, name);
     }
 

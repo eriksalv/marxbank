@@ -15,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import marxbank.Bank;
 import marxbank.model.Account;
 import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
@@ -99,11 +98,11 @@ public class DataManagerTest {
         assertTrue(DataManager.manager().checkIfTransactionExists(transaction));
         assertTrue(DataManager.manager().checkIfTransactionExists(transaction.getId()));
 
-        assertFalse(DataManager.manager().checkIfUserExists("yeeters"));
-        assertFalse(DataManager.manager().checkIfAccountExists("yeeters"));
+        assertFalse(DataManager.manager().checkIfUserExists(99999));
+        assertFalse(DataManager.manager().checkIfAccountExists(99999));
         assertFalse(DataManager.manager().checkIfAccountExists(new SavingsAccount(user, "yeet")));
-        assertFalse(DataManager.manager().checkIfTransactionExists("yeet"));
-        assertFalse(DataManager.manager().checkIfTransactionExists(new Transaction("id", account, account2, 50.0, false)));
+        assertFalse(DataManager.manager().checkIfTransactionExists(999999999));
+        assertFalse(DataManager.manager().checkIfTransactionExists(new Transaction((long) 1, account, account2, 50.0, false)));
         
     }
 
@@ -112,11 +111,11 @@ public class DataManagerTest {
     public void testDifferentGetters() {
         assertTrue(DataManager.manager().getUserByUsername("yeetman").equals(user));
         assertTrue(DataManager.manager().getUser(user.getId()).equals(user));
-        assertNull(DataManager.manager().getUser("nopeman"));
+        assertNull(DataManager.manager().getUser((long) -50.0));
         assertTrue(DataManager.manager().getAccount(account.getId()).equals(account));
-        assertNull(DataManager.manager().getAccount("nopeaccount"));
+        assertNull(DataManager.manager().getAccount((long) -50.0));
         assertTrue(DataManager.manager().getTransaction(transaction.getId()).equals(transaction));
-        assertNull(DataManager.manager().getTransaction("nopetransaction"));
+        assertNull(DataManager.manager().getTransaction((long) -50.0));
     }
     
     @Test

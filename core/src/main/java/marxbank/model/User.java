@@ -5,13 +5,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-    private String id;
+@Entity
+public class User {
+    @Id @GeneratedValue
+    private Long id; 
+    @Column
     private String username;
+    @Column
     private String email;
+    @Column
     private String password;
+    @OneToMany(targetEntity = Account.class)
     private List<Account> accounts = new ArrayList<Account>();
+
+    public User() {}
 
     /**
      * Constructor for user with arguments
@@ -20,7 +33,7 @@ public class User {
      * @param email of user
      * @param password of user
      */
-    public User(String id, String username, String email, String password) {
+    public User(Long id, String username, String email, String password) {
         this.id = id;
         this.username = validateUsername(username);
         this.email = validateEmail(email);
@@ -28,15 +41,15 @@ public class User {
     }
 
     public User(String username, String email, String password) {
-        this(UUID.randomUUID().toString(), username, email, password);
+       this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, username, email, password);
     }
 
-    public void setId(String newId) {
+    public void setId(Long newId) {
         if (newId == null) throw new IllegalArgumentException("Id cannot be null");
         this.id = newId;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

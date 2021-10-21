@@ -185,7 +185,7 @@ public class DataManager {
      * @param id of user
      * @return true if user is found, false otherwise
      */
-    public boolean checkIfUserExists(String id) {
+    public boolean checkIfUserExists(long id) {
         try {
             this.userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
             return true;
@@ -208,7 +208,7 @@ public class DataManager {
      * @param id of account
      * @return true if found, false otherwise
      */
-    public boolean checkIfAccountExists(String id) {
+    public boolean checkIfAccountExists(long id) {
         try {
             this.accountList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
             return true;
@@ -231,7 +231,7 @@ public class DataManager {
      * @param id of transaction
      * @return true if found, false otherwise
      */
-    public boolean checkIfTransactionExists(String id) {
+    public boolean checkIfTransactionExists(long id) {
         try {
             this.transactionList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
             return true;
@@ -274,7 +274,7 @@ public class DataManager {
      * @param id of User object
      * @return User object if found, null otherwise
      */
-    public User getUser(String id) {
+    public User getUser(long id) {
         if(checkIfUserExists(id)) return this.userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
         return null;
     }
@@ -284,7 +284,7 @@ public class DataManager {
      * @param id of Account object
      * @return Account object if found, null otherwise
      */
-    public Account getAccount(String id) {
+    public Account getAccount(long id) {
         if(checkIfAccountExists(id)) return this.accountList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
         return null;
     }
@@ -294,7 +294,7 @@ public class DataManager {
      * @param id of Transaction Object
      * @return Transaction object if found, null otherwise
      */
-    public Transaction getTransaction(String id) {
+    public Transaction getTransaction(long id) {
         if(checkIfTransactionExists(id)) return this.transactionList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
         return null;
     }
