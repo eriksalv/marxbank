@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import Accounts from '../components/Accounts.vue'
+import Accounts from '../components/AccountList.vue'
 
 export default {
   name: 'Home',

@@ -1,18 +1,20 @@
 <template>
   <header>
-      <h2>Kontoer</h2>
-      <div v-for="account in allAccounts" :key="account.id" class="account">
-          {{ account.name }}
-      </div>
+      <h1 className="text-center font-semibold text-red-600">Mine kontoer</h1>
+      <Account :balance="account.balance" :accName="account.name" v-for="account in allAccounts" :key="account.id" class="account" />
   </header>
 </template>
 
 <script>
+import Account from './Account.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-    name: 'Accounts',
-    computed: mapGetters(['allAccounts'])
+    name: 'AccountList',
+    computed: mapGetters(['allAccounts']),
+    components: {
+      Account
+    }
 };
 </script>
 
