@@ -121,17 +121,17 @@ public class DataManagerTest {
     @Test
     @DisplayName("Test save and parse")
     public void testSaveAndParse() throws IOException {
-        //DataManager.manager().setPath(tempDir.resolve("data").toFile().getCanonicalPath());
-        DataManager.manager().setPath("../data");
+        DataManager.manager().setPath(tempDir.resolve("data").toFile().getCanonicalPath());
+        //DataManager.manager().setPath("../data");
         DataManager.manager().save();
         assertTrue(tempDir.resolve("data").toFile().exists());
 
         DataManager.manager().resetData();
         DataManager.manager().parse();
-        // assertTrue(DataManager.manager().getUsers().get(0).equals(user));
-        // assertTrue(DataManager.manager().getAccounts().size() == 2);
-        // assertTrue(DataManager.manager().getAccount(account.getId()).equals(account));
-        // assertTrue(DataManager.manager().getTransactions().get(0).equals(transaction));
+        assertTrue(DataManager.manager().getUsers().get(0).equals(user));
+        assertTrue(DataManager.manager().getAccounts().size() == 2);
+        assertTrue(DataManager.manager().getAccount(account.getId()).getId().equals(account.getId()));
+        assertTrue(DataManager.manager().getTransactions().get(0).equals(transaction));
     }
 
     private void resetAll() {
