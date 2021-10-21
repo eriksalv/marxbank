@@ -44,9 +44,7 @@ public class AuthController {
         
         // TODO: legge til egne exceptions her
         User user = userRepository.findByUsername(username).orElseThrow(IllegalStateException::new);
-        System.out.println(password);
-        System.out.println(user.getPassword());
-        System.out.println(user.getPassword().equals(password));
+        
         if (!user.getPassword().equals(password)) throw new IllegalStateException();
 
         String token = authService.createTokenForUser(user);
