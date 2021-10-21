@@ -13,7 +13,7 @@ const state = {
             id: 1,
             name: 'acc1',
             accNumber: 200,
-            balance: false,
+            balance: 200,
             interest: 3.0,
             type: 'Sparekonto',
         },

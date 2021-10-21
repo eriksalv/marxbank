@@ -1,17 +1,17 @@
 <template>
-  <div class="home">
-    <Accounts></Accounts>
+  <div class="home flex flex-row">
+    <AccountList class="flex-grow"></AccountList>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Accounts from '../components/AccountList.vue'
+import AccountList from '../components/AccountList.vue'
 
 export default {
   name: 'Home',
   components: {
-    Accounts
+    AccountList
   }
 }
 </script>

@@ -1,8 +1,25 @@
 <template>
-  <header>
-      <h1 className="text-center font-semibold text-red-600">Mine kontoer</h1>
-      <Account :balance="account.balance" :accName="account.name" v-for="account in allAccounts" :key="account.id" class="account" />
-  </header>
+  <div class="w-full overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs font-semibold tracking-wide text-center text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <th class="px-4 py-3">Kontonavn</th>
+          <th class="px-4 py-3">Disp. beløp</th>
+          <th class="px-4 py-3">Kontotype</th>
+          <th class="px-4 py-3">Kontonummer</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <Account @click="showAccount(account.accNumber)" 
+          :accNumber="account.accNumber" 
+          :balance="account.balance" 
+          :accName="account.name"
+          :type="account.type"
+          v-for="account in allAccounts" :key="account.id" 
+          class="account" />
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -14,23 +31,16 @@ export default {
     computed: mapGetters(['allAccounts']),
     components: {
       Account
+    },
+    methods: {
+      showAccount(accNumber) {
+        //TODO: bytt til konto view
+        console.log(accNumber)
+      }
     }
 };
 </script>
 
 <style>
-.accounts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1rem;
-}
-.account {
-  border: 1px solid #ccc;
-  background: #41b883;
-  padding: 1rem;
-  border-radius: 5px;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-}
+
 </style>
