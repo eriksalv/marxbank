@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -21,10 +23,12 @@ public class User {
     private String email;
     @Column
     private String password;
-    @OneToMany(targetEntity = Account.class)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Account> accounts = new ArrayList<Account>();
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private Token token;
 
-    public User() {}
+    protected User() {}
 
     /**
      * Constructor for user with arguments
@@ -76,6 +80,7 @@ public class User {
     public String getPassword() {
         return this.password;
     }
+
     public void setAccounts(ArrayList<Account> newAccountsList) {
         this.accounts = newAccountsList;
     }
@@ -101,19 +106,38 @@ public class User {
         }
     }
 
-   private String validateUsername(String username) {
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public Token getToken() {
+        return this.token;
+    }
+
+    private String validateUsername(String username) {
         if (username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");
         if (username.length() > 30) throw new IllegalArgumentException("username is too long, must be 30 characters maximum.");
         if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
         if (username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
 
         return username;
-   }
+    }
 
-   private String validateEmail(String email) {
-        if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) throw new IllegalArgumentException("Email is not valid");
-        return email;
-   }
+    private String validateEmail(String email) {
+            if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) throw new IllegalArgumentException("Email is not valid");
+            return email;
+    }
+
+    public boolean validate() {
+        try {
+            validateUsername(this.username);
+            validateEmail(this.email);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public String toString() {

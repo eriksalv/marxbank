@@ -1,44 +1,46 @@
 package marxbank.API;
 
+import marxbank.model.User;
+
 public class SignUpRequest {
     
-    private long Id;
     private String username;
     private String password;
     private String email;
     
-    public SignUpRequest(){
+    protected SignUpRequest() {}
 
-    }
-    public SignUpRequest(long Id, String username, String password, String email){
-        this.Id = Id;
+    public SignUpRequest(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public void setId(long NewId) {
-        this.Id = NewId;
-    }
-    public long getId(){
-        return this.Id;
-    }
-    public void setUsername(String newUsername){
+    public void setUsername(String newUsername) {
         this.username = newUsername;
     }
-    public String getUsername(){
+
+    public String getUsername() {
         return this.username;
     }
-    public void setPassword(String newPassword){
+
+    public void setPassword(String newPassword) {
         this.password = newPassword;
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return this.password;
     }
-    public void setEmail(String newEmail){
+
+    public void setEmail(String newEmail) {
         this.email = newEmail;
     }
-    public String getEmail(){
+
+    public String getEmail() {
         return this.email;
+    }
+
+    public User createUser() {
+        return new User(this.username, this.email, this.password);
     }
 }
