@@ -41,13 +41,4 @@ public class UserController {
         return new UserResponse(userRepository.findById(id).orElseThrow(Exception::new));
     }
 
-    @GetMapping("/username/{username}")
-    @Transactional
-    public UserResponse findByUsername(@PathVariable String username) {
-        return new UserResponse(userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new));
-    }
-
-    // POST 
-    // data -> god sturktur -> sjekke data i strukturen -> lagre data hvis god -> gi beskjed om at den er lagret
-
 }   
