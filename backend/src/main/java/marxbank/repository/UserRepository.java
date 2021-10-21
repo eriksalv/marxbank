@@ -8,6 +8,8 @@ import marxbank.model.User;
 
 public interface UserRepository extends CrudRepository<User, Long>{
 
-    Optional<User> findByUsername(Long username);
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findByToken(String token);
 
 }

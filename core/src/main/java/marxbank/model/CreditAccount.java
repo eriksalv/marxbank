@@ -1,7 +1,6 @@
 package marxbank.model;
 
-import java.util.Random;
-import java.security.SecureRandom;
+import java.util.concurrent.ThreadLocalRandom;
 
 import marxbank.Bank;
 import marxbank.util.AccountType;
@@ -37,10 +36,9 @@ public class CreditAccount extends Account {
 
     @Override
     public int generateAccountNumber() {
-        Random rand = new SecureRandom();
         String accNumberString = "69";
-        for (int i=0;i<3;i++) {
-            accNumberString += String.valueOf(rand.nextInt(10));
+        for (int i = 0; i < 3; i++) {
+            accNumberString = accNumberString.concat(String.valueOf(ThreadLocalRandom.current().nextInt(10)));
         }
         int accNumber = Integer.parseInt(accNumberString);
         if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {

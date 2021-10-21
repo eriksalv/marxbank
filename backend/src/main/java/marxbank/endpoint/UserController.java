@@ -31,21 +31,14 @@ public class UserController {
     @Transactional
     public List<UserResponse> findAll() {
         List<UserResponse> result = new ArrayList<UserResponse>();
-        userRepository.findAll().forEach(u -> result.add(UserResponse(u)));
+        userRepository.findAll().forEach(u -> result.add(new UserResponse(u)));
         return result;
-    }
-
-    private UserResponse UserResponse(User u) {
-        return null;
     }
 
     @GetMapping("/{id}")
     @Transactional
-    public User findById(@PathVariable Long id) throws Exception {
-        return userRepository.findById(id).orElseThrow(Exception::new);
+    public UserResponse findById(@PathVariable Long id) throws Exception {
+        return new UserResponse(userRepository.findById(id).orElseThrow(Exception::new));
     }
-
-    // POST 
-    // data -> god sturktur -> sjekke data i strukturen -> lagre data hvis god -> gi beskjed om at den er lagret
 
 }   
