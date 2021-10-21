@@ -122,7 +122,6 @@ public class DataManagerTest {
     @DisplayName("Test save and parse")
     public void testSaveAndParse() throws IOException {
         DataManager.manager().setPath(tempDir.resolve("data").toFile().getCanonicalPath());
-        //DataManager.manager().setPath("../data");
         DataManager.manager().save();
         assertTrue(tempDir.resolve("data").toFile().exists());
 
