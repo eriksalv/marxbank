@@ -1,12 +1,21 @@
+export interface Account {
+    readonly id: number;
+    name: string;
+    readonly accNumber: number;
+    balance: number;
+    interest: number;
+    type: string;
+}
+
 const state = {
     accounts: [
         {
             id: 1,
             name: 'acc1',
             accNumber: 200,
-            balance: 500,
+            balance: false,
             interest: 3.0,
-            type: 'Sparekonto'
+            type: 'Sparekonto',
         },
         {
             id: 2,
@@ -20,7 +29,7 @@ const state = {
 };
 
 const getters = {
-    allAccounts: (state: { accounts: any; }) => state.accounts
+    allAccounts: (state: { accounts: Account; }) => state.accounts
 };
 
 const actions = {};
