@@ -31,13 +31,10 @@ public class UserController {
     @Transactional
     public List<UserResponse> findAll() {
         List<UserResponse> result = new ArrayList<UserResponse>();
-        userRepository.findAll().forEach(u -> result.add(UserResponse(u)));
+        userRepository.findAll().forEach(u -> result.add(new UserResponse(u)));
         return result;
     }
 
-    private UserResponse UserResponse(User u) {
-        return null;
-    }
 
     @GetMapping("/{id}")
     @Transactional
