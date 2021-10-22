@@ -1,12 +1,24 @@
 <template>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div class="p-0 m-0 bg-gray-200 h-screen w-screen">
+    <Header/>
+    <SideBar/>
+    <main class="flex flex-row flex-wrap justify-center items-center">
       <router-view></router-view>
-    </div>
+    </main>
+  </div>
 </template>
 
+<script>
+import Header from "@/components/Header.vue"
+import SideBar from "@/components/SideBar.vue"
 
+export default {
+  components: {
+    Header,
+    SideBar
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

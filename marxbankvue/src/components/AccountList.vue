@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full overflow-x-auto">
-    <table class="w-full">
+  <div class="w-full overflow-auto h-80">
+    <table class="w-full border-collapse">
       <thead>
-        <tr class="text-xs font-semibold tracking-wide text-center text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-          <th class="px-4 py-3">Kontonavn</th>
-          <th class="px-4 py-3">Disp. beløp</th>
-          <th class="px-4 py-3">Kontotype</th>
-          <th class="px-4 py-3">Kontonummer</th>
+        <tr class="text-xs font-semibold tracking-wide text-center text-gray-800 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <th class="th px-4 py-3">Kontonavn</th>
+          <th class="th px-4 py-3">Disp. beløp</th>
+          <th class="th px-4 py-3">Kontotype</th>
+          <th class="th px-4 py-3">Kontonummer</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">

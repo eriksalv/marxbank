@@ -1,6 +1,6 @@
 <template>
-  <div class="home flex flex-row">
-    <AccountList class="flex-grow"></AccountList>
+  <div class="">
+    <AccountList class=""></AccountList>
   </div>
 </template>
 
