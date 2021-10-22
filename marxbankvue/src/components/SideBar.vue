@@ -3,7 +3,7 @@
                 bg-gray-900 text-white shadow-lg z-10">
         <SideBarIcon icon="A" text="Hovedmeny" to="/"/>
         <SideBarIcon icon="B" text="Overføring" to="/about"/>
-        <SideBarIcon icon="C" text="Mine kontoer" to="/"/>
+        <SideBarIcon icon="C" text="Mine kontoer" to="/createTransaction"/>
         <SideBarIcon icon="D" text="Sparekalkulator" to="/"/>
     </nav>
 </template>
