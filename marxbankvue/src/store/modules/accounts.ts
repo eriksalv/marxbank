@@ -29,7 +29,14 @@ const state = {
 };
 
 const getters = {
-  allAccounts: (state: { accounts: Account }) => state.accounts,
+  allAccounts: (state: { accounts: Array<Account> }) => state.accounts,
+  filterAccounts: (state: { accounts: Array<Account> }) => (filter: String) => {
+    return state.accounts.filter((account) => {
+      return account.name
+        .toLowerCase()
+        .includes(filter.toString().toLowerCase());
+    });
+  },
 };
 
 const actions = {};
