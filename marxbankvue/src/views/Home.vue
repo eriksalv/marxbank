@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <AccountList class=""></AccountList>
+  <div class="flex flex-row flex-wrap min-w-[80%]">
+    <AccountList class="min-w-max"></AccountList>
   </div>
 </template>
 

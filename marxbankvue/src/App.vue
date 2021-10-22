@@ -2,7 +2,7 @@
   <div class="p-0 m-0 bg-gray-200 h-screen w-screen">
     <Header/>
     <SideBar/>
-    <main class="flex flex-row flex-wrap justify-center items-center">
+    <main class="flex flex-row flex-wrap justify-center items-start ml-16 bg-gray-200">
       <router-view></router-view>
     </main>
   </div>
