@@ -1,11 +1,11 @@
 <template>
-    <div class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col
+    <nav class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col
                 bg-gray-900 text-white shadow-lg">
         <SideBarIcon icon="A" text="Hovedmeny" to="/"/>
         <SideBarIcon icon="B" text="Overføring" to="/about"/>
         <SideBarIcon icon="C" text="Mine kontoer" to="/"/>
         <SideBarIcon icon="D" text="Sparekalkulator" to="/"/>
-    </div>
+    </nav>
 </template>
 
 <script>
