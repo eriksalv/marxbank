@@ -1,7 +1,7 @@
 <template>
   <router-link :to="to" class="sidebar-icon group">
-      {{ icon }}
-
+      <fa :icon="icon" />
+          
       <span className="sidebar-tooltip group-hover:scale-100">
           {{ text }}
       </span>
