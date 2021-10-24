@@ -94,6 +94,14 @@ const state = {
 
 const getters = {
   allAccounts: (state: { accounts: Array<Account> }) => state.accounts,
+  /**
+   * Filters accounts by name. The filter passes as long as
+   * the account name icludes the filter string, such that it does not
+   * have to match exactly.
+   * @param state accounts to perform filter on
+   * @param filter String value to filter accounts on
+   * @returns filtered array of accounts
+   */
   filterAccountsByName: (state: { accounts: Array<Account> }) => (
     filter: String
   ) => {
