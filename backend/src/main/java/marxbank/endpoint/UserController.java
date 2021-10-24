@@ -35,14 +35,10 @@ public class UserController {
         return result;
     }
 
-
     @GetMapping("/{id}")
     @Transactional
-    public User findById(@PathVariable Long id) throws Exception {
-        return userRepository.findById(id).orElseThrow(Exception::new);
+    public UserResponse findById(@PathVariable Long id) throws Exception {
+        return new UserResponse(userRepository.findById(id).orElseThrow(Exception::new));
     }
-
-    // POST 
-    // data -> god sturktur -> sjekke data i strukturen -> lagre data hvis god -> gi beskjed om at den er lagret
 
 }   

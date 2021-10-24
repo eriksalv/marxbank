@@ -1,17 +1,11 @@
 <template>
-  <div class="home">
-    <Accounts></Accounts>
+    <div class="home">
+    <h1 className="text-left text-green-900">This is a home page</h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Accounts from '../components/Accounts.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    Accounts
-  }
+    name: 'Home',
 }
 </script>
