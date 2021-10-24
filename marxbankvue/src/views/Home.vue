@@ -1,17 +1,11 @@
 <template>
-  <div class="flex flex-row flex-wrap min-w-[80%]">
-    <AccountList class="min-w-max"></AccountList>
+    <div class="home">
+    <h1 className="text-left text-green-900">This is a home page</h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import AccountList from '../components/AccountList.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    AccountList
-  }
+    name: 'Home',
 }
 </script>
