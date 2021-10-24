@@ -23,4 +23,13 @@
         @apply sticky top-0 z-0 bg-gray-400;
     }
 
+    .searchInputs {
+        @apply flex;
+    }
+
+    .input {
+        @apply bg-white border-0 rounded-sm rounded-tr-none
+                rounded-br-none text-lg p-4 h-8 w-80 focus:outline-none;
+    }
+
 }

@@ -1,29 +1,23 @@
 <template>
-<main>
-  <SearchBar @termChanged="onTermChanged"/>
-  <p v-for="account in filterAccounts(searchTerm)" :key="account.id">{{ account.name }}</p>
+<main class="w-1/4">
+    <div id="reciever" class="relative w-full rounded-sm inline-block">
+        <h1>Velg en konto</h1>
+        <SearchBar/>
+    </div>
 </main>
 </template>
 
 <script>
 import SearchBar from '@/components/createTransaction/SearchBar.vue'
-import { mapGetters } from 'vuex';
 
 export default {
     name: 'CreateTransaction',
-    computed: mapGetters(["filterAccounts"]),
     components: {
         SearchBar,
     },
-    methods: {
-        onTermChanged(searchTerm) {
-            this.searchTerm = searchTerm
-            console.log(this.searchTerm)
-        }
-    },
     data() {
         return {
-            searchTerm: String
+            showDropdown: false
         }
     }
 }
