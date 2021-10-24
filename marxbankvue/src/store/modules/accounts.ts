@@ -11,7 +11,7 @@ const state = {
   accounts: [
     {
       id: 1,
-      name: "acc1",
+      name: "test",
       accNumber: 200,
       balance: 200,
       interest: 3.0,
@@ -25,6 +25,70 @@ const state = {
       interest: 2.4,
       type: "Marxkonto",
     },
+    {
+      id: 3,
+      name: "acc1",
+      accNumber: 200,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
+    {
+      id: 4,
+      name: "Account",
+      accNumber: 300,
+      balance: 200,
+      interest: 2.4,
+      type: "Marxkonto",
+    },
+    {
+      id: 5,
+      name: "yay",
+      accNumber: 200,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
+    {
+      id: 6,
+      name: "yeet",
+      accNumber: 300,
+      balance: 200,
+      interest: 2.4,
+      type: "Marxkonto",
+    },
+    {
+      id: 7,
+      name: "why",
+      accNumber: 200,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
+    {
+      id: 8,
+      name: "hmm",
+      accNumber: 300,
+      balance: 200,
+      interest: 2.4,
+      type: "Marxkonto",
+    },
+    {
+      id: 9,
+      name: "fak",
+      accNumber: 200,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
+    {
+      id: 10,
+      name: "nice",
+      accNumber: 300,
+      balance: 200,
+      interest: 2.4,
+      type: "Marxkonto",
+    },
   ],
 };
 
@@ -33,6 +97,9 @@ const getters = {
   filterAccountsByName: (state: { accounts: Array<Account> }) => (
     filter: String
   ) => {
+    if (!filter) {
+      return [];
+    }
     return state.accounts.filter((account) => {
       return account.name
         .toLowerCase()
