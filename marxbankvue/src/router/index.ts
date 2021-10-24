@@ -38,6 +38,12 @@ const routes: Array<RouteRecordRaw> = [
       name: 'Calculator',
       
       component: () => import('../views/Calculator.vue')
+    },
+    {
+      path: '/myTransactions',
+      name: 'MyTransactions',
+      
+      component: () => import('../views/MyTransactions.vue')
     }
 ];
 
