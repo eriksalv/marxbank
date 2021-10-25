@@ -1,5 +1,6 @@
 export interface Account {
   readonly id: number;
+  readonly userId: number;
   name: string;
   readonly accNumber: number;
   balance: number;
@@ -11,6 +12,7 @@ const state = {
   accounts: [
     {
       id: 1,
+      userId: 1,
       name: "test",
       accNumber: 200,
       balance: 200,
@@ -19,6 +21,7 @@ const state = {
     },
     {
       id: 2,
+      userId: 1,
       name: "acc2",
       accNumber: 300,
       balance: 200,
@@ -27,6 +30,7 @@ const state = {
     },
     {
       id: 3,
+      userId: 1,
       name: "acc1",
       accNumber: 200,
       balance: 200,
@@ -35,6 +39,7 @@ const state = {
     },
     {
       id: 4,
+      userId: 1,
       name: "Account",
       accNumber: 300,
       balance: 200,
@@ -43,6 +48,7 @@ const state = {
     },
     {
       id: 5,
+      userId: 1,
       name: "yay",
       accNumber: 200,
       balance: 200,
@@ -51,6 +57,7 @@ const state = {
     },
     {
       id: 6,
+      userId: 1,
       name: "yeet",
       accNumber: 300,
       balance: 200,
@@ -59,6 +66,7 @@ const state = {
     },
     {
       id: 7,
+      userId: 1,
       name: "why",
       accNumber: 200,
       balance: 200,
@@ -67,6 +75,7 @@ const state = {
     },
     {
       id: 8,
+      userId: 1,
       name: "hmm",
       accNumber: 300,
       balance: 200,
@@ -75,6 +84,7 @@ const state = {
     },
     {
       id: 9,
+      userId: 1,
       name: "fak",
       accNumber: 200,
       balance: 200,
@@ -83,6 +93,7 @@ const state = {
     },
     {
       id: 10,
+      userId: 2,
       name: "nice",
       accNumber: 300,
       balance: 200,
@@ -113,6 +124,31 @@ const getters = {
         .toLowerCase()
         .includes(filter.toString().toLowerCase());
     });
+  },
+  filterAccountsByUserId: (state: { accounts: Array<Account> }) => (
+    userId: number
+  ) => {
+    return state.accounts.filter((account) => account.userId === userId);
+  },
+  /**
+   * Går det an å bruke andre gettere inne i en getter?
+   * @param state
+   * @returns
+   */
+  filterAccountsByUserIdAndName: (state: { accounts: Array<Account> }) => (
+    userId: number,
+    filter: String
+  ) => {
+    if (!filter) {
+      return [];
+    }
+    return state.accounts
+      .filter((account) => account.userId === userId)
+      .filter((account) => {
+        return account.name
+          .toLowerCase()
+          .includes(filter.toString().toLowerCase());
+      });
   },
 };
 
