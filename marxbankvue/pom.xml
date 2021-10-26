@@ -83,7 +83,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <nodeVersion>16.12.0</nodeVersion>
+                        <nodeVersion>v16.12.0</nodeVersion>
                         <npmVersion>8.1.1</npmVersion>
                     </configuration>
                 </plugin>
