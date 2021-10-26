@@ -1,7 +1,28 @@
-function sum(a: number, b: number) {
-    return a + b;
+import accounts from "../store/modules/accounts";
+
+const testState = {
+  accounts: [
+    {
+      id: 1,
+      userId: 1,
+      name: "test",
+      accNumber: 200,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
+    {
+      id: 2,
+      userId: 1,
+      name: "test2",
+      accNumber: 201,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    }
+  ]
 }
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1,2)).toBe(3);
+test('test length of test state', () => {
+  expect(accounts.getters.allAccounts(testState).length).toBe(2);
 });
