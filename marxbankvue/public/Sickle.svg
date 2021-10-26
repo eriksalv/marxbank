@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="700" height="660" version="1.0" id="svg2"
+    sodipodi:version="0.32" inkscape:version="0.44" sodipodi:docname="Black on white hammer and sickle.svg"
+    sodipodi:docbase="/dev/null">
+    <defs id="defs12" />
+    <sodipodi:namedview inkscape:window-height="660" inkscape:window-width="700" inkscape:pageshadow="2"
+        inkscape:pageopacity="0.0" guidetolerance="10.0" gridtolerance="10.0" objecttolerance="10.0" borderopacity="1.0"
+        bordercolor="LightGray" pagecolor="White" id="base" inkscape:zoom="0.39002521" inkscape:cx="712.5"
+        inkscape:cy="441.97161" inkscape:window-x="-4" inkscape:window-y="-4" inkscape:current-layer="svg2"
+        showguides="true" inkscape:guide-bbox="true" />
+    <metadata id="metadata7">
+        <rdf:RDF>
+            <cc:Work rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <rect style="fill:red;fill-opacity:0" x="0" y="0" width="600" height="600" id="rest" />
+    <g style="fill:red" transform="matrix(6.561571,0,0,6.815387,0.0,0.0)" id="g23861">
+
+        <path style="fill:red" id="path6570" d="M 49.91986,12.55663 C 69.57983,18.06622 89.46737,32.60072 87.29079,57.43523 C 85.11561,82.2538 57.84504,92.65454 31.01609,69.45723 L 30.05545,70.52194 C 30.51146,71.11972 31.18024,72.86913 30.06298,74.0838 C 29.00851,75.23021 27.36566,73.94721 26.47336,74.86715 C 25.41573,75.95754 25.7285,75.52711 24.34341,78.73767 C 21.06913,86.32726 15.32523,88.59095 13.37158,86.7393 C 11.36958,84.84182 12.83924,79.40901 19.61898,75.37749 C 23.02874,73.3499 23.19955,73.37401 23.73416,72.47541 C 24.33522,71.46513 22.69984,69.90205 23.85772,68.53792 C 25.05535,67.12697 26.60762,67.68431 27.23531,68.13422 L 30.20421,64.45603 C 56.34146,79.08048 71.88179,72.25177 75.57442,59.38153 C 79.20147,46.73985 78.1858,31.16303 49.91986,12.55663 z " />
+        
+    </g>
+
+</svg>
