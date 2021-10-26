@@ -18,6 +18,7 @@ stages:
   - test_stalin
   - test_fx
   - test_manual
+  - test_backend
 
 build:
   stage: build
@@ -58,5 +59,13 @@ test_manual:
     - cat marxbankfx/target/site/jacoco/index.html
     - cat stalin/target/site/jacoco/index.html
   when: manual
+
+  test_backend:
+  stage: test_backend
+  needs: [build, test_core]
+  script:
+    - mvn install -DskipTests
+    - mvn jacoco:prepare-agent test -pl backend jacoco:report
+    - cat backend/target/site/jacoco/index.html
 
   
