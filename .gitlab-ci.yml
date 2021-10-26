@@ -58,6 +58,7 @@ test_manual:
     - cat core/target/site/jacoco/index.html
     - cat marxbankfx/target/site/jacoco/index.html
     - cat stalin/target/site/jacoco/index.html
+    - cat backend/target/site/jacoco/index.html
   when: manual
 
   test_backend:
