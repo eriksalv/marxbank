@@ -17,8 +17,9 @@ stages:
   - test_core
   - test_stalin
   - test_fx
-  - test_manual
   - test_backend
+  - test_manual
+  
 
 build:
   stage: build
