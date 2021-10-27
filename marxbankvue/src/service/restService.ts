@@ -21,6 +21,7 @@ export class RestService {
     // lage en axios objekt
     public constructor() {
         this.handler = axios.create();
+        this.handler.defaults.baseURL = "/";
     }
 
     public setUrl(url: string) {
