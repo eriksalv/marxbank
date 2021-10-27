@@ -38,24 +38,24 @@ export class restService {
 
     // hente GETS
     public get<T> (url: string, config?: {params?: AxiosRequestHeaders, headers?: AxiosRequestHeaders}): Promise<T> {
-        return promiseWrapper(this.handler.get(url, {validateStatus: code => code === 200, ...config}));
+        return promiseWrapper(this.handler.get(url, {validateStatus: (code: number) => code === 200, ...config}));
     }
     // POSTS
     public post (url: string, data?: object): Promise<void> {
-        return promiseWrapper(this.handler.post(url, data, {validateStatus: code => (code === 200 || code === 201 || code === 204)}));
+        return promiseWrapper(this.handler.post(url, data, {validateStatus: (code: number) => (code === 200 || code === 201 || code === 204)}));
     }
 
     public postData<T> (url: string, data?: object): Promise<T> {
-        return promiseWrapper(this.handler.post(url, data, {validateStatus: code => code === 200}));
+        return promiseWrapper(this.handler.post(url, data, {validateStatus: (code: number) => code === 200}));
     }
 
     // PUTS
     public put (url: string, data?: object): Promise<void> {
-        return promiseWrapper(this.handler.put(url, data, {validateStatus: code => (code === 200 || code === 204)}));
+        return promiseWrapper(this.handler.put(url, data, {validateStatus: (code: number) => (code === 200 || code === 204)}));
     }
 
     // DELETES
     public delete (url: string): Promise<void> {
-        return promiseWrapper(this.handler.delete(url, {validateStatus: code => (code === 200 || code === 202 || code === 204)}));
+        return promiseWrapper(this.handler.delete(url, {validateStatus: (code: number) => (code === 200 || code === 202 || code === 204)}));
     }
 }
