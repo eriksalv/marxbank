@@ -1,8 +1,6 @@
 package marxbank.endpoint;
 
-import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
-import marxbank.model.Account;
 
 import java.util.ArrayList;
 
@@ -43,11 +41,4 @@ public class AccountController {
     public AccountResponse findById(@PathVariable Long id) throws Exception {
         return new AccountResponse(accountRepository.findById(id).orElseThrow(Exception::new));
     }
-
-    @PostMapping
-    public AccountResponse newAccount(@RequestBody AccountRequest request) {
-        Account newAccount = request.createAccount();
-        accountRepository.save(newAccount);
-        return new AccountResponse(newAccount);
-  }
 }
