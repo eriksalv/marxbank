@@ -15,11 +15,7 @@ export function promiseWrapper<T>(axios: AxiosPromise<T>): Promise<T> {
     })
 }
 
-export const getValidate = (status: number) => status === 200;
-
-// TODO skrive om slik at den er vår egen
-
-export class restService {
+export class RestService {
 
     private readonly handler: AxiosInstance;
     // lage en axios objekt
@@ -33,7 +29,7 @@ export class restService {
 
     public setToken(token: string | null) {
         if (token === null) delete this.handler.defaults.headers.common["Authorization"];
-        else this.handler.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        else this.handler.defaults.headers.common["Authorization"] = `Bearer:${token}`;
     }
 
     // hente GETS
@@ -44,7 +40,7 @@ export class restService {
     public post (url: string, data?: object): Promise<void> {
         return promiseWrapper(this.handler.post(url, data, {validateStatus: (code: number) => (code === 200 || code === 201 || code === 204)}));
     }
-
+    // trengs denne?
     public postData<T> (url: string, data?: object): Promise<T> {
         return promiseWrapper(this.handler.post(url, data, {validateStatus: (code: number) => code === 200}));
     }

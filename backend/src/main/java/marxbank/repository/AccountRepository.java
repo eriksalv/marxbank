@@ -8,6 +8,6 @@ import marxbank.model.Account;
 
 public interface AccountRepository extends CrudRepository<Account, Long>{
     
-    Optional<Account> findByAccount(Long account);
-    Optional<Account> findByUserID(Long UserId);
+    Optional<Account> findById(Long id);
+    Optional<Account> findByUser(Long UserId);
 }
