@@ -1,5 +1,6 @@
 package marxbank.endpoint;
 
+import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
 import marxbank.model.Account;
 
@@ -10,6 +11,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,4 +43,11 @@ public class AccountController {
     public AccountResponse findById(@PathVariable Long id) throws Exception {
         return new AccountResponse(accountRepository.findById(id).orElseThrow(Exception::new));
     }
+
+    @PostMapping
+    public AccountResponse newAccount(@RequestBody AccountRequest request) {
+        Account newAccount = request.createAccount();
+        accountRepository.save(newAccount);
+        return new AccountResponse(newAccount);
+  }
 }

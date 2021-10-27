@@ -1,27 +1,29 @@
 <template>
   <div class="p-0 m-0 bg-gray-200 h-screen w-screen">
-    <div v-if="this.loggedIn">
-    <!-- <Header/>
-    <SideBar/> -->
+    <div v-if="loggedIn">
+      <Header/>
+      <SideBar/>
     </div>
-    <router-view></router-view>
     <main class="flex flex-row flex-wrap justify-center items-start ml-16 bg-gray-200">
+      <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
-// import Header from "@/components/Header.vue"
-// import SideBar from "@/components/SideBar.vue"
+import Header from "@/components/Header.vue"
+import SideBar from "@/components/SideBar.vue"
 
 export default {
   
-  // data: () => {
-  //   loggedIn: false
-  // },
+  data() {
+    return {
+      loggedIn: true
+    } 
+  },
   components: {
-    // Header,
-    // SideBar
+    Header,
+    SideBar
   }
 }
 </script>

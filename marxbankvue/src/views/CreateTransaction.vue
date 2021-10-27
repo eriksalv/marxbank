@@ -23,7 +23,7 @@
 <script>
 import SearchBar from '@/components/SearchBar.vue';
 import { mapGetters } from 'vuex';
-import Account from '@/store/modules/accounts.ts';
+//import { Account } from '@/store/modules/accounts/types.ts';
 
 export default {
     name: 'CreateTransaction',
@@ -67,9 +67,9 @@ export default {
     },
     data() {
         return {
-            selectedRecieverAccount: Account,
+            selectedRecieverAccount: Object,
             recieverSearchTerm: "",
-            selectedFromAccount: Account,
+            selectedFromAccount: Object,
             fromSearchTerm: "",
         }
     }
