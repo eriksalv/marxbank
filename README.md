@@ -10,11 +10,15 @@
 
 Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 studenter. Appen er en bank-app som har vanlige bankfunksjoner som å overføre penger, flytte penger mellom sine egne kontoer, se de forskjellige type kontoene de har og lage nye kontoer.
 
+> Class struggle is inevitable in Object-Oriented Programming
+>
+> -- <cite>Karl Marx</cite>
+
 # Innhold 
 
 ### Kodingsprosjektet
 
-Kodingsprosjektet består foreløpig av to moduler: core og marxbankfx. Se egne readmes i disse mappene for mer detaljer om hva de består av.
+Kodingsprosjektet består av fem moduler: core, backend, stalin, marxbankfx og marxbankvue. Se egne readmes i disse mappene for mer detaljer om hva de består av.
 
 # Hvordan kjøre appen
 
@@ -22,7 +26,15 @@ Først kjør
 
 ``` mvn install ```
 
-så for å starte frontenden kjør
+Så start Rest-serveren med
+
+``` mvn spring-boot:run -pl backend ``` 
+
+så kan du enten starte webapplikasjonen med
+
+```mvn frontend:install-node-and-npm frontend:npm@"npm install" frontend:npm@"npm serve" -pl marxbankvue```
+
+eller starte javafx med
 
 ``` mvn javafx:run -pl marxbankfx ```
 
