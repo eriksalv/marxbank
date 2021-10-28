@@ -31,6 +31,10 @@
         @apply bg-white border-0 rounded-md text-lg p-4 h-10 w-full focus:outline-none shadow-md;
     }
 
+    .title {
+        @apply font-extrabold text-red-900 text-4xl m-5;
+    }
+
     .select {
         @apply border-0 rounded-md text-lg pl-3 h-10 w-full focus:outline-none shadow-md;
     }
