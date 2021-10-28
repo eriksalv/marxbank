@@ -1,6 +1,6 @@
 <template>
   <div class="w-1/4">
-      <h1 class="font-extrabold text-red-900 text-4xl m-5">Ny konto</h1>
+      <h1 class="title">Ny konto</h1>
       <h1>Kontonavn</h1>
       <input type="text" className="input" placeholder="Ny konto" ref="accountName">
       <h1>Kontotype</h1>
