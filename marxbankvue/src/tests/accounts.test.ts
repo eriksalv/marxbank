@@ -1,4 +1,8 @@
-import accounts from "../store/modules/accounts";
+import { getters } from "../store/modules/accounts/getters";
+
+const rootState = {
+  message: "hello"
+}
 
 const testState = {
   accounts: [
@@ -24,5 +28,5 @@ const testState = {
 }
 
 test('test length of test state', () => {
-  expect(accounts.getters.allAccounts(testState).length).toBe(2);
+  expect(getters.allAccounts(testState, null, rootState, null).length).toBe(2);
 });
