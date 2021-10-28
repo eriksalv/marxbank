@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Account from '@/store/modules/accounts.ts';
+//import { Account } from '@/store/modules/accounts/types.ts';
 
 export default {
     name: "SearchBar",
@@ -44,7 +44,7 @@ export default {
     },
     data() {
         return {
-            selectedAccount: Account,
+            selectedAccount: Object,
             placeholder: "Velg en konto...",
         }
     }
