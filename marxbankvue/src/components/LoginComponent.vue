@@ -26,6 +26,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RegisterComponent from './RegisterComponent.vue';
+import { RestService } from '../service/restService';
+import { LoginRequest } from '../types/types';
 
 export default defineComponent({
     name: 'LoginComponent',
@@ -37,12 +39,16 @@ export default defineComponent({
             username: "",
             password: "",
             loading: false,
-            register: false
+            register: false,
+            service: new RestService()
         }
     },
     methods: {
         login(): void {
-            console.log({username: this.username, password: this.password});
+
+            const request: LoginRequest = {username: this.username, password: this.password};
+
+            this.service.postData();
             this.loading = true;
         },
 

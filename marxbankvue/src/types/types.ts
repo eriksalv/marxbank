@@ -13,3 +13,8 @@ export interface LoginResponse {
     userId: number,
     token: string
 }
+
+export interface Userstate {
+    userId: number,
+    token: String
+}
