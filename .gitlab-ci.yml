@@ -54,6 +54,9 @@ test_vue:
   needs: [build]
   script:
     - mvn install -pl marxbankvue
+    - cd marxbankvue
+    - npm install
+    - npm test
 
 test_manual:
   stage: test_manual
