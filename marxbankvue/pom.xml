@@ -66,7 +66,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguements>test</arguements>
+                            <arguments>test</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -75,7 +75,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguements>run lint --no-fix --max-errors=0 --max-warnings=0</arguements>
+                            <arguments>run lint --no-fix --max-errors=0 --max-warnings=0</arguments>
                         </configuration>
                     </execution>
                     <execution>
