@@ -51,9 +51,10 @@ test_fx:
 
 test_vue:
   stage: test_vue
-  needs: [build, test_core]
+  needs: [build]
   script:
     - cd marxbankvue
+    - mvn install -DskipTests
     - npm install
     - npm test
 
