@@ -55,7 +55,7 @@ test_vue:
   script:
     - cd marxbankvue
     - mvn install -DskipTests
-    - cat marxbankvue\coverage\lcov-report\index.html
+    - cat marxbankvue/coverage/lcov-report/index.html
 
 test_manual:
   stage: test_manual
