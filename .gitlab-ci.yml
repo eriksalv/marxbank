@@ -52,10 +52,10 @@ test_fx:
 test_vue:
   stage: test_vue
   needs: [build]
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
     - cd marxbankvue
     - mvn install -DskipTests
-    - cat marxbankvue/coverage/lcov-report/index.html
 
 test_manual:
   stage: test_manual
