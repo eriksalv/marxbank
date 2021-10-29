@@ -65,8 +65,18 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>test</phase>
                         <configuration>
                             <arguments>test</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>coverage</id>
+                        <goals>
+                            <goal>npx</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>jest --coverage</arguments>
                         </configuration>
                     </execution>
                     <execution>
