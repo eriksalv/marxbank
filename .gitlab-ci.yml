@@ -53,7 +53,6 @@ test_vue:
   stage: test_vue
   needs: [build]
   script:
-    - mvn install -DskipTests
     - cd marxbankvue
     - npm test
 
