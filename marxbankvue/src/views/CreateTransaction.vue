@@ -12,9 +12,7 @@
         @accountSelected="onRecieverAccountSelected"/>
     <h1>Kroner</h1>
     <input type="number" ref="amount" className="input">
-    <button @click="commitTransaction" class="bg-green-500 hover:bg-green-400 
-        text-white font-bold py-2 px-4 border-b-4 border-green-700 
-        hover:border-green-500 rounded w-full mt-6">
+    <button @click="commitTransaction" class="button">
             Utfør transaksjon
     </button>
 </main>
@@ -23,7 +21,7 @@
 <script>
 import SearchBar from '@/components/SearchBar.vue';
 import { mapGetters } from 'vuex';
-import Account from '@/store/modules/accounts.ts';
+//import { Account } from '@/store/modules/accounts/types.ts';
 
 export default {
     name: 'CreateTransaction',
@@ -67,9 +65,9 @@ export default {
     },
     data() {
         return {
-            selectedRecieverAccount: Account,
+            selectedRecieverAccount: Object,
             recieverSearchTerm: "",
-            selectedFromAccount: Account,
+            selectedFromAccount: Object,
             fromSearchTerm: "",
         }
     }

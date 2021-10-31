@@ -18,6 +18,7 @@ stages:
   - test_stalin
   - test_fx
   - test_backend
+  - test_vue
   - test_manual
   
 
@@ -49,6 +50,14 @@ test_fx:
     - mvn install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
+
+test_vue:
+  stage: test_vue
+  needs: [build]
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  script:
+    - cd marxbankvue
+    - mvn install -DskipTests
 
 test_manual:
   stage: test_manual

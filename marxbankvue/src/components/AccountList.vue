@@ -24,7 +24,7 @@
 
 <script>
 import Account from './Account.vue';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'AccountList',
@@ -36,7 +36,14 @@ export default {
       showAccount(accNumber) {
         //TODO: bytt til konto view
         console.log(accNumber)
-      }
+      },
+      ...mapActions([
+        "fetchAccounts"
+      ]),
+    },
+    created() {
+      //Vent med dette til det ligger noe data i api
+      //this.fetchAccounts();
     }
 };
 </script>

@@ -26,7 +26,15 @@ Først kjør
 
 ``` mvn install ```
 
-så for å starte frontenden kjør
+Så start Rest-serveren med
+
+``` mvn spring-boot:run -pl backend ``` 
+
+så kan du enten starte webapplikasjonen med
+
+```mvn frontend:install-node-and-npm frontend:npm@"npm install" frontend:npm@"npm serve" -pl marxbankvue```
+
+eller starte javafx med
 
 ``` mvn javafx:run -pl marxbankfx ```
 

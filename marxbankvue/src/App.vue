@@ -1,7 +1,9 @@
 <template>
   <div class="p-0 m-0 bg-gray-200 h-screen w-screen">
-    <Header/>
-    <SideBar/>
+    <div v-if="loggedIn">
+      <Header/>
+      <SideBar/>
+    </div>
     <main class="flex flex-row flex-wrap justify-center items-start ml-16 bg-gray-200">
       <router-view></router-view>
     </main>
@@ -13,6 +15,12 @@ import Header from "@/components/Header.vue"
 import SideBar from "@/components/SideBar.vue"
 
 export default {
+  
+  data() {
+    return {
+      loggedIn: true
+    } 
+  },
   components: {
     Header,
     SideBar
