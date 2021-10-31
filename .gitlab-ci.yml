@@ -72,11 +72,11 @@ test_manual:
   when: manual
 
 test_backend:
-stage: test_backend
-needs: [build, test_core]
-script:
-  - mvn install -DskipTests
-  - mvn jacoco:prepare-agent test -pl backend jacoco:report
-  - cat backend/target/site/jacoco/index.html
+  stage: test_backend
+  needs: [build, test_core]
+  script:
+    - mvn install -DskipTests
+    - mvn jacoco:prepare-agent test -pl backend jacoco:report
+    - cat backend/target/site/jacoco/index.html
 
   
