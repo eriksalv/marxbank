@@ -5,4 +5,7 @@ export const mutations: MutationTree<TransactionState> = {
   setTransactions: (state, transactions: Array<Transaction>) => {
     state.transactions = transactions;
   },
+  addTransaction: (state, transaction: Transaction) => {
+    state.transactions = [...state.transactions, transaction];
+  },
 };

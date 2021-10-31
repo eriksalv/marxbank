@@ -12,38 +12,45 @@ const routes: Array<RouteRecordRaw> = [
     name: "CreateTransaction",
     component: () => import("@/views/CreateTransaction.vue"),
   },
-    
+
   {
-    path: '/myProfile',
-    name: 'MyProfile',
+    path: "/myProfile",
+    name: "MyProfile",
     // route level code-splitting
     // this generates a separate chunk (myProfile.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "myProfile" */ '@/views/MyProfile.vue')
-    },
-    {
-    path: '/transactions',
-    name: 'Transactions',
-    
-    component: () => import('@/views/Transactions.vue')
-    },
-    {
-      path: '/myAccounts',
-      name: 'MyAccounts',
-      
-      component: () => import('@/views/MyAccounts.vue')
-    },
-    {
-      path: '/calculator',
-      name: 'Calculator',
-      
-      component: () => import('@/views/Calculator.vue')
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: () => import('@/views/Login.vue')
-    }
+    component: () =>
+      import(/* webpackChunkName: "myProfile" */ "@/views/MyProfile.vue"),
+  },
+  {
+    path: "/myTransactions",
+    name: "MyTransactions",
+
+    component: () => import("@/views/MyTransactions.vue"),
+  },
+  {
+    path: "/myAccounts",
+    name: "MyAccounts",
+
+    component: () => import("@/views/MyAccounts.vue"),
+  },
+  {
+    path: "/calculator",
+    name: "Calculator",
+
+    component: () => import("@/views/Calculator.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/Login.vue"),
+  },
+  {
+    path: "/myAccounts/:id",
+    name: "AccountInfo",
+    component: () => import("@/views/AccountInfo.vue"),
+    props: true,
+  },
 ];
 
 const router = createRouter({

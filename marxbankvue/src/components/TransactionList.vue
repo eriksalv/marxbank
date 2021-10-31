@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-        <Transaction @click="showTransaction(transaction.amount)" 
+        <Transaction  
           :date="transaction.date" 
           :from="transaction.from" 
           :to="transaction.to"
@@ -32,11 +32,6 @@ export default {
     components: {
       Transaction
     },
-    methods: {
-      showTransaction(amount) {
-        console.log(amount)
-      }
-    }
 };
 </script>
 

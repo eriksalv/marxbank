@@ -1,5 +1,5 @@
 <template>
-  <tr class="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400 cursor-pointer">
+  <tr class="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400">
     <td class="px-4 py-3 font-bold"> {{date}} </td>
     <td class="px-4 py-3 text-sm"> {{from}}</td>
     <td class="px-4 py-3 text-sm"> {{to}}</td>
