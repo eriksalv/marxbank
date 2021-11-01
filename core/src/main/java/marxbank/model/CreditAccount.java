@@ -2,14 +2,21 @@ package marxbank.model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.persistence.Entity;
+
 import marxbank.Bank;
 import marxbank.util.AccountType;
 
+@Entity
 public class CreditAccount extends Account {
 
-    private final double credtiLimit;
-    private static final double DEFAULT_CREDIT_LIMIT = 200;
+    private double credtiLimit;
+    private static double DEFAULT_CREDIT_LIMIT = 200;
     
+    public CreditAccount() {
+        super();
+    }
+
     public CreditAccount(User user, String name) {
         super(user, 0, AccountType.CREDIT, name);
         this.credtiLimit = DEFAULT_CREDIT_LIMIT;

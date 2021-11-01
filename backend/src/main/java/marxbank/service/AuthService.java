@@ -54,7 +54,8 @@ public class AuthService {
     public User getUserFromToken(String token) {
         if (token == null) throw new IllegalArgumentException();
         token = removeBearer(token);
-        return userRepository.findByToken(token).orElseThrow(IllegalArgumentException::new);
+        if (!userRepository.findByToken_Token(token).isPresent()) return null;
+        return userRepository.findByToken_Token(token).get();
     }
 
     public Long getUserIdFromToken(String token) {
