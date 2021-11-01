@@ -9,8 +9,7 @@
   </tr>
 </template>
 
-<script lang="ts">
-import {Account} from '../store/modules/accounts/types'
+<script>
 
 export default {
     name: "Transaction",
@@ -22,8 +21,8 @@ export default {
     },
     data() {
       return {
-        fromAccount: null as Account,
-        toAccount: null as Account
+        fromAccount: null,
+        toAccount: null
       }
     }
 }
