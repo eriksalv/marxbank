@@ -16,6 +16,24 @@ const state: AccountState = {
       interest: 3.0,
       type: "Sparekonto",
     },
+    {
+      id: 2,
+      userId: 1,
+      name: "test2",
+      accNumber: 201,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
+    {
+      id: 3,
+      userId: 1,
+      name: "test3",
+      accNumber: 203,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    },
   ],
 };
 

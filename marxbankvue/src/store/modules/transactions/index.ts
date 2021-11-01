@@ -9,20 +9,20 @@ const state: TransactionState = {
   transactions: [
     {
       date: "22-10-2021",
-      from: 1811,
-      to: 2020,
+      from: 1,
+      to: 2,
       amount: 200,
     },
     {
       date: "20-10-2021",
-      from: 2020,
-      to: 1512,
+      from: 3,
+      to: 1,
       amount: 50,
     },
     {
       date: "11-10-2021",
-      from: 2020,
-      to: 1288,
+      from: 2,
+      to: 3,
       amount: 149,
     },
   ],

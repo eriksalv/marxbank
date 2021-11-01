@@ -1,3 +1,6 @@
+/**
+ * Account interface
+ */
 export interface Account {
   readonly id: number;
   readonly userId: number;

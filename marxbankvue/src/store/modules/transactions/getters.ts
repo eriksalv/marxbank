@@ -14,7 +14,7 @@ export const getters: GetterTree<TransactionState, RootState> = {
     accountId: number
   ): Array<Transaction> => {
     return state.transactions.filter(
-      (t) => t.from === accountId || t.to === accountId
+      (t) => t.from == accountId || t.to == accountId
     );
   },
 };
