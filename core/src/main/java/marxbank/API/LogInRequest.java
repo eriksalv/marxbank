@@ -28,4 +28,9 @@ public class LogInRequest {
         return this.password;
     }
 
+    @Override
+    public String toString() {
+        return "username: " + username;
+    }
+
 }
