@@ -77,6 +77,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public void logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        System.out.println(token);
         authService.removeToken(token);
     }
 

@@ -16,7 +16,8 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param token before logout
    */
   async logout({ commit }, token: object | null) {
-    await api.post(BASE_URL + "/logout", token).then(() => {
+    console.log(token);
+    await axios.post(BASE_URL + "/logout", token).then(() => {
       commit("setStatus", "");
       commit("setToken", null);
       delete axios.defaults.headers.common["Authorization"];
