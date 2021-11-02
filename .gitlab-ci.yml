@@ -17,7 +17,10 @@ stages:
   - test_core
   - test_stalin
   - test_fx
+  - test_backend
+  - test_vue
   - test_manual
+  
 
 build:
   stage: build
@@ -48,6 +51,14 @@ test_fx:
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
 
+test_vue:
+  stage: test_vue
+  needs: [build]
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  script:
+    - cd marxbankvue
+    - mvn install -DskipTests
+
 test_manual:
   stage: test_manual
   needs: [build]
@@ -57,6 +68,15 @@ test_manual:
     - cat core/target/site/jacoco/index.html
     - cat marxbankfx/target/site/jacoco/index.html
     - cat stalin/target/site/jacoco/index.html
+    - cat backend/target/site/jacoco/index.html
   when: manual
+
+test_backend:
+  stage: test_backend
+  needs: [build, test_core]
+  script:
+    - mvn install -DskipTests
+    - mvn jacoco:prepare-agent test -pl backend jacoco:report
+    - cat backend/target/site/jacoco/index.html
 
   

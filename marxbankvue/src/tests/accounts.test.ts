@@ -1,8 +1,8 @@
 import { getters } from "../store/modules/accounts/getters";
 
 const rootState = {
-  message: "hello"
-}
+  message: "hello",
+};
 
 const testState = {
   accounts: [
@@ -23,10 +23,10 @@ const testState = {
       balance: 200,
       interest: 3.0,
       type: "Sparekonto",
-    }
-  ]
-}
+    },
+  ],
+};
 
-test('test length of test state', () => {
+test("test length of test state", () => {
   expect(getters.allAccounts(testState, null, rootState, null).length).toBe(2);
 });

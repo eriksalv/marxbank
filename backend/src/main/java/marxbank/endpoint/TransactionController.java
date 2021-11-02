@@ -2,22 +2,37 @@ package marxbank.endpoint;
 
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+import java.util.stream.Collectors;
+>>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
+=======
+import org.springframework.lang.Nullable;
+>>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import marxbank.API.TransactionResponse;
+<<<<<<< HEAD
 import marxbank.model.Account;
 import marxbank.repository.AccountRepository;
 import marxbank.repository.TransactionRepository;
+=======
+import marxbank.model.User;
+import marxbank.repository.TransactionRepository;
+import marxbank.service.AuthService;
+>>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 import marxbank.service.TransactionService;
 
 
@@ -26,6 +41,7 @@ import marxbank.service.TransactionService;
 public class TransactionController {
 
     private final TransactionRepository transactionRepository;
+<<<<<<< HEAD
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
     @Autowired
@@ -33,6 +49,16 @@ public class TransactionController {
         this.transactionRepository = transactionRepository;
         this.transactionService = transactionService;
         this.accountRepository = accountRepository;
+=======
+    private final AuthService authService;
+    private final TransactionService transactionService;
+
+    @Autowired
+    public TransactionController(TransactionRepository transactionRepository, AuthService authService, TransactionService transactionService) {
+        this.transactionRepository = transactionRepository;
+        this.authService = authService;
+        this.transactionService = transactionService;
+>>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
     }
 
     @GetMapping("/")
@@ -49,6 +75,7 @@ public class TransactionController {
         return new TransactionResponse(transactionRepository.findById(id).orElseThrow(Exception::new));
     }
 
+<<<<<<< HEAD
     @GetMapping("/from/{fromId}")
     @Transactional
     public ResponseEntity<ArrayList<TransactionResponse>> findByFrom_Id(@PathVariable Long fromId){
@@ -97,4 +124,21 @@ public class TransactionController {
     }
 
 
+=======
+    @GetMapping("/myTransactions")
+    @Transactional
+    public ResponseEntity<List<TransactionResponse>> findAllTransactionForUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        List<TransactionResponse> transactions = this.transactionService.getTransactionForUser(user.getId()).stream().map(t -> new TransactionResponse(t)).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(transactions);
+    }
+
+>>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 }
