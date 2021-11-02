@@ -1,7 +1,5 @@
 package marxbank.API;
 
-import marxbank.model.User;
-
 import java.util.List;
 
 import marxbank.model.Account;
@@ -13,13 +11,13 @@ public class AccountResponse {
     private Long id;
     private int accountNumber;
     private AccountType type;
-    private User user;
+    private Long userId;
     private String name;
-    private List<Transaction> transactions;
+    //private List<Transaction> transactions;
     private double balance;
-    private double interestRate;
+    //private double interestRate;
 
-    public AccountResponse(){
+    public AccountResponse() {
     
     }
 
@@ -27,11 +25,11 @@ public class AccountResponse {
         this.id = account.getId();
         this.accountNumber = account.getAccountNumber();
         this.type = account.getType();
-        this.user = account.getUser();
+        this.userId = account.getUser().getId();
         this.name = account.getName();
-        this.transactions = account.getTransactions();
+        //this.transactions = account.getTransactions();
         this.balance = account.getBalance();
-        this.interestRate = account.getInterestRate();
+        //this.interestRate = account.getInterestRate();
     }
 
     public void setId(Long newId){
@@ -52,11 +50,11 @@ public class AccountResponse {
     public AccountType getType(){
         return this.type;
     }
-    public void setUser(User newUser){
-        this.user = newUser;
+    public void setUserId(Long userId){
+        this.userId = userId;
     }
-    public User getUser(){
-        return this.user;
+    public Long getUser(){
+        return this.userId;
     }
     public void setName(String newName){
         this.name = newName;
@@ -64,24 +62,24 @@ public class AccountResponse {
     public String getName(){
         return this.name;
     }
-    public void setTransactions(List<Transaction> newTransactions){
-        this.transactions = newTransactions;
-    }
-    public List<Transaction> getTransactions(){
-        return this.transactions;
-    }
+    // public void setTransactions(List<Transaction> newTransactions){
+    //     this.transactions = newTransactions;
+    // }
+    // public List<Transaction> getTransactions(){
+    //     return this.transactions;
+    // }
     public void setBalance(double newBalance){
         this.balance = newBalance;
     }
     public double getBalance(){
         return this.balance;
     }
-    public void setInterestRate(double newInterestRate){
-        this.interestRate = newInterestRate;
-    }
-    public double getInterestRate(){
-        return this.interestRate;
-    }
+    // public void setInterestRate(double newInterestRate){
+    //     this.interestRate = newInterestRate;
+    // }
+    // public double getInterestRate(){
+    //     return this.interestRate;
+    // }
 
 
 
