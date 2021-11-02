@@ -2,12 +2,19 @@ package marxbank.model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.persistence.Entity;
+
 import marxbank.Bank;
 import marxbank.util.AccountType;
 
+@Entity
 public class SavingsAccount extends Account {
 
-    private final static double DEFAULT_INTEREST = 3;
+    private static double DEFAULT_INTEREST = 3;
+
+    protected SavingsAccount() {
+        super();
+    }
 
     /**
      * Constructor for class SavingsAccount

@@ -3,6 +3,8 @@ package marxbank.model;
 import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.persistence.Entity;
+
 import marxbank.Bank;
 import marxbank.util.AccountType;
 
@@ -12,10 +14,15 @@ import marxbank.util.AccountType;
     * the max value, a new transaction will be created that transfers the excess amount to an account
     * with the lowest registered balance.
 */
+@Entity
 public class MarxAccount extends Account {
 
-    public static final double MAX_BALANCE = 500;
-    public static final double DEFAULT_INTEREST = 0.01;
+    public static double MAX_BALANCE = 500;
+    public static double DEFAULT_INTEREST = 0.01;
+
+    public MarxAccount() {
+        super();
+    }
 
     /**
      * MarxAccount "default" constructor

@@ -2,12 +2,19 @@ package marxbank.model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.persistence.Entity;
+
 import marxbank.Bank;
 import marxbank.util.AccountType;
 
+@Entity
 public class CheckingAccount extends Account {
 
     private static final double DEFAULT_INTEREST = 0.5;
+
+    protected CheckingAccount() {
+        super();
+    }
 
     public CheckingAccount(Long id, User user, double interestRate) {
         super(id, user, interestRate, AccountType.CHECKING);
