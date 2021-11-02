@@ -1,20 +1,20 @@
 export interface LoginRequest {
-    username: string,
-    password: string
+  username: string;
+  password: string;
 }
 
 export interface SignUpRequest {
-    username: string,
-    email: string,
-    password: string
+  username: string;
+  password: string;
+  email: string;
 }
 
 export interface LoginResponse {
-    userId: number,
-    token: string
+  userId: number;
+  token: string;
 }
 
 export interface Userstate {
-    userId: number,
-    token: String
+  userId: number;
+  token: String;
 }

@@ -4,10 +4,10 @@ import { ActionTree } from "vuex";
 import { AuthState } from "./types";
 import { LoginRequest, LoginResponse, SignUpRequest } from "@/types/types";
 import axios from "axios";
-import { resolveComponent } from "@vue/runtime-core";
-import { faAmericanSignLanguageInterpreting } from "@fortawesome/free-solid-svg-icons";
 
 const api = new RestService();
+
+const BASE_URL = "/auth";
 
 export const actions: ActionTree<AuthState, RootState> = {
   /**
@@ -16,10 +16,9 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param token before logout
    */
   async logout({ commit }, token: object | null) {
-    await api.post("/logout", token).then(() => {
+    await api.post(BASE_URL + "/logout", token).then(() => {
       commit("setStatus", "");
       commit("setToken", null);
-      localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
     });
   },
@@ -31,14 +30,13 @@ export const actions: ActionTree<AuthState, RootState> = {
   async login({ commit }, user: LoginRequest) {
     commit("setStatus", "loading");
     await axios
-      .post("/login", {
+      .post(BASE_URL + "/login", {
         username: user.username,
         password: user.password,
       })
       .then((response) => {
         const userId = response.data.userResponse.id;
         const token = response.data.token;
-        localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = token;
         commit("setUserId", userId);
         commit("setStatus", "success");
@@ -46,7 +44,6 @@ export const actions: ActionTree<AuthState, RootState> = {
       })
       .catch((err) => {
         commit("setStatus", "error", err);
-        localStorage.removeItem("token");
       });
   },
   /**
@@ -57,7 +54,7 @@ export const actions: ActionTree<AuthState, RootState> = {
   async signup({ commit }, user: SignUpRequest) {
     commit("setStatus", "loading");
     await axios
-      .post("/login", {
+      .post(BASE_URL + "/signup", {
         username: user.username,
         password: user.password,
         email: user.email,
@@ -65,7 +62,6 @@ export const actions: ActionTree<AuthState, RootState> = {
       .then((response) => {
         const userId = response.data.userResponse.id;
         const token = response.data.token;
-        localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = token;
         commit("setUserId", userId);
         commit("setStatus", "success");
@@ -73,7 +69,6 @@ export const actions: ActionTree<AuthState, RootState> = {
       })
       .catch((err) => {
         commit("setStatus", "error", err);
-        localStorage.removeItem("token");
       });
   },
 };
