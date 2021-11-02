@@ -10,12 +10,12 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-        <Transaction @click="showTransaction(transaction.amount)" 
+        <Transaction  
           :date="transaction.date" 
           :from="transaction.from" 
           :to="transaction.to"
           :amount="transaction.amount"
-          v-for="transaction in allTransactions" :key="transaction.amount" 
+          v-for="transaction in transactions" :key="transaction.amount"
           class="transaction" />
       </tbody>
     </table>
@@ -24,19 +24,15 @@
 
 <script>
 import Transaction from './Transaction.vue';
-import { mapGetters } from 'vuex';
 
 export default {
     name: 'TransactionList',
-    computed: mapGetters(['allTransactions']),
     components: {
       Transaction
     },
-    methods: {
-      showTransaction(amount) {
-        console.log(amount)
-      }
-    }
+    props: {
+      transactions: Array
+    },
 };
 </script>
 

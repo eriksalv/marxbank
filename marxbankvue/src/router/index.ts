@@ -28,31 +28,44 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "myProfile" */ "@/views/MyProfile.vue"),
+<<<<<<< HEAD
     meta: {
       requiresAuth: true,
     },
+=======
+>>>>>>> origin/master
   },
   {
     path: "/myTransactions",
     name: "MyTransactions",
 
     component: () => import("@/views/MyTransactions.vue"),
+<<<<<<< HEAD
     meta: {
       requiresAuth: true,
     },
+=======
+>>>>>>> origin/master
   },
   {
     path: "/myAccounts",
     name: "MyAccounts",
 
     component: () => import("@/views/MyAccounts.vue"),
+<<<<<<< HEAD
     meta: {
       requiresAuth: true,
     },
+=======
+>>>>>>> origin/master
   },
   {
     path: "/calculator",
     name: "Calculator",
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     component: () => import("@/views/Calculator.vue"),
   },
   {
@@ -60,6 +73,15 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     component: () => import("@/views/Login.vue"),
   },
+<<<<<<< HEAD
+=======
+  {
+    path: "/myAccounts/:id",
+    name: "AccountInfo",
+    component: () => import("@/views/AccountInfo.vue"),
+    props: true,
+  },
+>>>>>>> origin/master
 ];
 
 const router = createRouter({

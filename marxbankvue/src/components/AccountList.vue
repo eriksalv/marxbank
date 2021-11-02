@@ -10,7 +10,8 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-        <Account @click="showAccount(account.accNumber)" 
+        <Account @accountSelected="showAccount"
+          :id="account.id" 
           :accNumber="account.accNumber" 
           :balance="account.balance" 
           :accName="account.name"
@@ -33,9 +34,8 @@ export default {
       Account
     },
     methods: {
-      showAccount(accNumber) {
-        //TODO: bytt til konto view
-        console.log(accNumber)
+      showAccount(id) {
+        this.$router.push({ name: 'AccountInfo', params: { id: id } });
       },
       ...mapActions([
         "fetchAccounts"

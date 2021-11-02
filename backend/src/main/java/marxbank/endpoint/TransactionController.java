@@ -16,7 +16,7 @@ import marxbank.repository.TransactionRepository;
 
 
 @RestController
-@RequestMapping("{user}/{transactions}")
+@RequestMapping("/myTransactions")
 public class TransactionController {
 
     private final TransactionRepository transactionRepository;
