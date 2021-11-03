@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import marxbank.model.Transaction;
-
 import org.springframework.data.repository.CrudRepository;
 
 public interface TransactionRepository extends CrudRepository<Transaction, Long>{
     
-    Optional<List<Transaction>> findTransactionByFrom_id(Long accountId);
-    Optional<List<Transaction>> findTransactionByReciever_id(Long account);
+    Optional<Transaction> findById(Long id);
+    Optional <List<Transaction>> findByFrom_Id(Long id);
+    Optional <List<Transaction>> findByReciever_Id(Long id);
+    
 }

@@ -3,6 +3,8 @@ package marxbank.endpoint;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +18,6 @@ import marxbank.API.LogInResponse;
 import marxbank.API.SignUpRequest;
 import marxbank.API.UserResponse;
 import marxbank.model.User;
-import marxbank.repository.TokenRepository;
 import marxbank.repository.UserRepository;
 import marxbank.service.AuthService;
 
@@ -25,60 +26,61 @@ import marxbank.service.AuthService;
 public class AuthController {
     
     private UserRepository userRepository;
-    private TokenRepository tokenRepository;
     private AuthService authService;
 
     @Autowired
-    public AuthController(UserRepository userRepository, TokenRepository tokenRepository, AuthService authService) {
+    public AuthController(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
-        this.tokenRepository = tokenRepository;
         this.authService = authService;
     }
 
 
     @PostMapping("/login")
     @Transactional
-    public LogInResponse login(@RequestBody LogInRequest request) {
-        System.out.println(request.toString());
-
+    public ResponseEntity<LogInResponse> login(@RequestBody LogInRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
 
         System.out.println(username);
         
-        // TODO: legge til egne exceptions her
-        User user = userRepository.findByUsername(username).orElseThrow(IllegalStateException::new);
+        if (!userRepository.findByUsername(username).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        User user = userRepository.findByUsername(username).get();
         
-        if (!user.getPassword().equals(password)) throw new IllegalStateException();
+        if (!user.getPassword().equals(password)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         String token = authService.createTokenForUser(user);
 
-        return new LogInResponse(token, new UserResponse(user));
+        return ResponseEntity.status(HttpStatus.OK).body(new LogInResponse(token, new UserResponse(user)));
     }
 
-    @GetMapping("login")
+    @GetMapping("/login")
     @Transactional
-    public UserResponse login(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        return new UserResponse(userRepository.findByToken(token).orElseThrow(IllegalArgumentException::new));
+    public ResponseEntity<UserResponse> login(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        
+        if (authService.getUserFromToken(token) == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(userRepository.findByToken_Token(token).get()));
     }
 
     @PostMapping("/signup")
     @Transactional
-    public LogInResponse signUp(@RequestBody SignUpRequest request) {
-        System.out.println(request.getUsername());
+    public ResponseEntity<LogInResponse> signUp(@RequestBody SignUpRequest request) {
         User user = request.createUser();
-        if (!user.validate()) throw new IllegalStateException("User values are not valid");
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) throw new IllegalStateException("User already exists");
+        if (!user.validate()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 
         userRepository.save(user);
         String token = authService.createTokenForUser(user);
-        return new LogInResponse(token, new UserResponse(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new LogInResponse(token, new UserResponse(user)));
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        System.out.println(token);
+    public ResponseEntity<String> logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         authService.removeToken(token);
+        return ResponseEntity.status(HttpStatus.OK).body("{\"signedOut\": \"true\"}");
     }
 
 }
