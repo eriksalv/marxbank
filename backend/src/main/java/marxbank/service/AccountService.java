@@ -32,13 +32,7 @@ public class AccountService {
 
     @Transactional
     public ArrayList<Account> getAccountsForUser(Long userId) {
-<<<<<<< HEAD
-        ArrayList<Account> data = new ArrayList<Account>();
-        accountRepository.findByUser_Id(userId).map(e -> data.add(e));
-        return data;
-=======
         return (ArrayList<Account>) this.accountRepository.findByUser_Id(userId).get();
->>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
     }
 
     @Transactional

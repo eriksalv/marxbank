@@ -25,10 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import marxbank.repository.AccountRepository;
-<<<<<<< HEAD
-=======
-import marxbank.repository.UserRepository;
->>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 import marxbank.service.AccountService;
 import marxbank.service.AuthService;
 
@@ -39,23 +35,12 @@ public class AccountController {
     private final AccountRepository accountRepository;
     private final AccountService accountService;
     private final AuthService authService;
-<<<<<<< HEAD
 
     @Autowired
     public AccountController(AccountRepository accountRepository, AccountService accountService, AuthService authService) {
         this.accountRepository = accountRepository;
         this.accountService = accountService;
         this.authService = authService;
-=======
-    private final UserRepository userRepository;
-
-    @Autowired
-    public AccountController(AccountRepository accountRepository, AccountService accountService, AuthService authService, UserRepository userRepository) {
-        this.accountRepository = accountRepository;
-        this.accountService = accountService;
-        this.authService = authService;
-        this.userRepository = userRepository;
->>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
     }
 
     @GetMapping
@@ -74,7 +59,6 @@ public class AccountController {
 
     @GetMapping("/myAccounts")
     @Transactional
-<<<<<<< HEAD
     public ResponseEntity<ArrayList<AccountResponse>> findByUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         if (token==null){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -83,13 +67,6 @@ public class AccountController {
         User user = authService.getUserFromToken(token);
 
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-=======
-    public ResponseEntity<ArrayList<AccountResponse>> findByUser(@RequestHeader(name = "Authorization", required = true) @Nullable String token) {
-
-        User user = authService.getUserFromToken(token);
-
-        if (user == null) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
->>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 
         ArrayList<AccountResponse> accounts = new ArrayList<AccountResponse>();
     
@@ -103,11 +80,7 @@ public class AccountController {
     public ResponseEntity<AccountResponse> createAccount(@RequestHeader(name = "Authorization", required = true) @Nullable String token, @RequestBody AccountRequest request) {
         User user = authService.getUserFromToken(token);
 
-<<<<<<< HEAD
-        if (user == null) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-=======
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
->>>>>>> 615650796fc73f08736098744eaccb0fdc5ee257
 
         Account a = accountService.createAccount(request, user.getId());
 
