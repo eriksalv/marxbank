@@ -48,6 +48,12 @@ public class User {
        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, username, email, password);
     }
 
+    public User(String username, String email, String password, boolean generateId) {
+        this.username = validateUsername(username);
+        this.email = validateEmail(email);
+        this.password = password;
+    }
+
     public void setId(Long newId) {
         if (newId == null) throw new IllegalArgumentException("Id cannot be null");
         this.id = newId;

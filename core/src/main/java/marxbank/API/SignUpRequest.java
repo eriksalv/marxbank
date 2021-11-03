@@ -41,6 +41,6 @@ public class SignUpRequest {
     }
 
     public User createUser() {
-        return new User(this.username, this.email, this.password);
+        return new User(this.username, this.email, this.password, true);
     }
 }
