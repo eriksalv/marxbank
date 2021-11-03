@@ -39,8 +39,12 @@ public class AuthController {
     @PostMapping("/login")
     @Transactional
     public LogInResponse login(@RequestBody LogInRequest request) {
+        System.out.println(request.toString());
+
         String username = request.getUsername();
         String password = request.getPassword();
+
+        System.out.println(username);
         
         // TODO: legge til egne exceptions her
         User user = userRepository.findByUsername(username).orElseThrow(IllegalStateException::new);
@@ -73,6 +77,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public void logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        System.out.println(token);
         authService.removeToken(token);
     }
 

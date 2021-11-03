@@ -6,13 +6,13 @@
                 <form action="" class="flex flex-col w-full items-center" method="POST">
                     <div class="input-style">
                         <label for="username">Username</label>
-                        <input type="text" name="username" id="username" v-model="username" :disabled="loading">
+                        <input type="text" name="username" id="username" v-model="username" :disabled="authStatus === 'loading'">
                     </div>
                     <div class="input-style">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" v-model="password" :disabled="loading">
+                        <input type="password" name="password" id="password" v-model="password" :disabled="authStatus === 'loading'">
                     </div>
-                    <button @click.prevent="login" class="mt-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Sickle.svg" alt="" v-bind:class="(loading) ? 'communismIcon left-1 loading' : 'communismIcon left-1'"><p class="inline-block font-bold text-2xl z-10 relative">Login</p></button>
+                    <button @click.prevent="requestLogin" class="mt-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Sickle.svg" alt="" v-bind:class="(authStatus === 'loading') ? 'communismIcon left-1 loading' : 'communismIcon left-1'"><p class="inline-block font-bold text-2xl z-10 relative">Login</p></button>
                 </form>
                 <button @click.prevent="createNewUser" class="mx-auto my-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Hammer.svg" class="communismIcon right-0 transform-gpu rotate-90"><p class="inline-block font-bold text-2xl z-10 relative">Register</p></button>
             </div>
@@ -26,24 +26,33 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RegisterComponent from './RegisterComponent.vue';
+import {mapGetters, mapActions} from 'vuex'
+import { LoginRequest } from '../types/types';
 
 export default defineComponent({
     name: 'LoginComponent',
     components: {
         RegisterComponent
     },
+    computed: {
+        ...mapGetters(['authStatus'])
+    },
     data () {
         return {
             username: "",
             password: "",
-            loading: false,
-            register: false
+            register: false,
         }
     },
     methods: {
-        login(): void {
-            console.log({username: this.username, password: this.password});
-            this.loading = true;
+        ...mapActions(['login']),
+        requestLogin(): void {
+            const request: LoginRequest = {username: this.username, password: this.password}
+            console.log(request)
+
+            this.login(request)
+            .then(() => this.$router.push('/'))
+            .catch(err => console.log(err))
         },
 
         createNewUser(): void {

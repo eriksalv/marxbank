@@ -1,3 +1,9 @@
+export interface AuthState {
+  status: string;
+  token: string | null;
+  userId: number | null;
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -5,16 +11,11 @@ export interface LoginRequest {
 
 export interface SignUpRequest {
   username: string;
-  password: string;
   email: string;
+  password: string;
 }
 
 export interface LoginResponse {
   userId: number;
   token: string;
-}
-
-export interface Userstate {
-  userId: number;
-  token: String;
 }

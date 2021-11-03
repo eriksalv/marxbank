@@ -2,6 +2,7 @@ import { createStore, StoreOptions } from "vuex";
 import { accounts } from "./modules/accounts/index";
 import { transactions } from "./modules/transactions/index";
 import { users } from "./modules/users";
+import { auth } from "./modules/auth";
 import { RootState } from "./types";
 
 const store: StoreOptions<RootState> = {
@@ -12,6 +13,7 @@ const store: StoreOptions<RootState> = {
     accounts,
     transactions,
     users,
+    auth,
   },
 };
 

@@ -13,6 +13,7 @@
 <script>
 import Header from "@/components/Header.vue"
 import SideBar from "@/components/SideBar.vue"
+import {mapGetters} from 'vuex'
 
 export default {
   
@@ -24,6 +25,16 @@ export default {
   components: {
     Header,
     SideBar
+  },
+  computed: {
+    ...mapGetters(['getToken'])
+  },
+  mounted() {
+    //if user is not logged in, send to login page
+    if (this.getToken === null) {
+      //this.loggedIn = false
+      this.$router.push({ path: "/login"});
+    }
   }
 }
 </script>
