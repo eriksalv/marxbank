@@ -59,13 +59,21 @@ public class TransactionController {
 
     @GetMapping("/from/{fromId}")
     @Transactional
-    public ResponseEntity<ArrayList<TransactionResponse>> findByFrom_Id(@PathVariable Long fromId){
+    public ResponseEntity<ArrayList<TransactionResponse>> findByFrom_Id(@PathVariable Long fromId, @RequestHeader(name = "Authorization", required = false) @Nullable String token){
         
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = this.authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         Optional<Account> OptionalAccount = accountRepository.findById(fromId);
         if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         Account account = OptionalAccount.get();
     
         if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
         transactionRepository.findByFrom_Id(fromId).get().forEach(e -> transactions.add(new TransactionResponse(e)));
@@ -74,13 +82,21 @@ public class TransactionController {
 
     @GetMapping("/reciever/{recieverId}")
     @Transactional
-    public ResponseEntity<ArrayList<TransactionResponse>> findByReciever_Id(@PathVariable Long recieverId){
+    public ResponseEntity<ArrayList<TransactionResponse>> findByReciever_Id(@PathVariable Long recieverId, @RequestHeader(name = "Authorization", required =  false) @Nullable String token){
         
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = this.authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         Optional<Account> OptionalAccount = accountRepository.findById(recieverId);
         if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         Account account = OptionalAccount.get();
     
         if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 
@@ -90,13 +106,21 @@ public class TransactionController {
 
     @GetMapping("/myTransactions/{accountId}")
     @Transactional
-    public ResponseEntity<ArrayList<TransactionResponse>> findByAccount_Id(@PathVariable Long accountId){
+    public ResponseEntity<ArrayList<TransactionResponse>> findByAccount_Id(@PathVariable Long accountId, @RequestHeader(name = "Authorization", required =  false) @Nullable String token) {
        
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = this.authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         Optional<Account> OptionalAccount = accountRepository.findById(accountId);
         if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         Account account = OptionalAccount.get();
-
+        
         if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 
