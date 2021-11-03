@@ -45,4 +45,7 @@ export const getters: GetterTree<AccountState, RootState> = {
           .includes(filter.toString().toLowerCase());
       });
   },
+  getAccountById: (state) => (id: number): Account | undefined => {
+    return state.accounts.find((acc) => acc.id === id);
+  },
 };

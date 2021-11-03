@@ -3,42 +3,55 @@
         <form action="" class="flex flex-col w-full items-center">
             <div class="input-style">
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username" v-model="username" :disabled="loading">
+                <input type="text" name="username" id="username" v-model="username" :disabled="authStatus === 'loading'">
             </div>
             <div class="input-style">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" v-model="email" :disabled="loading">
+                <input type="email" name="email" id="email" v-model="email" :disabled="authStatus === 'loading'">
             </div>
             <div class="input-style">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" v-model="password" :disabled="loading">
+                <input type="password" name="password" id="password" v-model="password" :disabled="authStatus === 'loading'">
             </div>
             <div class="input-style">
                 <label for="repeatPassword">Repeat password</label>
-                <input type="password" name="repeatPassword" id="repeatPassword" v-model="repeatPassword" :disabled="loading">
+                <input type="password" name="repeatPassword" id="repeatPassword" v-model="repeatPassword" :disabled="authStatus === 'loading'">
             </div>
-            <button @click.prevent="register" class="mx-auto my-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Hammer.svg" v-bind:class="(loading)? 'communismIcon right-0 loading' : 'communismIcon right-0 transform-gpu rotate-90'"><p class="inline-block font-bold text-2xl z-10 relative">Register</p></button>
+            <button @click.prevent="register" class="mx-auto my-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Hammer.svg" v-bind:class="(authStatus === 'loading')? 'communismIcon right-0 loading' : 'communismIcon right-0 transform-gpu rotate-90'"><p class="inline-block font-bold text-2xl z-10 relative">Register</p></button>
         </form>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import {mapGetters, mapActions} from 'vuex'
+import { SignUpRequest } from '../types/types'
 
 export default defineComponent({
     name: 'RegisterComponent',
+    computed: {
+        ...mapGetters(['authStatus'])
+    },
     data() {
         return {
             username: "",
             email: "",
             password: "",
             repeatPassword: "",
-            loading: false
         }
     },
     methods: {
+        ...mapActions(['signup']),
         register(): void {
-            console.log({username: this.username, email: this.email, password: this.password, repeatPassword: this.repeatPassword});
-            this.loading = true;
+            if(this.password !== this.repeatPassword) {
+                //TODO: gjør noe fornuftig
+                console.log("passwords dont match")
+                return
+            }
+            const request: SignUpRequest = {username: this.username, password: this.password, email: this.email}
+            
+            this.signup(request)
+            .then(() => this.$router.push('/'))
+            .catch(err => console.log(err))
         }
     }
 })
