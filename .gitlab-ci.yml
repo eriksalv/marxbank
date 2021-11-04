@@ -45,7 +45,6 @@ test_core:
       - job_execution_timeout
       - data_integrity_failure
   script:
-    - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl core jacoco:report
     - cat core/target/site/jacoco/index.html
 
@@ -60,7 +59,6 @@ test_stalin:
       - job_execution_timeout
       - data_integrity_failure
   script:
-    - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl stalin jacoco:report
     - cat stalin/target/site/jacoco/index.html
 
@@ -75,7 +73,6 @@ test_fx:
       - job_execution_timeout
       - data_integrity_failure
   script:
-    - mvn install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
 
@@ -124,7 +121,6 @@ test_backend:
       - job_execution_timeout
       - data_integrity_failure
   script:
-    - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl backend jacoco:report
     - cat backend/target/site/jacoco/index.html
 
