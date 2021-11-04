@@ -24,12 +24,26 @@ stages:
 
 build:
   stage: build
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   script: 
     - mvn clean install -DskipTests
 
 test_core:
   stage: test_core
   needs: [build]
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   script:
     - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl core jacoco:report
@@ -38,6 +52,13 @@ test_core:
 test_stalin:
   stage: test_stalin
   needs: [build, test_core]
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   script:
     - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl stalin jacoco:report
@@ -46,6 +67,13 @@ test_stalin:
 test_fx:
   stage: test_fx
   needs: [build, test_core]
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   script:
     - mvn install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
@@ -54,6 +82,13 @@ test_fx:
 test_vue:
   stage: test_vue
   needs: [build]
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
     - cd marxbankvue
@@ -62,6 +97,13 @@ test_vue:
 test_manual:
   stage: test_manual
   needs: [build]
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   script:
     - mvn clean install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
@@ -74,6 +116,13 @@ test_manual:
 test_backend:
   stage: test_backend
   needs: [build, test_core]
+  retry:
+    max: 1
+    when:
+      - unkown_failure
+      - runner_system_failure
+      - job_execution_timeout
+      - data_integrity_failure
   script:
     - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl backend jacoco:report
