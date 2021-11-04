@@ -8,3 +8,8 @@ tasks:
 ports:
   # used by virtual desktop and vnc, supports JavaFX
   - port: 6080
+  - port: 3000
+
+vscode:
+  extensions:
+    - octref.vetur@0.23.0:TEzauMObB6f3i2JqlvrOpA==

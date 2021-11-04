@@ -40,6 +40,8 @@ public class AuthController {
     public ResponseEntity<LogInResponse> login(@RequestBody LogInRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
+
+        System.out.println(username);
         
         if (!userRepository.findByUsername(username).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 

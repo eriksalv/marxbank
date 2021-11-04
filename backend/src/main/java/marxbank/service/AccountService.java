@@ -38,9 +38,7 @@ public class AccountService {
 
     @Transactional
     public ArrayList<Account> getAccountsForUser(Long userId) {
-        ArrayList<Account> data = new ArrayList<Account>();
-        accountRepository.findByUser_Id(userId).map(e -> data.add(e));
-        return data;
+        return (ArrayList<Account>) this.accountRepository.findByUser_Id(userId).get();
     }
 
     @Transactional

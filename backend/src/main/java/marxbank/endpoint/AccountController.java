@@ -18,6 +18,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,11 +60,14 @@ public class AccountController {
 
     @GetMapping("/myAccounts")
     @Transactional
-    public ResponseEntity<ArrayList<AccountResponse>> findByUser(@RequestHeader(name = "Authorization", required = true) @Nullable String token) {
-
+    public ResponseEntity<ArrayList<AccountResponse>> findByUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token==null){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+       
         User user = authService.getUserFromToken(token);
 
-        if (user == null) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<AccountResponse> accounts = new ArrayList<AccountResponse>();
     
@@ -75,9 +79,11 @@ public class AccountController {
     @PostMapping("/createAccount")
     @Transactional
     public ResponseEntity<AccountResponse> createAccount(@RequestHeader(name = "Authorization", required = true) @Nullable String token, @RequestBody AccountRequest request) {
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        
         User user = authService.getUserFromToken(token);
 
-        if (user == null) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         Account a = accountService.createAccount(request, user.getId());
 

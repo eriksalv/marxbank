@@ -58,6 +58,7 @@ public class AuthService {
         return userRepository.findByToken_Token(token).get();
     }
 
+
     public Long getUserIdFromToken(String token) {
         return getUserFromToken(token).getId();
     }
