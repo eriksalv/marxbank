@@ -38,16 +38,14 @@ public class AuthController {
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<LogInResponse> login(@RequestBody LogInRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
 
-        System.out.println(username);
-        
-        if (!userRepository.findByUsername(username).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (request.getUsername().length() < 4 || request.getPassword().length() < 4) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        User user = userRepository.findByUsername(username).get();
+        if (!userRepository.findByUsername(request.getUsername()).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        User user = userRepository.findByUsername(request.getUsername()).get();
         
-        if (!user.getPassword().equals(password)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (!user.getPassword().equals(request.getPassword())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         String token = authService.createTokenForUser(user);
 
@@ -58,8 +56,10 @@ public class AuthController {
     @Transactional
     public ResponseEntity<UserResponse> login(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         if (authService.getUserFromToken(token) == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(userRepository.findByToken_Token(token).get()));
