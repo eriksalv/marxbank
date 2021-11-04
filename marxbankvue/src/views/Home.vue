@@ -50,13 +50,13 @@
           <h2>forvente å  ha? Eller ønsker du å spare </h2>
           <h2>opp til egen bolig?</h2>
         </div>
-        
+        <router-link to="/calculator" > 
           <button  class="bg-green-500 hover:bg-green-400 
             text-white font-bold py-2 px-4 border-b-4 border-green-700 
             hover:border-green-500 rounded  mt-6">
                Prøv sparekalkulatoren!
           </button>
-          
+        </router-link>
       </div>
     </main>
     
