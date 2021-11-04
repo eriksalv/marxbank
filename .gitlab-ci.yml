@@ -27,7 +27,7 @@ build:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
@@ -40,7 +40,7 @@ test_core:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
@@ -55,7 +55,7 @@ test_stalin:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
@@ -70,7 +70,7 @@ test_fx:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
@@ -85,7 +85,7 @@ test_vue:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
@@ -100,7 +100,7 @@ test_manual:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
@@ -119,7 +119,7 @@ test_backend:
   retry:
     max: 1
     when:
-      - unkown_failure
+      - unknown_failure
       - runner_system_failure
       - job_execution_timeout
       - data_integrity_failure
