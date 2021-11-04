@@ -2,6 +2,7 @@ package marxbank.endpoint;
 
 import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
+import marxbank.API.DepositRequest;
 import marxbank.API.TransferRequest;
 import marxbank.API.TransferResponse;
 import marxbank.model.Account;
@@ -18,7 +19,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,9 +111,24 @@ public class AccountController {
 
         if (this.accountRepository.findById(request.getTo()).get().getBalance() - request.getAmount() < 0) 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
         TransferResponse t = this.accountService.transferFunds(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(t);
+    }
+
+    @PostMapping("/deposit")
+    @Transactional
+    public ResponseEntity<AccountResponse> depositIntoAccount(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody DepositRequest request) {
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = this.authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!accountRepository.findById(request.getAccountId()).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        
     }
 }

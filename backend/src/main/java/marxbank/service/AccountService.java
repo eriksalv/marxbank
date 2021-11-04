@@ -36,12 +36,10 @@ public class AccountService {
         this.transactionRepository = transactionRepository;
     }
 
-    @Transactional
     public ArrayList<Account> getAccountsForUser(Long userId) {
         return (ArrayList<Account>) this.accountRepository.findByUser_Id(userId).get();
     }
 
-    @Transactional
     public Account createAccount(AccountRequest request, Long userId) {
         Account a = null;
 
@@ -57,7 +55,6 @@ public class AccountService {
         return a;
     }
 
-    @Transactional
     public TransferResponse transferFunds(TransferRequest request) {
         Account toAccount = this.accountRepository.findById(request.getTo()).get();
         Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
@@ -69,6 +66,11 @@ public class AccountService {
         this.transactionRepository.save(t);
 
         return new TransferResponse(fromAccount.getId(), fromAccount.getBalance());
+    }
+
+    public boolean checkIfUserOwnsAccount(Long userId, Long accountId) {
+        if (!accountRepository.findById(accountId).isPresent()) return false;
+        return accountRepository.findById(accountId).get().getUser().getId() == userId;
     }
 
 }
