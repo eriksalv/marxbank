@@ -2,7 +2,7 @@ package marxbank.endpoint;
 
 import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
-import marxbank.API.DepositRequest;
+import marxbank.API.DepositWithdrawRequest;
 import marxbank.API.TransferRequest;
 import marxbank.API.TransferResponse;
 import marxbank.model.Account;
@@ -118,7 +118,7 @@ public class AccountController {
 
     @PostMapping("/deposit")
     @Transactional
-    public ResponseEntity<AccountResponse> depositIntoAccount(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody DepositRequest request) {
+    public ResponseEntity<AccountResponse> depositIntoAccount(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody DepositWithdrawRequest request) {
         if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         User user = this.authService.getUserFromToken(token);
@@ -130,5 +130,40 @@ public class AccountController {
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         
+        if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        Account a = accountRepository.findById(request.getAccountId()).get();
+        a.deposit(request.getAmount());
+
+        accountRepository.save(a);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(a));
+    }
+
+    @PostMapping("/withdraw")
+    @Transactional
+    public ResponseEntity<AccountResponse> withdrawFromAccount(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody DepositWithdrawRequest request) {
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = this.authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!accountRepository.findById(request.getAccountId()).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        
+        if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        Account a = accountRepository.findById(request.getAccountId()).get();
+
+        if (a.getBalance() - request.getAmount() < 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); 
+
+        a.withdraw(request.getAmount());
+
+        accountRepository.save(a);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(a));
     }
 }

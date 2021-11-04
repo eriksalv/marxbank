@@ -1,12 +1,12 @@
 package marxbank.API;
 
-public class DepositRequest {
+public class DepositWithdrawRequest {
     private double amount;
     private Long accountId;
 
-    protected DepositRequest() {}
+    protected DepositWithdrawRequest() {}
 
-    public DepositRequest(double amount, Long accountId) {
+    public DepositWithdrawRequest(double amount, Long accountId) {
         this.amount = amount;
         this.accountId = accountId;
     }
