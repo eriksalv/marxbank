@@ -77,7 +77,7 @@ public class AuthService {
     }
 
 
-    private static String removeBearer(String token) {
+    public static String removeBearer(String token) {
         return token.replace(BEARER_HEADER, "");
     }
 
