@@ -1,0 +1,44 @@
+@startuml
+database "h2"
+
+component "Spring" {
+    [spring.boot]
+}
+
+package "Backend" {
+    component "Marxbank.Backend.Endpoint"
+    component "Marxbank.Backend.Repository"
+    component "Marxbank.Backend.Service"
+}
+
+package "Core" {
+    component "Marxbank.Core.Model"
+}
+
+package "api" {
+    component "Marxbank.api.API"
+}
+
+package "MarxBankVue" {
+    component "components"
+    component "types"
+    component "store"
+    component "client"
+    component "views"
+}
+
+package "MarxBankFx" {
+    component "Marxbank.Marxbankfx.FX"
+}
+
+Backend -l-> Spring
+Spring -d-> h2
+
+Backend -r-> Marxbank.Core.Model
+Backend --> api
+
+api --> Marxbank.Core.Model
+Core -[hidden]r-> api
+
+MarxBankVue -[hidden]d-> MarxBankFx
+@enduml
