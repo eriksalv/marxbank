@@ -12,7 +12,7 @@ public class CheckingAccount extends Account {
 
     private static final double DEFAULT_INTEREST = 0.5;
 
-    protected CheckingAccount() {
+    public CheckingAccount() {
         super();
     }
 

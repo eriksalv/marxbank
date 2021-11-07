@@ -12,7 +12,7 @@ public class SavingsAccount extends Account {
 
     private static double DEFAULT_INTEREST = 3;
 
-    protected SavingsAccount() {
+    public SavingsAccount() {
         super();
     }
 

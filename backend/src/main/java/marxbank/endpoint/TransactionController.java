@@ -67,11 +67,9 @@ public class TransactionController {
 
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        Optional<Account> OptionalAccount = accountRepository.findById(fromId);
-        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        Account account = OptionalAccount.get();
-    
-        if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        Optional<Account> optionalAccount = accountRepository.findById(fromId);
+        if (!optionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        Account account = optionalAccount.get();
 
         if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
@@ -115,7 +113,8 @@ public class TransactionController {
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         Optional<Account> OptionalAccount = accountRepository.findById(accountId);
-        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        System.out.println(accountId);
+        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
         Account account = OptionalAccount.get();
         
         if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

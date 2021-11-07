@@ -6,4 +6,5 @@
 **/.project
 **/.settings
 */database.mv.db
+backend/database.mv.db
 .idea/
