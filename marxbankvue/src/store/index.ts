@@ -7,7 +7,7 @@ import { RootState } from "./types";
 
 const store: StoreOptions<RootState> = {
   state: {
-    message: "hello",
+    message: "",
   },
   modules: {
     accounts,

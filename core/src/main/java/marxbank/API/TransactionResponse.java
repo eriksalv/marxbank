@@ -12,6 +12,7 @@ public class TransactionResponse {
     private Account reciever;
     private double amount;
     private LocalDateTime transactionDate;
+    private String transactionDateString;
 
     public TransactionResponse(){
     }
@@ -22,6 +23,7 @@ public class TransactionResponse {
         this.reciever = transaction.getReciever();
         this.amount = transaction.getAmount();
         this.transactionDate = transaction.getTransactionDate();
+        this.transactionDateString = transaction.getDateString();
     }
 
     public void setId(Long newId){
@@ -53,6 +55,12 @@ public class TransactionResponse {
     }
     public LocalDateTime getTransDateTime(){
         return this.transactionDate;
+    }
+    public void setTransactionDateString(String newDate) {
+        this.transactionDateString = newDate;
+    }
+    public String getTransactionDateString() {
+        return this.transactionDateString;
     }
 
 }

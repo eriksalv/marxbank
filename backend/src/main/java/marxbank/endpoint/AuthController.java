@@ -52,6 +52,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(new LogInResponse(token, new UserResponse(user)));
     }
 
+    //burde ikke authorization være required?
     @GetMapping("/login")
     @Transactional
     public ResponseEntity<UserResponse> login(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {

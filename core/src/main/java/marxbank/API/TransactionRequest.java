@@ -1,27 +1,16 @@
 package marxbank.API;
 
-public class TransferRequest {
-
+public class TransactionRequest {
     private Long from;
     private Long to;
-    private boolean withdraw;
     private double amount;
 
-    protected TransferRequest() {}
+    protected TransactionRequest() {}
 
-    public TransferRequest(Long from, Long to, boolean withdraw, double amount) {
-        this.withdraw = withdraw;
+    public TransactionRequest(Long from, Long to, double amount) {
         this.amount = amount;
         this.from = from;
         this.to = to;
-    }
-
-    public boolean getWithdraw() {
-        return this.withdraw;
-    }
-
-    public void setWithdraw(boolean w) {
-        this.withdraw = w;
     }
 
     public double getAmount() {
@@ -47,5 +36,4 @@ public class TransferRequest {
     public void setFrom(Long id) {
         this.from = id;
     }
-    
 }

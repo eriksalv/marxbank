@@ -1,3 +1,4 @@
+import { Status } from "@/store/types";
 import { MutationTree } from "vuex";
 import { AuthState } from "./types";
 
@@ -11,7 +12,7 @@ export const mutations: MutationTree<AuthState> = {
   setToken: (state, token: string | null) => {
     state.token = token;
   },
-  setStatus: (state, status: string) => {
+  setStatus: (state, status: Status) => {
     state.status = status;
   },
   setUserId: (state, userId: number) => {
