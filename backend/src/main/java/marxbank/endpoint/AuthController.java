@@ -18,6 +18,7 @@ import marxbank.API.LogInResponse;
 import marxbank.API.SignUpRequest;
 import marxbank.API.UserResponse;
 import marxbank.model.User;
+import marxbank.repository.TokenRepository;
 import marxbank.repository.UserRepository;
 import marxbank.service.AuthService;
 
@@ -27,11 +28,13 @@ public class AuthController {
     
     private UserRepository userRepository;
     private AuthService authService;
+    private TokenRepository tokenRepository;
 
     @Autowired
-    public AuthController(UserRepository userRepository, AuthService authService) {
+    public AuthController(UserRepository userRepository, AuthService authService, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.authService = authService;
+        this.tokenRepository = tokenRepository;
     }
 
 
@@ -63,7 +66,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(userRepository.findByToken_Token(token).get()));
+        return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(userRepository.findByToken_Token(AuthService.removeBearer(token)).get()));
     }
 
     @PostMapping("/signup")
@@ -80,8 +83,12 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!tokenRepository.findByToken(token).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
         authService.removeToken(token);
-        return ResponseEntity.status(HttpStatus.OK).body("{\"signedOut\": \"true\"}");
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }
