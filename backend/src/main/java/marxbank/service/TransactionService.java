@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import marxbank.API.TransactionRequest;
+import marxbank.API.TransactionResponse;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.repository.AccountRepository;
@@ -46,6 +48,20 @@ public class TransactionService {
         });
         
         return transactions;
+    }
+
+    @Transactional
+    public TransactionResponse resolveTransactionRequest(TransactionRequest request) {
+        Account toAccount = this.accountRepository.findById(request.getTo()).get();
+        Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
+
+        Transaction t = new Transaction(fromAccount, toAccount, request.getAmount());
+
+        this.accountRepository.save(toAccount);
+        this.accountRepository.save(fromAccount);
+        this.transactionRepository.save(t);
+
+        return new TransactionResponse(t);
     }
 
 }

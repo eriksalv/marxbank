@@ -17,7 +17,7 @@ export const actions: ActionTree<TransactionState, RootState> = {
           const newTransaction: Transaction = {
             id: element.Id,
             from: element.from.id,
-            to: element.to.id,
+            to: element.reciever.id,
             amount: element.amount,
             date: element.transactionDateString,
           };
@@ -32,27 +32,24 @@ export const actions: ActionTree<TransactionState, RootState> = {
   },
   async createTransaction(
     { commit, rootGetters },
-    transferRequest: TransactionRequest
+    transactionRequest: TransactionRequest
   ) {
     commit("setTransactionStatus", "loading");
     await axios
-      .post("/accounts/transfer", {
-        token: rootGetters.getToken,
-        request: transferRequest,
+      .post(BASE_URL + "/transfer", transactionRequest, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
       })
       .then((response) => {
-        let transactions: Array<Transaction> = [];
-        response.data.forEach((element: any) => {
-          const newTransaction: Transaction = {
-            id: element.Id,
-            from: element.from.id,
-            to: element.to.id,
-            amount: element.amount,
-            date: element.transactionDateString,
-          };
-          transactions = [...transactions, newTransaction];
-        });
-        commit("setTransactions", transactions);
+        const transaction: Transaction = {
+          id: response.data.Id,
+          from: response.data.from,
+          to: response.data.reciever,
+          amount: response.data.amount,
+          date: response.data.transactionDateString,
+        };
+        commit("addTransaction", transaction);
         commit("setTransactionStatus", "success");
       })
       .catch((err) => {

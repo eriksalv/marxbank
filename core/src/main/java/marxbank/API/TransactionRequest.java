@@ -5,7 +5,8 @@ public class TransactionRequest {
     private Long to;
     private double amount;
 
-    protected TransactionRequest() {}
+    protected TransactionRequest() {
+    }
 
     public TransactionRequest(Long from, Long to, double amount) {
         this.amount = amount;
@@ -35,5 +36,10 @@ public class TransactionRequest {
 
     public void setFrom(Long id) {
         this.from = id;
+    }
+
+    @Override
+    public String toString() {
+        return "from: " + this.from + ", to: " + this.to + ", amount: " + this.amount; 
     }
 }

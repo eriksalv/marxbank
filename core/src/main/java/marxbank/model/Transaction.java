@@ -109,7 +109,14 @@ public class Transaction {
      * @param amount - Amount of money in transaction
     */
     public Transaction(Account from, Account reciever, double amount) {
-        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, from, reciever, amount, null, true, true);
+        this.from = from;
+        this.reciever = reciever;
+        this.amount = validateAmount(amount);
+        this.transactionDate=LocalDateTime.now();
+        this.dateString=DATE_FORMATTER.format(transactionDate);
+        commitTransaction();
+        this.from.addTransaction(this);
+        this.reciever.addTransaction(this);
     }
 
     /**
