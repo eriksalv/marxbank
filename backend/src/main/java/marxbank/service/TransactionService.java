@@ -55,7 +55,7 @@ public class TransactionService {
         Account toAccount = this.accountRepository.findById(request.getTo()).get();
         Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
 
-        Transaction t = new Transaction(fromAccount, toAccount, request.getAmount());
+        Transaction t = new Transaction(fromAccount, toAccount, request.getAmount(), true);
 
         this.accountRepository.save(toAccount);
         this.accountRepository.save(fromAccount);
