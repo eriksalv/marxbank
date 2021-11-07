@@ -9,7 +9,7 @@ const state: AccountState = {
   accounts: [
     {
       id: 1,
-      userId: 1,
+      userId: 2,
       name: "test",
       accNumber: 200,
       balance: 200,

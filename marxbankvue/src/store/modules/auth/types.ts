@@ -1,5 +1,7 @@
+import { Status } from "@/store/types";
+
 export interface AuthState {
-  status: string;
+  status: Status;
   token: string | null;
   userId: number | null;
 }

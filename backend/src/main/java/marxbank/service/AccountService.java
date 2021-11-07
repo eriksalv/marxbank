@@ -56,6 +56,7 @@ public class AccountService {
         return a;
     }
     
+    //burde ikke dette være i transaction service?
     @Transactional
     public TransferResponse transferFunds(TransferRequest request) {
         Account toAccount = this.accountRepository.findById(request.getTo()).get();
