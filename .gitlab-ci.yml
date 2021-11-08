@@ -121,7 +121,7 @@ test_backend:
       - job_execution_timeout
       - data_integrity_failure
   script:
-    - mvn install -DskipTests -pl backend
+    - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl backend jacoco:report
     - cat backend/target/site/jacoco/index.html
 
