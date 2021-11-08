@@ -1,3 +1,4 @@
+import { Status } from "@/store/types";
 import { MutationTree } from "vuex";
 import { Transaction, TransactionState } from "./types";
 
@@ -7,5 +8,8 @@ export const mutations: MutationTree<TransactionState> = {
   },
   addTransaction: (state, transaction: Transaction) => {
     state.transactions = [...state.transactions, transaction];
+  },
+  setTransactionStatus: (state, status: Status) => {
+    state.transactionStatus = status;
   },
 };

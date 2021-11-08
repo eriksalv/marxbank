@@ -7,18 +7,21 @@
 <script>
 // @ is an alias to /src
 import TransactionList from '../components/TransactionList.vue'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
-  created() {
-    //TODO: fetch transactions fra api
-  },
   name: 'MyTransactions',
   components: {
     TransactionList
   },
   computed: {
     ...mapGetters(['allTransactions'])
+  },
+  methods: {
+    ...mapActions(['fetchTransactions'])
+  },
+  created() {
+    this.fetchTransactions();
   }
 }
 </script>
