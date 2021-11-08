@@ -4,24 +4,14 @@ public class TransferRequest {
 
     private Long from;
     private Long to;
-    private boolean withdraw;
     private double amount;
 
     protected TransferRequest() {}
 
-    public TransferRequest(Long from, Long to, boolean withdraw, double amount) {
-        this.withdraw = withdraw;
+    public TransferRequest(double amount, Long from, Long to) {
         this.amount = amount;
         this.from = from;
         this.to = to;
-    }
-
-    public boolean getWithdraw() {
-        return this.withdraw;
-    }
-
-    public void setWithdraw(boolean w) {
-        this.withdraw = w;
     }
 
     public double getAmount() {

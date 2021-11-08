@@ -61,9 +61,7 @@ public class AccountController {
     @GetMapping("/myAccounts")
     @Transactional
     public ResponseEntity<ArrayList<AccountResponse>> findByUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        if (token==null){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        }
+        if (token==null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
        
         User user = authService.getUserFromToken(token);
 
@@ -83,13 +81,13 @@ public class AccountController {
         
         User user = authService.getUserFromToken(token);
 
-        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         Account a = accountService.createAccount(request, user.getId());
 
         if (a == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        accountRepository.save((Account) a);
+        accountRepository.save(a);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new AccountResponse(a));
     }
@@ -107,10 +105,13 @@ public class AccountController {
             || !this.accountRepository.findById(request.getTo()).isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         
+        if (!this.accountService.checkIfUserOwnsAccount(user.getId(), request.getFrom())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        if (this.accountRepository.findById(request.getTo()).get().getBalance() - request.getAmount() < 0) 
+        if (this.accountRepository.findById(request.getFrom()).get().getBalance() - request.getAmount() < 0) 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
         TransferResponse t = this.accountService.transferFunds(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(t);
@@ -126,7 +127,7 @@ public class AccountController {
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         if (!accountRepository.findById(request.getAccountId()).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+        
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         
@@ -150,9 +151,10 @@ public class AccountController {
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         if (!accountRepository.findById(request.getAccountId()).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+        
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            
         
         if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 

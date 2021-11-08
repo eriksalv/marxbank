@@ -38,7 +38,10 @@ public class Transaction {
     @Transient
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public Transaction() {}
+    public Transaction() {
+        this.transactionDate=LocalDateTime.now();
+        this.dateString=DATE_FORMATTER.format(transactionDate);
+    }
 
     /**
      * Initializes transaction object and runs the commitTransaction method if commit is true.
@@ -147,6 +150,10 @@ public class Transaction {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     /**
      * Getter for string representation of transaction date, which
      * is useful for representing dates in the UI.
@@ -174,6 +181,10 @@ public class Transaction {
         return from;
     }
 
+    public void setFrom(Account from) {
+        this.from = from;
+    }
+
     /**
      * Getter for reciever account
      * @return reciever
@@ -182,12 +193,20 @@ public class Transaction {
         return reciever;
     }
 
+    public void setReciever(Account to) {
+        this.reciever = to;
+    }
+
     /**
      * Getter for the amount of money in transaction
      * @return amount
     */
     public double getAmount() {
         return this.amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     /**

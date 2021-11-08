@@ -38,7 +38,7 @@ public abstract class Account {
     @Column
     private double interestRate; // In percent
 
-    protected Account() {}
+    public Account() {}
 
     /**
      * Constructur for class Account.
@@ -166,6 +166,10 @@ public abstract class Account {
 
     public AccountType getType() {
         return this.type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
     }
 
     public User getUser() {
