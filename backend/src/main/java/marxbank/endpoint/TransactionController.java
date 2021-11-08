@@ -117,7 +117,7 @@ public class TransactionController {
 
         Optional<Account> OptionalAccount = accountRepository.findById(accountId);
         System.out.println(accountId);
-        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
+        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         Account account = OptionalAccount.get();
         
         if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -37,22 +37,22 @@ public class AccountRequest {
     public Account buildAccount() {
         Account a = null;
 
-        if ("Sparekonto".equalsIgnoreCase(type)) {
+        if (AccountType.SAVING.getTypeString().equalsIgnoreCase(type)) {
             a = new SavingsAccount();
             a.setName(name);
             a.setInterestRate(3.0);
             a.setType(AccountType.SAVING);
-        } else if ("Brukskonto".equalsIgnoreCase(type)) {
+        } else if (AccountType.CHECKING.getTypeString().equalsIgnoreCase(type)) {
             a = new CheckingAccount();
             a.setName(name);
             a.setInterestRate(0.5);
             a.setType(AccountType.CHECKING);
-        } else if ("Kredittkonto".equalsIgnoreCase(type)) {
+        } else if (AccountType.CREDIT.getTypeString().equalsIgnoreCase(type)) {
             a = new CreditAccount();
             a.setName(name);
             a.setInterestRate(0);
             a.setType(AccountType.CREDIT);
-        } else if ("Marxkonto".equalsIgnoreCase(type)) {
+        } else if (AccountType.MARX.getTypeString().equalsIgnoreCase(type)) {
             a = new MarxAccount();
             a.setName(name);
             a.setInterestRate(0.01);

@@ -57,8 +57,8 @@ public class TransactionTest {
         authController.signUp(request);
         LogInRequest lRequest = new LogInRequest("yeet", "yeet");
         token = authController.login(lRequest).getBody().getToken();
-        accountId1 = accountController.createAccount(token, new AccountRequest("SAVING", "yeet")).getBody().getId();
-        accountId2 = accountController.createAccount(token, new AccountRequest("CHECKING", "yote")).getBody().getId();
+        accountId1 = accountController.createAccount(token, new AccountRequest(AccountType.SAVING.getTypeString(), "yeet")).getBody().getId();
+        accountId2 = accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "yote")).getBody().getId();
         accountController.depositIntoAccount(token, new DepositWithdrawRequest(500, accountId1));
     }
 
@@ -76,8 +76,8 @@ public class TransactionTest {
 
         // check if user is trying ton get account that is not theirs
         String newUserToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
-        Long newAccountId = accountController.createAccount(newUserToken, new AccountRequest("SAVING", "name")).getBody().getId();
-        assertEquals(HttpStatus.NOT_FOUND, transactionController.findByAccount_Id(newAccountId, token).getStatusCode());
+        Long newAccountId = accountController.createAccount(newUserToken, new AccountRequest(AccountType.SAVING.getTypeString(), "name")).getBody().getId();
+        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByAccount_Id(newAccountId, token).getStatusCode());
         
         // check my transactions
         accountController.transferBetweenAccounts(token, new TransferRequest(250, accountId1, accountId2));
