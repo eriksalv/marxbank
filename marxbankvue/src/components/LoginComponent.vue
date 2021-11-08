@@ -52,7 +52,7 @@ export default defineComponent({
 
             this.login(request)
             .then(() => this.$router.push('/'))
-            .catch(err => console.log(err))
+            .catch((err: any) => console.log(err))
         },
 
         createNewUser(): void {

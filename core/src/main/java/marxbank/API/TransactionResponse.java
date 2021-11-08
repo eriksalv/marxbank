@@ -1,8 +1,5 @@
 package marxbank.API;
 
-import java.time.LocalDateTime;
-
-import marxbank.model.Account;
 import marxbank.model.Transaction;
 
 public class TransactionResponse {
@@ -61,6 +58,12 @@ public class TransactionResponse {
     }
 
     public String getTransDateTime() {
+        return this.transactionDate;
+    }
+    public void setTransactionDateString(String newDate) {
+        this.transactionDate = newDate;
+    }
+    public String getTransactionDateString() {
         return this.transactionDate;
     }
 
