@@ -25,7 +25,7 @@ public class AccountTransferRequest {
     }
 
     public void setAmount(double a) {
-        this.amount = amount;
+        this.amount = a;
     }
     
 }
