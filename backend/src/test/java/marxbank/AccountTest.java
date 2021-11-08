@@ -58,7 +58,7 @@ public class AccountTest {
     @Test
     @DisplayName("Testing create account")
     public void testCreateAccount() {
-        AccountRequest aRequest = new AccountRequest(AccountType.SAVING, "yeet");
+        AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
 
         // test invalid token
         assertEquals(HttpStatus.FORBIDDEN, accountController.createAccount(null, aRequest).getStatusCode());
@@ -71,7 +71,7 @@ public class AccountTest {
     @Test
     @DisplayName("Test deposit and withdraw")
     public void testDepositAndWithdraw() {
-        AccountRequest aRequest = new AccountRequest(AccountType.SAVING, "yeet");
+        AccountRequest aRequest = new AccountRequest(AccountType.SAVING.getTypeString(), "yeet");
         Long id1 = accountController.createAccount(token, aRequest).getBody().getId();
 
         authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
@@ -111,8 +111,8 @@ public class AccountTest {
     @Test
     @DisplayName("Test transfer")
     public void testTransfers() {
-        Long id1 = accountController.createAccount(token, new AccountRequest(AccountType.SAVING, "yeet")).getBody().getId();
-        Long id2 = accountController.createAccount(token, new AccountRequest(AccountType.CHECKING, "yote")).getBody().getId();
+        Long id1 = accountController.createAccount(token, new AccountRequest(AccountType.SAVING.getTypeString(), "yeet")).getBody().getId();
+        Long id2 = accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "yote")).getBody().getId();
         
         authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
         String secondUser = authController.login(new LogInRequest("username", "password")).getBody().getToken();
@@ -148,14 +148,14 @@ public class AccountTest {
         assertEquals(HttpStatus.FORBIDDEN, accountController.findByUser("token").getStatusCode());
 
         assertEquals(0, accountController.findByUser(token).getBody().size());
-        accountController.createAccount(token, new AccountRequest(AccountType.CHECKING, "name"));
+        accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "name"));
         assertEquals(1, accountController.findByUser(token).getBody().size());
     }
 
     @Test
     @DisplayName("Test checks in accountService")
     public void testChecksInAccountService() {
-        assertNull(accountService.createAccount(new AccountRequest(), (long) 99999999));
+        assertNull(accountService.createAccount(new AccountRequest(AccountType.CHECKING.getTypeString(), "yeet"), (long) 99999999));
         assertFalse(accountService.checkIfUserOwnsAccount((long) 9999, (long) 80085));
     }
 
