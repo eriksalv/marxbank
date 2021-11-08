@@ -109,7 +109,7 @@ public class AccountController {
         
         if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        if (this.accountRepository.findById(request.getTo()).get().getBalance() - request.getAmount() < 0) 
+        if (this.accountRepository.findById(request.getFrom()).get().getBalance() - request.getAmount() < 0) 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         
         TransferResponse t = this.accountService.transferFunds(request);

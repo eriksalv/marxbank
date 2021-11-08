@@ -8,50 +8,59 @@ import marxbank.model.Transaction;
 public class TransactionResponse {
     
     private Long Id;
-    private Account from;
-    private Account reciever;
+    private Long fromId;
+    private Long recieverId;
     private double amount;
-    private LocalDateTime transactionDate;
+    private String transactionDate;
 
     public TransactionResponse(){
     }
     
     public TransactionResponse(Transaction transaction){
         this.Id = transaction.getId();
-        this.from = transaction.getFrom();
-        this.reciever = transaction.getReciever();
+        this.fromId = transaction.getFrom().getId();
+        this.recieverId = transaction.getReciever().getId();
         this.amount = transaction.getAmount();
-        this.transactionDate = transaction.getTransactionDate();
+        this.transactionDate = transaction.getDateString();
     }
 
-    public void setId(Long newId){
+    public void setId(Long newId) {
         this.Id=newId;
     }
-    public Long getId(){
+    
+    public Long getId() {
         return this.Id;
     }
-    public void setFrom(Account fromAccount){
-        this.from=fromAccount;
+
+    public void setFrom(Long fromAccount) {
+        this.fromId = fromAccount;
     }
-    public Account getFrom(){
-        return this.from;
+
+    public Long getFrom(){
+        return this.fromId;
     }
-    public void setReciever(Account receivingAccount){
-        this.reciever = receivingAccount;
+    
+    public void setReciever(Long receivingAccount) {
+        this.recieverId = receivingAccount;
     }
-    public Account getReciever(){
-        return this.reciever;
+
+    public Long getReciever() {
+        return this.recieverId;
     }
-    public void setAmount(double newAmount){
+
+    public void setAmount(double newAmount ){
         this.amount = newAmount;
     }
-    public double getAmount(){
+
+    public double getAmount() {
         return this.amount;
     }
-    public void setTransactionDate(LocalDateTime newDate){
+
+    public void setTransactionDate(String newDate){
         this.transactionDate = newDate;
     }
-    public LocalDateTime getTransDateTime(){
+
+    public String getTransDateTime() {
         return this.transactionDate;
     }
 

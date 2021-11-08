@@ -43,7 +43,7 @@ public class TransactionController {
         this.accountRepository = accountRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping
     @Transactional
     public List<TransactionResponse> findAll() {
         List<TransactionResponse> result = new ArrayList<TransactionResponse>();
