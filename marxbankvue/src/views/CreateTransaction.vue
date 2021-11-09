@@ -72,7 +72,7 @@ export default defineComponent({
             console.log(searchTerm);
         },
         commitTransaction() {
-            const transactionRequest = {
+            const transactionRequest: TransactionRequest = {
                 from: this.selectedFromAccount.id,
                 to: this.selectedRecieverAccount.id,
                 amount: this.amount
