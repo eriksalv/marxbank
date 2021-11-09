@@ -18,10 +18,9 @@
 </main>
 </template>
 
-<script lang="ts">
+<script>
 import SearchBar from '../components/SearchBar.vue';
 import { mapGetters, mapActions } from 'vuex';
-import { TransactionRequest } from '../types/types';
 
 export default {
     name: 'CreateTransaction',
@@ -40,7 +39,7 @@ export default {
          * resets the searchTerm
          * @param account selected account
         */
-        onRecieverAccountSelected(account: Object) {
+        onRecieverAccountSelected(account) {
             this.selectedRecieverAccount = account;
             this.recieverSearchTerm = "";
         },
@@ -49,25 +48,25 @@ export default {
          * resets the searchTerm
          * @param account selected account
         */
-        onFromAccountSelected(account: Object) {
+        onFromAccountSelected(account) {
             this.selectedFromAccount = account;
             this.fromSearchTerm = "";
         },
-        onRecieverTermChanged(searchTerm: string) {
+        onRecieverTermChanged(searchTerm) {
             this.recieverSearchTerm = searchTerm;
         },
-        onFromTermChanged(searchTerm: string) {
+        onFromTermChanged(searchTerm) {
             this.fromSearchTerm = searchTerm;
         },
         commitTransaction() {
-            const transactionRequest: TransactionRequest = {
+            const transactionRequest = {
                 from: this.selectedFromAccount.id,
                 to: this.selectedRecieverAccount.id,
                 amount: this.amount
             }
             console.log(transactionRequest)
             //Dette fungerer foreløpig ikke, siden accounts modul ikke er satt opp enda
-            this.createTransaction(transactionRequest).catch((err: any) => console.log(err));
+            this.createTransaction(transactionRequest).catch(err => console.log(err));
         }
     },
     data() {

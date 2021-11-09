@@ -1,11 +1,8 @@
 import { RootState } from "@/store/types";
-import { RestService } from "@/service/restService";
 import { ActionTree } from "vuex";
 import { AuthState } from "./types";
 import { LoginRequest, LoginResponse, SignUpRequest } from "@/types/types";
 import axios from "axios";
-
-const api = new RestService();
 
 const BASE_URL = "/auth";
 
@@ -36,15 +33,15 @@ export const actions: ActionTree<AuthState, RootState> = {
         password: user.password,
       })
       .then((response) => {
-        const userId = response.data.userResponse.id;
-        const token = response.data.token;
+        const userId: Number = response.data.userResponse.id;
+        const token: string = response.data.token;
         axios.defaults.headers.common["Authorization"] = token;
         commit("setUserId", userId);
         commit("setStatus", "success");
         commit("setToken", token);
       })
       .catch((err) => {
-        commit("setStatus", "error", err);
+        commit("setStatus", "error");
       });
   },
   /**
@@ -69,7 +66,7 @@ export const actions: ActionTree<AuthState, RootState> = {
         commit("setToken", token);
       })
       .catch((err) => {
-        commit("setStatus", "error", err);
+        commit("setStatus", "error");
       });
   },
 };
