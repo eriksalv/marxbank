@@ -2,7 +2,7 @@ import { AuthState } from "@/store/modules/auth/types";
 import { getters } from "../store/modules/auth/getters";
 import { mutations } from '../store/modules/auth/mutations'
 import { actions } from '../store/modules/auth/actions'
-import { LoginRequest, LoginResponse } from "@/types/types";
+import { LoginRequest, LoginResponse, SignUpRequest } from "@/types/types";
 import axios from "axios";
 import AxiosMockAdapter from 'axios-mock-adapter'
 
@@ -115,6 +115,69 @@ describe("actions", () => {
                 expect(mock.history.post.length).toEqual(1);
                 expect(mock.history.post[0].url).toEqual(`/auth/login`);
                 expect(mock.history.post[0].data).toBe(JSON.stringify(badRequest));
+            })
+        })
+    })
+
+    describe("signup", () => {
+        it("valid signup", async () => {
+            const commit = jest.fn()
+            const request: SignUpRequest = {
+                username: "user",
+                password: "pass",
+                email: "email@email.com"
+            }  
+            const response: any = {
+                userResponse: {
+                    id: 1,
+                },
+                token: "token"
+            }
+            const signup = actions.signup as Function
+            mock.onPost("/auth/signup").reply(200, response)
+    
+            await signup({ commit, testState }, request).then(() => {
+                expect(commit).toHaveBeenCalledTimes(4)
+                expect(commit).toHaveBeenCalledWith("setStatus", "loading");
+                expect(commit).toHaveBeenCalledWith("setStatus", "success");
+                expect(commit).toHaveBeenCalledWith("setUserId", 1);
+                expect(commit).toHaveBeenCalledWith("setToken", "token");
+                expect(mock.history.post.length).toEqual(1);
+                expect(mock.history.post[0].url).toEqual(`/auth/signup`);
+                expect(mock.history.post[0].data).toBe(JSON.stringify(request));
+            })
+        }),
+        it("signup error", async () => {
+            const commit = jest.fn()
+            const badRequest = {}
+            const signup = actions.signup as Function;
+            mock.onPost(`/auth/signup`).networkErrorOnce();
+
+            await signup({ commit, testState }, badRequest).then(() => {
+                expect(commit).toHaveBeenCalledTimes(2);
+                expect(commit).toHaveBeenCalledWith("setStatus", "loading");
+                expect(commit).toHaveBeenCalledWith("setStatus", "error");
+                expect(mock.history.post.length).toEqual(1);
+                expect(mock.history.post[0].url).toEqual(`/auth/signup`);
+                expect(mock.history.post[0].data).toBe(JSON.stringify(badRequest));
+            })
+        })
+    })
+
+    describe("logout", () => {
+        it("valid logout", async () => {
+            const commit = jest.fn();
+            const request = "token";
+            const logout = actions.logout as Function
+            mock.onPost("/auth/logout").reply(200)
+
+            await logout({ commit, testState }, request).then(() => {
+                expect(commit).toHaveBeenCalledTimes(2);
+                expect(commit).toHaveBeenCalledWith("setStatus", "");
+                expect(commit).toHaveBeenCalledWith("setToken", null);
+                expect(mock.history.post.length).toEqual(1);
+                expect(mock.history.post[0].url).toEqual(`/auth/logout`);
+                expect(mock.history.post[0].data).toBe(request);
             })
         })
     })

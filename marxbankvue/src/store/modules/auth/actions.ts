@@ -13,7 +13,6 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param token before logout
    */
   async logout({ commit }, token: object | null) {
-    console.log(token);
     await axios.post(BASE_URL + "/logout", token).then(() => {
       commit("setStatus", "");
       commit("setToken", null);
