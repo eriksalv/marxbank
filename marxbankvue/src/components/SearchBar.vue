@@ -19,11 +19,12 @@
 </template>
 
 <script>
-//import { Account } from '@/store/modules/accounts/types.ts';
+import { mapActions } from 'vuex';
 
 export default {
     name: "SearchBar",
     methods: {
+        ...mapActions(['fetchAccounts']),
         onInput(event) {
             this.$emit("termChanged", event.target.value);
         },
@@ -44,7 +45,7 @@ export default {
     },
     data() {
         return {
-            selectedAccount: Object,
+            selectedAccount: {},
             placeholder: "Velg en konto...",
         }
     }

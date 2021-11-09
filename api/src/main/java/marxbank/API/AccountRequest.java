@@ -7,6 +7,9 @@ import marxbank.model.MarxAccount;
 import marxbank.model.SavingsAccount;
 import marxbank.util.AccountType;
 
+/**
+ * 
+ */
 public class AccountRequest {
     private String type;
     private String name;

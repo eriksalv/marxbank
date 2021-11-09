@@ -87,6 +87,8 @@ public class AccountController {
 
         if (a == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
+        a.setAccountNumber();
+
         accountRepository.save(a);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new AccountResponse(a));
