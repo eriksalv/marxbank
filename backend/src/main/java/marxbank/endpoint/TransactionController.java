@@ -25,6 +25,7 @@ import marxbank.model.Account;
 import marxbank.repository.AccountRepository;
 import marxbank.repository.TransactionRepository;
 import marxbank.model.User;
+import marxbank.service.AccountService;
 import marxbank.service.AuthService;
 import marxbank.service.TransactionService;
 
@@ -37,13 +38,15 @@ public class TransactionController {
     private final AuthService authService;
     private final TransactionService transactionService;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @Autowired
-    public TransactionController(TransactionRepository transactionRepository, AuthService authService, TransactionService transactionService, AccountRepository accountRepository) {
+    public TransactionController(TransactionRepository transactionRepository, AuthService authService, TransactionService transactionService, AccountRepository accountRepository, AccountService accountService) {
         this.transactionRepository = transactionRepository;
         this.authService = authService;
         this.transactionService = transactionService;
         this.accountRepository = accountRepository;
+        this.accountService = accountService;
     }
 
     @GetMapping
@@ -91,13 +94,9 @@ public class TransactionController {
 
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        Optional<Account> OptionalAccount = accountRepository.findById(recieverId);
-        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        Account account = OptionalAccount.get();
+        if (!accountRepository.findById(recieverId).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     
-        if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-
-        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (!accountService.checkIfUserOwnsAccount(user.getId(), recieverId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 
@@ -116,7 +115,6 @@ public class TransactionController {
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         Optional<Account> OptionalAccount = accountRepository.findById(accountId);
-        System.out.println(accountId);
         if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         Account account = OptionalAccount.get();
         
@@ -160,10 +158,11 @@ public class TransactionController {
             || !this.accountRepository.findById(request.getTo()).isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         
-        //blir ikke dette håndtert av core logikk?
+        if (!this.accountService.checkIfUserOwnsAccount(user.getId(), request.getFrom())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        if (this.accountRepository.findById(request.getTo()).get().getBalance() - request.getAmount() < 0) 
+        if (this.accountRepository.findById(request.getFrom()).get().getBalance() - request.getAmount() < 0) 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         TransactionResponse t = this.transactionService.resolveTransactionRequest(request);
 
