@@ -8,21 +8,21 @@ import marxbank.model.SavingsAccount;
 import marxbank.util.AccountType;
 
 public class AccountRequest {
-    private AccountType type;
+    private String type;
     private String name;
 
-    public AccountRequest() {}
+    protected AccountRequest() {}
 
-    public AccountRequest(AccountType accountType, String name) {
-        this.type = accountType;
+    public AccountRequest(String type, String name) {
+        this.type = type;
         this.name = name;
     }
 
-    public AccountType getAccountType() {
+    public String getType() {
         return this.type;
     }
 
-    public void setAccountType(AccountType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -37,26 +37,26 @@ public class AccountRequest {
     public Account buildAccount() {
         Account a = null;
 
-        if (type == AccountType.SAVING) {
+        if (AccountType.SAVING.getTypeString().equalsIgnoreCase(type)) {
             a = new SavingsAccount();
             a.setName(name);
             a.setInterestRate(3.0);
-            a.setType(type);
-        } else if (type == AccountType.CHECKING) {
+            a.setType(AccountType.SAVING);
+        } else if (AccountType.CHECKING.getTypeString().equalsIgnoreCase(type)) {
             a = new CheckingAccount();
             a.setName(name);
             a.setInterestRate(0.5);
-            a.setType(type);
-        } else if (type == AccountType.CREDIT) {
+            a.setType(AccountType.CHECKING);
+        } else if (AccountType.CREDIT.getTypeString().equalsIgnoreCase(type)) {
             a = new CreditAccount();
             a.setName(name);
             a.setInterestRate(0);
-            a.setType(type);
-        } else if (type == AccountType.MARX) {
+            a.setType(AccountType.CREDIT);
+        } else if (AccountType.MARX.getTypeString().equalsIgnoreCase(type)) {
             a = new MarxAccount();
             a.setName(name);
             a.setInterestRate(0.01);
-            a.setType(type);
+            a.setType(AccountType.MARX);
         }
 
         return a;
