@@ -14,11 +14,11 @@
                     </div>
                     <button @click.prevent="requestLogin" class="mt-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Sickle.svg" alt="" v-bind:class="(authStatus === 'loading') ? 'communismIcon left-1 loading' : 'communismIcon left-1'"><p class="inline-block font-bold text-2xl z-10 relative">Login</p></button>
                 </form>
-                <button @click.prevent="createNewUser" class="mx-auto my-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Hammer.svg" class="communismIcon right-0 transform-gpu rotate-90"><p class="inline-block font-bold text-2xl z-10 relative">Register</p></button>
+                <button id="createNewUser" @click.prevent="createNewUser" class="mx-auto my-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><img src="/Hammer.svg" class="communismIcon right-0 transform-gpu rotate-90"><p class="inline-block font-bold text-2xl z-10 relative">Register</p></button>
             </div>
             <div v-if="register">
                 <RegisterComponent/>
-                <button @click="back" v-if="register" class="mx-auto mb-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><p class="font-bold text-2xl z-10 relative">Back</p></button>
+                <button id="back" @click="back" v-if="register" class="mx-auto mb-5 w-2/5 bg-white rounded-sm drop-shadow-md relative h-16 block border-2 border-white hover:border-2 hover:border-red-500 duration-300"><p class="font-bold text-2xl z-10 relative">Back</p></button>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@ export default defineComponent({
 
             this.login(request)
             .then(() => this.$router.push('/'))
-            .catch(err => console.log(err))
+            .catch((err: any) => console.log(err))
         },
 
         createNewUser(): void {

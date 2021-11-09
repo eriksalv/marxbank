@@ -18,3 +18,9 @@ export interface Userstate {
   userId: number;
   token: String;
 }
+
+export interface TransactionRequest {
+  from: number;
+  to: number;
+  amount: number;
+}

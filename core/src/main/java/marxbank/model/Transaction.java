@@ -38,7 +38,10 @@ public class Transaction {
     @Transient
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public Transaction() {}
+    public Transaction() {
+        this.transactionDate=LocalDateTime.now();
+        this.dateString=DATE_FORMATTER.format(transactionDate);
+    }
 
     /**
      * Initializes transaction object and runs the commitTransaction method if commit is true.
@@ -103,13 +106,40 @@ public class Transaction {
     /**
      * Compact transaction constructor that generates id automatically, uses current time
      * as date, commits transaction and adds transaction to from and recievers
-     * transaction list
+     * transaction list, id is generated with UUID
      * @param from - Account that money is transfered from
      * @param reciever - Account that recieves money
      * @param amount - Amount of money in transaction
     */
     public Transaction(Account from, Account reciever, double amount) {
-        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, from, reciever, amount, null, true, true);
+        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        this.from = from;
+        this.reciever = reciever;
+        this.amount = validateAmount(amount);
+        this.transactionDate=LocalDateTime.now();
+        this.dateString=DATE_FORMATTER.format(transactionDate);
+        commitTransaction();
+        this.from.addTransaction(this);
+        this.reciever.addTransaction(this);
+    }
+
+    /**
+     * Compact transaction constructor that generates id automatically, uses current time
+     * as date, commits transaction and adds transaction to from and recievers
+     * transaction list, id is generated with jpa
+     * @param from - Account that money is transfered from
+     * @param reciever - Account that recieves money
+     * @param amount - Amount of money in transaction
+    */
+    public Transaction(Account from, Account reciever, double amount, boolean jpa) {
+        this.from = from;
+        this.reciever = reciever;
+        this.amount = validateAmount(amount);
+        this.transactionDate=LocalDateTime.now();
+        this.dateString=DATE_FORMATTER.format(transactionDate);
+        commitTransaction();
+        this.from.addTransaction(this);
+        this.reciever.addTransaction(this);
     }
 
     /**
@@ -120,6 +150,10 @@ public class Transaction {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     /**
      * Getter for string representation of transaction date, which
      * is useful for representing dates in the UI.
@@ -147,6 +181,10 @@ public class Transaction {
         return from;
     }
 
+    public void setFrom(Account from) {
+        this.from = from;
+    }
+
     /**
      * Getter for reciever account
      * @return reciever
@@ -155,12 +193,20 @@ public class Transaction {
         return reciever;
     }
 
+    public void setReciever(Account to) {
+        this.reciever = to;
+    }
+
     /**
      * Getter for the amount of money in transaction
      * @return amount
     */
     public double getAmount() {
         return this.amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     /**
