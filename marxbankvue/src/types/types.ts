@@ -24,3 +24,23 @@ export interface TransactionRequest {
   to: number;
   amount: number;
 }
+
+export interface AccountRequest {
+  type: String;
+  name: String;
+}
+
+export interface DepositWithdrawRequest {
+  amount: number;
+  id: number;
+}
+
+export interface Account {
+  readonly id: number;
+  readonly userId: number;
+  name: string;
+  readonly accNumber: number;
+  balance: number;
+  interest: number;
+  type: string;
+}
