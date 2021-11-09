@@ -87,6 +87,8 @@ public class AccountController {
 
         if (a == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
+        a.setAccountNumber();
+
         accountRepository.save(a);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new AccountResponse(a));
@@ -111,7 +113,7 @@ public class AccountController {
 
         if (this.accountRepository.findById(request.getFrom()).get().getBalance() - request.getAmount() < 0) 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+        
         TransferResponse t = this.accountService.transferFunds(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(t);

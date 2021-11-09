@@ -18,14 +18,26 @@
 </main>
 </template>
 
-<script>
+<script lang="ts">
 import SearchBar from '../components/SearchBar.vue';
 import { mapGetters, mapActions } from 'vuex';
+import { Account, TransactionRequest } from '../types/types';
+import { defineComponent } from '@vue/runtime-core';
+// import { TransactionRequest } from '../types/types';
 
-export default {
+export default defineComponent({
     name: 'CreateTransaction',
     components: {
         SearchBar
+    },
+    data() {
+        return {
+            selectedRecieverAccount: {} as Account,
+            recieverSearchTerm: "",
+            selectedFromAccount: {} as Account,
+            fromSearchTerm: "",
+            amount: 0
+        }
     },
     computed: {
         ...mapGetters(["allAccounts"]),
@@ -33,13 +45,13 @@ export default {
         ...mapGetters(["filterAccountsByUserIdAndName"])
     },
     methods: {
-        ...mapActions(["createTransaction"]),
+        ...mapActions(["createTransaction", "fetchAccounts"]),
         /**
          * Sets the selected account as reciever and
          * resets the searchTerm
          * @param account selected account
         */
-        onRecieverAccountSelected(account) {
+        onRecieverAccountSelected(account: Account) {
             this.selectedRecieverAccount = account;
             this.recieverSearchTerm = "";
         },
@@ -48,15 +60,16 @@ export default {
          * resets the searchTerm
          * @param account selected account
         */
-        onFromAccountSelected(account) {
+        onFromAccountSelected(account: Account) {
             this.selectedFromAccount = account;
             this.fromSearchTerm = "";
         },
-        onRecieverTermChanged(searchTerm) {
+        onRecieverTermChanged(searchTerm: string) {
             this.recieverSearchTerm = searchTerm;
         },
-        onFromTermChanged(searchTerm) {
+        onFromTermChanged(searchTerm: string) {
             this.fromSearchTerm = searchTerm;
+            console.log(searchTerm);
         },
         commitTransaction() {
             const transactionRequest = {
@@ -66,19 +79,10 @@ export default {
             }
             console.log(transactionRequest)
             //Dette fungerer foreløpig ikke, siden accounts modul ikke er satt opp enda
-            this.createTransaction(transactionRequest).catch(err => console.log(err));
-        }
-    },
-    data() {
-        return {
-            selectedRecieverAccount: Object,
-            recieverSearchTerm: "",
-            selectedFromAccount: Object,
-            fromSearchTerm: "",
-            amount: Number
+            this.createTransaction(transactionRequest).catch((err: any) => console.log(err));
         }
     }
-}
+})
 </script>
 
 <style>

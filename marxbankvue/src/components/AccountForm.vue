@@ -10,18 +10,23 @@
         <option value="Marxkonto">Marxkonto</option>
         <option value="Kredittkonto">Kredittkonto</option>
       </select>
-      <button class="button" @click="createAccount">Opprett konto</button>
+      <button class="button" @click="createAccountWrapper">Opprett konto</button>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     name: "AccountForm",
     methods: {
-        createAccount() {
-            //TODO: lag konto
-            console.log(this.$refs.accountName.value)
-        }
+      ...mapActions(['createAccount']),
+      createAccountWrapper() {
+          const request = {
+            name: this.$refs.accountName.value,
+            type: this.$refs.accountType.value
+          };
+          this.createAccount(request);
+      }
     }
 }
 </script>

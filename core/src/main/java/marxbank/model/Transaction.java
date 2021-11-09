@@ -23,9 +23,9 @@ public class Transaction {
     
     @Id @GeneratedValue
     private Long id;
-    @ManyToOne
+    @ManyToOne(targetEntity = Account.class)
     private Account from;
-    @ManyToOne
+    @ManyToOne(targetEntity = Account.class)
     private Account reciever;
     @Column
     private double amount;

@@ -1,6 +1,7 @@
 import { RootState } from "@/store/types";
+import { Account } from "@/types/types";
 import { GetterTree } from "vuex";
-import { Account, AccountState } from "./types";
+import { AccountState } from "./types";
 
 export const getters: GetterTree<AccountState, RootState> = {
   allAccounts: (state): Array<Account> => state.accounts,

@@ -1,3 +1,4 @@
+import { AccountState } from "@/store/modules/accounts/types";
 import { RootState } from "@/store/types";
 import { getters } from "../store/modules/accounts/getters";
 import { mutations } from "../store/modules/accounts/mutations";
@@ -6,7 +7,8 @@ const rootState: RootState = {
   message: "",
 };
 
-const testState = {
+const testState: AccountState = {
+  accountStatus: "",
   accounts: [
     {
       id: 1,

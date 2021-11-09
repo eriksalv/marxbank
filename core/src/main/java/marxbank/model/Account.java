@@ -244,9 +244,14 @@ public abstract class Account {
        if(Math.abs(this.getBalance() - account.getBalance()) < epsilon) return false;
        if (this.accountNumber != account.getAccountNumber()) return false;
        return Objects.equals(id, account.getId());
-   }
+    }
+
     public int getNumberOfTransactions() {
         return getTransactions().size();
+    }
+
+    public void setAccountNumber() {
+        this.accountNumber = generateAccountNumber();
     }
 
     public abstract int generateAccountNumber();

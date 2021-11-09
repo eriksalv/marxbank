@@ -12,6 +12,7 @@
         <module>stalin</module>
         <module>backend</module>
         <module>marxbankvue</module>
+        <module>api</module>
     </modules>
 
     <properties>
