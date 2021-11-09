@@ -78,6 +78,7 @@
                         <configuration>
                             <arguments>jest --coverage</arguments>
                         </configuration>
+                        <phase>test</phase>
                     </execution>
                     <execution>
                         <id>npm lint</id>
@@ -87,6 +88,7 @@
                         <configuration>
                             <arguments>run lint --no-fix --max-errors=0 --max-warnings=0</arguments>
                         </configuration>
+                        <phase>test</phase>
                     </execution>
                     <execution>
                         <id>npm serve</id>

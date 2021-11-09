@@ -41,6 +41,12 @@ public class SignUpRequest {
     }
 
     public User createUser() {
-        return new User(this.username, this.email, this.password, true);
+        User user = new User();
+
+        user.setUsername(this.username);
+        user.setEmail(this.email);
+        user.setPassword(this.password);
+
+        return user;
     }
 }

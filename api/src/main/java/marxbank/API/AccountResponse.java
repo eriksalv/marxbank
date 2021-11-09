@@ -1,9 +1,6 @@
 package marxbank.API;
 
-import java.util.List;
-
 import marxbank.model.Account;
-import marxbank.model.Transaction;
 import marxbank.util.AccountType;
 
 public class AccountResponse {
