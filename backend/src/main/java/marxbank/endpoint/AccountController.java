@@ -3,8 +3,6 @@ package marxbank.endpoint;
 import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
 import marxbank.API.DepositWithdrawRequest;
-import marxbank.API.TransferRequest;
-import marxbank.API.TransferResponse;
 import marxbank.model.Account;
 import marxbank.model.User;
 
@@ -92,31 +90,6 @@ public class AccountController {
         accountRepository.save(a);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new AccountResponse(a));
-    }
-
-    @PostMapping("/transfer")
-    @Transactional
-    public ResponseEntity<TransferResponse> transferBetweenAccounts(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody TransferRequest request) {
-        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-
-        User user = this.authService.getUserFromToken(token);
-
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-
-        if (!this.accountRepository.findById(request.getFrom()).isPresent() 
-            || !this.accountRepository.findById(request.getTo()).isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        
-        if (!this.accountService.checkIfUserOwnsAccount(user.getId(), request.getFrom())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-
-        if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-        if (this.accountRepository.findById(request.getFrom()).get().getBalance() - request.getAmount() < 0) 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        
-        TransferResponse t = this.accountService.transferFunds(request);
-
-        return ResponseEntity.status(HttpStatus.OK).body(t);
     }
 
     @PostMapping("/deposit")

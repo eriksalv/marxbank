@@ -55,8 +55,11 @@ public class TransactionService {
         Account toAccount = this.accountRepository.findById(request.getTo()).get();
         Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
 
-        //TODO: endre til tom konstruktør med settere
-        Transaction t = new Transaction(fromAccount, toAccount, request.getAmount(), true);
+        Transaction t = new Transaction();
+        t.setAmount(request.getAmount());
+        t.setFrom(fromAccount);
+        t.setReciever(toAccount);
+        t.commitTransaction();
 
         this.accountRepository.save(toAccount);
         this.accountRepository.save(fromAccount);
