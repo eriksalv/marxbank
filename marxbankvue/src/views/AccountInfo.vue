@@ -28,7 +28,7 @@
           Disponibelt beløp
         </dt>
         <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <span class="flex-grow" @click="showModal = true">{{selectedAccount.balance}} kr</span>
+          <span class="flex-grow">{{selectedAccount.balance}} kr</span>
         </dd>
       </div>
       <div class="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
@@ -58,7 +58,8 @@
     </dl>
   </div>
   </div>
-  <h1 class="title">Nylig aktivitet</h1>
+  <button class="button w-1/6 rounded-3xl text-5xl font-bold" @click="showModal = true">+</button>
+  <h1 class="title w-full">Nylig aktivitet</h1>
   <TransactionList :transactions="filterTransactionsByAccount(selectedAccount.id)" class="min-w-max"/>
 </main>
 </template>
