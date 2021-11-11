@@ -23,9 +23,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Account from './Account.vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'AccountList',
@@ -34,16 +34,9 @@ export default {
       Account
     },
     methods: {
-      showAccount(id) {
-        this.$router.push({ name: 'AccountInfo', params: { id: id } });
+      showAccount(id: number) {
+        this.$router.push({ name: 'AccountInfo', params: { id: id as number } });
       },
-      ...mapActions([
-        "fetchAccounts"
-      ]),
-    },
-    created() {
-      //Vent med dette til det ligger noe data i api
-      //this.fetchAccounts();
     }
 };
 </script>

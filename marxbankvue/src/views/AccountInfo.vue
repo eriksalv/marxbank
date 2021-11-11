@@ -1,5 +1,16 @@
 <template>
-  <main class="flex flex-row flex-wrap max-w-[80%] justify-center">
+  <main class="flex flex-row flex-wrap max-w-[80%] justify-center items-center">
+    <transition name="fade" appear>
+      <div class="modalOverlay" v-if="showModal" @click="showModal = false"></div>
+    </transition>
+    <transition name="slide" appear>
+      <div class="modal" v-if="showModal">
+        <h1 class="title">Sett inn eller ta ut penger</h1>
+        <input type="number" placeholder="nice" class="input">
+        <button class="button">Sett inn</button>
+        <button class="button">Ta ut</button>
+      </div>
+    </transition>
     <div class="bg-white shadow overflow-hidden sm:rounded-lg min-w-full">
     <div>
     <h1 class="title">
@@ -16,7 +27,7 @@
           Disponibelt beløp
         </dt>
         <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <span class="flex-grow">{{selectedAccount.balance}} kr</span>
+          <span class="flex-grow" @click="showModal = true">{{selectedAccount.balance}} kr</span>
         </dd>
       </div>
       <div class="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
@@ -52,31 +63,53 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
-import TransactionList from '@/components/TransactionList.vue'
+import {mapActions, mapGetters} from 'vuex';
+import TransactionList from '../components/TransactionList.vue'
 
 export default {
-    created() {
-        //TODO: fetch kontoer fra api
-        this.selectedAccount = this.$store.getters.getAccountById(parseInt(this.id))
-        console.log(this.selectedAccount);
-        console.log(this.$store.getters.filterTransactionsByAccount(this.selectedAccount))
+    props: {
+      id: Number
     },
-    props: ["id"],
     computed: {
         ...mapGetters(['getAccountById', 'filterTransactionsByAccount'])
     },
     components: {
         TransactionList
     },
+    methods: {
+      ...mapActions(["fetchById", "deposit", "withdraw"])
+    },
     data() {
         return {
-            selectedAccount: Object
+            selectedAccount: Object,
+            showModal: false
         }
+    },
+    created() {
+        this.fetchById(this.id)
+        this.selectedAccount = this.getAccountById(parseInt(this.id))
     }
 }
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
 
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-50%) translateX(100vw);
+}
 </style>
