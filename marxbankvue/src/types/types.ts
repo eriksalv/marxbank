@@ -32,7 +32,7 @@ export interface AccountRequest {
 
 export interface DepositWithdrawRequest {
   amount: number;
-  id: number;
+  accoundId: number;
 }
 
 export interface Account {

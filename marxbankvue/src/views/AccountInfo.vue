@@ -6,9 +6,10 @@
     <transition name="slide" appear>
       <div class="modal" v-if="showModal">
         <h1 class="title">Sett inn eller ta ut penger</h1>
-        <input type="number" placeholder="nice" class="input">
-        <button class="button">Sett inn</button>
-        <button class="button">Ta ut</button>
+        <h1>Kroner</h1>
+        <input type="number" placeholder="0" class="input" v-model="amount">
+        <button class="button" @click="handleDeposit">Sett inn</button>
+        <button class="button" @click="handleWithdraw">Ta ut</button>
       </div>
     </transition>
     <div class="bg-white shadow overflow-hidden sm:rounded-lg min-w-full">
@@ -77,12 +78,25 @@ export default {
         TransactionList
     },
     methods: {
-      ...mapActions(["fetchById", "deposit", "withdraw"])
+      ...mapActions(["fetchById", "deposit", "withdraw"]),
+      async handleDeposit() {
+        const request = { amount: this.amount, accountId: this.selectedAccount.id };
+        await this.deposit(request).catch(err => console.log(err));
+        this.selectedAccount = this.getAccountById(parseInt(this.id));
+        this.showModal = false;
+      },
+      async handleWithdraw() {
+        const request = { amount: this.amount, accountId: this.selectedAccount.id };
+        await this.withdraw(request).catch(err => console.log(err));
+        this.selectedAccount = this.getAccountById(parseInt(this.id));
+        this.showModal = false
+      }
     },
     data() {
         return {
             selectedAccount: Object,
-            showModal: false
+            showModal: false,
+            amount: Number,
         }
     },
     created() {
