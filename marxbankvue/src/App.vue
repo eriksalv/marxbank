@@ -1,10 +1,10 @@
 <template>
-  <div class="p-0 m-0 bg-gray-200 h-screen w-screen">
+  <div class="p-0 m-0 bg-gray-200 h-screen w-screen overflow-x-hidden">
     <div v-if="loggedIn">
       <Header/>
       <SideBar/>
     </div>
-    <main class="flex flex-row flex-wrap justify-center items-start ml-16 bg-gray-200">
+    <main class="flex flex-row flex-wrap justify-center items-start relative bg-gray-200 w-screen min-h-screen">
       <router-view></router-view>
     </main>
   </div>

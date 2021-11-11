@@ -1,5 +1,17 @@
 <template>
-  <main class="flex flex-row flex-wrap max-w-[80%] justify-center">
+  <main class="flex flex-row flex-wrap max-w-[80%] justify-center items-center">
+    <transition name="fade" appear>
+      <div class="modalOverlay" v-if="showModal" @click="showModal = false"></div>
+    </transition>
+    <transition name="slide" appear>
+      <div class="modal" v-if="showModal">
+        <h1 class="title">Sett inn eller ta ut penger</h1>
+        <h1>Kroner</h1>
+        <input type="number" placeholder="0" class="input" v-model="amount">
+        <button class="button" @click="handleDeposit">Sett inn</button>
+        <button class="button" @click="handleWithdraw">Ta ut</button>
+      </div>
+    </transition>
     <div class="bg-white shadow overflow-hidden sm:rounded-lg min-w-full">
     <div>
     <h1 class="title">
@@ -46,37 +58,74 @@
     </dl>
   </div>
   </div>
-  <h1 class="title">Nylig aktivitet</h1>
+  <button class="button w-1/6 rounded-3xl text-5xl font-bold" @click="showModal = true">+</button>
+  <h1 class="title w-full">Nylig aktivitet</h1>
   <TransactionList :transactions="filterTransactionsByAccount(selectedAccount.id)" class="min-w-max"/>
 </main>
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
-import TransactionList from '@/components/TransactionList.vue'
+import {mapActions, mapGetters} from 'vuex';
+import TransactionList from '../components/TransactionList.vue'
 
 export default {
-    created() {
-        //TODO: fetch kontoer fra api
-        this.selectedAccount = this.$store.getters.getAccountById(parseInt(this.id))
-        console.log(this.selectedAccount);
-        console.log(this.$store.getters.filterTransactionsByAccount(this.selectedAccount))
+    props: {
+      id: Number
     },
-    props: ["id"],
     computed: {
         ...mapGetters(['getAccountById', 'filterTransactionsByAccount'])
     },
     components: {
         TransactionList
     },
+    methods: {
+      ...mapActions(["fetchAccountById", "deposit", "withdraw"]),
+      async handleDeposit() {
+        const request = { amount: this.amount, accountId: this.selectedAccount.id };
+        await this.deposit(request).catch(err => console.log(err));
+        this.selectedAccount = this.getAccountById(parseInt(this.id));
+        this.showModal = false;
+      },
+      async handleWithdraw() {
+        const request = { amount: this.amount, accountId: this.selectedAccount.id };
+        await this.withdraw(request).catch(err => console.log(err));
+        this.selectedAccount = this.getAccountById(parseInt(this.id));
+        this.showModal = false
+      }
+    },
     data() {
         return {
-            selectedAccount: Object
+            selectedAccount: Object,
+            showModal: false,
+            amount: Number,
         }
+    },
+    created() {
+      //TODO: fetch transaksjoner til konto
+        this.fetchAccountById(this.id)
+        this.selectedAccount = this.getAccountById(parseInt(this.id))
     }
 }
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
 
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-50%) translateX(100vw);
+}
 </style>

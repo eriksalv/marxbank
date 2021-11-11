@@ -61,4 +61,13 @@
         @apply ml-3;
     }
 
+    .modalOverlay {
+        @apply fixed top-0 left-0 right-0 bottom-0 z-50 bg-gradient-to-r from-red-600 to-purple-900 opacity-40;
+    }
+
+    .modal {
+        @apply fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] transition-transform z-[51]
+                w-full max-w-md bg-gradient-to-b from-gray-100 to-green-100 rounded-2xl p-6;
+    }
+
 }

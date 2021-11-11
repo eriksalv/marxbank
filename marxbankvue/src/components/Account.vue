@@ -12,7 +12,13 @@
 <script>
 export default {
     name: "Account",
-    props: ["accName", "balance", "accNumber", "type", "id"]
+    props: {
+      accName: String,
+      balance: Number,
+      accNumber: Number,
+      type: String,
+      id: Number
+    }
 }
 </script>
 

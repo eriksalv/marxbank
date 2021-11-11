@@ -15,7 +15,7 @@
           :from="transaction.from" 
           :to="transaction.to"
           :amount="transaction.amount"
-          v-for="transaction in transactions" :key="transaction.amount"
+          v-for="transaction in allTransactions" :key="transaction.id"
           class="transaction" />
       </tbody>
     </table>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import Transaction from './Transaction.vue';
 
 export default {
@@ -30,9 +31,9 @@ export default {
     components: {
       Transaction
     },
-    props: {
-      transactions: Array
-    },
+    computed: {
+      ...mapGetters(["allTransactions"])
+    }
 };
 </script>
 
