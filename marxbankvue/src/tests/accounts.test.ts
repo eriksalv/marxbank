@@ -196,7 +196,7 @@ describe("actions", () => {
         id: 3,
         accountNumber: 96,
         type: "Sparekonto",
-        userId: 1,
+        user: 1,
         name: "test",
         balance: 500,
         interestRate: 5.0,
@@ -210,10 +210,10 @@ describe("actions", () => {
         interest: 5.0,
         type: "Sparekonto",
       };
-      const fetchById = actions.fetchById as Function;
+      const fetchAccountById = actions.fetchAccountById as Function;
       mock.onGet(`/accounts/${request}`).reply(200, response);
 
-      await fetchById({ commit, rootGetters }, request).then(() => {
+      await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
@@ -243,7 +243,7 @@ describe("actions", () => {
         id: 2,
         accountNumber: 201,
         type: "Sparekonto",
-        userId: 1,
+        user: 1,
         name: "test2",
         balance: 200,
         interestRate: 3.0,
@@ -257,10 +257,10 @@ describe("actions", () => {
         interest: 3.0,
         type: "Sparekonto",
       };
-      const fetchById = actions.fetchById as Function;
+      const fetchAccountById = actions.fetchAccountById as Function;
       mock.onGet(`/accounts/${request}`).reply(200, response);
 
-      await fetchById({ commit, rootGetters }, request).then(() => {
+      await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
