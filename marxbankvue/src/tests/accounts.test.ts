@@ -2,6 +2,11 @@ import { AccountState } from "@/store/modules/accounts/types";
 import { RootState } from "@/store/types";
 import { getters } from "../store/modules/accounts/getters";
 import { mutations } from "../store/modules/accounts/mutations";
+import axios from "axios";
+import AxiosMockAdapter from "axios-mock-adapter";
+import { actions } from "../store/modules/accounts/actions";
+import { Account } from "../types/types";
+import { Getter, GetterTree } from "vuex";
 
 const rootState: RootState = {
   message: "",
@@ -156,5 +161,113 @@ describe("mutations", () => {
     mutations.addAccount(testState, newAccount);
 
     expect(testState.accounts).toEqual([...oldAccounts, newAccount]);
+  });
+});
+
+describe("actions", () => {
+  let mock: AxiosMockAdapter;
+
+  beforeAll(() => {
+    mock = new AxiosMockAdapter(axios);
+  });
+
+  afterEach(() => {
+    mock.reset();
+  });
+
+  describe("fetch by id", () => {
+    it("new account", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 2,
+            userId: 1,
+            name: "test2",
+            accNumber: 201,
+            balance: 200,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const request: number = 3;
+      const response: any = {
+        id: 3,
+        accountNumber: 96,
+        type: "Sparekonto",
+        userId: 1,
+        name: "test",
+        balance: 500,
+        interestRate: 5.0,
+      };
+      const expected: Account = {
+        id: 3,
+        userId: 1,
+        accNumber: 96,
+        name: "test",
+        balance: 500,
+        interest: 5.0,
+        type: "Sparekonto",
+      };
+      const fetchById = actions.fetchById as Function;
+      mock.onGet(`/accounts/${request}`).reply(200, response);
+
+      await fetchById({ commit, rootGetters }, request).then(() => {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("addAccount", expected);
+        expect(mock.history.get.length).toEqual(1);
+        expect(mock.history.get[0].url).toEqual(`/accounts/3`);
+      });
+    });
+
+    it("existing account", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 2,
+            userId: 1,
+            name: "test2",
+            accNumber: 201,
+            balance: 200,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const request: number = 2;
+      const response: any = {
+        id: 2,
+        accountNumber: 201,
+        type: "Sparekonto",
+        userId: 1,
+        name: "test2",
+        balance: 200,
+        interestRate: 3.0,
+      };
+      const expected: Account = {
+        id: 2,
+        userId: 1,
+        accNumber: 201,
+        name: "test2",
+        balance: 200,
+        interest: 3.0,
+        type: "Sparekonto",
+      };
+      const fetchById = actions.fetchById as Function;
+      mock.onGet(`/accounts/${request}`).reply(200, response);
+
+      await fetchById({ commit, rootGetters }, request).then(() => {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("updateAccount", expected);
+        expect(mock.history.get.length).toEqual(1);
+        expect(mock.history.get[0].url).toEqual(`/accounts/2`);
+      });
+    });
   });
 });
