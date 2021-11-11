@@ -29,19 +29,19 @@ public class TransactionResponse {
         return this.Id;
     }
 
-    public void setFrom(Long fromAccount) {
+    public void setFromId(Long fromAccount) {
         this.fromId = fromAccount;
     }
 
-    public Long getFrom(){
+    public Long getFromId(){
         return this.fromId;
     }
     
-    public void setReciever(Long receivingAccount) {
+    public void setRecieverId(Long receivingAccount) {
         this.recieverId = receivingAccount;
     }
 
-    public Long getReciever() {
+    public Long getRecieverId() {
         return this.recieverId;
     }
 
@@ -53,17 +53,10 @@ public class TransactionResponse {
         return this.amount;
     }
 
-    public void setTransactionDate(String newDate){
+    public void setTransactionDate(String newDate) {
         this.transactionDate = newDate;
     }
-
-    public String getTransDateTime() {
-        return this.transactionDate;
-    }
-    public void setTransactionDateString(String newDate) {
-        this.transactionDate = newDate;
-    }
-    public String getTransactionDateString() {
+    public String getTransactionDate() {
         return this.transactionDate;
     }
 

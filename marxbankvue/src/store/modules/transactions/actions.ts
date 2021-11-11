@@ -15,11 +15,11 @@ export const actions: ActionTree<TransactionState, RootState> = {
         let transactions: Array<Transaction> = [];
         response.data.forEach((element: any) => {
           const newTransaction: Transaction = {
-            id: element.Id,
-            from: element.from.id,
-            to: element.reciever.id,
+            id: element.id,
+            from: element.fromId,
+            to: element.recieverId,
             amount: element.amount,
-            date: element.transactionDateString,
+            date: element.transactionDate,
           };
           transactions = [...transactions, newTransaction];
         });
@@ -43,11 +43,11 @@ export const actions: ActionTree<TransactionState, RootState> = {
       })
       .then((response) => {
         const transaction: Transaction = {
-          id: response.data.Id,
-          from: response.data.from,
-          to: response.data.reciever,
+          id: response.data.id,
+          from: response.data.fromId,
+          to: response.data.recieverId,
           amount: response.data.amount,
-          date: response.data.transactionDateString,
+          date: response.data.transactionDate,
         };
         commit("addTransaction", transaction);
         commit("setTransactionStatus", "success");

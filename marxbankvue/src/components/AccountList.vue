@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Account from './Account.vue';
 import { mapGetters } from 'vuex';
 
@@ -34,8 +34,8 @@ export default {
       Account
     },
     methods: {
-      showAccount(id: number) {
-        this.$router.push({ name: 'AccountInfo', params: { id: id as number } });
+      showAccount(id) {
+        this.$router.push({ name: 'AccountInfo', params: { id: id } });
       },
     }
 };

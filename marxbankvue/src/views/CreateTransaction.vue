@@ -2,7 +2,7 @@
 <main class="w-1/4">
     <h1>Fra</h1>
     <SearchBar ref="inputFromAccount" :reciever="false" 
-        :data="filterAccountsByUserIdAndName(2, fromSearchTerm)" 
+        :data="filterAccountsByUserIdAndName(getUserId, fromSearchTerm)" 
         @termChanged="onFromTermChanged" 
         @accountSelected="onFromAccountSelected"/>
     <h1>Til</h1>
@@ -40,9 +40,7 @@ export default defineComponent({
         }
     },
     computed: {
-        ...mapGetters(["allAccounts"]),
-        ...mapGetters(["filterAccountsByName"]),
-        ...mapGetters(["filterAccountsByUserIdAndName"])
+        ...mapGetters(["allAccounts", "filterAccountsByName", "filterAccountsByUserIdAndName", "getUserId"]),
     },
     methods: {
         ...mapActions(["createTransaction", "fetchAccounts"]),
@@ -81,6 +79,9 @@ export default defineComponent({
             //Dette fungerer foreløpig ikke, siden accounts modul ikke er satt opp enda
             this.createTransaction(transactionRequest).catch((err: any) => console.log(err));
         }
+    },
+    created() {
+        this.fetchAccounts()
     }
 })
 </script>

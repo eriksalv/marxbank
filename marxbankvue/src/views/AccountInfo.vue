@@ -79,7 +79,7 @@ export default {
         TransactionList
     },
     methods: {
-      ...mapActions(["fetchById", "deposit", "withdraw"]),
+      ...mapActions(["fetchAccountById", "deposit", "withdraw"]),
       async handleDeposit() {
         const request = { amount: this.amount, accountId: this.selectedAccount.id };
         await this.deposit(request).catch(err => console.log(err));
@@ -101,7 +101,8 @@ export default {
         }
     },
     created() {
-        this.fetchById(this.id)
+      //TODO: fetch transaksjoner til konto
+        this.fetchAccountById(this.id)
         this.selectedAccount = this.getAccountById(parseInt(this.id))
     }
 }

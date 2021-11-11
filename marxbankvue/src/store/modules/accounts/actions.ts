@@ -35,14 +35,14 @@ export const actions: ActionTree<AccountState, RootState> = {
       });
   },
 
-  async fetchById({ commit, rootGetters }, id: number) {
+  async fetchAccountById({ commit, rootGetters }, id: number) {
     commit("setAccountStatus", "loading");
     await axios
       .get(`${BASE_URL}/${id}`)
       .then((response) => {
         const account: Account = {
           id: response.data.id,
-          userId: response.data.userId,
+          userId: response.data.user,
           name: response.data.name,
           accNumber: response.data.accountNumber,
           balance: response.data.balance,
@@ -73,7 +73,7 @@ export const actions: ActionTree<AccountState, RootState> = {
       .then((response) => {
         const account: Account = {
           id: response.data.id,
-          userId: response.data.userId,
+          userId: response.data.user,
           name: response.data.name,
           accNumber: response.data.accountNumber,
           balance: response.data.balance,
@@ -99,7 +99,7 @@ export const actions: ActionTree<AccountState, RootState> = {
       .then((response) => {
         const account: Account = {
           id: response.data.id,
-          userId: response.data.userId,
+          userId: response.data.user,
           name: response.data.name,
           accNumber: response.data.accountNumber,
           balance: response.data.balance,
@@ -125,7 +125,7 @@ export const actions: ActionTree<AccountState, RootState> = {
       .then((response) => {
         const account: Account = {
           id: response.data.id,
-          userId: response.data.userId,
+          userId: response.data.user,
           name: response.data.name,
           accNumber: response.data.accountNumber,
           balance: response.data.balance,
