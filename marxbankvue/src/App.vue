@@ -1,42 +1,50 @@
 <template>
   <div class="p-0 m-0 bg-gray-200 h-screen w-screen overflow-x-hidden">
     <div v-if="loggedIn">
-      <Header/>
-      <SideBar/>
+      <Header />
+      <SideBar />
     </div>
-    <main class="flex flex-row flex-wrap justify-center items-start relative bg-gray-200 w-screen min-h-screen">
+    <main
+      class="
+        flex flex-row flex-wrap
+        justify-center
+        items-start
+        relative
+        bg-gray-200
+        w-screen
+        min-h-screen
+      ">
       <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue"
-import SideBar from "@/components/SideBar.vue"
-import {mapGetters} from 'vuex'
+import Header from "@/components/Header.vue";
+import SideBar from "@/components/SideBar.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  
   data() {
     return {
-      loggedIn: true
-    } 
+      loggedIn: true,
+    };
   },
   components: {
     Header,
-    SideBar
+    SideBar,
   },
   computed: {
-    ...mapGetters(['getToken'])
+    ...mapGetters(["getToken"]),
   },
   mounted() {
     //if user is not logged in, send to login page
     if (this.getToken === null) {
       //this.loggedIn = false
-      this.$router.push({ path: "/login"});
+      this.$router.push({ path: "/login" });
     }
-  }
-}
+  },
+};
 </script>
 <style>
 #app {

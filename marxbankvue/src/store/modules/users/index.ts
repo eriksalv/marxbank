@@ -9,7 +9,7 @@ const state: UserState = {
   users: [
     {
       id: 1,
-      token: "69"
+      token: "69",
     },
   ],
 };

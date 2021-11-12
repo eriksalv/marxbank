@@ -15,11 +15,10 @@ export const mutations: MutationTree<AccountState> = {
     if (i > -1) state.accounts.splice(i, 1);
   },
   updateAccount: (state, account: Account) => {
-    const i = state.accounts.findIndex(x => x.id === account.id);
+    const i = state.accounts.findIndex((x) => x.id === account.id);
     if (i > -1) state.accounts[i] = account;
-    
   },
   setAccountStatus: (state, status: Status) => {
     state.accountStatus = status;
-  }
+  },
 };

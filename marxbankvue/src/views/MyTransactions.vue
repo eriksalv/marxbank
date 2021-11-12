@@ -6,23 +6,23 @@
 
 <script>
 // @ is an alias to /src
-import TransactionList from '../components/TransactionList.vue'
-import {mapGetters, mapActions} from 'vuex'
+import TransactionList from "../components/TransactionList.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'MyTransactions',
+  name: "MyTransactions",
   components: {
-    TransactionList
+    TransactionList,
   },
   computed: {
-    ...mapGetters(['allTransactions'])
+    ...mapGetters(["allTransactions"]),
   },
   methods: {
-    ...mapActions(['fetchTransactions', 'fetchAccounts'])
+    ...mapActions(["fetchTransactions", "fetchAccounts"]),
   },
   async created() {
     await this.fetchAccounts();
     await this.fetchTransactions();
-  }
-}
+  },
+};
 </script>

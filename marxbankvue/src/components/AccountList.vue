@@ -2,7 +2,18 @@
   <div class="w-full overflow-auto h-80">
     <table class="w-full border-collapse">
       <thead>
-        <tr class="text-xs font-semibold tracking-wide text-center text-gray-800 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+        <tr
+          class="
+            text-xs
+            font-semibold
+            tracking-wide
+            text-center text-gray-800
+            uppercase
+            border-b
+            dark:border-gray-700
+            bg-gray-50
+            dark:text-gray-400 dark:bg-gray-800
+          ">
           <th class="th px-4 py-3">Kontonavn</th>
           <th class="th px-4 py-3">Disp. beløp</th>
           <th class="th px-4 py-3">Kontotype</th>
@@ -10,13 +21,15 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-        <Account @accountSelected="showAccount"
-          :id="account.id" 
-          :accNumber="account.accNumber" 
-          :balance="account.balance" 
+        <Account
+          @accountSelected="showAccount"
+          :id="account.id"
+          :accNumber="account.accNumber"
+          :balance="account.balance"
           :accName="account.name"
           :type="account.type"
-          v-for="account in allAccounts" :key="account.id" 
+          v-for="account in allAccounts"
+          :key="account.id"
           class="account" />
       </tbody>
     </table>
@@ -24,23 +37,21 @@
 </template>
 
 <script>
-import Account from './Account.vue';
-import { mapGetters } from 'vuex';
+import Account from "./Account.vue";
+import { mapGetters } from "vuex";
 
 export default {
-    name: 'AccountList',
-    computed: mapGetters(['allAccounts']),
-    components: {
-      Account
+  name: "AccountList",
+  computed: mapGetters(["allAccounts"]),
+  components: {
+    Account,
+  },
+  methods: {
+    showAccount(id) {
+      this.$router.push({ name: "AccountInfo", params: { id: id } });
     },
-    methods: {
-      showAccount(id) {
-        this.$router.push({ name: 'AccountInfo', params: { id: id } });
-      },
-    }
+  },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
