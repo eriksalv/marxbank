@@ -84,7 +84,7 @@ public class TransactionTest {
 
         ResponseEntity<List<TransactionResponse>> repsonse = transactionController.findAllTransactionForUser(token);
         assertEquals(HttpStatus.OK, repsonse.getStatusCode());
-        assertEquals(2, repsonse.getBody().size());
+        assertEquals(1, repsonse.getBody().size());
 
         
     }
