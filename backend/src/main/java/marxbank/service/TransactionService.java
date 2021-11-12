@@ -37,7 +37,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public ArrayList<Transaction> getTransactionForUser(Long userId) {
+    public List<Transaction> getTransactionForUser(Long userId) {
 
         List<Long> accountsId = this.accountRepository.findByUser_Id(userId).get().stream().map(Account::getId).collect(Collectors.toList());
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -46,8 +46,10 @@ public class TransactionService {
             transactions.addAll(this.transactionRepository.findByFrom_Id(a).get());
             transactions.addAll(this.transactionRepository.findByReciever_Id(a).get());
         });
+
+        List<Transaction> distinct = transactions.stream().distinct().collect(Collectors.toList());
         
-        return transactions;
+        return distinct;
     }
 
     @Transactional
