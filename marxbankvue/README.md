@@ -2,11 +2,11 @@
 
 Dette er modulen for den alternative frontenden til marxbank, bygget som en web-app med Vue 3 og Typescript. I tillegg til forskjeller i GUI og funksjonalitet fra FX-appen, vil Vue-appen være koblet opp med backend APIet. FX-appen vil derimot fortsette å bruke lokallagring. 
 
-1. [Forskjeller og likheter fra FX-app](#forskjeller-og-likheter-fra-FX-app)
+1. [Forskjeller og likheter fra FX-app](#forskjeller-og-likheter-fra-fx-app)
 2. [Setup](#setup)
 3. [Bygging](#bygging)
 4. [Komponenter](#komponenter)
-5. [Tilstandshåndtering](#tilstandshåndtering-(state-management))
+5. [Tilstandshåndtering](#tilstandshåndtering)
 6. [Routing](#routing)
 7. [Styling](#styling)
 8. [Testing](#testing)
@@ -47,7 +47,7 @@ mvn install -pl marxbankvue
 
 Alle komponenter som brukes av ulike faner ligger under `src/components`. `Header.vue` og `SideBar.vue` er globale komponenter. Sidebar komponenten brukes for navigering mellom forskjellige faner gjennom "router-links".
 
-## Tilstandshåndtering (state management)
+## Tilstandshåndtering
 
 Vi har tatt i bruk tilstandshåndtering med **vuex 4**. Tilstanden til appen ligger under `src/store` mappen, og er delt i 4 moduler: accounts, transactions, users og auth. Dette tilsvarer de ulike endpointene i backenden.
 
