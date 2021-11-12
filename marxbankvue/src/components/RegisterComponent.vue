@@ -4,41 +4,40 @@
       <div class="input-style">
         <label for="username">Username</label>
         <input
-          type="text"
-          name="username"
           id="username"
           v-model="username"
+          type="text"
+          name="username"
           :disabled="authStatus === 'loading'" />
       </div>
       <div class="input-style">
         <label for="email">Email</label>
         <input
-          type="email"
-          name="email"
           id="email"
           v-model="email"
+          type="email"
+          name="email"
           :disabled="authStatus === 'loading'" />
       </div>
       <div class="input-style">
         <label for="password">Password</label>
         <input
-          type="password"
-          name="password"
           id="password"
           v-model="password"
+          type="password"
+          name="password"
           :disabled="authStatus === 'loading'" />
       </div>
       <div class="input-style">
         <label for="repeatPassword">Repeat password</label>
         <input
-          type="password"
-          name="repeatPassword"
           id="repeatPassword"
           v-model="repeatPassword"
+          type="password"
+          name="repeatPassword"
           :disabled="authStatus === 'loading'" />
       </div>
       <button
-        @click.prevent="register"
         class="
           mx-auto
           my-5
@@ -52,10 +51,11 @@
           border-2 border-white
           hover:border-2 hover:border-red-500
           duration-300
-        ">
+        "
+        @click.prevent="register">
         <img
           src="/Hammer.svg"
-          v-bind:class="
+          :class="
             authStatus === 'loading'
               ? 'communismIcon right-0 loading'
               : 'communismIcon right-0 transform-gpu rotate-90'

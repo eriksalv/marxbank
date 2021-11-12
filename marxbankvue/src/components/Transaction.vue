@@ -8,9 +8,15 @@
       text-gray-700
       dark:text-gray-400
     ">
-    <td class="px-4 py-3 font-bold">{{ date }}</td>
-    <td class="px-4 py-3 text-sm">{{ fromAccount.name }}</td>
-    <td class="px-4 py-3 text-sm">{{ toAccount.name }}</td>
+    <td class="px-4 py-3 font-bold">
+      {{ date }}
+    </td>
+    <td class="px-4 py-3 text-sm">
+      {{ fromAccount.name }}
+    </td>
+    <td class="px-4 py-3 text-sm">
+      {{ toAccount.name }}
+    </td>
     <td class="px-4 py-3 text-xs">
       <span
         class="
@@ -33,15 +39,15 @@
 export default {
   name: "Transaction",
   props: ["date", "from", "to", "amount"],
-  created() {
-    this.fromAccount = this.$store.getters.getAccountById(parseInt(this.from));
-    this.toAccount = this.$store.getters.getAccountById(parseInt(this.to));
-  },
   data() {
     return {
       fromAccount: null,
       toAccount: null,
     };
+  },
+  created() {
+    this.fromAccount = this.$store.getters.getAccountById(parseInt(this.from));
+    this.toAccount = this.$store.getters.getAccountById(parseInt(this.to));
   },
 };
 </script>

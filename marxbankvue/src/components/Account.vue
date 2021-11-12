@@ -1,6 +1,5 @@
 <template>
   <tr
-    @click="this.$emit('accountSelected', id)"
     class="
       bg-gray-50
       dark:bg-gray-800
@@ -9,8 +8,11 @@
       text-gray-700
       dark:text-gray-400
       cursor-pointer
-    ">
-    <td class="px-4 py-3 font-bold">{{ accName }}</td>
+    "
+    @click="$emit('accountSelected', id)">
+    <td class="px-4 py-3 font-bold">
+      {{ accName }}
+    </td>
     <td class="px-4 py-3 text-xs">
       <span
         class="
@@ -26,8 +28,12 @@
         {{ balance }} kr
       </span>
     </td>
-    <td class="px-4 py-3 text-sm">{{ type }}</td>
-    <td class="px-4 py-3 text-sm">{{ accNumber }}</td>
+    <td class="px-4 py-3 text-sm">
+      {{ type }}
+    </td>
+    <td class="px-4 py-3 text-sm">
+      {{ accNumber }}
+    </td>
   </tr>
 </template>
 

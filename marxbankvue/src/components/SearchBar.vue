@@ -2,11 +2,11 @@
   <div className="search">
     <div className="searchInputs">
       <input
-        @input="onInput"
         ref="inputField"
         type="text"
         :placeholder="placeholder"
-        className="input" />
+        className="input"
+        @input="onInput" />
     </div>
     <div className="dataResult">
       <div
@@ -14,7 +14,9 @@
         :key="account.id"
         className="dataItem"
         @click="onSelectAccount(account)">
-        <p class="font-bold">{{ account.name }}</p>
+        <p class="font-bold">
+          {{ account.name }}
+        </p>
         <p>{{ account.accNumber }}</p>
       </div>
     </div>
@@ -23,7 +25,7 @@
       <p v-if="!reciever" class="float-right">
         {{ selectedAccount.balance }} kr
       </p>
-      <div class="clear-both"></div>
+      <div class="clear-both" />
     </div>
   </div>
 </template>

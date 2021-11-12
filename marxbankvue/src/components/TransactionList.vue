@@ -22,12 +22,12 @@
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
         <Transaction
+          v-for="transaction in allTransactions"
+          :key="transaction.id"
           :date="transaction.date"
           :from="transaction.from"
           :to="transaction.to"
           :amount="transaction.amount"
-          v-for="transaction in allTransactions"
-          :key="transaction.id"
           class="transaction" />
       </tbody>
     </table>

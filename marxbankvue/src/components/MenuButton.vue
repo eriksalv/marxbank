@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick()" class="btn" :style="{ background: color }">
+  <button class="btn" :style="{ background: color }" @click="onClick()">
     Add Task
   </button>
 </template>

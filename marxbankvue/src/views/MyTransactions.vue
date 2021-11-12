@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row flex-wrap min-w-[80%]">
-    <TransactionList class="min-w-max"></TransactionList>
+    <TransactionList class="min-w-max" />
   </div>
 </template>
 

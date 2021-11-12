@@ -2,8 +2,12 @@
   <div class="layout">
     <main class="text-on-same-line text-black">
       <div>
-        <p class="text-left font-medium">{{ accName }}</p>
-        <p class="text-left text-xs">{{ accNumber }}</p>
+        <p class="text-left font-medium">
+          {{ accName }}
+        </p>
+        <p class="text-left text-xs">
+          {{ accNumber }}
+        </p>
       </div>
       <p class="text-left mt-2 font-medium">kr {{ balance }}</p>
     </main>

@@ -1,14 +1,14 @@
 <template>
   <div>
     <MyFavorite
-      @click="showAccount(account.accNumber)"
       v-for="account in allAccounts.slice(0, 3)"
       :key="account.id"
-      :accNumber="account.accNumber"
+      :acc-number="account.accNumber"
       :balance="account.balance"
-      :accName="account.name"
+      :acc-name="account.name"
       :type="account.type"
-      class="account" />
+      class="account"
+      @click="showAccount(account.accNumber)" />
   </div>
 </template>
 

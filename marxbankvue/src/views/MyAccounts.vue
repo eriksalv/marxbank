@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row flex-wrap min-w-[80%] justify-center">
-    <AccountList class="min-w-max"></AccountList>
+    <AccountList class="min-w-max" />
     <AccountForm />
   </div>
 </template>

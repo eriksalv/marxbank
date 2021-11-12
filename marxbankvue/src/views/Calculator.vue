@@ -9,7 +9,6 @@
     <text-input type="interest" text="Årlig rente" />
 
     <button
-      @click="showTotalAmount = true"
       class="
         bg-green-500
         hover:bg-green-400
@@ -22,7 +21,8 @@
         rounded
         w-full
         mt-6
-      ">
+      "
+      @click="showTotalAmount = true">
       Beregn beløp
     </button>
     <div v-if="showTotalAmount">

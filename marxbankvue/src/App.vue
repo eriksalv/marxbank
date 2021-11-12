@@ -14,7 +14,7 @@
         w-screen
         min-h-screen
       ">
-      <router-view></router-view>
+      <router-view />
     </main>
   </div>
 </template>
@@ -25,14 +25,14 @@ import SideBar from "@/components/SideBar.vue";
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    Header,
+    SideBar,
+  },
   data() {
     return {
       loggedIn: true,
     };
-  },
-  components: {
-    Header,
-    SideBar,
   },
   computed: {
     ...mapGetters(["getToken"]),

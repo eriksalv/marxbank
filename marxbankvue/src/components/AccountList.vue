@@ -22,15 +22,15 @@
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
         <Account
-          @accountSelected="showAccount"
-          :id="account.id"
-          :accNumber="account.accNumber"
-          :balance="account.balance"
-          :accName="account.name"
-          :type="account.type"
           v-for="account in allAccounts"
+          :id="account.id"
           :key="account.id"
-          class="account" />
+          :acc-number="account.accNumber"
+          :balance="account.balance"
+          :acc-name="account.name"
+          :type="account.type"
+          class="account"
+          @accountSelected="showAccount" />
       </tbody>
     </table>
   </div>

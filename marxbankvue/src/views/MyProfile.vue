@@ -1,20 +1,22 @@
 <template>
   <div class="w-2/3">
-    <h1 class="title">{{ getUserData() }}</h1>
+    <h1 class="title">
+      {{ getUserData() }}
+    </h1>
     <label for="username">Brukernavn</label>
     <input
-      type="text"
       id="username"
+      type="text"
       placeholder="Nytt brukernavn"
       class="input" />
     <label for="password">Passord</label>
     <input
-      type="password"
       id="password"
+      type="password"
       placeholder="Nytt passord"
       class="input" />
     <button class="button">Lagre endringer</button>
-    <button @click="requestLogout" class="button bg-red-600">Logg ut</button>
+    <button class="button bg-red-600" @click="requestLogout">Logg ut</button>
   </div>
 </template>
 

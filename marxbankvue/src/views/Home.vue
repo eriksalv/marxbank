@@ -27,7 +27,7 @@
             transition
             duration-300
             ease-in-out
-          "></div>
+          " />
         <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 items-center">
           <div class="mt-16">
             <p class="text-white text-2xl mt-2 space-x-2 font-bold">
@@ -43,12 +43,12 @@
 
       <div class="w-full">
         <RecentTransaction
+          v-for="transaction in allTransactions.slice(0, 1)"
+          :key="transaction.amount"
           :date="transaction.date"
           :from="transaction.from"
           :to="transaction.to"
           :amount="transaction.amount"
-          v-for="transaction in allTransactions.slice(0, 1)"
-          :key="transaction.amount"
           class="transaction" />
       </div>
     </main>
@@ -60,7 +60,7 @@
         <div class="container">
           <h1 class="text-3xl md:text-2xl font-bold mb-3">Mine favoritter</h1>
           <div>
-            <MyFavorites class="min-w-max"></MyFavorites>
+            <MyFavorites class="min-w-max" />
           </div>
         </div>
       </div>

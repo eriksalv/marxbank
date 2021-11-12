@@ -19,23 +19,22 @@
           <div class="input-style">
             <label for="username">Username</label>
             <input
-              type="text"
-              name="username"
               id="username"
               v-model="username"
+              type="text"
+              name="username"
               :disabled="authStatus === 'loading'" />
           </div>
           <div class="input-style">
             <label for="password">Password</label>
             <input
-              type="password"
-              name="password"
               id="password"
               v-model="password"
+              type="password"
+              name="password"
               :disabled="authStatus === 'loading'" />
           </div>
           <button
-            @click.prevent="requestLogin"
             class="
               mt-5
               w-2/5
@@ -48,11 +47,12 @@
               border-2 border-white
               hover:border-2 hover:border-red-500
               duration-300
-            ">
+            "
+            @click.prevent="requestLogin">
             <img
               src="/Sickle.svg"
               alt=""
-              v-bind:class="
+              :class="
                 authStatus === 'loading'
                   ? 'communismIcon left-1 loading'
                   : 'communismIcon left-1'
@@ -62,7 +62,6 @@
         </form>
         <button
           id="createNewUser"
-          @click.prevent="createNewUser"
           class="
             mx-auto
             my-5
@@ -76,7 +75,8 @@
             border-2 border-white
             hover:border-2 hover:border-red-500
             duration-300
-          ">
+          "
+          @click.prevent="createNewUser">
           <img
             src="/Hammer.svg"
             class="communismIcon right-0 transform-gpu rotate-90" />
@@ -86,9 +86,8 @@
       <div v-if="register">
         <RegisterComponent />
         <button
-          id="back"
-          @click="back"
           v-if="register"
+          id="back"
           class="
             mx-auto
             mb-5
@@ -102,7 +101,8 @@
             border-2 border-white
             hover:border-2 hover:border-red-500
             duration-300
-          ">
+          "
+          @click="back">
           <p class="font-bold text-2xl z-10 relative">Back</p>
         </button>
       </div>

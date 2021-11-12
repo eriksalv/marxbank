@@ -8,8 +8,6 @@ import { actions } from "../store/modules/accounts/actions";
 import { Account } from "../types/types";
 import { Getter, GetterTree } from "vuex";
 
-const globalUnused = 50;
-
 const rootState: RootState = {
   message: "",
 };

@@ -11,7 +11,9 @@
         background-color: gray;
       " />
     <main class="text-on-same-line">
-      <p class="text-left italic">{{ date }}</p>
+      <p class="text-left italic">
+        {{ date }}
+      </p>
       <p class="text-right">kr {{ amount }}</p>
     </main>
     <main class="text-on-same-line">

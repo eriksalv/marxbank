@@ -15,8 +15,8 @@
       @termChanged="onRecieverTermChanged"
       @accountSelected="onRecieverAccountSelected" />
     <h1>Kroner</h1>
-    <input type="number" v-model="amount" className="input" />
-    <button @click="commitTransaction" class="button">Utfør transaksjon</button>
+    <input v-model="amount" type="number" className="input" />
+    <button class="button" @click="commitTransaction">Utfør transaksjon</button>
   </main>
 </template>
 

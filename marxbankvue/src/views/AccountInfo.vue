@@ -1,16 +1,13 @@
 <template>
   <main class="flex flex-row flex-wrap max-w-[80%] justify-center items-center">
     <transition name="fade" appear>
-      <div
-        class="modalOverlay"
-        v-if="showModal"
-        @click="showModal = false"></div>
+      <div v-if="showModal" class="modalOverlay" @click="showModal = false" />
     </transition>
     <transition name="slide" appear>
-      <div class="modal" v-if="showModal">
+      <div v-if="showModal" class="modal">
         <h1 class="title">Sett inn eller ta ut penger</h1>
         <h1>Kroner</h1>
-        <input type="number" placeholder="0" class="input" v-model="amount" />
+        <input v-model="amount" type="number" placeholder="0" class="input" />
         <button class="button" @click="handleDeposit">Sett inn</button>
         <button class="button" @click="handleWithdraw">Ta ut</button>
       </div>
