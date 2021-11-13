@@ -113,7 +113,6 @@ describe("AccountInfo", () => {
   let mockFetchAccountById: jest.Mock<any, any>;
   let mockDeposit: jest.Mock<any, any>;
   let mockWithdraw: jest.Mock<any, any>;
-  let accountStore: Store<AccountState> | Plugin | [Plugin, ...any[]];
 
   const initTransactionState: TransactionState = {
     transactionStatus: "",
@@ -128,7 +127,6 @@ describe("AccountInfo", () => {
     ],
   };
   let mockFilterTransactionsByAccount: jest.Mock<any, any>;
-  let transactionStore: Store<TransactionState> | Plugin | [Plugin, ...any[]];
   let store: Store<any> | Plugin | [Plugin, ...any[]];
 
   beforeEach(() => {
@@ -139,28 +137,11 @@ describe("AccountInfo", () => {
     mockFetchAccountById = jest.fn();
     mockDeposit = jest.fn();
     mockWithdraw = jest.fn();
-    accountStore = createStore({
-      state: initAccountState,
-      getters: {
-        getAccountById: mockGetAccountById,
-      },
-      actions: {
-        fetchAccountById: mockFetchAccountById,
-        deposit: mockDeposit,
-        withdraw: mockWithdraw,
-      },
-    });
 
     //transactionStore setup
     mockFilterTransactionsByAccount = jest
       .fn()
       .mockReturnValue(initTransactionState.transactions);
-    transactionStore = createStore({
-      state: initTransactionState,
-      getters: {
-        filterTransactionsByAccount: mockFilterTransactionsByAccount,
-      },
-    });
 
     store = createStore({
       state: {
@@ -168,8 +149,8 @@ describe("AccountInfo", () => {
         initAccountState,
       },
       getters: {
-        getAccountById: mockGetAccountById,
-        filterTransactionsByAccount: mockFilterTransactionsByAccount,
+        getAccountById: () => mockGetAccountById,
+        filterTransactionsByAccount: () => mockFilterTransactionsByAccount,
       },
       actions: {
         fetchAccountById: mockFetchAccountById,
@@ -184,7 +165,10 @@ describe("AccountInfo", () => {
       global: { plugins: [store] },
     });
 
-    expect(mockGetAccountById).toHaveBeenCalledTimes(1);
+    //console.log(wrapper.html());
+
+    //getAccountById blir kalt 1 gang i AccountInfo.vue og 2 ganger i Transaction.vue
+    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
     expect(mockFetchAccountById).toHaveBeenCalledTimes(1);
     expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(1);
   });

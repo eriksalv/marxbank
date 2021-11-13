@@ -65,14 +65,29 @@ import { mapActions, mapGetters } from "vuex";
 import TransactionList from "../components/TransactionList.vue";
 
 export default {
+  components: {
+    TransactionList,
+  },
   props: {
-    id: Number,
+    id: {
+      type: Number,
+      default: 0,
+    }
+  },
+  data() {
+    return {
+      selectedAccount: Object,
+      showModal: false,
+      amount: Number,
+    };
   },
   computed: {
     ...mapGetters(["getAccountById", "filterTransactionsByAccount"]),
   },
-  components: {
-    TransactionList,
+  created() {
+    //TODO: fetch transaksjoner til konto
+    this.fetchAccountById(this.id);
+    this.setSelectedAccount(this.id);
   },
   methods: {
     ...mapActions(["fetchAccountById", "deposit", "withdraw"]),
@@ -82,7 +97,7 @@ export default {
         accountId: this.selectedAccount.id,
       };
       await this.deposit(request).catch((err) => console.log(err));
-      this.selectedAccount = this.getAccountById(parseInt(this.id));
+      this.setSelectedAccount(this.id);
       this.showModal = false;
     },
     async handleWithdraw() {
@@ -91,21 +106,12 @@ export default {
         accountId: this.selectedAccount.id,
       };
       await this.withdraw(request).catch((err) => console.log(err));
-      this.selectedAccount = this.getAccountById(parseInt(this.id));
+      this.setSelectedAccount(this.id);
       this.showModal = false;
     },
-  },
-  data() {
-    return {
-      selectedAccount: Object,
-      showModal: false,
-      amount: Number,
-    };
-  },
-  created() {
-    //TODO: fetch transaksjoner til konto
-    this.fetchAccountById(this.id);
-    this.selectedAccount = this.getAccountById(parseInt(this.id));
+    setSelectedAccount(id) {
+      this.selectedAccount = this.getAccountById(parseInt(id));
+    }
   },
 };
 </script>

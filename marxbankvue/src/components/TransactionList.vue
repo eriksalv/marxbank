@@ -22,7 +22,7 @@
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
         <Transaction
-          v-for="transaction in allTransactions"
+          v-for="transaction in transactions"
           :key="transaction.id"
           :date="transaction.date"
           :from="transaction.from"
@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import Transaction from "./Transaction.vue";
 
 export default {
@@ -43,8 +42,11 @@ export default {
   components: {
     Transaction,
   },
-  computed: {
-    ...mapGetters(["allTransactions"]),
+  props: {
+    transactions: {
+      type: Array,
+      default: () => [],
+    }
   },
 };
 </script>
