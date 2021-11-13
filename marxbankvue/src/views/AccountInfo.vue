@@ -8,8 +8,12 @@
         <h1 class="title">Sett inn eller ta ut penger</h1>
         <h1>Kroner</h1>
         <input v-model="amount" type="number" placeholder="0" class="input" />
-        <button id="deposit" class="button" @click="handleDeposit">Sett inn</button>
-        <button id="withdraw" class="button" @click="handleWithdraw">Ta ut</button>
+        <button id="deposit" class="button" @click="handleDeposit">
+          Sett inn
+        </button>
+        <button id="withdraw" class="button" @click="handleWithdraw">
+          Ta ut
+        </button>
       </div>
     </transition>
     <div class="bg-white shadow overflow-hidden sm:rounded-lg min-w-full">
@@ -48,7 +52,8 @@
         </dl>
       </div>
     </div>
-    <button id="showModal"
+    <button
+      id="showModal"
       class="button w-1/6 rounded-3xl text-5xl font-bold"
       @click="showModal = true">
       +
@@ -72,13 +77,13 @@ export default {
     id: {
       type: Number,
       default: 0,
-    }
+    },
   },
   data() {
     return {
       selectedAccount: Object,
       showModal: false,
-      amount: Number
+      amount: Number,
     };
   },
   computed: {
@@ -127,7 +132,7 @@ export default {
      */
     setSelectedAccount(id) {
       this.selectedAccount = this.getAccountById(parseInt(id));
-    }
+    },
   },
 };
 </script>

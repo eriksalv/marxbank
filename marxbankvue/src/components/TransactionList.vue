@@ -46,7 +46,7 @@ export default {
     transactions: {
       type: Array,
       default: () => [],
-    }
+    },
   },
 };
 </script>

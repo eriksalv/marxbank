@@ -7,7 +7,7 @@
 <script>
 // @ is an alias to /src
 import TransactionList from "../components/TransactionList.vue";
-import { mapGetters ,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "MyTransactions",
@@ -15,7 +15,7 @@ export default {
     TransactionList,
   },
   computed: {
-    ...mapGetters(["allTransactions"])
+    ...mapGetters(["allTransactions"]),
   },
   async created() {
     await this.fetchAccounts();
