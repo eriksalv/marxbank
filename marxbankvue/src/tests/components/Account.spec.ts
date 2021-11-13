@@ -135,8 +135,12 @@ describe("AccountInfo", () => {
       .fn()
       .mockReturnValue(initAccountState.accounts[0]);
     mockFetchAccountById = jest.fn();
-    mockDeposit = jest.fn();
-    mockWithdraw = jest.fn();
+    mockDeposit = jest.fn().mockImplementation(() => {
+      initAccountState.accounts[0].balance += 100;
+    });
+    mockWithdraw = jest.fn().mockImplementation(() => {
+      initAccountState.accounts[0].balance -= 200;
+    });
 
     //transactionStore setup
     mockFilterTransactionsByAccount = jest
@@ -171,5 +175,56 @@ describe("AccountInfo", () => {
     expect(mockGetAccountById).toHaveBeenCalledTimes(3);
     expect(mockFetchAccountById).toHaveBeenCalledTimes(1);
     expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(1);
+    expect(wrapper.html()).toContain("200 kr");
+    expect(wrapper.vm.$data.selectedAccount).toEqual(
+      initAccountState.accounts[0]
+    );
+    expect(wrapper.vm.$data.amount).toEqual(Number);
+    expect(wrapper.vm.$data.showModal).toBe(false);
+  });
+
+  test("test deposit", async () => {
+    const wrapper = mount(AccountInfo, {
+      global: { plugins: [store] },
+    });
+
+    expect(initAccountState.accounts[0].balance).toEqual(200);
+
+    await wrapper.find("#showModal").trigger("click");
+
+    expect(wrapper.vm.$data.showModal).toEqual(true);
+
+    await wrapper.find("input").setValue(100);
+
+    expect(wrapper.vm.$data.amount).toEqual(100);
+
+    await wrapper.find("#deposit").trigger("click");
+
+    expect(wrapper.vm.$data.showModal).toEqual(false);
+    expect(mockDeposit).toHaveBeenCalledTimes(1);
+    expect(mockWithdraw).toHaveBeenCalledTimes(0);
+    expect(initAccountState.accounts[0].balance).toEqual(300);
+
+    await wrapper.vm.$forceUpdate();
+
+    expect(wrapper.text()).toContain("300 kr");
+  });
+
+  test("test withdraw", async () => {
+    const wrapper = mount(AccountInfo, {
+      global: { plugins: [store] },
+    });
+
+    await wrapper.find("#showModal").trigger("click");
+    await wrapper.find("input").setValue(200);
+    await wrapper.find("#withdraw").trigger("click");
+
+    expect(mockDeposit).toHaveBeenCalledTimes(0);
+    expect(mockWithdraw).toHaveBeenCalledTimes(1);
+    expect(initAccountState.accounts[0].balance).toEqual(100);
+
+    await wrapper.vm.$forceUpdate();
+
+    expect(wrapper.text()).toContain("100 kr");
   });
 });

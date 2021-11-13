@@ -8,8 +8,8 @@
         <h1 class="title">Sett inn eller ta ut penger</h1>
         <h1>Kroner</h1>
         <input v-model="amount" type="number" placeholder="0" class="input" />
-        <button class="button" @click="handleDeposit">Sett inn</button>
-        <button class="button" @click="handleWithdraw">Ta ut</button>
+        <button id="deposit" class="button" @click="handleDeposit">Sett inn</button>
+        <button id="withdraw" class="button" @click="handleWithdraw">Ta ut</button>
       </div>
     </transition>
     <div class="bg-white shadow overflow-hidden sm:rounded-lg min-w-full">
@@ -48,7 +48,7 @@
         </dl>
       </div>
     </div>
-    <button
+    <button id="showModal"
       class="button w-1/6 rounded-3xl text-5xl font-bold"
       @click="showModal = true">
       +
@@ -78,12 +78,16 @@ export default {
     return {
       selectedAccount: Object,
       showModal: false,
-      amount: Number,
+      amount: Number
     };
   },
   computed: {
     ...mapGetters(["getAccountById", "filterTransactionsByAccount"]),
   },
+  /**
+   * fetches the selected account from api to make sure properties
+   * of the selected account are up to date, and calls setSelectedAccount
+   */
   created() {
     //TODO: fetch transaksjoner til konto
     this.fetchAccountById(this.id);
@@ -91,6 +95,10 @@ export default {
   },
   methods: {
     ...mapActions(["fetchAccountById", "deposit", "withdraw"]),
+    /**
+     * creates a deposit request and uses the deposit-action. Then updates
+     * page by setting the selectedAccount again, and hides the modal.
+     */
     async handleDeposit() {
       const request = {
         amount: this.amount,
@@ -100,6 +108,10 @@ export default {
       this.setSelectedAccount(this.id);
       this.showModal = false;
     },
+    /**
+     * creates a withdraw request and uses the withdraw-action. Then updates
+     * page by setting the selectedAccount again, and hides the modal.
+     */
     async handleWithdraw() {
       const request = {
         amount: this.amount,
@@ -109,6 +121,10 @@ export default {
       this.setSelectedAccount(this.id);
       this.showModal = false;
     },
+    /**
+     * updates the selectedAccount data property using the getAccountById-getter
+     * @param id id of account
+     */
     setSelectedAccount(id) {
       this.selectedAccount = this.getAccountById(parseInt(id));
     }
