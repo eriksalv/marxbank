@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row flex-wrap min-w-[80%]">
-    <TransactionList class="min-w-max" />
+    <TransactionList :transactions="allTransactions" class="min-w-max" />
   </div>
 </template>
 
@@ -17,12 +17,12 @@ export default {
   computed: {
     ...mapGetters(["allTransactions"]),
   },
-  methods: {
-    ...mapActions(["fetchTransactions", "fetchAccounts"]),
-  },
   async created() {
     await this.fetchAccounts();
     await this.fetchTransactions();
+  },
+  methods: {
+    ...mapActions(["fetchTransactions", "fetchAccounts"]),
   },
 };
 </script>
