@@ -11,11 +11,11 @@ export const getters: GetterTree<TransactionState, RootState> = {
    * @param accountId id of the account to filter by
    * @returns filtered array of transactions
    */
-  filterTransactionsByAccount: (state) => (
-    accountId: number
-  ): Array<Transaction> => {
-    return state.transactions.filter(
-      (t) => t.from == accountId || t.to == accountId
-    );
-  },
+  filterTransactionsByAccount:
+    (state) =>
+    (accountId: number): Array<Transaction> => {
+      return state.transactions.filter(
+        (t) => t.from == accountId || t.to == accountId
+      );
+    },
 };

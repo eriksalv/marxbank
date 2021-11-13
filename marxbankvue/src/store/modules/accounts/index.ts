@@ -7,7 +7,7 @@ import { actions } from "./actions";
 
 const state: AccountState = {
   accountStatus: "",
-  accounts: []
+  accounts: [],
 };
 
 export const accounts: Module<AccountState, RootState> = {

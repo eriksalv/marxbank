@@ -1,18 +1,20 @@
 <template>
-    <button @click="onClick()" class="btn" :style="{background: color}">Add Task</button>
+  <button class="btn" :style="{ background: color }" @click="onClick()">
+    Add Task
+  </button>
 </template>
 
 <script>
 export default {
-    name: 'MenuButton',
-    props: {
-        text: String,
-        color: String
+  name: "MenuButton",
+  props: {
+    text: String,
+    color: String,
+  },
+  methods: {
+    onClick() {
+      console.log("click");
     },
-    methods: {
-        onClick() {
-            console.log("click")
-        },
-    }
-}
+  },
+};
 </script>
