@@ -6,6 +6,7 @@ import Account from "../../components/Account.vue";
 import AccountInfo from "../../views/AccountInfo.vue";
 import { Plugin } from "@vue/runtime-core";
 import { TransactionState } from "../../store/modules/transactions/types";
+import flushPromises from "flush-promises";
 
 describe("AccountList", () => {
   const initState: AccountState = {
@@ -127,6 +128,7 @@ describe("AccountInfo", () => {
     ],
   };
   let mockFilterTransactionsByAccount: jest.Mock<any, any>;
+  let mockFetchTransactionsByAccount: jest.Mock<any, any>;
   let store: Store<any> | Plugin | [Plugin, ...any[]];
 
   beforeEach(() => {
@@ -146,6 +148,7 @@ describe("AccountInfo", () => {
     mockFilterTransactionsByAccount = jest
       .fn()
       .mockReturnValue(initTransactionState.transactions);
+    mockFetchTransactionsByAccount = jest.fn();
 
     store = createStore({
       state: {
@@ -158,23 +161,32 @@ describe("AccountInfo", () => {
       },
       actions: {
         fetchAccountById: mockFetchAccountById,
+        fetchTransactionsByAccount: mockFetchTransactionsByAccount,
         deposit: mockDeposit,
         withdraw: mockWithdraw,
       },
     });
   });
 
-  test("test initial state", () => {
+  test("test initial state", async () => {
     const wrapper = mount(AccountInfo, {
       global: { plugins: [store] },
     });
 
-    //console.log(wrapper.html());
-
-    //getAccountById blir kalt 1 gang i AccountInfo.vue og 2 ganger i Transaction.vue
-    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
-    expect(mockFetchAccountById).toHaveBeenCalledTimes(1);
+    //Blir kalt 2 ganger av Transaction.vue
+    expect(mockGetAccountById).toHaveBeenCalledTimes(2);
+    //Blir kalt en gang når AccountInfo mountes
     expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(1);
+
+    //Flusher kall til fetchAccountById og fetchTransactionsByAccount
+    //i created-metode
+    await flushPromises();
+
+    expect(mockFetchTransactionsByAccount).toHaveBeenCalledTimes(1);
+    expect(mockFetchAccountById).toHaveBeenCalledTimes(1);
+    //Blir kalt en gang til når promises er flushet
+    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
+    expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(2);
     expect(wrapper.html()).toContain("200 kr");
     expect(wrapper.vm.$data.selectedAccount).toEqual(
       initAccountState.accounts[0]

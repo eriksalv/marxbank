@@ -94,7 +94,6 @@ export default {
    * of the selected account are up to date, and calls setSelectedAccount
    */
   async created() {
-    //TODO: fetch transaksjoner til konto
     await this.fetchTransactionsByAccount(this.id);
     await this.fetchAccountById(this.id);
     this.setSelectedAccount(this.id);
