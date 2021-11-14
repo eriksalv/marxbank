@@ -82,15 +82,13 @@ export default defineComponent({
         to: this.selectedRecieverAccount.id,
         amount: this.amount,
       };
-      console.log(transactionRequest);
-      //Dette fungerer foreløpig ikke, siden accounts modul ikke er satt opp enda
       this.createTransaction(transactionRequest).catch((err: any) =>
         console.log(err)
       );
     },
   },
-  created() {
-    this.fetchAccounts();
+  async created() {
+    await this.fetchAccounts();
   },
 });
 </script>

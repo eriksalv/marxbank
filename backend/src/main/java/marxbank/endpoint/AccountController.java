@@ -44,10 +44,10 @@ public class AccountController {
 
     @GetMapping
     @Transactional
-    public List<AccountResponse> findAll() {
+    public ResponseEntity<List<AccountResponse>> findAll() {
         List<AccountResponse> result = new ArrayList<AccountResponse>();
         accountRepository.findAll().forEach(a -> result.add(new AccountResponse(a)));
-        return result;
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{id}")
