@@ -23,9 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
 import marxbank.repository.AccountRepository;
 import marxbank.service.AccountService;
 import marxbank.service.AuthService;
+import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
 
 @RestController
 @RequestMapping("/accounts")
@@ -50,10 +53,14 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{accountNumber}")
     @Transactional
-    public AccountResponse findById(@PathVariable Long id) throws Exception {
-        return new AccountResponse(accountRepository.findById(id).orElseThrow(Exception::new));
+    public ResponseEntity<AccountResponse> findByAccountNumber(@PathVariable int accountNumber) {
+        if (!accountRepository.findByAccountNumber(accountNumber).isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        Account acc = accountRepository.findByAccountNumber(accountNumber).get();
+        return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(acc));
     }
 
     @GetMapping("/myAccounts")
