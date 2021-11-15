@@ -5,6 +5,7 @@
       ref="inputFromAccount"
       :reciever="false"
       :data="filterAccountsByUserIdAndName(getUserId, fromSearchTerm)"
+      :placeholder="'Velg en konto...'"
       @termChanged="onFromTermChanged"
       @accountSelected="onFromAccountSelected" />
     <h1>Til</h1>
@@ -12,6 +13,7 @@
       ref="inputFromAccount"
       :reciever="true"
       :data="filterAccountsByName(recieverSearchTerm)"
+      :placeholder="'Velg en konto eller søk etter id...'"
       @termChanged="onRecieverTermChanged"
       @accountSelected="onRecieverAccountSelected" />
     <h1>Kroner</h1>

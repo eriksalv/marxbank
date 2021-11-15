@@ -7,38 +7,6 @@ import { AccountState } from "./types";
 const BASE_URL = "/accounts";
 
 export const actions: ActionTree<AccountState, RootState> = {
-  /**
-   * Fetches all accounts from every user, but does
-   * not add them to state
-   */
-  async fetchAllPublicAccounts({ commit }) {
-    commit("setAccountStatus", "loading");
-    await axios
-      .get(`${BASE_URL}`)
-      .then((response) => {
-        //TODO: lag en public account response i backend
-        //uten balance og interest og bruk den
-        let accounts: Array<Account> = [];
-        response.data.forEach((element: any) => {
-          console.log(element);
-          const account: Account = {
-            id: element.id,
-            userId: element.user,
-            name: element.name,
-            accNumber: element.accountNumber,
-            balance: element.balance,
-            type: element.type,
-            interest: element.interestRate,
-          };
-          accounts = [...accounts, account];
-        });
-        commit("setAccountStatus", "success");
-        return accounts;
-      })
-      .catch((err) => {
-        commit("setAccountStatus", "error");
-      });
-  },
   async fetchAccounts({ commit, rootGetters }) {
     commit("setAccountStatus", "loading");
     await axios
@@ -66,7 +34,40 @@ export const actions: ActionTree<AccountState, RootState> = {
       });
   },
 
+  async fetchPublicAccountByIds({ commit, rootGetters }, ...ids) {},
+
   async fetchAccountById({ commit, rootGetters }, id: number) {
+    commit("setAccountStatus", "loading");
+    await axios
+      .get(`${BASE_URL}/myAccounts/${id}`, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
+      })
+      .then((response) => {
+        const account: Account = {
+          id: response.data.id,
+          userId: response.data.user,
+          name: response.data.name,
+          accNumber: response.data.accountNumber,
+          balance: response.data.balance,
+          type: response.data.type,
+          interest: response.data.interestRate,
+        };
+        const allAccounts: Array<Account> = rootGetters.allAccounts;
+        if (allAccounts.map((a: Account) => a.id).includes(account.id)) {
+          commit("updateAccount", account);
+        } else {
+          commit("addAccount", account);
+        }
+        commit("setAccountStatus", "success");
+      })
+      .catch((err) => {
+        commit("setAccountStatus", "error", err);
+      });
+  },
+
+  async fetchPublicAccountById({ commit, rootGetters }, id: number) {
     commit("setAccountStatus", "loading");
     await axios
       .get(`${BASE_URL}/${id}`)

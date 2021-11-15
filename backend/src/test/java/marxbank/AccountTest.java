@@ -120,12 +120,14 @@ public class AccountTest {
 
     @Test
     @DisplayName("Test get account by accNumber")
-    public void testGetAccountByAccNumber() {
+    public void testFindById() {
+        assertEquals(HttpStatus.NOT_FOUND, accountController.findById(0l).getStatusCode());
+
         AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
         ResponseEntity<AccountResponse> response = accountController.createAccount(token, aRequest);
-        int accNumber = response.getBody().getAccountNumber();
+        Long id = response.getBody().getId();
 
-        assertEquals(response.getBody().getId(), accountController.findByAccountNumber(accNumber).getBody().getId());
+        assertEquals(response.getBody().getId(), accountController.findById(id).getBody().getId());
     }
 
     @Test

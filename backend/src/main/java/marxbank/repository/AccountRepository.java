@@ -11,5 +11,4 @@ public interface AccountRepository extends CrudRepository<Account, Long>{
     
     Optional<Account> findById(Long id);
     Optional<List<Account>> findByUser_Id(Long userId);
-    Optional<Account> findByAccountNumber(int accountNumber);
 }

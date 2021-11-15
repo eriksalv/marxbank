@@ -53,13 +53,13 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{accountNumber}")
+    @GetMapping("/{id}")
     @Transactional
-    public ResponseEntity<AccountResponse> findByAccountNumber(@PathVariable int accountNumber) {
-        if (!accountRepository.findByAccountNumber(accountNumber).isPresent()) {
+    public ResponseEntity<AccountResponse> findById(@PathVariable Long id) {
+        if (!accountRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        Account acc = accountRepository.findByAccountNumber(accountNumber).get();
+        Account acc = accountRepository.findById(id).get();
         return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(acc));
     }
 
@@ -77,6 +77,23 @@ public class AccountController {
         accountService.getAccountsForUser(user.getId()).forEach(e -> accounts.add(new AccountResponse(e)));
 
         return ResponseEntity.status(HttpStatus.OK).body(accounts);
+    }
+
+    @GetMapping("/myAccounts/{id}")
+    @Transactional
+    public ResponseEntity<AccountResponse> findByUserAndId(@RequestHeader(name = "Authorization", required = true) @Nullable String token, @PathVariable Long id) {
+        if (token==null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+       
+        User user = authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!accountRepository.findById(id).isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        Account acc = accountRepository.findById(id).get();
+
+        return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(acc));
     }
 
     @PostMapping("/createAccount")
