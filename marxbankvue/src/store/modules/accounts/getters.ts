@@ -1,9 +1,11 @@
-import { RootState } from "@/store/types";
+import { RootState, Status } from "@/store/types";
 import { Account } from "@/types/types";
 import { GetterTree } from "vuex";
+import { accounts } from ".";
 import { AccountState } from "./types";
 
 export const getters: GetterTree<AccountState, RootState> = {
+  accountStatus: (state): Status => state.accountStatus,
   allAccounts: (state): Array<Account> => state.accounts,
   /**
    * Filters accounts by name. The filter passes as long as
@@ -25,6 +27,14 @@ export const getters: GetterTree<AccountState, RootState> = {
           .includes(filter.toString().toLowerCase());
       });
     },
+  filterAccountsById:
+    (state) =>
+    (id: number): Array<Account> => {
+      if (!id) {
+        return [];
+      }
+      return state.accounts.filter((account) => account.id === id);
+    },
   filterAccountsByUserId:
     (state) =>
     (userId: number): Array<Account> => {
@@ -36,18 +46,11 @@ export const getters: GetterTree<AccountState, RootState> = {
    * @returns
    */
   filterAccountsByUserIdAndName:
-    (state) =>
+    (state, getters) =>
     (userId: number, filter: String): Array<Account> => {
-      if (!filter) {
-        return [];
-      }
-      return state.accounts
-        .filter((account) => account.userId === userId)
-        .filter((account) => {
-          return account.name
-            .toLowerCase()
-            .includes(filter.toString().toLowerCase());
-        });
+      const arr1 = getters.filterAccountsByName(filter);
+      const arr2 = getters.filterAccountsByUserId(userId);
+      return arr1.filter((account: Account) => arr2.includes(account));
     },
   getAccountById:
     (state) =>

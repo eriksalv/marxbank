@@ -93,13 +93,21 @@ export default {
    * fetches the selected account from api to make sure properties
    * of the selected account are up to date, and calls setSelectedAccount
    */
-  created() {
-    //TODO: fetch transaksjoner til konto
-    this.fetchAccountById(this.id);
+  async created() {
+    this.setSelectedAccount(this.id);
+    await this.fetchAccountsByTransactions();
+    await this.fetchTransactionsByAccount(this.id);
+    await this.fetchAccountById(this.id);
     this.setSelectedAccount(this.id);
   },
   methods: {
-    ...mapActions(["fetchAccountById", "deposit", "withdraw"]),
+    ...mapActions([
+      "fetchAccountById",
+      "deposit",
+      "withdraw",
+      "fetchTransactionsByAccount",
+      "fetchAccountsByTransactions",
+    ]),
     /**
      * creates a deposit request and uses the deposit-action. Then updates
      * page by setting the selectedAccount again, and hides the modal.

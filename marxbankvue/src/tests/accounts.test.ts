@@ -89,32 +89,6 @@ describe("getters", () => {
 
     expect(actual).toEqual([testState.accounts[1]]);
   });
-  it("test filter accounts by user id and name", () => {
-    const empty1 = getters.filterAccountsByUserIdAndName(
-      testState,
-      null,
-      rootState,
-      null
-    )(3, "test");
-    const empty2 = getters.filterAccountsByUserIdAndName(
-      testState,
-      null,
-      rootState,
-      null
-    )(1, "test2");
-
-    expect(empty1).toEqual([]);
-    expect(empty2).toEqual([]);
-
-    const actual = getters.filterAccountsByUserIdAndName(
-      testState,
-      null,
-      rootState,
-      null
-    )(1, "test");
-
-    expect(actual).toEqual([testState.accounts[0]]);
-  });
   it("test get account by id", () => {
     const noMatch = getters.getAccountById(testState, null, rootState, null)(3);
 
@@ -211,7 +185,7 @@ describe("actions", () => {
         type: "Sparekonto",
       };
       const fetchAccountById = actions.fetchAccountById as Function;
-      mock.onGet(`/accounts/${request}`).reply(200, response);
+      mock.onGet(`/accounts/myAccounts/${request}`).reply(200, response);
 
       await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
@@ -219,7 +193,7 @@ describe("actions", () => {
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
         expect(commit).toHaveBeenCalledWith("addAccount", expected);
         expect(mock.history.get.length).toEqual(1);
-        expect(mock.history.get[0].url).toEqual(`/accounts/3`);
+        expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts/3`);
       });
     });
 
@@ -258,7 +232,7 @@ describe("actions", () => {
         type: "Sparekonto",
       };
       const fetchAccountById = actions.fetchAccountById as Function;
-      mock.onGet(`/accounts/${request}`).reply(200, response);
+      mock.onGet(`/accounts/myAccounts/${request}`).reply(200, response);
 
       await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
@@ -266,7 +240,7 @@ describe("actions", () => {
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
         expect(commit).toHaveBeenCalledWith("updateAccount", expected);
         expect(mock.history.get.length).toEqual(1);
-        expect(mock.history.get[0].url).toEqual(`/accounts/2`);
+        expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts/2`);
       });
     });
   });

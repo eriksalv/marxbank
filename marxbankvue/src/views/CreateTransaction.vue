@@ -5,6 +5,7 @@
       ref="inputFromAccount"
       :reciever="false"
       :data="filterAccountsByUserIdAndName(getUserId, fromSearchTerm)"
+      :placeholder="'Velg en konto...'"
       @termChanged="onFromTermChanged"
       @accountSelected="onFromAccountSelected" />
     <h1>Til</h1>
@@ -12,6 +13,7 @@
       ref="inputFromAccount"
       :reciever="true"
       :data="filterAccountsByName(recieverSearchTerm)"
+      :placeholder="'Velg en konto eller søk etter id...'"
       @termChanged="onRecieverTermChanged"
       @accountSelected="onRecieverAccountSelected" />
     <h1>Kroner</h1>
@@ -82,15 +84,13 @@ export default defineComponent({
         to: this.selectedRecieverAccount.id,
         amount: this.amount,
       };
-      console.log(transactionRequest);
-      //Dette fungerer foreløpig ikke, siden accounts modul ikke er satt opp enda
       this.createTransaction(transactionRequest).catch((err: any) =>
         console.log(err)
       );
     },
   },
-  created() {
-    this.fetchAccounts();
+  async created() {
+    await this.fetchAccounts();
   },
 });
 </script>

@@ -23,8 +23,8 @@ export default {
   methods: {
     ...mapActions(["fetchAccounts"]),
   },
-  created() {
-    this.fetchAccounts();
+  async created() {
+    await this.fetchAccounts();
   },
 };
 </script>
