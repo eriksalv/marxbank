@@ -112,6 +112,7 @@ describe("AccountInfo", () => {
   };
   let mockGetAccountById: jest.Mock<any, any>;
   let mockFetchAccountById: jest.Mock<any, any>;
+  let mockFetchAccountsByTransactions: jest.Mock<any, any>;
   let mockDeposit: jest.Mock<any, any>;
   let mockWithdraw: jest.Mock<any, any>;
 
@@ -137,6 +138,7 @@ describe("AccountInfo", () => {
       .fn()
       .mockReturnValue(initAccountState.accounts[0]);
     mockFetchAccountById = jest.fn();
+    mockFetchAccountsByTransactions = jest.fn();
     mockDeposit = jest.fn().mockImplementation(() => {
       initAccountState.accounts[0].balance += 100;
     });
@@ -162,6 +164,7 @@ describe("AccountInfo", () => {
       actions: {
         fetchAccountById: mockFetchAccountById,
         fetchTransactionsByAccount: mockFetchTransactionsByAccount,
+        fetchAccountsByTransactions: mockFetchAccountsByTransactions,
         deposit: mockDeposit,
         withdraw: mockWithdraw,
       },
@@ -173,8 +176,8 @@ describe("AccountInfo", () => {
       global: { plugins: [store] },
     });
 
-    //Blir kalt 2 ganger av Transaction.vue
-    expect(mockGetAccountById).toHaveBeenCalledTimes(2);
+    //Blir kalt 2 ganger av Transaction.vue + 1 gang i AccountInfo
+    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
     //Blir kalt en gang når AccountInfo mountes
     expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(1);
 
@@ -183,10 +186,10 @@ describe("AccountInfo", () => {
     await flushPromises();
 
     expect(mockFetchTransactionsByAccount).toHaveBeenCalledTimes(1);
+    expect(mockFetchAccountsByTransactions).toHaveBeenCalledTimes(1);
     expect(mockFetchAccountById).toHaveBeenCalledTimes(1);
     //Blir kalt en gang til når promises er flushet
-    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
-    expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(2);
+    expect(mockGetAccountById).toHaveBeenCalledTimes(4);
     expect(wrapper.html()).toContain("200 kr");
     expect(wrapper.vm.$data.selectedAccount).toEqual(
       initAccountState.accounts[0]
