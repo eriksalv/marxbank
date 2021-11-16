@@ -27,14 +27,6 @@ export const getters: GetterTree<AccountState, RootState> = {
           .includes(filter.toString().toLowerCase());
       });
     },
-  filterAccountsById:
-    (state) =>
-    (id: number): Array<Account> => {
-      if (!id) {
-        return [];
-      }
-      return state.accounts.filter((account) => account.id === id);
-    },
   filterAccountsByUserId:
     (state) =>
     (userId: number): Array<Account> => {
