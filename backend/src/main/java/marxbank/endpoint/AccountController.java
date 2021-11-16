@@ -4,6 +4,7 @@ import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
 import marxbank.API.DepositWithdrawRequest;
 import marxbank.model.Account;
+import marxbank.model.Transaction;
 import marxbank.model.User;
 
 import java.util.ArrayList;
@@ -26,8 +27,10 @@ import java.util.List;
 import java.util.Optional;
 
 import marxbank.repository.AccountRepository;
+import marxbank.repository.TransactionRepository;
 import marxbank.service.AccountService;
 import marxbank.service.AuthService;
+import marxbank.service.TransactionService;
 import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
 
 @RestController
@@ -35,14 +38,16 @@ import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
 public class AccountController {
     
     private final AccountRepository accountRepository;
+    private final TransactionService transactionService;
     private final AccountService accountService;
     private final AuthService authService;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository, AccountService accountService, AuthService authService) {
+    public AccountController(AccountRepository accountRepository, AccountService accountService, AuthService authService, TransactionService transactionService) {
         this.accountRepository = accountRepository;
         this.accountService = accountService;
         this.authService = authService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping
@@ -50,6 +55,38 @@ public class AccountController {
     public ResponseEntity<List<AccountResponse>> findAll() {
         List<AccountResponse> result = new ArrayList<AccountResponse>();
         accountRepository.findAll().forEach(a -> result.add(new AccountResponse(a)));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    /**
+     * finds all accounts that a given user has had transactions with
+     * @param token token of logged in user
+     * @return list of accounts with HttpStatus 200
+     */
+    @GetMapping
+    @Transactional
+    public ResponseEntity<List<AccountResponse>> findByTransactions(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token==null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);       
+        User user = authService.getUserFromToken(token);
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        List<AccountResponse> result = new ArrayList<AccountResponse>();
+
+        List<Transaction> userTransactions = transactionService.getTransactionForUser(user.getId());
+        userTransactions.stream().filter(t -> t.isBetweenDifferentUsers());
+
+        userTransactions.forEach(t -> {
+            if (t.getFrom().getUser().equals(user)) {
+                if (accountRepository.findById(t.getReciever().getId()).isPresent()) {
+                    result.add(new AccountResponse(t.getReciever()));
+                }
+            } else {
+                if (accountRepository.findById(t.getFrom().getId()).isPresent()) {
+                    result.add(new AccountResponse(t.getFrom()));
+                }
+            }
+        });
+
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

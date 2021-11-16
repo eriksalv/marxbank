@@ -191,6 +191,14 @@ public class Transaction {
     }
 
     /**
+     * checks if the transaction is between different users or not
+     * @return true if different users
+     */
+    public boolean isBetweenDifferentUsers() {
+        return !this.from.getUser().equals(this.reciever.getUser());
+    }
+
+    /**
      * Makes sure that the amount transferred is non-negative.
      * @param amount - Amount of money in transaction
      * @return amount

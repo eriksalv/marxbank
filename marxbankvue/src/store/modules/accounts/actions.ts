@@ -34,7 +34,32 @@ export const actions: ActionTree<AccountState, RootState> = {
       });
   },
 
-  async fetchPublicAccountByIds({ commit, rootGetters }, ...ids) {},
+  async fetchAllPublicAccounts({ commit }) {
+    commit("setAccountStatus", "loading");
+    await axios
+      .get(`${BASE_URL}`)
+      .then((response) => {
+        let accounts: Array<Account> = [];
+        response.data.forEach((element: any) => {
+          console.log(element);
+          const account: Account = {
+            id: element.id,
+            userId: element.user,
+            name: element.name,
+            accNumber: element.accountNumber,
+            balance: element.balance,
+            type: element.type,
+            interest: element.interestRate,
+          };
+          accounts = [...accounts, account];
+        });
+        commit("setAccounts", accounts);
+        commit("setAccountStatus", "success");
+      })
+      .catch((err) => {
+        commit("setAccountStatus", "error");
+      });
+  },
 
   async fetchAccountById({ commit, rootGetters }, id: number) {
     commit("setAccountStatus", "loading");
