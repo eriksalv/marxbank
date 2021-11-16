@@ -20,8 +20,12 @@
         <p>{{ account.accNumber }}</p>
       </div>
     </div>
-    <button v-if="reciever" @click="searchForAccount" class="button w-1/3 mt-2">Søk</button>
-    <p v-if="reciever && accountNotFound" class="text-red-500">Fant ikke konto med gitt id</p>
+    <button v-if="reciever" @click="searchForAccount" class="button w-1/3 mt-2">
+      Søk
+    </button>
+    <p v-if="reciever && accountNotFound" class="text-red-500">
+      Fant ikke konto med gitt id
+    </p>
     <div class="textbox">
       <p class="float-left">Konto: {{ selectedAccount.accNumber }}</p>
       <p v-if="!reciever" class="float-right">
@@ -38,7 +42,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "SearchBar",
   computed: {
-    ...mapGetters(["getAccountById", "accountStatus"])
+    ...mapGetters(["getAccountById", "accountStatus"]),
   },
   methods: {
     ...mapActions(["fetchPublicAccountById"]),
@@ -61,7 +65,7 @@ export default {
       const account = this.getAccountById(parseInt(searchId));
       console.log(account);
       this.onSelectAccount(account);
-    }
+    },
   },
   props: {
     data: Array,

@@ -36,14 +36,15 @@ import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
-    
+
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
     private final AccountService accountService;
     private final AuthService authService;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository, AccountService accountService, AuthService authService, TransactionService transactionService) {
+    public AccountController(AccountRepository accountRepository, AccountService accountService,
+            AuthService authService, TransactionService transactionService) {
         this.accountRepository = accountRepository;
         this.accountService = accountService;
         this.authService = authService;
@@ -60,15 +61,19 @@ public class AccountController {
 
     /**
      * finds all accounts that a given user has had transactions with
+     * 
      * @param token token of logged in user
      * @return list of accounts with HttpStatus 200
      */
     @GetMapping
     @Transactional
-    public ResponseEntity<List<AccountResponse>> findByTransactions(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        if (token==null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);       
+    public ResponseEntity<List<AccountResponse>> findByTransactions(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         User user = authService.getUserFromToken(token);
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (user == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         List<AccountResponse> result = new ArrayList<AccountResponse>();
 
@@ -102,15 +107,18 @@ public class AccountController {
 
     @GetMapping("/myAccounts")
     @Transactional
-    public ResponseEntity<ArrayList<AccountResponse>> findByUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        if (token==null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-       
+    public ResponseEntity<ArrayList<AccountResponse>> findByUser(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         User user = authService.getUserFromToken(token);
 
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (user == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<AccountResponse> accounts = new ArrayList<AccountResponse>();
-    
+
         accountService.getAccountsForUser(user.getId()).forEach(e -> accounts.add(new AccountResponse(e)));
 
         return ResponseEntity.status(HttpStatus.OK).body(accounts);
@@ -118,12 +126,15 @@ public class AccountController {
 
     @GetMapping("/myAccounts/{id}")
     @Transactional
-    public ResponseEntity<AccountResponse> findByUserAndId(@RequestHeader(name = "Authorization", required = true) @Nullable String token, @PathVariable Long id) {
-        if (token==null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-       
+    public ResponseEntity<AccountResponse> findByUserAndId(
+            @RequestHeader(name = "Authorization", required = true) @Nullable String token, @PathVariable Long id) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         User user = authService.getUserFromToken(token);
 
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (user == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         if (!accountRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -135,16 +146,21 @@ public class AccountController {
 
     @PostMapping("/createAccount")
     @Transactional
-    public ResponseEntity<AccountResponse> createAccount(@RequestHeader(name = "Authorization", required = true) @Nullable String token, @RequestBody AccountRequest request) {
-        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        
+    public ResponseEntity<AccountResponse> createAccount(
+            @RequestHeader(name = "Authorization", required = true) @Nullable String token,
+            @RequestBody AccountRequest request) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         User user = authService.getUserFromToken(token);
 
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (user == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         Account a = accountService.createAccount(request, user.getId());
 
-        if (a == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (a == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         a.setAccountNumber();
 
@@ -155,19 +171,25 @@ public class AccountController {
 
     @PostMapping("/deposit")
     @Transactional
-    public ResponseEntity<AccountResponse> depositIntoAccount(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody DepositWithdrawRequest request) {
-        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    public ResponseEntity<AccountResponse> depositIntoAccount(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token,
+            @RequestBody DepositWithdrawRequest request) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         User user = this.authService.getUserFromToken(token);
 
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-
-        if (!accountRepository.findById(request.getAccountId()).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        
-        if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
+        if (user == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        
-        if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (!accountRepository.findById(request.getAccountId()).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (request.getAmount() <= 0)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         Account a = accountRepository.findById(request.getAccountId()).get();
         a.deposit(request.getAmount());
@@ -179,24 +201,30 @@ public class AccountController {
 
     @PostMapping("/withdraw")
     @Transactional
-    public ResponseEntity<AccountResponse> withdrawFromAccount(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody DepositWithdrawRequest request) {
-        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    public ResponseEntity<AccountResponse> withdrawFromAccount(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token,
+            @RequestBody DepositWithdrawRequest request) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         User user = this.authService.getUserFromToken(token);
 
-        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-
-        if (!accountRepository.findById(request.getAccountId()).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        
-        if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId())) 
+        if (user == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-            
-        
-        if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (!accountRepository.findById(request.getAccountId()).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (request.getAmount() <= 0)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         Account a = accountRepository.findById(request.getAccountId()).get();
 
-        if (a.getBalance() - request.getAmount() < 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); 
+        if (a.getBalance() - request.getAmount() < 0)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         a.withdraw(request.getAmount());
 

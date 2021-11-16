@@ -100,7 +100,12 @@ export default {
     this.setSelectedAccount(this.id);
   },
   methods: {
-    ...mapActions(["fetchAccountById", "deposit", "withdraw", "fetchTransactionsByAccount"]),
+    ...mapActions([
+      "fetchAccountById",
+      "deposit",
+      "withdraw",
+      "fetchTransactionsByAccount",
+    ]),
     /**
      * creates a deposit request and uses the deposit-action. Then updates
      * page by setting the selectedAccount again, and hides the modal.

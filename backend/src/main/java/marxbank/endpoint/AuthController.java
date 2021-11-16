@@ -25,7 +25,7 @@ import marxbank.service.AuthService;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    
+
     private UserRepository userRepository;
     private AuthService authService;
     private TokenRepository tokenRepository;
@@ -37,18 +37,20 @@ public class AuthController {
         this.tokenRepository = tokenRepository;
     }
 
-
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<LogInResponse> login(@RequestBody LogInRequest request) {
 
-        if (request.getUsername().length() < 4 || request.getPassword().length() < 4) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (request.getUsername().length() < 4 || request.getPassword().length() < 4)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        if (!userRepository.findByUsername(request.getUsername()).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (!userRepository.findByUsername(request.getUsername()).isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         User user = userRepository.findByUsername(request.getUsername()).get();
-        
-        if (!user.getPassword().equals(request.getPassword())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!user.getPassword().equals(request.getPassword()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         String token = authService.createTokenForUser(user);
 
@@ -57,23 +59,28 @@ public class AuthController {
 
     @GetMapping("/login")
     @Transactional
-    public ResponseEntity<UserResponse> login(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        
-        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    public ResponseEntity<UserResponse> login(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         if (authService.getUserFromToken(token) == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(userRepository.findByToken_Token(AuthService.removeBearer(token)).get()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new UserResponse(userRepository.findByToken_Token(AuthService.removeBearer(token)).get()));
     }
 
     @PostMapping("/signup")
     @Transactional
     public ResponseEntity<LogInResponse> signUp(@RequestBody SignUpRequest request) {
         User user = request.createUser();
-        if (!user.validate()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        if (!user.validate())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (userRepository.findByUsername(user.getUsername()).isPresent())
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 
         userRepository.save(user);
         String token = authService.createTokenForUser(user);
@@ -81,10 +88,13 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    public ResponseEntity<String> logout(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        if (!tokenRepository.findByToken(token).isPresent()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (!tokenRepository.findByToken(token).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         authService.removeToken(token);
         return ResponseEntity.status(HttpStatus.OK).body(null);
