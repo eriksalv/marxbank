@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import marxbank.repository.AccountRepository;
 import marxbank.repository.TransactionRepository;
@@ -65,7 +66,7 @@ public class AccountController {
      * @param token token of logged in user
      * @return list of accounts with HttpStatus 200
      */
-    @GetMapping
+    @GetMapping("/transactions")
     @Transactional
     public ResponseEntity<List<AccountResponse>> findByTransactions(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
@@ -78,9 +79,9 @@ public class AccountController {
         List<AccountResponse> result = new ArrayList<AccountResponse>();
 
         List<Transaction> userTransactions = transactionService.getTransactionForUser(user.getId());
-        userTransactions.stream().filter(t -> t.isBetweenDifferentUsers());
+        List<Transaction> filtered = userTransactions.stream().filter(t -> t.isBetweenDifferentUsers()).collect(Collectors.toList());
 
-        userTransactions.forEach(t -> {
+        filtered.forEach(t -> {
             if (t.getFrom().getUser().equals(user)) {
                 if (accountRepository.findById(t.getReciever().getId()).isPresent()) {
                     result.add(new AccountResponse(t.getReciever()));

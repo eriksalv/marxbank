@@ -95,6 +95,7 @@ export default {
    */
   async created() {
     this.setSelectedAccount(this.id);
+    await this.fetchAccountsByTransactions();
     await this.fetchTransactionsByAccount(this.id);
     await this.fetchAccountById(this.id);
     this.setSelectedAccount(this.id);
@@ -105,6 +106,7 @@ export default {
       "deposit",
       "withdraw",
       "fetchTransactionsByAccount",
+      "fetchAccountsByTransactions",
     ]),
     /**
      * creates a deposit request and uses the deposit-action. Then updates

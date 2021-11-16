@@ -34,10 +34,14 @@ export const actions: ActionTree<AccountState, RootState> = {
       });
   },
 
-  async fetchAllPublicAccounts({ commit }) {
+  async fetchAccountsByTransactions({ commit, rootGetters }) {
     commit("setAccountStatus", "loading");
     await axios
-      .get(`${BASE_URL}`)
+      .get(`${BASE_URL}/transactions`, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
+      })
       .then((response) => {
         let accounts: Array<Account> = [];
         response.data.forEach((element: any) => {
@@ -53,7 +57,14 @@ export const actions: ActionTree<AccountState, RootState> = {
           };
           accounts = [...accounts, account];
         });
-        commit("setAccounts", accounts);
+        accounts.forEach((acc) => {
+          const allAccounts: Array<Account> = rootGetters.allAccounts;
+          if (allAccounts.map((a: Account) => a.id).includes(acc.id)) {
+            commit("updateAccount", acc);
+          } else {
+            commit("addAccount", acc);
+          }
+        });
         commit("setAccountStatus", "success");
       })
       .catch((err) => {
