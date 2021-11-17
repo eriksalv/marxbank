@@ -50,7 +50,8 @@ export const actions: ActionTree<AuthState, RootState> = {
    */
   async signup({ commit }, user: SignUpRequest) {
     commit("setStatus", "loading");
-    await axios
+    return new Promise<void>((resolve, reject) => {
+      axios
       .post(BASE_URL + "/signup", {
         username: user.username,
         password: user.password,
@@ -63,9 +64,15 @@ export const actions: ActionTree<AuthState, RootState> = {
         commit("setUserId", userId);
         commit("setStatus", "success");
         commit("setToken", token);
+        commit("setStatusCode", response.status);
+        resolve();
       })
       .catch((err) => {
+        commit("setStatusCode", err.response.status);
         commit("setStatus", "error");
+        reject();
       });
+    })
+    
   },
 };

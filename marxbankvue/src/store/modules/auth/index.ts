@@ -9,6 +9,7 @@ const state: AuthState = {
   status: "",
   token: null,
   userId: null,
+  statusCode: 0,
 };
 
 export const auth: Module<AuthState, RootState> = {

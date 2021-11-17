@@ -37,6 +37,9 @@
           name="repeatPassword"
           :disabled="authStatus === 'loading'" />
       </div>
+      <div class="errorText" v-if="error">
+        {{ errorMessage }}
+      </div>
       <button
         class="
           mx-auto
@@ -73,7 +76,7 @@ import { SignUpRequest } from "../types/types";
 export default defineComponent({
   name: "RegisterComponent",
   computed: {
-    ...mapGetters(["authStatus"]),
+    ...mapGetters(["authStatus","getStatusCode"]),
   },
   data() {
     return {
@@ -81,16 +84,59 @@ export default defineComponent({
       email: "",
       password: "",
       repeatPassword: "",
+      errorMessage: "",
+      error: false
     };
   },
   methods: {
     ...mapActions(["signup"]),
     register(): void {
-      if (this.password !== this.repeatPassword) {
-        //TODO: gjør noe fornuftig
-        console.log("passwords dont match");
+      this.error = false;
+      this.errorMessage = "";
+
+      if (this.username.length < 4) {
+        this.errorMessage = "Username is too short";
+        this.error = true;
         return;
       }
+      if (this.username.length > 30) {
+        this.errorMessage = "Username is too long";
+        this.error = true;
+        return;
+      }
+      if (this.username.match(/[^a-zA-Z ]/g)) {
+        this.errorMessage = "Username contains illegal characters";
+        this.error = true;
+        return;
+      }
+      if (this.username.trim() !== this.username) {
+        this.errorMessage = "Username cannot contain spaces";
+        this.error = true;
+        return;
+      }
+      if (!this.email.match("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
+        this.errorMessage = "Email is not valid";
+        this.error = true;
+        return;
+      }
+      if (this.password.length < 6) {
+        this.errorMessage = "Password is too short";
+        this.error = true;
+        return;
+      }
+      if (this.password.trim() !== this.password) {
+        this.errorMessage = "Password canno't contain spaces";
+        this.error = true;
+        return;
+      }
+      if (this.password !== this.repeatPassword) {
+        this.errorMessage = "Passwords does not match";
+        this.error = true;
+        return;
+      }
+
+      
+
       const request: SignUpRequest = {
         username: this.username,
         password: this.password,
@@ -98,8 +144,21 @@ export default defineComponent({
       };
 
       this.signup(request)
-        .then(() => this.$router.push("/"))
-        .catch((err) => console.log(err));
+      .then(() => {
+        this.$router.push("/");
+        return;
+      })
+      .catch(() => {
+        if (this.getStatusCode === 400) {
+          this.errorMessage = "Bad request";
+          this.error = true;
+          return;
+        } else if (this.getStatusCode === 409) {
+          this.errorMessage = "Username already taken";
+          this.error = true;
+          return;
+        }
+      });
     },
   },
 });
