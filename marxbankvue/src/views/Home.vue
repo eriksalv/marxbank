@@ -77,6 +77,7 @@
         </div>
         <router-link to="/calculator">
           <button
+            id="goToCalc"
             class="
               bg-green-500
               hover:bg-green-400
