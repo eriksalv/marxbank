@@ -23,7 +23,11 @@ export default {
     await this.fetchTransactions();
   },
   methods: {
-    ...mapActions(["fetchTransactions", "fetchAccounts", "fetchAccountsByTransactions"]),
+    ...mapActions([
+      "fetchTransactions",
+      "fetchAccounts",
+      "fetchAccountsByTransactions",
+    ]),
   },
 };
 </script>

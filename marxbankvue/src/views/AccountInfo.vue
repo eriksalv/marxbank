@@ -66,10 +66,11 @@
 </template>
 
 <script>
+import { defineComponent } from "@vue/runtime-core";
 import { mapActions, mapGetters } from "vuex";
 import TransactionList from "../components/TransactionList.vue";
 
-export default {
+export default defineComponent({
   components: {
     TransactionList,
   },
@@ -142,7 +143,7 @@ export default {
       this.selectedAccount = this.getAccountById(parseInt(id));
     },
   },
-};
+});
 </script>
 
 <style>

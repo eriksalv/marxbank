@@ -5,6 +5,13 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
+  collectCoverage: true,  
+  collectCoverageFrom: [
+    "**/*.{js,vue}",
+    "!**/node_modules/**",
+    "!**/*.config.js",
+    "!**/coverage/**"
+  ],
   moduleFileExtensions: [
     "js",
     "json",
