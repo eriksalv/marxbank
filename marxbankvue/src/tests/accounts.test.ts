@@ -10,7 +10,6 @@ import {
   AccountRequest,
   DepositWithdrawRequest,
 } from "../types/types";
-import { Getter, GetterTree } from "vuex";
 
 const rootState: RootState = {
   message: "",
