@@ -46,7 +46,7 @@ describe("Home", () => {
           id: 1,
           from: 1,
           to: 2,
-          amount: 200,
+          amount: 99,
           date: "13-11-2021",
         },
       ],
@@ -77,6 +77,7 @@ describe("Home", () => {
         global: { plugins: [store] },
       });
   
+      expect(wrapper.html()).toContain("kr 99");
       expect(wrapper.html()).toContain("13-11-2021");
       expect(wrapper.html()).toContain("test1");
       expect(wrapper.html()).toContain("test2");
@@ -87,17 +88,28 @@ describe("Home", () => {
     });
 
     test("test go to savings calculator", async () => {
-        const wrapper = mount(Home, {
-          global: { plugins: [store] },
-        });
+      const mockRouter = {
+        push: jest.fn(),
+      };
   
-        await wrapper.find("#goToCalc").trigger("click");
-
-        expect(wrapper.html()).toContain("Engangsbeløp");
-        
+      const wrapper = mount(Home, {
+        global: {
+          plugins: [store],
+          mocks: {
+            $router: mockRouter,
+          },
+        },
       });
+
+      const signupBtn = wrapper.find("#calc");
+
+      await signupBtn.trigger("click");
   
-    
+      //tester at router pusher til Calculator 
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        name: "Calculator",
+      });
+    });
   
    
   });
