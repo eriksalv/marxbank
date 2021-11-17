@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     showAccount(accNumber) {
-      //TODO: bytt til konto view
+      //TODO: bytt til konto view 
       console.log(accNumber);
     },
   },
