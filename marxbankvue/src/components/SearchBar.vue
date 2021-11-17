@@ -20,7 +20,7 @@
         <p>{{ account.accNumber }}</p>
       </div>
     </div>
-    <button v-if="reciever" @click="searchForAccount" class="button w-1/3 mt-2">
+    <button v-if="reciever" class="button w-1/3 mt-2" @click="searchForAccount">
       Søk
     </button>
     <p v-if="reciever && accountNotFound" class="text-red-500">
