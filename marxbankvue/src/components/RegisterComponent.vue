@@ -76,7 +76,7 @@ import { SignUpRequest } from "../types/types";
 export default defineComponent({
   name: "RegisterComponent",
   computed: {
-    ...mapGetters(["authStatus","getStatusCode"]),
+    ...mapGetters(["authStatus", "getStatusCode"]),
   },
   data() {
     return {
@@ -85,7 +85,7 @@ export default defineComponent({
       password: "",
       repeatPassword: "",
       errorMessage: "",
-      error: false
+      error: false,
     };
   },
   methods: {
@@ -114,7 +114,11 @@ export default defineComponent({
         this.error = true;
         return;
       }
-      if (!this.email.match("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
+      if (
+        !this.email.match(
+          "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}"
+        )
+      ) {
         this.errorMessage = "Email is not valid";
         this.error = true;
         return;
@@ -135,8 +139,6 @@ export default defineComponent({
         return;
       }
 
-      
-
       const request: SignUpRequest = {
         username: this.username,
         password: this.password,
@@ -144,21 +146,21 @@ export default defineComponent({
       };
 
       this.signup(request)
-      .then(() => {
-        this.$router.push("/");
-        return;
-      })
-      .catch(() => {
-        if (this.getStatusCode === 400) {
-          this.errorMessage = "Bad request";
-          this.error = true;
+        .then(() => {
+          this.$router.push("/");
           return;
-        } else if (this.getStatusCode === 409) {
-          this.errorMessage = "Username already taken";
-          this.error = true;
-          return;
-        }
-      });
+        })
+        .catch(() => {
+          if (this.getStatusCode === 400) {
+            this.errorMessage = "Bad request";
+            this.error = true;
+            return;
+          } else if (this.getStatusCode === 409) {
+            this.errorMessage = "Username already taken";
+            this.error = true;
+            return;
+          }
+        });
     },
   },
 });
