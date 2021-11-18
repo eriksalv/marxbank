@@ -80,8 +80,10 @@
           <h2>forvente å ha? Eller ønsker du å spare</h2>
           <h2>opp til egen bolig?</h2>
         </div>
-        <router-link to="/calculator">
+        <div>
           <button
+            id="calc"
+            @click="goToCalc()"
             class="
               bg-green-500
               hover:bg-green-400
@@ -96,7 +98,7 @@
             ">
             Prøv sparekalkulatoren!
           </button>
-        </router-link>
+        </div>
       </div>
     </main>
   </div>
@@ -113,6 +115,11 @@ export default {
   components: {
     MyFavorites,
     RecentTransaction,
+  },
+  methods: {
+    goToCalc() {
+      this.$router.push({ name: "Calculator"});
+    },
   },
 };
 </script>
