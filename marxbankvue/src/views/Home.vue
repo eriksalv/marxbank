@@ -42,26 +42,41 @@
       </div>
 
       <div class="w-full">
-        <RecentTransaction
-          v-for="transaction in allTransactions.slice(0, 1)"
-          :key="transaction.amount"
-          :date="transaction.date"
-          :from="transaction.from"
-          :to="transaction.to"
-          :amount="transaction.amount"
-          class="transaction" />
+        <h1 class="text-3xl md:text-2xl font-bold mb-3 text-left">
+          Nyligste aktivitet
+        </h1>
+        <hr
+          style="
+            height: 1px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+          " />
+        <div v-if="allTransactions.length">
+          <RecentTransaction
+            v-for="transaction in allTransactions.slice(0, 1)"
+            :key="transaction.amount"
+            :date="transaction.date"
+            :from="transaction.from"
+            :to="transaction.to"
+            :amount="transaction.amount"
+            class="transaction" />
+        </div>
+        <div v-else>
+          <h1 class="text-left italic text-gray-700">
+            Ingen nylige aktiviteter
+          </h1>
+        </div>
       </div>
     </main>
 
     <br />
 
     <main class="text-on-same-line space-x-32">
-      <div>
-        <div class="container">
-          <h1 class="text-3xl md:text-2xl font-bold mb-3">Mine favoritter</h1>
-          <div>
-            <MyFavorites class="min-w-max" />
-          </div>
+      <div class="container">
+        <h1 class="text-3xl md:text-2xl font-bold mb-3">Mine favoritter</h1>
+        <div>
+          <MyFavorites class="min-w-max" />
         </div>
       </div>
 
@@ -75,8 +90,9 @@
           <h2>forvente å ha? Eller ønsker du å spare</h2>
           <h2>opp til egen bolig?</h2>
         </div>
-        <router-link to="/calculator">
+        <div>
           <button
+            id="calc"
             class="
               bg-green-500
               hover:bg-green-400
@@ -88,10 +104,11 @@
               hover:border-green-500
               rounded
               mt-6
-            ">
+            "
+            @click="goToCalc()">
             Prøv sparekalkulatoren!
           </button>
-        </router-link>
+        </div>
       </div>
     </main>
   </div>
@@ -108,6 +125,11 @@ export default {
   components: {
     MyFavorites,
     RecentTransaction,
+  },
+  methods: {
+    goToCalc() {
+      this.$router.push({ name: "Calculator" });
+    },
   },
 };
 </script>

@@ -32,15 +32,18 @@ describe("AccountList", () => {
       },
     ],
   };
-  let mockAllAccounts: jest.Mock<any, any>;
+  let mockFilterAccountsByUserId: jest.Mock<any, any>;
+  let mockGetUserId: jest.Mock<any, any>;
   let store: Store<AccountState> | Plugin | [Plugin, ...any[]];
 
   beforeEach(() => {
-    mockAllAccounts = jest.fn().mockReturnValue(initState.accounts);
+    mockFilterAccountsByUserId = jest.fn().mockReturnValue(initState.accounts);
+    mockGetUserId = jest.fn();
     store = createStore({
       state: initState,
       getters: {
-        allAccounts: mockAllAccounts,
+        filterAccountsByUserId: () => mockFilterAccountsByUserId,
+        getUserId: mockGetUserId,
       },
     });
   });
@@ -52,7 +55,7 @@ describe("AccountList", () => {
 
     expect(wrapper.html()).toContain("test");
     expect(wrapper.html()).toContain("test2");
-    expect(mockAllAccounts).toHaveBeenCalled();
+    expect(mockFilterAccountsByUserId).toHaveBeenCalled();
   });
 
   test("test showAccount", async () => {
@@ -140,10 +143,14 @@ describe("AccountInfo", () => {
     mockFetchAccountById = jest.fn();
     mockFetchAccountsByTransactions = jest.fn();
     mockDeposit = jest.fn().mockImplementation(() => {
-      initAccountState.accounts[0].balance += 100;
+      if (initAccountState.accounts[0].balance !== null) {
+        initAccountState.accounts[0].balance += 100;
+      }
     });
     mockWithdraw = jest.fn().mockImplementation(() => {
-      initAccountState.accounts[0].balance -= 200;
+      if (initAccountState.accounts[0].balance !== null) {
+        initAccountState.accounts[0].balance -= 200;
+      }
     });
 
     //transactionStore setup
@@ -176,8 +183,8 @@ describe("AccountInfo", () => {
       global: { plugins: [store] },
     });
 
-    //Blir kalt 2 ganger av Transaction.vue + 1 gang i AccountInfo
-    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
+    //Blir kalt 2 ganger av Transaction.vue
+    expect(mockGetAccountById).toHaveBeenCalledTimes(2);
     //Blir kalt en gang når AccountInfo mountes
     expect(mockFilterTransactionsByAccount).toHaveBeenCalledTimes(1);
 
@@ -189,7 +196,7 @@ describe("AccountInfo", () => {
     expect(mockFetchAccountsByTransactions).toHaveBeenCalledTimes(1);
     expect(mockFetchAccountById).toHaveBeenCalledTimes(1);
     //Blir kalt en gang til når promises er flushet
-    expect(mockGetAccountById).toHaveBeenCalledTimes(4);
+    expect(mockGetAccountById).toHaveBeenCalledTimes(3);
     expect(wrapper.html()).toContain("200 kr");
     expect(wrapper.vm.$data.selectedAccount).toEqual(
       initAccountState.accounts[0]

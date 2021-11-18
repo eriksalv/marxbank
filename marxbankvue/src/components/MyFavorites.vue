@@ -1,14 +1,17 @@
 <template>
   <div>
-    <MyFavorite
-      v-for="account in allAccounts.slice(0, 3)"
-      :key="account.id"
-      :acc-number="account.accNumber"
-      :balance="account.balance"
-      :acc-name="account.name"
-      :type="account.type"
-      class="account"
-      @click="showAccount(account.accNumber)" />
+    <div v-if="allAccounts.length">
+      <MyFavorite
+        v-for="account in allAccounts.slice(0, 3)"
+        :key="account.id"
+        :acc-number="account.accNumber"
+        :balance="account.balance"
+        :acc-name="account.name"
+        :type="account.type"
+        class="account"
+        @click="showAccount(account.accNumber)" />
+    </div>
+    <div v-else class="italic">Ingen kontoer tilknyttet</div>
   </div>
 </template>
 
