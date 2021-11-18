@@ -19,10 +19,15 @@ export default {
   },
   async created() {
     await this.fetchAccounts();
+    await this.fetchAccountsByTransactions();
     await this.fetchTransactions();
   },
   methods: {
-    ...mapActions(["fetchTransactions", "fetchAccounts"]),
+    ...mapActions([
+      "fetchTransactions",
+      "fetchAccounts",
+      "fetchAccountsByTransactions",
+    ]),
   },
 };
 </script>

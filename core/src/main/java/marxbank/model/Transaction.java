@@ -124,25 +124,6 @@ public class Transaction {
     }
 
     /**
-     * Compact transaction constructor that generates id automatically, uses current time
-     * as date, commits transaction and adds transaction to from and recievers
-     * transaction list, id is generated with jpa
-     * @param from - Account that money is transfered from
-     * @param reciever - Account that recieves money
-     * @param amount - Amount of money in transaction
-    */
-    public Transaction(Account from, Account reciever, double amount, boolean jpa) {
-        this.from = from;
-        this.reciever = reciever;
-        this.amount = validateAmount(amount);
-        this.transactionDate=LocalDateTime.now();
-        this.dateString=DATE_FORMATTER.format(transactionDate);
-        commitTransaction();
-        this.from.addTransaction(this);
-        this.reciever.addTransaction(this);
-    }
-
-    /**
      * Getter for unique transaction id
      * @return transaction id
     */
@@ -207,6 +188,14 @@ public class Transaction {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    /**
+     * checks if the transaction is between different users or not
+     * @return true if different users
+     */
+    public boolean isBetweenDifferentUsers() {
+        return !this.from.getUser().equals(this.reciever.getUser());
     }
 
     /**

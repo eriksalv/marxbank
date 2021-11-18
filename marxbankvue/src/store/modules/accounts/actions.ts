@@ -12,7 +12,6 @@ export const actions: ActionTree<AccountState, RootState> = {
     await axios
       .get(`${BASE_URL}/myAccounts`, rootGetters.getToken)
       .then((response) => {
-        console.log("yeet");
         let accounts: Array<Account> = [];
         response.data.forEach((element: any) => {
           console.log(element);
@@ -35,7 +34,76 @@ export const actions: ActionTree<AccountState, RootState> = {
       });
   },
 
+  async fetchAccountsByTransactions({ commit, rootGetters }) {
+    commit("setAccountStatus", "loading");
+    await axios
+      .get(`${BASE_URL}/transactions`, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
+      })
+      .then((response) => {
+        let accounts: Array<Account> = [];
+        response.data.forEach((element: any) => {
+          console.log(element);
+          const account: Account = {
+            id: element.id,
+            userId: element.user,
+            name: element.name,
+            accNumber: element.accountNumber,
+            balance: element.balance,
+            type: element.type,
+            interest: element.interestRate,
+          };
+          accounts = [...accounts, account];
+        });
+        accounts.forEach((acc) => {
+          const allAccounts: Array<Account> = rootGetters.allAccounts;
+          if (allAccounts.map((a: Account) => a.id).includes(acc.id)) {
+            commit("updateAccount", acc);
+          } else {
+            commit("addAccount", acc);
+          }
+        });
+        commit("setAccountStatus", "success");
+      })
+      .catch((err) => {
+        commit("setAccountStatus", "error");
+      });
+  },
+
   async fetchAccountById({ commit, rootGetters }, id: number) {
+    commit("setAccountStatus", "loading");
+    await axios
+      .get(`${BASE_URL}/myAccounts/${id}`, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
+      })
+      .then((response) => {
+        const account: Account = {
+          id: response.data.id,
+          userId: response.data.user,
+          name: response.data.name,
+          accNumber: response.data.accountNumber,
+          balance: response.data.balance,
+          type: response.data.type,
+          interest: response.data.interestRate,
+        };
+        const allAccounts: Array<Account> = rootGetters.allAccounts;
+        if (allAccounts.map((a: Account) => a.id).includes(account.id)) {
+          commit("updateAccount", account);
+        } else {
+          commit("addAccount", account);
+        }
+        commit("setAccountStatus", "success");
+      })
+      .catch((err) => {
+        commit("setAccountStatus", "error", err);
+      });
+  },
+
+  async fetchPublicAccountById({ commit, rootGetters }, id: number) {
     commit("setAccountStatus", "loading");
     await axios
       .get(`${BASE_URL}/${id}`)

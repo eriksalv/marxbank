@@ -5,8 +5,11 @@ import { mutations } from "../store/modules/accounts/mutations";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import { actions } from "../store/modules/accounts/actions";
-import { Account } from "../types/types";
-import { Getter, GetterTree } from "vuex";
+import {
+  Account,
+  AccountRequest,
+  DepositWithdrawRequest,
+} from "../types/types";
 
 const rootState: RootState = {
   message: "",
@@ -89,32 +92,6 @@ describe("getters", () => {
 
     expect(actual).toEqual([testState.accounts[1]]);
   });
-  it("test filter accounts by user id and name", () => {
-    const empty1 = getters.filterAccountsByUserIdAndName(
-      testState,
-      null,
-      rootState,
-      null
-    )(3, "test");
-    const empty2 = getters.filterAccountsByUserIdAndName(
-      testState,
-      null,
-      rootState,
-      null
-    )(1, "test2");
-
-    expect(empty1).toEqual([]);
-    expect(empty2).toEqual([]);
-
-    const actual = getters.filterAccountsByUserIdAndName(
-      testState,
-      null,
-      rootState,
-      null
-    )(1, "test");
-
-    expect(actual).toEqual([testState.accounts[0]]);
-  });
   it("test get account by id", () => {
     const noMatch = getters.getAccountById(testState, null, rootState, null)(3);
 
@@ -161,6 +138,28 @@ describe("mutations", () => {
     mutations.addAccount(testState, newAccount);
 
     expect(testState.accounts).toEqual([...oldAccounts, newAccount]);
+  });
+
+  it("test update account", () => {
+    const updateAccount = {
+      id: 2,
+      userId: 1,
+      name: "updated",
+      accNumber: 201,
+      balance: 200,
+      interest: 3.0,
+      type: "Sparekonto",
+    };
+
+    mutations.updateAccount(testState, updateAccount);
+
+    expect(updateAccount.name).toEqual(testState.accounts[1].name);
+  });
+
+  it("test set account status", () => {
+    mutations.setAccountStatus(testState, "error");
+
+    expect("error").toEqual(testState.accountStatus);
   });
 });
 
@@ -211,7 +210,7 @@ describe("actions", () => {
         type: "Sparekonto",
       };
       const fetchAccountById = actions.fetchAccountById as Function;
-      mock.onGet(`/accounts/${request}`).reply(200, response);
+      mock.onGet(`/accounts/myAccounts/${request}`).reply(200, response);
 
       await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
@@ -219,7 +218,7 @@ describe("actions", () => {
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
         expect(commit).toHaveBeenCalledWith("addAccount", expected);
         expect(mock.history.get.length).toEqual(1);
-        expect(mock.history.get[0].url).toEqual(`/accounts/3`);
+        expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts/3`);
       });
     });
 
@@ -258,7 +257,7 @@ describe("actions", () => {
         type: "Sparekonto",
       };
       const fetchAccountById = actions.fetchAccountById as Function;
-      mock.onGet(`/accounts/${request}`).reply(200, response);
+      mock.onGet(`/accounts/myAccounts/${request}`).reply(200, response);
 
       await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
@@ -266,8 +265,367 @@ describe("actions", () => {
         expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
         expect(commit).toHaveBeenCalledWith("updateAccount", expected);
         expect(mock.history.get.length).toEqual(1);
-        expect(mock.history.get[0].url).toEqual(`/accounts/2`);
+        expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts/2`);
       });
+    });
+  });
+
+  describe("deposit", () => {
+    it("deposit", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 2,
+            userId: 1,
+            name: "test2",
+            accNumber: 201,
+            balance: 200,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const depositRequest: DepositWithdrawRequest = {
+        amount: 100,
+        accountId: 2,
+      };
+      const response: any = {
+        id: 2,
+        accountNumber: 201,
+        type: "Sparekonto",
+        user: 1,
+        name: "test2",
+        balance: 300,
+        interestRate: 3.0,
+      };
+      const expected: Account = {
+        id: 2,
+        userId: 1,
+        accNumber: 201,
+        name: "test2",
+        balance: 300,
+        interest: 3.0,
+        type: "Sparekonto",
+      };
+      const deposit = actions.deposit as Function;
+      mock.onPost(`/accounts/deposit`).reply(200, response);
+
+      await deposit({ commit, rootGetters }, depositRequest).then(() => {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("updateAccount", expected);
+        expect(mock.history.post.length).toEqual(1);
+        expect(mock.history.post[0].url).toEqual(`/accounts/deposit`);
+      });
+    });
+  });
+
+  describe("withdraw", () => {
+    it("withdraw", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 2,
+            userId: 1,
+            name: "test2",
+            accNumber: 201,
+            balance: 200,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const withdrawRequest: DepositWithdrawRequest = {
+        amount: 100,
+        accountId: 2,
+      };
+      const response: any = {
+        id: 2,
+        accountNumber: 201,
+        type: "Sparekonto",
+        user: 1,
+        name: "test2",
+        balance: 100,
+        interestRate: 3.0,
+      };
+      const expected: Account = {
+        id: 2,
+        userId: 1,
+        accNumber: 201,
+        name: "test2",
+        balance: 100,
+        interest: 3.0,
+        type: "Sparekonto",
+      };
+      const withdraw = actions.withdraw as Function;
+      mock.onPost(`/accounts/withdraw`).reply(200, response);
+
+      await withdraw({ commit, rootGetters }, withdrawRequest).then(() => {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("updateAccount", expected);
+        expect(mock.history.post.length).toEqual(1);
+        expect(mock.history.post[0].url).toEqual(`/accounts/withdraw`);
+      });
+    });
+  });
+
+  describe("create account", () => {
+    it("create account", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 2,
+            userId: 1,
+            name: "test2",
+            accNumber: 201,
+            balance: 200,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const request: AccountRequest = {
+        type: "Sparekonto",
+        name: "new",
+      };
+      const response: any = {
+        id: 3,
+        accountNumber: 300,
+        type: "Sparekonto",
+        user: 1,
+        name: "new",
+        balance: 0,
+        interestRate: 3.0,
+      };
+      const expected: Account = {
+        id: 3,
+        userId: 1,
+        accNumber: 300,
+        name: "new",
+        balance: 0,
+        interest: 3.0,
+        type: "Sparekonto",
+      };
+      const createAccount = actions.createAccount as Function;
+      mock.onPost(`/accounts/createAccount`).reply(200, response);
+
+      await createAccount({ commit, rootGetters }, request).then(() => {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("addAccount", expected);
+        expect(mock.history.post.length).toEqual(1);
+        expect(mock.history.post[0].url).toEqual(`/accounts/createAccount`);
+      });
+    });
+  });
+
+  describe("fetch accounts", () => {
+    it("fetch accounts", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [],
+      };
+      const response: any = [
+        {
+          id: 3,
+          accountNumber: 300,
+          type: "Sparekonto",
+          user: 1,
+          name: "new",
+          balance: 0,
+          interestRate: 3.0,
+        },
+      ];
+      const expected: Array<Account> = [
+        {
+          id: 3,
+          userId: 1,
+          accNumber: 300,
+          name: "new",
+          balance: 0,
+          interest: 3.0,
+          type: "Sparekonto",
+        },
+      ];
+      const fetchAccounts = actions.fetchAccounts as Function;
+      mock.onGet(`/accounts/myAccounts`).reply(200, response);
+
+      await fetchAccounts({ commit, rootGetters }).then(() => {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccounts", expected);
+        expect(mock.history.get.length).toEqual(1);
+        expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts`);
+      });
+    });
+  });
+
+  describe("fetch accounts by transactions", () => {
+    it("1 x add account, 1 x updateAccount", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 3,
+            userId: 1,
+            accNumber: 300,
+            name: "new",
+            balance: 0,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const response: any = [
+        {
+          id: 3,
+          accountNumber: 300,
+          type: "Sparekonto",
+          user: 1,
+          name: "new",
+          balance: 0,
+          interestRate: 3.0,
+        },
+        {
+          id: 4,
+          accountNumber: 300,
+          type: "Sparekonto",
+          user: 1,
+          name: "new2",
+          balance: 0,
+          interestRate: 3.0,
+        },
+      ];
+      const expected: Array<Account> = [
+        {
+          id: 3,
+          userId: 1,
+          accNumber: 300,
+          name: "new",
+          balance: 0,
+          interest: 3.0,
+          type: "Sparekonto",
+        },
+        {
+          id: 4,
+          userId: 1,
+          accNumber: 300,
+          name: "new2",
+          balance: 0,
+          interest: 3.0,
+          type: "Sparekonto",
+        },
+      ];
+      const fetchAccountsByTransactions =
+        actions.fetchAccountsByTransactions as Function;
+      mock.onGet(`/accounts/transactions`).reply(200, response);
+
+      await fetchAccountsByTransactions({ commit, rootGetters }).then(() => {
+        expect(commit).toHaveBeenCalledTimes(4);
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("updateAccount", expected[0]);
+        expect(commit).toHaveBeenCalledWith("addAccount", expected[1]);
+        expect(mock.history.get.length).toEqual(1);
+        expect(mock.history.get[0].url).toEqual(`/accounts/transactions`);
+      });
+    });
+  });
+
+  describe("fetch public account by id", () => {
+    it("add account", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [],
+      };
+      const requestId: number = 3;
+      const response: any = {
+        id: 3,
+        accountNumber: 300,
+        type: "Sparekonto",
+        user: 1,
+        name: "new",
+        balance: 0,
+        interestRate: 3.0,
+      };
+      const expected: Account = {
+        id: 3,
+        userId: 1,
+        accNumber: 300,
+        name: "new",
+        balance: 0,
+        interest: 3.0,
+        type: "Sparekonto",
+      };
+      const fetchPublicAccountById = actions.fetchPublicAccountById as Function;
+      mock.onGet(`/accounts/3`).reply(200, response);
+
+      await fetchPublicAccountById({ commit, rootGetters }, requestId).then(
+        () => {
+          expect(commit).toHaveBeenCalledTimes(3);
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+          expect(commit).toHaveBeenCalledWith("addAccount", expected);
+          expect(mock.history.get.length).toEqual(1);
+          expect(mock.history.get[0].url).toEqual(`/accounts/3`);
+        }
+      );
+    });
+    it("update account", async () => {
+      const commit = jest.fn();
+      const rootGetters = {
+        allAccounts: [
+          {
+            id: 3,
+            userId: 1,
+            accNumber: 300,
+            name: "new",
+            balance: 0,
+            interest: 3.0,
+            type: "Sparekonto",
+          },
+        ],
+      };
+      const requestId: number = 3;
+      const response: any = {
+        id: 3,
+        accountNumber: 300,
+        type: "Sparekonto",
+        user: 1,
+        name: "new",
+        balance: 100,
+        interestRate: 3.0,
+      };
+      const expected: Account = {
+        id: 3,
+        userId: 1,
+        accNumber: 300,
+        name: "new",
+        balance: 100,
+        interest: 3.0,
+        type: "Sparekonto",
+      };
+      const fetchPublicAccountById = actions.fetchPublicAccountById as Function;
+      mock.onGet(`/accounts/3`).reply(200, response);
+
+      await fetchPublicAccountById({ commit, rootGetters }, requestId).then(
+        () => {
+          expect(commit).toHaveBeenCalledTimes(3);
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+          expect(commit).toHaveBeenCalledWith("updateAccount", expected);
+          expect(mock.history.get.length).toEqual(1);
+          expect(mock.history.get[0].url).toEqual(`/accounts/3`);
+        }
+      );
     });
   });
 });
