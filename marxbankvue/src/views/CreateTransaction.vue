@@ -2,6 +2,7 @@
   <main class="w-1/4">
     <h1>Fra</h1>
     <SearchBar
+      id="fromAccount"
       ref="inputFromAccount"
       :reciever="false"
       :data="filterAccountsByUserIdAndName(getUserId, fromSearchTerm)"
@@ -10,7 +11,8 @@
       @accountSelected="onFromAccountSelected" />
     <h1>Til</h1>
     <SearchBar
-      ref="inputFromAccount"
+      id="toAccount"
+      ref="inputToAccount"
       :reciever="true"
       :data="filterAccountsByName(recieverSearchTerm)"
       :placeholder="'Velg en konto eller søk etter id...'"
@@ -27,10 +29,10 @@ import SearchBar from "../components/SearchBar.vue";
 import { mapGetters, mapActions } from "vuex";
 import { Account, TransactionRequest } from "../types/types";
 import { defineComponent } from "@vue/runtime-core";
-// import { TransactionRequest } from '../types/types';
+// import { defineComponent } from "@vue/runtime-core";
+// import { TransactionRequest } from '../types/types'; 
 
 export default defineComponent({
-  name: "CreateTransaction",
   components: {
     SearchBar,
   },
