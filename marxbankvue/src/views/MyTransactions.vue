@@ -18,8 +18,7 @@ export default {
     ...mapGetters(["allTransactions"]),
   },
   async created() {
-    await this.fetchAccounts();
-    await this.fetchAccountsByTransactions();
+    await Promise.all([this.fetchAccounts(), this.fetchAccountsByTransactions()]);
     await this.fetchTransactions();
   },
   methods: {

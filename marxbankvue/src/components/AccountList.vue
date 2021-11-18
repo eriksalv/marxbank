@@ -22,7 +22,7 @@
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
         <Account
-          v-for="account in allAccounts"
+          v-for="account in filterAccountsByUserId(getUserId)"
           :id="account.id"
           :key="account.id"
           :acc-number="account.accNumber"
@@ -42,7 +42,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "AccountList",
-  computed: mapGetters(["allAccounts"]),
+  computed: mapGetters(["filterAccountsByUserId", "getUserId"]),
   components: {
     Account,
   },

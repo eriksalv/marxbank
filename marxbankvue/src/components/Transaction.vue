@@ -46,8 +46,10 @@ export default {
     };
   },
   created() {
-    this.fromAccount = this.$store.getters.getAccountById(parseInt(this.from));
-    this.toAccount = this.$store.getters.getAccountById(parseInt(this.to));
+    if (this.from && this.to) {
+      this.fromAccount = this.$store.getters.getAccountById(parseInt(this.from));
+      this.toAccount = this.$store.getters.getAccountById(parseInt(this.to));
+    }
   },
 };
 </script>

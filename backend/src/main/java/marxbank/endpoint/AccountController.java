@@ -3,6 +3,7 @@ package marxbank.endpoint;
 import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
 import marxbank.API.DepositWithdrawRequest;
+import marxbank.API.PublicAccountResponse;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
@@ -54,9 +55,9 @@ public class AccountController {
 
     @GetMapping
     @Transactional
-    public ResponseEntity<List<AccountResponse>> findAll() {
-        List<AccountResponse> result = new ArrayList<AccountResponse>();
-        accountRepository.findAll().forEach(a -> result.add(new AccountResponse(a)));
+    public ResponseEntity<List<PublicAccountResponse>> findAll() {
+        List<PublicAccountResponse> result = new ArrayList<>();
+        accountRepository.findAll().forEach(a -> result.add(new PublicAccountResponse(a)));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -68,7 +69,7 @@ public class AccountController {
      */
     @GetMapping("/transactions")
     @Transactional
-    public ResponseEntity<List<AccountResponse>> findByTransactions(
+    public ResponseEntity<List<PublicAccountResponse>> findByTransactions(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         if (token == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -76,7 +77,7 @@ public class AccountController {
         if (user == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        List<AccountResponse> result = new ArrayList<AccountResponse>();
+        List<PublicAccountResponse> result = new ArrayList<>();
 
         List<Transaction> userTransactions = transactionService.getTransactionForUser(user.getId());
         List<Transaction> filtered = userTransactions.stream().filter(t -> t.isBetweenDifferentUsers()).collect(Collectors.toList());
@@ -84,11 +85,11 @@ public class AccountController {
         filtered.forEach(t -> {
             if (t.getFrom().getUser().equals(user)) {
                 if (accountRepository.findById(t.getReciever().getId()).isPresent()) {
-                    result.add(new AccountResponse(t.getReciever()));
+                    result.add(new PublicAccountResponse(t.getReciever()));
                 }
             } else {
                 if (accountRepository.findById(t.getFrom().getId()).isPresent()) {
-                    result.add(new AccountResponse(t.getFrom()));
+                    result.add(new PublicAccountResponse(t.getFrom()));
                 }
             }
         });
@@ -98,12 +99,12 @@ public class AccountController {
 
     @GetMapping("/{id}")
     @Transactional
-    public ResponseEntity<AccountResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<PublicAccountResponse> findById(@PathVariable Long id) {
         if (!accountRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         Account acc = accountRepository.findById(id).get();
-        return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(acc));
+        return ResponseEntity.status(HttpStatus.OK).body(new PublicAccountResponse(acc));
     }
 
     @GetMapping("/myAccounts")
