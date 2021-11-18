@@ -42,21 +42,31 @@
       </div>
 
       <div class="w-full">
-        <h1 class="text-3xl md:text-2xl font-bold mb-3 text-left">Nyligste aktivitet</h1>
-        <hr style="height:1px;border-width:0;color:gray;background-color:gray"> 
+        <h1 class="text-3xl md:text-2xl font-bold mb-3 text-left">
+          Nyligste aktivitet
+        </h1>
+        <hr
+          style="
+            height: 1px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+          " />
         <div v-if="allTransactions.length">
-          <RecentTransaction 
-            :date="transaction.date" 
-            :from="transaction.from" 
+          <RecentTransaction
+            v-for="transaction in allTransactions.slice(0, 1)"
+            :key="transaction.amount"
+            :date="transaction.date"
+            :from="transaction.from"
             :to="transaction.to"
             :amount="transaction.amount"
-            v-for="transaction in allTransactions.slice(0,1)" :key="transaction.amount" 
             class="transaction" />
         </div>
         <div v-else>
-          <h1 class="text-left italic text-gray-700">Ingen nylige aktiviteter </h1>
+          <h1 class="text-left italic text-gray-700">
+            Ingen nylige aktiviteter
+          </h1>
         </div>
-
       </div>
     </main>
 
@@ -83,7 +93,6 @@
         <div>
           <button
             id="calc"
-            @click="goToCalc()"
             class="
               bg-green-500
               hover:bg-green-400
@@ -95,7 +104,8 @@
               hover:border-green-500
               rounded
               mt-6
-            ">
+            "
+            @click="goToCalc()">
             Prøv sparekalkulatoren!
           </button>
         </div>
@@ -118,7 +128,7 @@ export default {
   },
   methods: {
     goToCalc() {
-      this.$router.push({ name: "Calculator"});
+      this.$router.push({ name: "Calculator" });
     },
   },
 };

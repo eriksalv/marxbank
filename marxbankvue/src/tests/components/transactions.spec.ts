@@ -42,18 +42,22 @@ describe("createTransactionView", () => {
     mockFilterAccountsByName = jest.fn().mockReturnValue(initState.accounts);
     mockFilterAccountsByUserIdAndName = jest
       .fn()
-      .mockImplementation((a: number, b: string) => {return initState.accounts;});
+      .mockImplementation((a: number, b: string) => {
+        return initState.accounts;
+      });
     mockGetUserId = jest.fn().mockReturnValue(1);
     mockCreateTransaction = jest.fn();
     mockFetchAccounts = jest.fn();
 
     store = createStore({
-      state() {initState},
+      state() {
+        initState;
+      },
       getters: {
         allAccounts: () => mockAllAccounts,
         getUserId: () => mockGetUserId,
         filterAccountsByName: () => mockFilterAccountsByName,
-        filterAccountsByUserIdAndName: () => mockFilterAccountsByUserIdAndName
+        filterAccountsByUserIdAndName: () => mockFilterAccountsByUserIdAndName,
       },
       actions: {
         fetchAccounts: mockFetchAccounts,
@@ -76,30 +80,31 @@ describe("createTransactionView", () => {
 
   test("test on select account", async () => {
     const wrapper = mount(CreateTransaction, {
-        global: { plugins: [store] }
+      global: { plugins: [store] },
     });
-
 
     wrapper.vm.onFromAccountSelected(initState.accounts[0]);
     expect(wrapper.vm.$data.selectedFromAccount).toEqual(initState.accounts[0]);
     wrapper.vm.onRecieverAccountSelected(initState.accounts[1]);
-    expect(wrapper.vm.$data.selectedRecieverAccount).toEqual(initState.accounts[1]);
-  })
+    expect(wrapper.vm.$data.selectedRecieverAccount).toEqual(
+      initState.accounts[1]
+    );
+  });
 
   test("test on term changed", async () => {
-      const wrapper = mount(CreateTransaction, {
-          global: { plugins: [store] }
-      });
+    const wrapper = mount(CreateTransaction, {
+      global: { plugins: [store] },
+    });
 
-      wrapper.find("#fromAccount").find("input").setValue("test");
-      expect(wrapper.vm.$data.fromSearchTerm).toEqual("test");
-      wrapper.find("#toAccount").find("input").setValue("test2");
-      expect(wrapper.vm.$data.recieverSearchTerm).toEqual("test2")
+    wrapper.find("#fromAccount").find("input").setValue("test");
+    expect(wrapper.vm.$data.fromSearchTerm).toEqual("test");
+    wrapper.find("#toAccount").find("input").setValue("test2");
+    expect(wrapper.vm.$data.recieverSearchTerm).toEqual("test2");
   });
 
   test("test commit transaction", async () => {
     const wrapper = mount(CreateTransaction, {
-        global: { plugins: [store] }
+      global: { plugins: [store] },
     });
 
     wrapper.vm.onFromAccountSelected(initState.accounts[0]);
@@ -107,6 +112,5 @@ describe("createTransactionView", () => {
     wrapper.find("input[type=number]").setValue(100);
     wrapper.vm.commitTransaction();
     expect(mockCreateTransaction).toHaveBeenCalled();
-
   });
 });

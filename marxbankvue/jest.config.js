@@ -5,7 +5,7 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     "**/src/**/*.{js,vue,ts}",
     "!**/types.ts",

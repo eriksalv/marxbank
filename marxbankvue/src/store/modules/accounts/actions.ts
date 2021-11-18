@@ -48,12 +48,12 @@ export const actions: ActionTree<AccountState, RootState> = {
           console.log(element);
           const account: Account = {
             id: element.id,
-            userId: element.user,
+            userId: element.userId,
             name: element.name,
             accNumber: element.accountNumber,
-            balance: element.balance,
+            balance: null,
             type: element.type,
-            interest: element.interestRate,
+            interest: null,
           };
           accounts = [...accounts, account];
         });
@@ -110,12 +110,12 @@ export const actions: ActionTree<AccountState, RootState> = {
       .then((response) => {
         const account: Account = {
           id: response.data.id,
-          userId: response.data.user,
+          userId: response.data.userId,
           name: response.data.name,
           accNumber: response.data.accountNumber,
-          balance: response.data.balance,
+          balance: null,
           type: response.data.type,
-          interest: response.data.interestRate,
+          interest: null,
         };
         const allAccounts: Array<Account> = rootGetters.allAccounts;
         if (allAccounts.map((a: Account) => a.id).includes(account.id)) {

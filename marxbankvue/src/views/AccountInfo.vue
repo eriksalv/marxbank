@@ -95,10 +95,11 @@ export default defineComponent({
    * of the selected account are up to date, and calls setSelectedAccount
    */
   async created() {
-    this.setSelectedAccount(this.id);
-    await this.fetchAccountsByTransactions();
-    await this.fetchTransactionsByAccount(this.id);
-    await this.fetchAccountById(this.id);
+    await Promise.all([
+      this.fetchAccountById(this.id),
+      this.fetchAccountsByTransactions(),
+      this.fetchTransactionsByAccount(this.id),
+    ]);
     this.setSelectedAccount(this.id);
   },
   methods: {
