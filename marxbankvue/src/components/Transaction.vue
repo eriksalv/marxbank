@@ -47,7 +47,9 @@ export default {
   },
   created() {
     if (this.from && this.to) {
-      this.fromAccount = this.$store.getters.getAccountById(parseInt(this.from));
+      this.fromAccount = this.$store.getters.getAccountById(
+        parseInt(this.from)
+      );
       this.toAccount = this.$store.getters.getAccountById(parseInt(this.to));
     }
   },

@@ -3,6 +3,10 @@ package marxbank.API;
 import marxbank.model.Account;
 import marxbank.util.AccountType;
 
+/**
+ * Alternative account-response that hides sensitive
+ * information, i.e. balance and interestRate. 
+ */
 public class PublicAccountResponse {
     private Long id;
     private int accountNumber;

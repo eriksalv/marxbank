@@ -30,7 +30,7 @@ import { mapGetters, mapActions } from "vuex";
 import { Account, TransactionRequest } from "../types/types";
 import { defineComponent } from "@vue/runtime-core";
 // import { defineComponent } from "@vue/runtime-core";
-// import { TransactionRequest } from '../types/types'; 
+// import { TransactionRequest } from '../types/types';
 
 export default defineComponent({
   components: {

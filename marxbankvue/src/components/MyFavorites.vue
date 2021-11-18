@@ -1,19 +1,17 @@
 <template>
   <div>
     <div v-if="allAccounts.length">
-      <MyFavorite 
-      v-for="account in allAccounts.slice(0, 3)"
-      :key="account.id"
-      :acc-number="account.accNumber"
-      :balance="account.balance"
-      :acc-name="account.name"
-      :type="account.type"
-      class="account"
-      @click="showAccount(account.accNumber)" />
+      <MyFavorite
+        v-for="account in allAccounts.slice(0, 3)"
+        :key="account.id"
+        :acc-number="account.accNumber"
+        :balance="account.balance"
+        :acc-name="account.name"
+        :type="account.type"
+        class="account"
+        @click="showAccount(account.accNumber)" />
     </div>
-    <div v-else class=" italic"> 
-      Ingen kontoer tilknyttet
-    </div>
+    <div v-else class="italic">Ingen kontoer tilknyttet</div>
   </div>
 </template>
 
@@ -29,7 +27,7 @@ export default {
   },
   methods: {
     showAccount(accNumber) {
-      //TODO: bytt til konto view 
+      //TODO: bytt til konto view
       console.log(accNumber);
     },
   },
