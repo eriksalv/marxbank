@@ -37,7 +37,7 @@
           name="repeatPassword"
           :disabled="authStatus === 'loading'" />
       </div>
-      <div class="errorText" v-if="error">
+      <div v-if="error" class="errorText">
         {{ errorMessage }}
       </div>
       <button
@@ -98,23 +98,19 @@ export default defineComponent({
         this.errorMessage = "Username is too short";
         this.error = true;
         return;
-      }
-      if (this.username.length > 30) {
+      } else if (this.username.length > 30) {
         this.errorMessage = "Username is too long";
         this.error = true;
         return;
-      }
-      if (this.username.match(/[^a-zA-Z ]/g)) {
+      } else if (this.username.match(/[^a-zA-Z ]/g)) {
         this.errorMessage = "Username contains illegal characters";
         this.error = true;
         return;
-      }
-      if (this.username.trim() !== this.username) {
+      } else if (this.username.trim() !== this.username) {
         this.errorMessage = "Username cannot contain spaces";
         this.error = true;
         return;
-      }
-      if (
+      } else if (
         !this.email.match(
           "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}"
         )
@@ -122,18 +118,15 @@ export default defineComponent({
         this.errorMessage = "Email is not valid";
         this.error = true;
         return;
-      }
-      if (this.password.length < 6) {
+      } else if (this.password.length < 6) {
         this.errorMessage = "Password is too short";
         this.error = true;
         return;
-      }
-      if (this.password.trim() !== this.password) {
+      } else if (this.password.trim() !== this.password) {
         this.errorMessage = "Password canno't contain spaces";
         this.error = true;
         return;
-      }
-      if (this.password !== this.repeatPassword) {
+      } else if (this.password !== this.repeatPassword) {
         this.errorMessage = "Passwords does not match";
         this.error = true;
         return;
