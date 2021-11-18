@@ -4,6 +4,7 @@ export interface AuthState {
   status: Status;
   token: string | null;
   userId: number | null;
+  statusCode: number;
 }
 
 export interface LoginRequest {

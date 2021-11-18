@@ -121,7 +121,7 @@ export default defineComponent({
     RegisterComponent,
   },
   computed: {
-    ...mapGetters(["authStatus"]),
+    ...mapGetters(["authStatus", "getStatusCode"]),
   },
   data() {
     return {
@@ -141,7 +141,7 @@ export default defineComponent({
 
       this.login(request)
         .then(() => this.$router.push("/"))
-        .catch((err: any) => console.log(err));
+        .catch(() => console.log(this.getStatusCode));
     },
 
     createNewUser(): void {

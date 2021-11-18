@@ -125,7 +125,7 @@ describe("Register", () => {
     expect(mockAuthStatus).toHaveBeenCalled();
   });
 
-  test("click signup", async () => {
+  test("invalid signup", async () => {
     const wrapper = mount(RegisterComponent, {
       global: { plugins: [store] },
     });
@@ -133,7 +133,41 @@ describe("Register", () => {
 
     await signupBtn.trigger("click");
 
-    expect(mockSignup).toHaveBeenCalledTimes(1);
+    expect(wrapper.vm.$data.error).toEqual(true);
+    expect(wrapper.vm.$data.errorMessage).toEqual("Username is too short");
+    expect(mockSignup).toHaveBeenCalledTimes(0);
+  });
+
+  test("valid signup", async () => {
+    const mockRouter = {
+      push: jest.fn(),
+    };
+
+    const wrapper = mount(RegisterComponent, {
+      global: {
+        plugins: [store],
+        mocks: {
+          $router: mockRouter,
+        },
+      },
+    });
+    const signupBtn = wrapper.find("button");
+    const usernameInput = wrapper.find("#username");
+    const emailInput = wrapper.find("#email");
+    const passwordInput = wrapper.find("#password");
+    const repeatInput = wrapper.find("#repeatPassword");
+
+    await usernameInput.setValue("test");
+    await emailInput.setValue("email@email.com");
+    await passwordInput.setValue("password");
+    await repeatInput.setValue("password");
+
+    await signupBtn.trigger("click");
+
+    expect(wrapper.vm.$data.error).toEqual(false);
+    expect(wrapper.vm.$data.errorMessage).toEqual("");
+    expect(mockRouter.push).toHaveBeenCalledTimes(1);
+    expect(mockRouter.push).toHaveBeenCalledWith("/");
   });
 
   test("input", async () => {

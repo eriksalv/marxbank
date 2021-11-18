@@ -20,4 +20,7 @@ export const getters: GetterTree<AuthState, RootState> = {
   getUserId: (state): number | null => {
     return state.userId;
   },
+  getStatusCode: (state): number => {
+    return state.statusCode;
+  },
 };

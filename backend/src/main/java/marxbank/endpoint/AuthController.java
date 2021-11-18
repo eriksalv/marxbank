@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,12 +30,14 @@ public class AuthController {
     private UserRepository userRepository;
     private AuthService authService;
     private TokenRepository tokenRepository;
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     public AuthController(UserRepository userRepository, AuthService authService, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.authService = authService;
         this.tokenRepository = tokenRepository;
+        encoder = new BCryptPasswordEncoder();
     }
 
     @PostMapping("/login")
@@ -49,7 +52,7 @@ public class AuthController {
 
         User user = userRepository.findByUsername(request.getUsername()).get();
 
-        if (!user.getPassword().equals(request.getPassword()))
+        if (!encoder.matches(request.getPassword(), user.getPassword()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         String token = authService.createTokenForUser(user);
@@ -81,6 +84,8 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         if (userRepository.findByUsername(user.getUsername()).isPresent())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+
+        user.setPassword(encoder.encode(request.getPassword()));
 
         userRepository.save(user);
         String token = authService.createTokenForUser(user);

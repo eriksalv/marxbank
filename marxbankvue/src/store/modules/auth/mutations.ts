@@ -18,4 +18,7 @@ export const mutations: MutationTree<AuthState> = {
   setUserId: (state, userId: number) => {
     state.userId = userId;
   },
+  setStatusCode: (state, statusCode: number) => {
+    state.statusCode = statusCode;
+  },
 };

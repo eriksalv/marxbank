@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
@@ -24,6 +25,8 @@ import marxbank.service.AuthService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AuthTest {
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     
     @LocalServerPort
     private int port;
@@ -51,7 +54,7 @@ public class AuthTest {
         assertEquals(HttpStatus.NOT_FOUND, authController.login(notFoundRequest).getStatusCode());
 
         // create user
-        User user = (new SignUpRequest("yeet", "yeet", "yeet@yeet.com")).createUser();
+        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
         userRepository.save(user);
 
         // wrong password
@@ -72,7 +75,7 @@ public class AuthTest {
 
         assertEquals(HttpStatus.FORBIDDEN, authController.login(invalidToken).getStatusCode());
 
-        User user = (new SignUpRequest("yeet", "yeet", "yeet@yeet.com")).createUser();
+        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
         userRepository.save(user);
 
         String token = String.format("Bearer:%s", authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken());
@@ -98,7 +101,7 @@ public class AuthTest {
     @Test
     @DisplayName("test logout")
     public void testLogout() {
-        User user = (new SignUpRequest("yeet", "yeet", "yeet@yeet.com")).createUser();
+        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
         userRepository.save(user);
 
         String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
@@ -122,13 +125,14 @@ public class AuthTest {
     @DisplayName("test authService createTokenForUser")
     public void testCreateTokenForUser() {
         
-        User user = (new SignUpRequest("yeet", "yeet", "yeet@yeet.com")).createUser();
+        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
         userRepository.save(user);
 
         // test updating token
         String oldtoken = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
         String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
-
+        
+        //ser litt rart ut å kalle getToken().getToken()... ¯\_(ツ)_/¯
         assertEquals(userRepository.findByUsername("yeet").get().getToken().getToken(), token);
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -141,7 +145,7 @@ public class AuthTest {
     @Test
     @DisplayName("test authService getUserFromToken")
     public void testGetUserFromToken() {
-        User user = (new SignUpRequest("yeet", "yeet", "yeet@yeet.com")).createUser();
+        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
         userRepository.save(user);
 
         // test updating token
