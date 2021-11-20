@@ -3,8 +3,6 @@ import { GetterTree } from "vuex";
 import { User, UserState } from "./types";
 
 export const getters: GetterTree<UserState, RootState> = {
-  currentUser:
-    (state) =>
-    (token: string): User | undefined =>
-      state.users.find((user) => user.token === token),
+  getLoggedInUser: (state) => state.loggedInUser,
+  getUserStatus: (state) => state.userStatus,
 };

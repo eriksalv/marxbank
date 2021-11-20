@@ -1,15 +1,30 @@
-import { RestService } from "@/service/restService";
 import { RootState } from "@/store/types";
 import { ActionTree } from "vuex";
 import { User, UserState } from "./types";
+import axios from 'axios';
+
+const BASE_URL = "/users";
 
 export const actions: ActionTree<UserState, RootState> = {
-  async fetchUsers({ commit }) {
-    //TODO: få tak i token fra auth modul når den er implementert
-    const api = new RestService();
-    const response = await api.get("users");
-    console.log(response);
-    commit("setUsers", response);
-    return response;
+  async fetchUserById({ commit, rootGetters }, id: number) {
+    commit("setUserStatus", "loading");
+    await axios
+      .get(`${BASE_URL}/${id}`, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
+      })
+      .then((response) => {
+        const user: User = {
+          id: response.data.id,
+          username: response.data.username,
+          email: response.data.email,
+        }
+        commit("setLoggedInUser", user);
+        commit("setUserStatus", "success");
+      })
+      .catch((err) => {
+        commit("setUserStatus", "error");
+      });
   },
 };
