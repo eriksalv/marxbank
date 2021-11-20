@@ -8,7 +8,7 @@ const BASE_URL = "/users";
 
 export const actions: ActionTree<UserState, RootState> = {
   async fetchUserById({ commit, rootGetters }, id: number) {
-    commit("setUserStatus", "loading");
+    commit("setUserStatus", { status: "loading" });
     await axios
       .get(`${BASE_URL}/${id}`, {
         headers: {
@@ -22,10 +22,10 @@ export const actions: ActionTree<UserState, RootState> = {
           email: response.data.email,
         };
         commit("setLoggedInUser", user);
-        commit("setUserStatus", "success");
+        commit("setUserStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setUserStatus", "error");
+        commit("setUserStatus", { status: "error" });
       });
   },
 
@@ -36,7 +36,7 @@ export const actions: ActionTree<UserState, RootState> = {
       request: EditUserRequest;
     }
   ) {
-    commit("setUserStatus", "loading");
+    commit("setUserStatus", { status: "loading" });
     await axios
       .post(`${BASE_URL}/${body.id}/edit`, body.request, {
         headers: {
@@ -50,7 +50,7 @@ export const actions: ActionTree<UserState, RootState> = {
           email: response.data.email,
         };
         commit("setLoggedInUser", user);
-        commit("setUserStatus", "success");
+        commit("setUserStatus", { status: "success" });
       })
       .catch((err) => {
         commit("setUserStatus", {
