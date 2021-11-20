@@ -77,6 +77,9 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
         }
         
+        if (!request.getUsername().equals(user.getUsername()) && userRepository.findByUsername(request.getUsername()).isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
+
         try {
             user.setUsername(request.getUsername());
             user.setPassword(encoder.encode(request.getPassword()));
