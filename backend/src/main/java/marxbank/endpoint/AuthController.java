@@ -100,9 +100,14 @@ public class AuthController {
     @PostMapping("/signup")
     @Transactional
     public ResponseEntity<LogInResponse> signUp(@RequestBody SignUpRequest request) {
-        User user = request.createUser();
-        if (!user.validate())
+        User user = null;
+
+        try {
+            user = request.createUser();
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
         if (userRepository.findByUsername(user.getUsername()).isPresent())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 

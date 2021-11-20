@@ -8,5 +8,5 @@ export const mutations: MutationTree<UserState> = {
   },
   setUserStatus: (state, status: Status) => {
     state.userStatus = status;
-  }
+  },
 };
