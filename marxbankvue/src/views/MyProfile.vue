@@ -1,7 +1,7 @@
 <template>
   <div class="w-2/3">
     <h1 class="title">
-      {{ getUserData() }}
+      {{ getLoggedInUser.username }}
     </h1>
     <label for="username">Brukernavn</label>
     <input
@@ -26,14 +26,13 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "MyProfile",
   computed: {
-    ...mapGetters(["currentUser", "getToken"]),
+    ...mapGetters(["getLoggedInUser", "getToken", "getUserId"]),
+  },
+  async created() {
+    await this.fetchUserById(this.getUserId);
   },
   methods: {
-    ...mapActions(["logout"]),
-    getUserData() {
-      //TODO: fetch bruker fra api
-      return this.$store.getters.currentUser("69").id;
-    },
+    ...mapActions(["logout", "fetchUserById"]),
     requestLogout() {
       this.logout(this.getToken).then(() => {
         this.$router.push("/login");

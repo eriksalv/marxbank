@@ -41,15 +41,24 @@ public class UserController {
     //     return result;
     // }
 
+    /**
+     * Finds a specific user by id (and token)
+     * @param token token of logged in user
+     * @param id id of user
+     * @return user response with http status (200) if request is valid,
+     * or null with http status 403 (forbidden) if token is null or user
+     * is null, or null with http status 404 (not found) if the provided
+     * id doesn't match the actual id.
+     */
     @GetMapping("/{id}")
     @Transactional
     public ResponseEntity<UserResponse> findById(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token, @PathVariable Long id) {
-        if (token == null)
+        if (token == null || authService.getUserFromToken(token) == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        if (authService.getUserFromToken(token) == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (!authService.getUserFromToken(token).getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(authService.getUserFromToken(token)));
