@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,20 +30,14 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final AuthService authService;
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     public UserController(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
         this.authService = authService;
+        encoder = new BCryptPasswordEncoder();
     }
-
-    // @GetMapping
-    // @Transactional
-    // public List<UserResponse> findAll() {
-    //     List<UserResponse> result = new ArrayList<UserResponse>();
-    //     userRepository.findAll().forEach(u -> result.add(new UserResponse(u)));
-    //     return result;
-    // }
 
     /**
      * Finds a specific user by id (and token)
@@ -58,10 +53,10 @@ public class UserController {
     public ResponseEntity<UserResponse> findById(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token, @PathVariable Long id) {
         if (token == null || authService.getUserFromToken(token) == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized access");
 
         if (!authService.getUserFromToken(token).getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id not found");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(authService.getUserFromToken(token)));
@@ -71,16 +66,20 @@ public class UserController {
     @Transactional
     public ResponseEntity<UserResponse> editUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @PathVariable Long id, @RequestBody EditUserRequest request) {
         if (token == null || authService.getUserFromToken(token) == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized access");
 
         if (!authService.getUserFromToken(token).getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id not found");
         }
         User user = authService.getUserFromToken(token);
+
+        if (!encoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
+        }
         
         try {
             user.setUsername(request.getUsername());
-            user.setPassword(request.getPassword());
+            user.setPassword(encoder.encode(request.getPassword()));
             user.setEmail(request.getEmail());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

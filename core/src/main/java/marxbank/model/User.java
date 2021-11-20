@@ -156,10 +156,6 @@ public class User {
         return true;
     }
 
-    public boolean isValidParams(String username, String password, String email) {
-        return validateUsername(username, false) && validatePassword(password, false) && validateEmail(email, false);
-    }
-
     @Override
     public String toString() {
         return String.format("id:%s, username:%s", this.getId(), this.getUsername());
