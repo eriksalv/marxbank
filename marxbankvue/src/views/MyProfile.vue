@@ -32,6 +32,8 @@
       placeholder="Nåværende passord"
       class="input" />
     <button class="button" @click="editProfile">Lagre endringer</button>
+    <p v-if="errorMsg && !successMsg" class="text-red-600">{{ errorMsg }}</p>
+    <p v-if="successMsg && !errorMsg" class="text-green-600">{{ successMsg }}</p>
     <button class="button bg-red-600" @click="requestLogout">Logg ut</button>
   </div>
 </template>
@@ -47,6 +49,8 @@ export default {
       newPassword: null,
       currentPassword: null,
       newEmail: null,
+      errorMsg: null,
+      successMsg: null,
     }
   },
   computed: {
@@ -72,8 +76,12 @@ export default {
         oldPassword: this.currentPassword,
         email,
       };
-      await this.editUser({ id: this.getUserId, request }).catch((err) => {
-        console.log(err);
+      await this.editUser({ id: this.getUserId, request }).then(() => {
+        this.errorMsg = false;
+        this.successMsg = "Changes saved successfully"
+      }).catch((err) => {
+        this.successMsg = false;
+        this.errorMsg = err.message;
       });
     }
   },

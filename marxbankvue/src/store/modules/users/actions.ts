@@ -53,7 +53,10 @@ export const actions: ActionTree<UserState, RootState> = {
         commit("setUserStatus", "success");
       })
       .catch((err) => {
-        commit("setUserStatus", "error");
+        commit("setUserStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
+        });
       });
   },
 };
