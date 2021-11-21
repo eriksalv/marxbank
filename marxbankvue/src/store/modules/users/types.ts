@@ -1,8 +1,12 @@
+import { Status } from "@/store/types";
+
 export interface User {
   readonly id: number;
-  token: string;
+  username: string;
+  email: string;
 }
 
 export interface UserState {
-  users: Array<User>;
+  userStatus: Status;
+  loggedInUser: User;
 }

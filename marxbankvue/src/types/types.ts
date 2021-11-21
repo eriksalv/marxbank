@@ -44,3 +44,10 @@ export interface Account {
   interest: number | null;
   type: string;
 }
+
+export interface EditUserRequest {
+  username: string;
+  password: string;
+  oldPassword: string;
+  email: string;
+}
