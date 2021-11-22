@@ -2,15 +2,15 @@
   <div class="w-2/3">
     <transition name="fade">
       <Alert
-        @onHideAlert="resetMsg"
         v-if="!errorMsg && successMsg"
-        :message="successMsg" />
+        :message="successMsg"
+        @onHideAlert="resetMsg" />
     </transition>
     <transition name="fade">
       <ErrorAlert
-        @onHideAlert="resetMsg"
         v-if="errorMsg && !successMsg"
-        :message="errorMsg" />
+        :message="errorMsg"
+        @onHideAlert="resetMsg" />
     </transition>
     <h1 class="title">
       {{ getLoggedInUser.username }}
