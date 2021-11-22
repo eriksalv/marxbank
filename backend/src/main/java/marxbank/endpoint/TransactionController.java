@@ -13,15 +13,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import marxbank.API.TransactionRequest;
 import marxbank.API.TransactionResponse;
 import marxbank.model.Account;
 import marxbank.repository.AccountRepository;
 import marxbank.repository.TransactionRepository;
 import marxbank.model.User;
+import marxbank.service.AccountService;
 import marxbank.service.AuthService;
 import marxbank.service.TransactionService;
 
@@ -34,16 +38,18 @@ public class TransactionController {
     private final AuthService authService;
     private final TransactionService transactionService;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @Autowired
-    public TransactionController(TransactionRepository transactionRepository, AuthService authService, TransactionService transactionService, AccountRepository accountRepository) {
+    public TransactionController(TransactionRepository transactionRepository, AuthService authService, TransactionService transactionService, AccountRepository accountRepository, AccountService accountService) {
         this.transactionRepository = transactionRepository;
         this.authService = authService;
         this.transactionService = transactionService;
         this.accountRepository = accountRepository;
+        this.accountService = accountService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     @Transactional
     public List<TransactionResponse> findAll() {
         List<TransactionResponse> result = new ArrayList<TransactionResponse>();
@@ -67,11 +73,9 @@ public class TransactionController {
 
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        Optional<Account> OptionalAccount = accountRepository.findById(fromId);
-        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        Account account = OptionalAccount.get();
-    
-        if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        Optional<Account> optionalAccount = accountRepository.findById(fromId);
+        if (!optionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        Account account = optionalAccount.get();
 
         if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
@@ -90,13 +94,9 @@ public class TransactionController {
 
         if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        Optional<Account> OptionalAccount = accountRepository.findById(recieverId);
-        if (!OptionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        Account account = OptionalAccount.get();
+        if (!accountRepository.findById(recieverId).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     
-        if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-
-        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (!accountService.checkIfUserOwnsAccount(user.getId(), recieverId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 
@@ -142,6 +142,31 @@ public class TransactionController {
         List<TransactionResponse> transactions = this.transactionService.getTransactionForUser(user.getId()).stream().map(t -> new TransactionResponse(t)).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(transactions);
+    }
+
+    @PostMapping("/transfer")
+    @Transactional
+    public ResponseEntity<TransactionResponse> transferBetweenAccounts(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @RequestBody TransactionRequest request) {
+
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        User user = this.authService.getUserFromToken(token);
+
+        if (user == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!this.accountRepository.findById(request.getFrom()).isPresent() 
+            || !this.accountRepository.findById(request.getTo()).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        
+        if (!this.accountService.checkIfUserOwnsAccount(user.getId(), request.getFrom())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (request.getAmount() <= 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        if (this.accountRepository.findById(request.getFrom()).get().getBalance() - request.getAmount() < 0) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        TransactionResponse t = this.transactionService.resolveTransactionRequest(request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(t);
     }
 
 }

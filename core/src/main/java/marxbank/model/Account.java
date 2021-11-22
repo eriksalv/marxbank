@@ -38,7 +38,7 @@ public abstract class Account {
     @Column
     private double interestRate; // In percent
 
-    protected Account() {}
+    public Account() {}
 
     /**
      * Constructur for class Account.
@@ -168,6 +168,10 @@ public abstract class Account {
         return this.type;
     }
 
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -240,9 +244,14 @@ public abstract class Account {
        if(Math.abs(this.getBalance() - account.getBalance()) < epsilon) return false;
        if (this.accountNumber != account.getAccountNumber()) return false;
        return Objects.equals(id, account.getId());
-   }
+    }
+
     public int getNumberOfTransactions() {
         return getTransactions().size();
+    }
+
+    public void setAccountNumber() {
+        this.accountNumber = generateAccountNumber();
     }
 
     public abstract int generateAccountNumber();

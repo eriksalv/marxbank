@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,36 +19,41 @@ import marxbank.API.LogInResponse;
 import marxbank.API.SignUpRequest;
 import marxbank.API.UserResponse;
 import marxbank.model.User;
+import marxbank.repository.TokenRepository;
 import marxbank.repository.UserRepository;
 import marxbank.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    
+
     private UserRepository userRepository;
     private AuthService authService;
+    private TokenRepository tokenRepository;
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
-    public AuthController(UserRepository userRepository, AuthService authService) {
+    public AuthController(UserRepository userRepository, AuthService authService, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.authService = authService;
+        this.tokenRepository = tokenRepository;
+        encoder = new BCryptPasswordEncoder();
     }
-
 
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<LogInResponse> login(@RequestBody LogInRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
 
-        System.out.println(username);
-        
-        if (!userRepository.findByUsername(username).isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (request.getUsername().length() < 4 || request.getPassword().length() < 4)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        User user = userRepository.findByUsername(username).get();
-        
-        if (!user.getPassword().equals(password)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if (!userRepository.findByUsername(request.getUsername()).isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+        User user = userRepository.findByUsername(request.getUsername()).get();
+
+        if (!encoder.matches(request.getPassword(), user.getPassword()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         String token = authService.createTokenForUser(user);
 
@@ -56,21 +62,30 @@ public class AuthController {
 
     @GetMapping("/login")
     @Transactional
-    public ResponseEntity<UserResponse> login(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        
+    public ResponseEntity<UserResponse> login(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         if (authService.getUserFromToken(token) == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new UserResponse(userRepository.findByToken_Token(token).get()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new UserResponse(userRepository.findByToken_Token(AuthService.removeBearer(token)).get()));
     }
 
     @PostMapping("/signup")
     @Transactional
     public ResponseEntity<LogInResponse> signUp(@RequestBody SignUpRequest request) {
         User user = request.createUser();
-        if (!user.validate()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        if (!user.validate())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (userRepository.findByUsername(user.getUsername()).isPresent())
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+
+        user.setPassword(encoder.encode(request.getPassword()));
 
         userRepository.save(user);
         String token = authService.createTokenForUser(user);
@@ -78,9 +93,16 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+    public ResponseEntity<String> logout(
+            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        if (!tokenRepository.findByToken(token).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
         authService.removeToken(token);
-        return ResponseEntity.status(HttpStatus.OK).body("{\"signedOut\": \"true\"}");
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }

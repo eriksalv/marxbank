@@ -91,7 +91,7 @@
                         <phase>test</phase>
                     </execution>
                     <execution>
-                        <id>npm serve</id>
+                        <id>npm-serve</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
@@ -99,6 +99,16 @@
                             <arguments>run serve</arguments>
                         </configuration>
                         <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>prettier-check</id>
+                        <goals>
+                            <goal>npx</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>prettier --write --bracket-same-line src/</arguments>
+                        </configuration>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>

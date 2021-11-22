@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import marxbank.API.TransactionRequest;
+import marxbank.API.TransactionResponse;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.repository.AccountRepository;
@@ -35,7 +37,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public ArrayList<Transaction> getTransactionForUser(Long userId) {
+    public List<Transaction> getTransactionForUser(Long userId) {
 
         List<Long> accountsId = this.accountRepository.findByUser_Id(userId).get().stream().map(Account::getId).collect(Collectors.toList());
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -44,8 +46,28 @@ public class TransactionService {
             transactions.addAll(this.transactionRepository.findByFrom_Id(a).get());
             transactions.addAll(this.transactionRepository.findByReciever_Id(a).get());
         });
+
+        List<Transaction> distinct = transactions.stream().distinct().collect(Collectors.toList());
         
-        return transactions;
+        return distinct;
+    }
+
+    @Transactional
+    public TransactionResponse resolveTransactionRequest(TransactionRequest request) {
+        Account toAccount = this.accountRepository.findById(request.getTo()).get();
+        Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
+
+        Transaction t = new Transaction();
+        t.setAmount(request.getAmount());
+        t.setFrom(fromAccount);
+        t.setReciever(toAccount);
+        t.commitTransaction();
+
+        this.accountRepository.save(toAccount);
+        this.accountRepository.save(fromAccount);
+        this.transactionRepository.save(t);
+
+        return new TransactionResponse(t);
     }
 
 }

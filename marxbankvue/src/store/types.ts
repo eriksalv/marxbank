@@ -1,3 +1,5 @@
 export interface RootState {
-  message: string;
+  message: String;
 }
+
+export type Status = "" | "loading" | "error" | "success";

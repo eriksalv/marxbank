@@ -6,7 +6,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import marxbank.API.UserResponse;
-import marxbank.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

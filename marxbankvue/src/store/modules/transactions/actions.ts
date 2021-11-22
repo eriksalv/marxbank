@@ -1,16 +1,99 @@
-import { RestService } from "@/service/restService";
 import { RootState } from "@/store/types";
+import { TransactionRequest } from "@/types/types";
+import axios from "axios";
 import { ActionTree } from "vuex";
-import { TransactionState } from "./types";
+import { Transaction, TransactionState } from "./types";
+
+const BASE_URL = "/transactions";
 
 export const actions: ActionTree<TransactionState, RootState> = {
-  async fetchTransactions({ commit }) {
-    //man interagerer aldri med andre brukeres transaksjoner,
-    //så trenger bare hente sine egne
-    const api = new RestService();
-    const response = await api.get("transactions");
-    console.log(response);
-    commit("setTransactions", response);
-    return response;
+  /**
+   * fetches all transactions for the logged in user'
+   * and sets the returned transactions using the
+   * setTransactions-mutation.
+   */
+  async fetchTransactions({ commit, rootGetters }) {
+    commit("setTransactionStatus", "loading");
+    await axios
+      .get(BASE_URL + "/myTransactions", rootGetters.getToken)
+      .then((response) => {
+        let transactions: Array<Transaction> = [];
+        response.data.forEach((element: any) => {
+          const newTransaction: Transaction = {
+            id: element.id,
+            from: element.fromId,
+            to: element.recieverId,
+            amount: element.amount,
+            date: element.transactionDate,
+          };
+          transactions = [...transactions, newTransaction];
+        });
+        commit("setTransactions", transactions);
+        commit("setTransactionStatus", "success");
+      })
+      .catch((err) => {
+        commit("setTransactionStatus", "error");
+      });
+  },
+  /**
+   * sends a transaction request and recieves the created
+   * transaction as a response, which is then added to state
+   * using the addTransaction-mutation assuming nothing went wrong
+   * @param transactionRequest request to be sent
+   */
+  async createTransaction(
+    { commit, rootGetters },
+    transactionRequest: TransactionRequest
+  ) {
+    commit("setTransactionStatus", "loading");
+    await axios
+      .post(BASE_URL + "/transfer", transactionRequest, {
+        headers: {
+          Authorization: rootGetters.getToken,
+        },
+      })
+      .then((response) => {
+        const transaction: Transaction = {
+          id: response.data.id,
+          from: response.data.fromId,
+          to: response.data.recieverId,
+          amount: response.data.amount,
+          date: response.data.transactionDate,
+        };
+        commit("addTransaction", transaction);
+        commit("setTransactionStatus", "success");
+      })
+      .catch((err) => {
+        commit("setTransactionStatus", "error");
+      });
+  },
+  /**
+   * Fetches all transactions for a single account, and sets these
+   * transactions to state. Useful when fetching all transactions
+   * for a user isn't necessary
+   * @param id id of account
+   */
+  async fetchTransactionsByAccount({ commit, rootGetters }, id: number) {
+    commit("setTransactionStatus", "loading");
+    await axios
+      .get(`${BASE_URL}/myTransactions/${id}`, rootGetters.getToken)
+      .then((response) => {
+        let transactions: Array<Transaction> = [];
+        response.data.forEach((element: any) => {
+          const newTransaction: Transaction = {
+            id: element.id,
+            from: element.fromId,
+            to: element.recieverId,
+            amount: element.amount,
+            date: element.transactionDate,
+          };
+          transactions = [...transactions, newTransaction];
+        });
+        commit("setTransactions", transactions);
+        commit("setTransactionStatus", "success");
+      })
+      .catch((err) => {
+        commit("setTransactionStatus", "error");
+      });
   },
 };

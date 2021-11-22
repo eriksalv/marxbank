@@ -1,20 +1,27 @@
 <template>
   <div class="flex flex-row flex-wrap min-w-[80%] justify-center">
-    <AccountList class="min-w-max"></AccountList>
-    <AccountForm/>
+    <AccountList class="min-w-max" />
+    <AccountForm />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import AccountList from '../components/AccountList.vue'
-import AccountForm from '../components/AccountForm.vue'
+import AccountList from "../components/AccountList.vue";
+import AccountForm from "../components/AccountForm.vue";
+import { mapActions } from "vuex";
 
 export default {
-  name: 'MyAccounts',
+  name: "MyAccounts",
   components: {
     AccountList,
-    AccountForm
-  }
-}
+    AccountForm,
+  },
+  methods: {
+    ...mapActions(["fetchAccounts"]),
+  },
+  async created() {
+    await this.fetchAccounts();
+  },
+};
 </script>

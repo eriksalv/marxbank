@@ -1,8 +1,8 @@
 export interface User {
-    readonly id: number
-    token: string
+  readonly id: number;
+  token: string;
 }
-  
+
 export interface UserState {
-    users: Array<User>;
+  users: Array<User>;
 }

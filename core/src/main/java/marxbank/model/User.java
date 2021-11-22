@@ -28,7 +28,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Token token;
 
-    protected User() {}
+    public User() {}
 
     /**
      * Constructor for user with arguments
@@ -64,7 +64,8 @@ public class User {
     }
 
     public void setUsername(String newUsername) {
-        this.username = validateUsername(newUsername);
+        //validering?
+        this.username = newUsername;
     }
 
     public String getUsername() {
@@ -72,7 +73,7 @@ public class User {
     }
 
     public void setEmail(String newEmail) {
-        this.email = validateEmail(newEmail);
+        this.email = newEmail;
     }
 
     public String getEmail() {
@@ -120,7 +121,7 @@ public class User {
         return this.token;
     }
 
-    private String validateUsername(String username) {
+    private String validateUsername(String username) throws IllegalArgumentException {
         if (username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");
         if (username.length() > 30) throw new IllegalArgumentException("username is too long, must be 30 characters maximum.");
         if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
@@ -129,19 +130,27 @@ public class User {
         return username;
     }
 
-    private String validateEmail(String email) {
-            if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) throw new IllegalArgumentException("Email is not valid");
-            return email;
+    private boolean validateUsernameBool(String username) {
+        if (username.length() < 4) return false;
+        if (username.length() > 30) return false;
+        if (!username.trim().equals(username)) return false;
+        if (username.contains(" ")) return false;
+
+        return true;
     }
 
-    public boolean validate() {
-        try {
-            validateUsername(this.username);
-            validateEmail(this.email);
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+    private String validateEmail(String email) {
+        if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) throw new IllegalArgumentException("Email is not valid");
+        return email;
+    }
 
+    private boolean validateEmailBool(String email) {
+        return email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}");
+    }
+
+
+    public boolean validate() {
+        if (!validateUsernameBool(this.username) || !validateEmailBool(this.email)) return false;
         return true;
     }
 
