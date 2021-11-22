@@ -1,10 +1,16 @@
 <template>
   <div class="w-2/3">
     <transition name="fade">
-      <Alert @onHideAlert="resetMsg" v-if="!errorMsg && successMsg" :message="successMsg" />
+      <Alert
+        @onHideAlert="resetMsg"
+        v-if="!errorMsg && successMsg"
+        :message="successMsg" />
     </transition>
     <transition name="fade">
-      <ErrorAlert @onHideAlert="resetMsg" v-if="errorMsg && !successMsg" :message="errorMsg" />
+      <ErrorAlert
+        @onHideAlert="resetMsg"
+        v-if="errorMsg && !successMsg"
+        :message="errorMsg" />
     </transition>
     <h1 class="title">
       {{ getLoggedInUser.username }}
@@ -44,8 +50,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Alert from '@/components/global/Alert.vue';
-import ErrorAlert from '@/components/global/ErrorAlert.vue';
+import Alert from "@/components/global/Alert.vue";
+import ErrorAlert from "@/components/global/ErrorAlert.vue";
 
 export default {
   name: "MyProfile",
@@ -103,7 +109,7 @@ export default {
     resetMsg() {
       this.errorMsg = null;
       this.successMsg = null;
-    }
+    },
   },
 };
 </script>
