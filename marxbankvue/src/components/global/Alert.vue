@@ -12,7 +12,6 @@
       <div class="ml-auto pl-3">
         <div class="-mx-1.5 -my-1.5">
           <button
-            @click="hideAlert"
             type="button"
             class="
               inline-flex
@@ -26,7 +25,8 @@
               focus:ring-offset-2
               focus:ring-offset-green-50
               focus:ring-green-600
-            ">
+            "
+            @click="hideAlert">
             <span class="sr-only">Dismiss</span>
             <fa :icon="'times'" />
           </button>
