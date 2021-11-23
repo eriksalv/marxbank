@@ -16,11 +16,9 @@ Det er 4 forskjellige response-klasser, som holder på den mest nødvendige info
 * UserResponse: En klasse som innholder den helt nødvendige informasjonen om en bruker, nemlig den unike id-en, brukernavnet og emailen.
 
 ## Kort om de forskjellige Request-klassene
-Det er også 4 requestklasser, som holder informasjonen som må fomidles fra bruker til backenden for å kunne utføre forskjellige oppgaver.
+Det er også 3 requestklasser, som holder informasjonen som må fomidles fra bruker til backenden for å kunne utføre forskjellige oppgaver.
 
 * AccountRequest: En klasse som holder på informasjonen som kreves av brukeren for å opprette en ny konto, nemlig type konto og kontonavn. 
-
-* AccountTransferRequest: En klasse som tar holder på informasjonen som trengs for å få gjennomført en transaksjon, nemlig beløpet som skal overføres og en boolean som forteller om forespørselen er gjennomførbar.
 
 * LogInRequest: En klasse som holder på den nødvendige informasjonen fra brukeren i en forespørsel om å logge inn i banken og få tilgang til en brukers informasjon. Feltene er brukernavn og passord.
 

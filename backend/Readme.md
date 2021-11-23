@@ -1,7 +1,6 @@
 # Backend
 
-Backend er modulet vårt som er Backenden/REST-api serveren vår. Serveren er bygd på spring-boot og bruker h2 til datalagring. 
-
+Backend er modulet vårt som er backenden vår. Backend er bygd på spring-boot som rammeverk og h2 til datalagring. Backend er bygd på representational state transfer (REST) og har derfor en rekke forskjellige kall du kan gjøre til den. Du kan se alle kallene [her](docs/fullAPI.md)
 ## Kjøring og testing
 
 ### Installering
@@ -36,8 +35,4 @@ Hvis du ønsker å finne testdekningsgraden til backend, så kjører du jacoco m
 mvn jacoco:prepare-agent test jacoco:report
 ```
 
-Også finner du rapporten i `backend/target/site/jacoco/index.html`
-
-## API kall
-Serveren er bygd på Representation State Transfert (REST) arkitekturen og har derfor visse kall man kan gjøre til serveren. Under kan du se noen av kallene.
-
+Du finner rapporten i `backend/target/site/jacoco/index.html`
