@@ -62,10 +62,10 @@ public class TransactionTest {
     @DisplayName("test my transactions")
     public void testMyTransactions() {
         // check token
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findAllTransactionForUser(null).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findAllTransactionForUser("yeet").getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByAccount_Id(accountId1, null).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByAccount_Id(accountId1, "yeet").getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findAllTransactionForUser(null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findAllTransactionForUser("yeet").getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByAccount_Id(accountId1, null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByAccount_Id(accountId1, "yeet").getStatusCode());
 
         // check if account exists
         assertEquals(HttpStatus.NOT_FOUND, transactionController.findByAccount_Id((long) 999, token).getStatusCode());
@@ -73,7 +73,7 @@ public class TransactionTest {
         // check if user is trying ton get account that is not theirs
         String newUserToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
         Long newAccountId = accountController.createAccount(newUserToken, new AccountRequest(AccountType.SAVING.getTypeString(), "name")).getBody().getId();
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByAccount_Id(newAccountId, token).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByAccount_Id(newAccountId, token).getStatusCode());
         
         // check my transactions
         transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, 250));
@@ -99,11 +99,11 @@ public class TransactionTest {
         String secondUser = authController.login(new LogInRequest("username", "password")).getBody().getToken();
         
         // test token
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.transferBetweenAccounts(null, null).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.transferBetweenAccounts("token", null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.transferBetweenAccounts(null, null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.transferBetweenAccounts("token", null).getStatusCode());
         
         // test not owner of from account
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.transferBetweenAccounts(secondUser, new TransactionRequest(accountId1, accountId2, 500)).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.transferBetweenAccounts(secondUser, new TransactionRequest(accountId1, accountId2, 500)).getStatusCode());
 
         // test invalid accounts
         assertEquals(HttpStatus.BAD_REQUEST, transactionController.transferBetweenAccounts(token, new TransactionRequest((long) 99999, accountId2, 500)).getStatusCode());
@@ -124,14 +124,14 @@ public class TransactionTest {
     @Test
     @DisplayName("test find by reciever")
     public void testFindByReciever() {
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByReciever_Id(accountId1, null).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByReciever_Id(accountId1, "token").getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByReciever_Id(accountId1, null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByReciever_Id(accountId1, "token").getStatusCode());
 
         assertEquals(HttpStatus.NOT_FOUND, transactionController.findByReciever_Id((long) 999, token).getStatusCode());
 
         String newToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
 
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByReciever_Id(accountId1, newToken).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByReciever_Id(accountId1, newToken).getStatusCode());
 
         transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, 250));
 
@@ -144,14 +144,14 @@ public class TransactionTest {
     @Test
     @DisplayName("test find by from")
     public void testFindByFrom() {
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByFrom_Id(accountId1, null).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByFrom_Id(accountId1, "token").getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByFrom_Id(accountId1, null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByFrom_Id(accountId1, "token").getStatusCode());
 
         assertEquals(HttpStatus.NOT_FOUND, transactionController.findByFrom_Id((long) 999, token).getStatusCode());
 
         String newToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
 
-        assertEquals(HttpStatus.FORBIDDEN, transactionController.findByFrom_Id(accountId1, newToken).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByFrom_Id(accountId1, newToken).getStatusCode());
 
         transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, 250));
 
