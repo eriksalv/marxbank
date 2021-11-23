@@ -25,15 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import marxbank.repository.AccountRepository;
-import marxbank.repository.TransactionRepository;
 import marxbank.service.AccountService;
 import marxbank.service.AuthService;
 import marxbank.service.TransactionService;
-import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
 
 @RestController
 @RequestMapping("/accounts")
@@ -53,17 +50,8 @@ public class AccountController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping
-    @Transactional
-    public ResponseEntity<List<PublicAccountResponse>> findAll() {
-        List<PublicAccountResponse> result = new ArrayList<>();
-        accountRepository.findAll().forEach(a -> result.add(new PublicAccountResponse(a)));
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
     /**
-     * finds all accounts that a given user has had transactions with
-     * 
+     * finds all accounts that a given user has had transactions with.
      * @param token token of logged in user
      * @return list of accounts with HttpStatus 200
      */
@@ -72,10 +60,10 @@ public class AccountController {
     public ResponseEntity<List<PublicAccountResponse>> findByTransactions(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         User user = authService.getUserFromToken(token);
         if (user == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         List<PublicAccountResponse> result = new ArrayList<>();
 
@@ -96,28 +84,23 @@ public class AccountController {
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-
-    @GetMapping("/{id}")
-    @Transactional
-    public ResponseEntity<PublicAccountResponse> findById(@PathVariable Long id) {
-        if (!accountRepository.findById(id).isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        Account acc = accountRepository.findById(id).get();
-        return ResponseEntity.status(HttpStatus.OK).body(new PublicAccountResponse(acc));
-    }
-
+    /**
+     * Gets all accounts for an User.
+     * @param token for user
+     * @return returns list of accounts with resposne 200
+     * @return a response with null body and code 401 if token is invalid
+     */
     @GetMapping("/myAccounts")
     @Transactional
     public ResponseEntity<ArrayList<AccountResponse>> findByUser(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         User user = authService.getUserFromToken(token);
 
         if (user == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         ArrayList<AccountResponse> accounts = new ArrayList<AccountResponse>();
 
@@ -126,17 +109,25 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(accounts);
     }
 
+    /**
+     * Get certian account of users accounts.
+     * @param token for user
+     * @param id of account
+     * @return account data with response 200 if found
+     * @return a response with null body and a status code 401 if token is invalid
+     * @return a repsonse with null body and status code 404 if account is not found 
+     */
     @GetMapping("/myAccounts/{id}")
     @Transactional
     public ResponseEntity<AccountResponse> findByUserAndId(
             @RequestHeader(name = "Authorization", required = true) @Nullable String token, @PathVariable Long id) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         User user = authService.getUserFromToken(token);
 
         if (user == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         if (!accountRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -146,18 +137,26 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(acc));
     }
 
+    /**
+     * Creates account for user.
+     * @param token for user
+     * @param request for new account
+     * @return a response with body of the account and a code of 201
+     * @return a response with null body and code 401 if token is invalid
+     * @return a resposne with null body and code 400 if request is invalid
+     */
     @PostMapping("/createAccount")
     @Transactional
     public ResponseEntity<AccountResponse> createAccount(
             @RequestHeader(name = "Authorization", required = true) @Nullable String token,
             @RequestBody AccountRequest request) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         User user = authService.getUserFromToken(token);
 
         if (user == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         Account a = accountService.createAccount(request, user.getId());
 
@@ -171,24 +170,32 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new AccountResponse(a));
     }
 
+    /**
+     * deposits money into account.
+     * @param token for user
+     * @param request deposit request with data
+     * @return a response with body of the account and a code of 200
+     * @return a response with null body and code 401 if token is invalid
+     * @return a resposne with null body and code 400 if request is invalid
+     */
     @PostMapping("/deposit")
     @Transactional
     public ResponseEntity<AccountResponse> depositIntoAccount(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token,
             @RequestBody DepositWithdrawRequest request) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         User user = this.authService.getUserFromToken(token);
 
         if (user == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         if (!accountRepository.findById(request.getAccountId()).isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         if (request.getAmount() <= 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -201,24 +208,32 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(a));
     }
 
+    /**
+     * withdraws money from account.
+     * @param token for user
+     * @param request deposit request with data
+     * @return a response with body of the account and a code of 200
+     * @return a response with null body and code 401 if token is invalid
+     * @return a resposne with null body and code 400 if request is invalid
+     */
     @PostMapping("/withdraw")
     @Transactional
     public ResponseEntity<AccountResponse> withdrawFromAccount(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token,
             @RequestBody DepositWithdrawRequest request) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         User user = this.authService.getUserFromToken(token);
 
         if (user == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         if (!accountRepository.findById(request.getAccountId()).isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         if (request.getAmount() <= 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

@@ -59,8 +59,8 @@ public class AccountTest {
         AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
 
         // test invalid token
-        assertEquals(HttpStatus.FORBIDDEN, accountController.createAccount(null, aRequest).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, accountController.createAccount("yeet", aRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.createAccount(null, aRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.createAccount("yeet", aRequest).getStatusCode());
 
         // create account
         assertEquals(HttpStatus.CREATED, accountController.createAccount(token, aRequest).getStatusCode());
@@ -77,10 +77,10 @@ public class AccountTest {
 
         DepositWithdrawRequest dwRequest = new DepositWithdrawRequest(500, id1);
         // check token
-        assertEquals(HttpStatus.FORBIDDEN, accountController.depositIntoAccount(null, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, accountController.depositIntoAccount("token", dwRequest).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, accountController.withdrawFromAccount(null, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, accountController.withdrawFromAccount("token", dwRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount(null, dwRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount("token", dwRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount(null, dwRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount("token", dwRequest).getStatusCode());
 
         // check invalid id
         assertEquals(HttpStatus.BAD_REQUEST, accountController.depositIntoAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
@@ -94,8 +94,8 @@ public class AccountTest {
         assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, dwRequest).getStatusCode());
 
         // check if user doesnt own account
-        assertEquals(HttpStatus.FORBIDDEN, accountController.depositIntoAccount(secondUser, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, accountController.withdrawFromAccount(secondUser, dwRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount(secondUser, dwRequest).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount(secondUser, dwRequest).getStatusCode());
 
         ResponseEntity<AccountResponse> response1 = accountController.depositIntoAccount(token, dwRequest);
         ResponseEntity<AccountResponse> response2 = accountController.withdrawFromAccount(token, dwRequest);
@@ -110,24 +110,12 @@ public class AccountTest {
     @DisplayName("Test get myAccounts")
     public void testGetMyAccounts() {
         // test token
-        assertEquals(HttpStatus.FORBIDDEN, accountController.findByUser(null).getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN, accountController.findByUser("token").getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser(null).getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser("token").getStatusCode());
 
         assertEquals(0, accountController.findByUser(token).getBody().size());
         accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "name"));
         assertEquals(1, accountController.findByUser(token).getBody().size());
-    }
-
-    @Test
-    @DisplayName("Test get account by accNumber")
-    public void testFindById() {
-        assertEquals(HttpStatus.NOT_FOUND, accountController.findById(0l).getStatusCode());
-
-        AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
-        ResponseEntity<AccountResponse> response = accountController.createAccount(token, aRequest);
-        Long id = response.getBody().getId();
-
-        assertEquals(response.getBody().getId(), accountController.findById(id).getBody().getId());
     }
 
     @Test
