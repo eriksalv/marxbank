@@ -8,19 +8,31 @@ import marxbank.model.SavingsAccount;
 import marxbank.util.AccountType;
 
 /**
- * 
+ * Klassen holder på informasjonen frontenden må formidle fra brukeren når de ønsker å oppprette en ny bankkonto. 
+ * Den esensielle informasjonen for dette er type konto og kontonavn.
  */
 public class AccountRequest {
     private String type;
     private String name;
 
+/**
+ * Det er ndøvendig for at SpringBoot skal kjøre rett med en tom konstruktør.
+ */
     protected AccountRequest() {}
 
+/**
+ * Konstruktør for AccountRequest.
+ * @param type - kontotype
+ * @param name - kontonavn
+ */
     public AccountRequest(String type, String name) {
         this.type = type;
         this.name = name;
     }
 
+/**
+ * Getters og setters for parameterne.
+ */
     public String getType() {
         return this.type;
     }
@@ -37,6 +49,10 @@ public class AccountRequest {
         this.name = name;
     }
 
+/**
+ * En metode for å bygge en ny konto ved å bruke input-parameterne og sette all den nødvendige kontoinformasjonen ut i fra dette.
+ * @return - en ny konto
+ */
     public Account buildAccount() {
         Account a = null;
 

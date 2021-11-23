@@ -1,5 +1,8 @@
 package marxbank.API;
 
+/**
+ * Klassen 
+ */
 public class EditUserRequest {
     private String username;
     private String password;

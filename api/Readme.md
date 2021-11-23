@@ -2,7 +2,7 @@
 API-modulen er en modul for programmeringsgrensesnittet vårt(Application Programming Interface).
 
 ## Testing av API
-Modulen for API er ment for å være et bindeledd mellom backenden og frontenden, og skal holde på informasjon frontenden trenger for å gi tilfredsstillende respons til brukeren. Den inneholder ikke logikk utover 'getters', 'setters' og omfattende testing av denne koden ansees som unødvendig.
+Modulen for API er ment for å være et bindeledd mellom backenden og frontenden, og skal holde på informasjon frontenden trenger for å gi tilfredsstillende respons til brukeren. Den inneholder ikke logikk utover 'getters', 'setters' og 'toString' i metodene, og omfattende testing av denne koden ansees som unødvendig.
 
 ## Kort om de forskjellige Response-klassene
 Det er 4 forskjellige response-klasser, som holder på den mest nødvendige informasjonen brukeren må få som respons i forskjellige tilfeller.
@@ -20,7 +20,9 @@ Det er også 4 requestklasser, som holder informasjonen som må fomidles fra bru
 
 * AccountRequest: En klasse som holder på informasjonen som kreves av brukeren for å opprette en ny konto, nemlig type konto og kontonavn. 
 
-* AccountTransferRequest: En klasse som tar holder på informasjonen som trengs for å få gjennomført en transaksjon, nemlig beløpet som skal overføres og en boolean som forteller om forespørselen er gjennomførbar.
+* DepositWithdrawRequest: En klasse som holder på informasjonen fra brukeren om de ønsker å ta ut eller sette inn penger på en konto, og dermed har felter som omhandler beløp og id-en til kontoen.
+
+* EditUserRequest: En klasse som holder på informasjon fra brukeren om de ønsker å redigere profilen sin i banken. Feltene er brukernavn, passord, gammelt passord og email. 
 
 * LogInRequest: En klasse som holder på den nødvendige informasjonen fra brukeren i en forespørsel om å logge inn i banken og få tilgang til en brukers informasjon. Feltene er brukernavn og passord.
 

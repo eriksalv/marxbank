@@ -3,6 +3,9 @@ package marxbank.API;
 import marxbank.model.Account;
 import marxbank.util.AccountType;
 
+/**
+ * En klasse som inneholder elementene i en konto som må vises til brukeren i brukergrensesnittet.
+ */
 public class AccountResponse {
     
     private Long id;
@@ -13,11 +16,17 @@ public class AccountResponse {
     //private List<Transaction> transactions;
     private double balance;
     private double interestRate;
-
+/**
+ * Tom konstruktør nødvendig for at SpringBoot skal fungere ordentlig.
+ */
     public AccountResponse() {
     
     }
 
+/**
+ * Konstruktør som setter informasjonen i this lik den i kontoen som blir tatt inn som input.
+ * @param account - en eksisterende konto
+ */
     public AccountResponse(Account account){
         this.id = account.getId();
         this.accountNumber = account.getAccountNumber();
@@ -29,6 +38,9 @@ public class AccountResponse {
         this.interestRate = account.getInterestRate();
     }
 
+/**
+ * Setters og getters.
+ */
     public void setId(Long newId){
         this.id = newId;
     }
