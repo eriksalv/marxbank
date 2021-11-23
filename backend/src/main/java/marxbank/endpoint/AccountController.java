@@ -163,7 +163,7 @@ public class AccountController {
         if (a == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        a.setAccountNumber();
+        a.setAccountNumber(a.generateAccountNumber());
 
         accountRepository.save(a);
 

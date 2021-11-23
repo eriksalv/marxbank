@@ -62,7 +62,11 @@ public class CreateNewAccountController {
             errorMsg.setText("Konto trenger et navn.");
             return;
         }
-        acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
+        try {
+            acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
+        } catch (IllegalArgumentException e) {
+            errorMsg.setText(e.getLocalizedMessage());
+        }
         if (acc==null) {
             errorMsg.setText("Ingen kontotype valgt.");
             return;

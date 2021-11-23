@@ -138,7 +138,7 @@ public class HomeControllerTest extends ApplicationTest{
             public void run() {
                 controller.initData(user);
                 Label label = lookup("#AccountNumberLabel").query();
-                assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
+                assertTrue(label.getText().equals(Long.toString(account1.getId())));
             }
         });
 

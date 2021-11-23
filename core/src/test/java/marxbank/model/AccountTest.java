@@ -13,15 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import marxbank.Bank;
-
 public class AccountTest {
 
     private User user;
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        resetSingleton();
         user = new User((long) 1, "username", "email@email.com", "password");
     }
 
@@ -33,7 +30,7 @@ public class AccountTest {
         });
 
         Account a = new SavingsAccount((long) 1, user, 5.0);
-        assertEquals(this.user.getAccounts().get(0), a);
+        assertEquals(this.user.getAccountById(1l), a);
     }
 
     @Test
@@ -116,9 +113,5 @@ public class AccountTest {
         t.add(new Transaction((long) 10, a, b, 10, true));
         a.setTransactions(t);
         assertEquals(t, a.getTransactions());
-    }
-
-    public void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 }

@@ -20,7 +20,7 @@ public class PublicAccountResponse {
         this.id = account.getId();
         this.accountNumber = account.getAccountNumber();
         this.userId = account.getUser().getId();
-        this.type = account.getAccountType();
+        this.type = account.getTypeString();
         this.name = account.getName();
     }
 

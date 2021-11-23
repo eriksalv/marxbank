@@ -4,7 +4,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.Entity;
 
-import marxbank.Bank;
 import marxbank.util.AccountType;
 
 @Entity
@@ -57,7 +56,7 @@ public class SavingsAccount extends Account {
     }
 
     /**
-     * Generates a unique account number. For SavingsAccount, the account number always
+     * Generates a account number. For SavingsAccount, the account number always
      * starts with a "1".
      */
     @Override
@@ -67,14 +66,6 @@ public class SavingsAccount extends Account {
             accNumberString = accNumberString.concat(String.valueOf(ThreadLocalRandom.current().nextInt(10)));
         }
         int accNumber = Integer.parseInt(accNumberString);
-        if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
-            generateAccountNumber();
-        }
-        return accNumber; //temporary
+        return accNumber;
     }
-
-    @Override
-    public String getAccountType() {
-        return "Sparekonto";
-    } 
 }

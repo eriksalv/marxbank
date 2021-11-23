@@ -21,7 +21,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import marxbank.Bank;
 import marxbank.model.User;
 
 public class MainControllerTest extends ApplicationTest {
@@ -51,7 +50,6 @@ public class MainControllerTest extends ApplicationTest {
 
     @BeforeEach
     private void beforeEach() throws IOException {
-        resetSingleton();
         DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
         User user = new User("username", "email@email.com", "password");
         controller.initData(user);
@@ -77,9 +75,5 @@ public class MainControllerTest extends ApplicationTest {
             Arguments.of("#menuBtn4", "MyTransactions"),
             Arguments.of("#menuBtn5", "MyProfile")
         );
-    }
-
-    private void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 }

@@ -17,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import marxbank.Bank;
 import marxbank.model.Account;
 import marxbank.model.CheckingAccount;
 import marxbank.model.User;
@@ -53,7 +52,6 @@ public class MyTransactionControllerTest extends ApplicationTest{
 
     @BeforeEach
     private void beforeEach() throws IOException {
-        resetSingleton();
         DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
         user = new User("username", "email@email.com", "password");
         a = new CheckingAccount(user, "test1");
@@ -69,8 +67,8 @@ public class MyTransactionControllerTest extends ApplicationTest{
     @Test
     public void testValidTransaction() {
         a.deposit(100);
-        clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
-        clickOn("#recieverText").write("#" + b.getAccountNumber());
+        clickOn("#myAccountsList").clickOn("#" + a.getId());
+        clickOn("#recieverText").write("#" + b.getId());
         clickOn("#amountText").write("100");
         clickOn("#transactionBtn");
         assertEquals(0, a.getBalance());
@@ -87,7 +85,7 @@ public class MyTransactionControllerTest extends ApplicationTest{
         assertEquals(0, b.getBalance());
         assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
 
-        clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
+        clickOn("#myAccountsList").clickOn("#" + a.getId());
         assertEquals(100, a.getBalance());
         assertEquals(0, b.getBalance());
         assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
@@ -96,8 +94,8 @@ public class MyTransactionControllerTest extends ApplicationTest{
     @Test
     public void testEmptyAmount() {
         a.deposit(100);
-        clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
-        clickOn("#recieverText").write("#" + b.getAccountNumber());
+        clickOn("#myAccountsList").clickOn("#" + a.getId());
+        clickOn("#recieverText").write("#" + b.getId());
         clickOn("#transactionBtn");
         assertEquals(100, a.getBalance());
         assertEquals(0, b.getBalance());
@@ -108,16 +106,12 @@ public class MyTransactionControllerTest extends ApplicationTest{
     public void testInvalidAmount() {
         a.deposit(100);
         a.setName("name");
-        clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
-        clickOn("#recieverText").write("#" + b.getAccountNumber());
+        clickOn("#myAccountsList").clickOn("#" + a.getId());
+        clickOn("#recieverText").write("#" + b.getId());
         clickOn("#amountText").write("101");
         clickOn("#transactionBtn");
         assertEquals(100, a.getBalance());
         assertEquals(0, b.getBalance());
         assertEquals("Ikke nok disponibelt beløp på konto: name. Tilgjengelig beløp: 100.0", ((Label) lookup("#transactionFailedMsg").query()).getText());
-    }
-
-    private void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 }

@@ -19,7 +19,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import marxbank.Bank;
 import marxbank.model.User;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -53,7 +52,6 @@ public class RegisterControllerTest extends ApplicationTest {
 
     @BeforeEach
     private void beforeEach() throws IOException {
-        resetSingleton();
         DataManager.manager().resetData();
         DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
         existingUser = DataManager.manager().createUser("username", "email@email.com", "password");
@@ -92,7 +90,7 @@ public class RegisterControllerTest extends ApplicationTest {
         clickOn("#password2Text").write("pass");
         clickOn("#registerBtn");
         assertTrue(DataManager.manager().getIndexOfUser(existingUser) != -1 && DataManager.manager().getUsers().size()==1);
-        assertEquals("username is too long, must be 30 characters maximum.", ((Label) lookup("#registerFailedMsg").query()).getText());
+        assertEquals("Username is too long, must be 30 characters maximum.", ((Label) lookup("#registerFailedMsg").query()).getText());
     }
 
     @Test
@@ -113,10 +111,5 @@ public class RegisterControllerTest extends ApplicationTest {
         AnchorPane logInScreen = lookup("#root").queryAs(AnchorPane.class);
         assertEquals(logInScreen.getId(), "root");
         assertNull(DataManager.manager().getLoggedInUser());
-    }
-
-
-    private void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 }

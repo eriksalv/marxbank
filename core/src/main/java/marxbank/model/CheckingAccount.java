@@ -4,7 +4,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.Entity;
 
-import marxbank.Bank;
 import marxbank.util.AccountType;
 
 @Entity
@@ -40,15 +39,7 @@ public class CheckingAccount extends Account {
             accNumberString = accNumberString.concat(String.valueOf(ThreadLocalRandom.current().nextInt(10)));
         }
         int accNumber = Integer.parseInt(accNumberString);
-        if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
-            generateAccountNumber();
-        }
         return accNumber;
-    }
-
-    @Override
-    public String getAccountType() {
-        return "Brukskonto";
     }
     
 }

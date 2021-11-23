@@ -83,6 +83,10 @@ export default {
       });
     },
     async editProfile() {
+      if (!this.currentPassword) {
+        this.successMsg = false;
+        this.errorMsg = "Must enter current password to edit profile";
+      }
       const username = this.newUsername
         ? this.newUsername
         : this.getLoggedInUser.username;

@@ -55,7 +55,7 @@ public class SavingsAccountTest {
     @DisplayName("test get account type")
     public void testGetAccountType() {
         SavingsAccount a = new SavingsAccount(user, "name");
-        assertEquals("Sparekonto", a.getAccountType());
+        assertEquals("Sparekonto", a.getTypeString());
     }
 
     
