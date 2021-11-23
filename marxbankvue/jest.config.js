@@ -15,6 +15,7 @@ module.exports = {
     "!**/*.config.js",
     "!**/coverage/**",
     "!**/index.ts",
+    "!**/service/**"
   ],
   moduleFileExtensions: ["js", "json", "ts", "node", "vue"],
   transform: {
