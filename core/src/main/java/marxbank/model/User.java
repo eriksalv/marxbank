@@ -39,19 +39,13 @@ public class User {
      */
     public User(Long id, String username, String email, String password) {
         this.id = id;
-        this.username = validateUsername(username);
-        this.email = validateEmail(email);
-        this.password = password; // going to get hashed later
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
     }
 
     public User(String username, String email, String password) {
        this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, username, email, password);
-    }
-
-    public User(String username, String email, String password, boolean generateId) {
-        this.username = validateUsername(username);
-        this.email = validateEmail(email);
-        this.password = password;
     }
 
     public void setId(Long newId) {
@@ -64,7 +58,7 @@ public class User {
     }
 
     public void setUsername(String newUsername) {
-        //validering?
+        validateUsername(newUsername, true);
         this.username = newUsername;
     }
 
@@ -73,6 +67,7 @@ public class User {
     }
 
     public void setEmail(String newEmail) {
+        validateEmail(newEmail, true);
         this.email = newEmail;
     }
 
@@ -81,6 +76,7 @@ public class User {
     }
 
     public void setPassword(String newPassword) {
+        validatePassword(newPassword, true);
         this.password = newPassword;
     }
 
@@ -89,11 +85,14 @@ public class User {
     }
 
     public void setAccounts(ArrayList<Account> newAccountsList) {
+        if (newAccountsList == null) {
+            throw new IllegalArgumentException("new account list cannot be null");
+        }
         this.accounts = newAccountsList;
     }
 
     public ArrayList<Account> getAccounts() {
-        return (ArrayList<Account>) this.accounts;
+        return new ArrayList<>(this.accounts);
     }
 
     public void addAccount(Account newAccount) {
@@ -106,8 +105,7 @@ public class User {
     
     public void removeAccount(Account unwantedAccount) {
         if (accounts.contains(unwantedAccount)) {
-            accounts.remove(unwantedAccount);
-            
+            accounts.remove(unwantedAccount);            
         } else {
             throw new IllegalArgumentException("This account does not exist in your accounts.");
         }
@@ -121,36 +119,40 @@ public class User {
         return this.token;
     }
 
-    private String validateUsername(String username) throws IllegalArgumentException {
-        if (username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");
-        if (username.length() > 30) throw new IllegalArgumentException("username is too long, must be 30 characters maximum.");
-        if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
-        if (username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
+    private boolean validateUsername(String username, boolean throwException) throws IllegalArgumentException {
+        if (throwException) {
+            if (username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");
+            else if (username.length() > 30) throw new IllegalArgumentException("username is too long, must be 30 characters maximum.");
+            else if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
+            else if (username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
+        }
 
-        return username;
+        return !(username.length() < 4 && username.length() > 30 && !username.trim().equals(username) && username.contains(" "));
     }
 
-    private boolean validateUsernameBool(String username) {
-        if (username.length() < 4) return false;
-        if (username.length() > 30) return false;
-        if (!username.trim().equals(username)) return false;
-        if (username.contains(" ")) return false;
-
+    private boolean validateEmail(String email, boolean throwException) {
+        if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
+            if (throwException) {
+                throw new IllegalArgumentException("Email is not valid");
+            }
+            return false;
+        } 
         return true;
     }
 
-    private String validateEmail(String email) {
-        if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) throw new IllegalArgumentException("Email is not valid");
-        return email;
-    }
-
-    private boolean validateEmailBool(String email) {
-        return email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}");
-    }
-
-
-    public boolean validate() {
-        if (!validateUsernameBool(this.username) || !validateEmailBool(this.email)) return false;
+    private boolean validatePassword(String password, boolean throwException) {
+        if (password == null) {
+            if (throwException) {
+                throw new IllegalArgumentException("Password cannot be null");
+            }
+            return false;
+        }
+        else if (password.length() < 4) {
+            if (throwException) {
+                throw new IllegalArgumentException("Password must be at least 4 characters long");
+            }
+            return false;
+        }
         return true;
     }
 

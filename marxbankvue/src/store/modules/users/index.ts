@@ -6,12 +6,12 @@ import { mutations } from "./mutations";
 import { actions } from "./actions";
 
 const state: UserState = {
-  users: [
-    {
-      id: 1,
-      token: "69",
-    },
-  ],
+  userStatus: "",
+  loggedInUser: {
+    id: 0,
+    username: "",
+    email: "",
+  },
 };
 
 export const users: Module<UserState, RootState> = {
