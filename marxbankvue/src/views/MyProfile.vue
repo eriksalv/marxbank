@@ -43,8 +43,12 @@
       type="password"
       placeholder="Nåværende passord"
       class="input" />
-    <button id="edit" class="button" @click="editProfile">Lagre endringer</button>
-    <button id="logout" class="button bg-red-600" @click="requestLogout">Logg ut</button>
+    <button id="edit" class="button" @click="editProfile">
+      Lagre endringer
+    </button>
+    <button id="logout" class="button bg-red-600" @click="requestLogout">
+      Logg ut
+    </button>
   </div>
 </template>
 
