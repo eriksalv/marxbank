@@ -45,7 +45,9 @@ mvn install -pl marxbankvue
 
 ## Komponenter
 
-Alle komponenter som brukes av ulike faner ligger under `src/components`. `Header.vue` og `SideBar.vue` er globale komponenter. Sidebar komponenten brukes for navigering mellom forskjellige faner gjennom "router-links".
+Alle komponenter som brukes av ulike faner ligger under `src/components`. komponenter som ikke brukes av noen spesifikke faner, som `Header.vue` og `SideBar.vue`, ligger under `src/components/global`. Sidebar komponenten brukes for navigering mellom forskjellige faner gjennom "router-links". Under er et diagram som viser komponenthierarkiet i appen. En pil fra en komponent til en annen indikerer at komponenten på pil-siden brukes av komponenten over.
+
+<img src="diagrammer/marxbankvueHierarchy.png" width="800">
 
 ## Tilstandshåndtering
 
