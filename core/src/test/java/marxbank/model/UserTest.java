@@ -70,7 +70,7 @@ public class UserTest {
         assertEquals(Objects.hash(user.getId()), user.hashCode());
 
         user.setEmail("newEmail@email.com");
-        assertTrue(user.getEmail().equals("newEmail@email.com"));
+        assertEquals(user.getEmail(), "newEmail@email.com");
 
         user.setUsername("newUsername");
         assertTrue(user.getUsername().equals("newUsername"));

@@ -55,10 +55,14 @@ public class Transaction {
      * @param add - adds this transaction to from and recievers transaction list if true
     */
     public Transaction(Long id, Account from, Account reciever, double amount, String date, boolean commit, boolean add) {
+        validateId(id);
         this.id = id;
-        setFrom(from);
-        setReciever(reciever);
-        setAmount(amount);
+        validateFrom(from);
+        this.from = from;
+        validateReciever(reciever);
+        this.reciever = reciever;
+        validateAmount(amount);
+        this.amount = amount;
         if (date == null) {
             this.transactionDate=LocalDateTime.now();
             this.dateString=DATE_FORMATTER.format(transactionDate);
@@ -113,9 +117,12 @@ public class Transaction {
     */
     public Transaction(Account from, Account reciever, double amount) {
         this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-        setFrom(from);
-        setReciever(reciever);
-        this.amount = validateAmount(amount);
+        validateFrom(from);
+        this.from = from;
+        validateReciever(reciever);
+        this.reciever = reciever;
+        validateAmount(amount);
+        this.amount = amount;
         this.transactionDate=LocalDateTime.now();
         this.dateString=DATE_FORMATTER.format(transactionDate);
         commitTransaction();
@@ -132,7 +139,14 @@ public class Transaction {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id = validateId(id);
+    }
+
+    private Long validateId(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        return id;
     }
     
     /**

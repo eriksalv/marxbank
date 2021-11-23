@@ -38,10 +38,14 @@ public class User {
      * @param password of user
      */
     public User(Long id, String username, String email, String password) {
+        validateId(id);
         this.id = id;
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
+        validateUsername(username);
+        this.username = username;
+        validateEmail(email);
+        this.email = email;
+        validatePassword(password);
+        this.password = password;
     }
 
     public User(String username, String email, String password) {
@@ -49,8 +53,13 @@ public class User {
     }
 
     public void setId(Long newId) {
-        if (newId == null) throw new IllegalArgumentException("Id cannot be null");
-        this.id = newId;
+        this.id = validateId(newId);
+    }
+
+    private Long validateId(Long id) {
+        if (id == null) throw new IllegalArgumentException("Id cannot be null");
+
+        return id;
     }
 
     public Long getId() {
@@ -58,8 +67,7 @@ public class User {
     }
 
     public void setUsername(String newUsername) {
-        validateUsername(newUsername, true);
-        this.username = newUsername;
+        this.username = validateUsername(newUsername);
     }
 
     public String getUsername() {
@@ -67,8 +75,7 @@ public class User {
     }
 
     public void setEmail(String newEmail) {
-        validateEmail(newEmail, true);
-        this.email = newEmail;
+        this.email = validateEmail(newEmail);
     }
 
     public String getEmail() {
@@ -76,8 +83,7 @@ public class User {
     }
 
     public void setPassword(String newPassword) {
-        validatePassword(newPassword, true);
-        this.password = newPassword;
+        this.password = validatePassword(newPassword);
     }
 
     public String getPassword() {
@@ -129,48 +135,34 @@ public class User {
         return this.token;
     }
 
-    private boolean validateUsername(String username, boolean throwException) throws IllegalArgumentException {
-        if (throwException) {
-            if (username == null) throw new IllegalArgumentException("Username cannot be null");
-            else if (username.length() < 4) throw new IllegalArgumentException("Username is too short, must be 4 characters minimum.");
-            else if (username.length() > 30) throw new IllegalArgumentException("Username is too long, must be 30 characters maximum.");
-            else if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
-            else if (username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
-        }
+    private String validateUsername(String username) {
+        if (username == null) throw new IllegalArgumentException("Username cannot be null");
+        else if (username.length() < 4) throw new IllegalArgumentException("Username is too short, must be 4 characters minimum.");
+        else if (username.length() > 30) throw new IllegalArgumentException("Username is too long, must be 30 characters maximum.");
+        else if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
+        else if (username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
 
-        return !(username.length() < 4 && username.length() > 30 && !username.trim().equals(username) && username.contains(" "));
+        return username;
     }
 
-    private boolean validateEmail(String email, boolean throwException) {
+    private String validateEmail(String email) {
         if (email == null) {
-            if (throwException) {
-                throw new IllegalArgumentException("Email cannot be null");
-            }
-            return false;
+            throw new IllegalArgumentException("Email cannot be null");
         } 
         else if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
-            if (throwException) {
-                throw new IllegalArgumentException("Email is not valid");
-            }
-            return false;
+            throw new IllegalArgumentException("Email is not valid");
         } 
-        return true;
+        return email;
     }
 
-    private boolean validatePassword(String password, boolean throwException) {
+    private String validatePassword(String password) {
         if (password == null) {
-            if (throwException) {
-                throw new IllegalArgumentException("Password cannot be null");
-            }
-            return false;
+            throw new IllegalArgumentException("Password cannot be null");
         }
         else if (password.length() < 4) {
-            if (throwException) {
-                throw new IllegalArgumentException("Password must be at least 4 characters long");
-            }
-            return false;
+            throw new IllegalArgumentException("Password must be at least 4 characters long");
         }
-        return true;
+        return password;
     }
 
     @Override
