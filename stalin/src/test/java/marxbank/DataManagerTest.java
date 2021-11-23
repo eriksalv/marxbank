@@ -134,7 +134,6 @@ public class DataManagerTest {
     }
 
     private void resetAll() {
-        Bank.getInstanceBank().clearAccounts();
         DataManager.manager().resetData();
     }
 

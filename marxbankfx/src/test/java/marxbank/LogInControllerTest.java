@@ -37,8 +37,8 @@ public class LogInControllerTest extends ApplicationTest {
     @BeforeEach
     void setup() throws Exception {
         DataManager.manager().resetData();
-        user = DataManager.manager().createUser("testUser", "test@emai.com", "password");
-        acc = DataManager.manager().createAccount("sparekonto", user, "s");
+        user = DataManager.manager().createUser("testUser", "test@email.com", "password");
+        acc = DataManager.manager().createAccount("sparekonto", user, "nicu");
     }
 
     @Test

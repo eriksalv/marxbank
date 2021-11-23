@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.Entity;
 
-import marxbank.Bank;
 import marxbank.util.AccountType;
 
 /**
@@ -65,7 +64,7 @@ public class MarxAccount extends Account {
     }
 
     /**
-     * generates a unique account number starting with "48"
+     * generates a account number starting with "48"
      */
     @Override
     public int generateAccountNumber() {    
@@ -74,20 +73,12 @@ public class MarxAccount extends Account {
             accNumberString = accNumberString.concat(String.valueOf(ThreadLocalRandom.current().nextInt(10)));
         }
         int accNumber = Integer.parseInt(accNumberString);
-        if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
-            generateAccountNumber();
-        }
         return accNumber;
-    }
-
-    @Override
-    public String getAccountType() {
-        return "Marxkonto";
     }
 
     /**
      * Deposits the specified amount, and then checks if max balance has been exceeded.
-     * If that is the case, creates a new transaction instance from this to the account
+     * If that is the case, creates a new transaction instance from this to them users account
      * with the lowest registered balance to get rid of the excess amount. If such an account
      * cannot be found, the balance will be kept.
      */
@@ -99,7 +90,7 @@ public class MarxAccount extends Account {
 
             //Account to send to (cannot be another marx account).
             //Finds the account with the lowest balance.
-            Account reciever = Bank.getInstanceBank().getAccounts().values().stream()
+            Account reciever = getUser().getAccounts().stream()
             .filter(acc -> !(acc instanceof MarxAccount))
             .min(Comparator.comparing(Account::getBalance)).orElse(null);
 

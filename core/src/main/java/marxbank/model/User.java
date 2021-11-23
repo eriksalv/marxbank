@@ -95,7 +95,17 @@ public class User {
         return new ArrayList<>(this.accounts);
     }
 
+    public Account getAccountById(Long id) {
+        return getAccounts().stream()
+        .filter(acc -> acc.getId().equals(id))
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException("Could not find account with given id: " + id));
+    }
+
     public void addAccount(Account newAccount) {
+        if (newAccount == null) {
+            throw new IllegalArgumentException("new account cannot be null");
+        }
         if (!accounts.contains(newAccount)) {
             accounts.add(newAccount);
         } else {
@@ -121,8 +131,9 @@ public class User {
 
     private boolean validateUsername(String username, boolean throwException) throws IllegalArgumentException {
         if (throwException) {
-            if (username.length() < 4) throw new IllegalArgumentException("username is too short, must be 4 characters minimum.");
-            else if (username.length() > 30) throw new IllegalArgumentException("username is too long, must be 30 characters maximum.");
+            if (username == null) throw new IllegalArgumentException("Username cannot be null");
+            else if (username.length() < 4) throw new IllegalArgumentException("Username is too short, must be 4 characters minimum.");
+            else if (username.length() > 30) throw new IllegalArgumentException("Username is too long, must be 30 characters maximum.");
             else if (!username.trim().equals(username)) throw new IllegalArgumentException("Username cannot start or end with a space.");
             else if (username.contains(" ")) throw new IllegalArgumentException("Username cannot contain any spaces");
         }
@@ -131,7 +142,13 @@ public class User {
     }
 
     private boolean validateEmail(String email, boolean throwException) {
-        if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
+        if (email == null) {
+            if (throwException) {
+                throw new IllegalArgumentException("Email cannot be null");
+            }
+            return false;
+        } 
+        else if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
             if (throwException) {
                 throw new IllegalArgumentException("Email is not valid");
             }

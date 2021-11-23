@@ -65,7 +65,7 @@ public class UserController {
     @Transactional
     public ResponseEntity<UserResponse> editUser(@RequestHeader(name = "Authorization", required = false) @Nullable String token, @PathVariable Long id, @RequestBody EditUserRequest request) {
         if (token == null || authService.getUserFromToken(token) == null)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized access");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         if (!authService.getUserFromToken(token).getId().equals(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id not found");

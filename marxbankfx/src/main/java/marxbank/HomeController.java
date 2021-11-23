@@ -52,7 +52,7 @@ public class HomeController {
     private void createFavorites() {   
         Account a = user.getAccounts().get(0);
         AccountLabel.setText(a.getName());
-        AccountNumberLabel.setText(Integer.toString(a.getAccountNumber()));
+        AccountNumberLabel.setText(Long.toString(a.getId()));
         AmountLabel.setText("kr " + Double.toString(a.getBalance()));
     }
 
@@ -110,7 +110,7 @@ public class HomeController {
         loader.setLocation(getClass().getResource("Account.fxml"));
         AnchorPane pane = loader.load();
         AccountController controller = loader.getController();
-        controller.initData(Bank.getInstanceBank().getAccount(Integer.parseInt(AccountNumberLabel.getText())));
+        controller.initData(user.getAccountById(Long.parseLong(AccountNumberLabel.getText())));
 
         home.getChildren().setAll(pane);
     }

@@ -4,13 +4,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.Entity;
 
-import marxbank.Bank;
 import marxbank.util.AccountType;
 
 @Entity
 public class CreditAccount extends Account {
 
-    private double credtiLimit;
+    private double creditLimit;
     private static double DEFAULT_CREDIT_LIMIT = 200;
     
     public CreditAccount() {
@@ -19,23 +18,23 @@ public class CreditAccount extends Account {
 
     public CreditAccount(User user, String name) {
         super(user, 0, AccountType.CREDIT, name);
-        this.credtiLimit = DEFAULT_CREDIT_LIMIT;
+        this.creditLimit = DEFAULT_CREDIT_LIMIT;
     }
 
     public CreditAccount(Long id, User user, double interestRate, String name, int accountNumber) {
         super(id, user, interestRate, AccountType.CREDIT, accountNumber, name);
-        this.credtiLimit = DEFAULT_CREDIT_LIMIT;
+        this.creditLimit = DEFAULT_CREDIT_LIMIT;
     }
 
     @Override
     public double getCreditLimit() {
-        return this.credtiLimit;
+        return this.creditLimit;
     }
 
     @Override
     public void withdraw(double amount) {
         if (amount <= 0) throw new IllegalArgumentException("Withdraw must be positive");
-        if ((this.getBalance() + this.credtiLimit) - amount < 0) throw new IllegalStateException("Not enough balance on account");
+        if ((this.getBalance() + this.creditLimit) - amount < 0) throw new IllegalStateException("Not enough balance on account");
         
         this.setBalance(this.getBalance() - amount);
     }
@@ -48,15 +47,7 @@ public class CreditAccount extends Account {
             accNumberString = accNumberString.concat(String.valueOf(ThreadLocalRandom.current().nextInt(10)));
         }
         int accNumber = Integer.parseInt(accNumberString);
-        if (Bank.getInstanceBank().getAccounts().containsKey(accNumber)) {
-            generateAccountNumber();
-        }
         return accNumber;
-    }
-
-    @Override
-    public String getAccountType() {
-        return "Kredittkonto";
     }
     
 }

@@ -82,11 +82,11 @@ public class TransactionTest {
     @Test
     @DisplayName("test commitTransaction with a1 and null as param")
     public void testCommitTransaction2() throws IOException {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             transaction = new Transaction((long) 69, a1, null, 50, true);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             transaction = new Transaction((long) 69, a1, a1, 50, true);
         });
 
@@ -98,6 +98,8 @@ public class TransactionTest {
     @Test
     @DisplayName("test equals")
     public void testEquals() {
+        System.out.println(a2.getAccountNumber());
+        
         transaction = new Transaction((long) 69, a1, a2, 50, true);
 
         assertTrue(transaction.equals(transaction));

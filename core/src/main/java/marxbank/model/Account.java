@@ -14,7 +14,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import marxbank.Bank;
 import marxbank.util.AccountType;
 
 @Entity
@@ -41,24 +40,6 @@ public abstract class Account {
     public Account() {}
 
     /**
-     * Constructur for class Account.
-     * @param id2 - unique id
-     * @param user - User that owns this account
-     * @param interestRate - Accounts interest rate in percent
-     * @param type - Account type
-    */
-    public Account(Long id2, User user, double interestRate, AccountType type) {
-        this.user = user;
-        this.interestRate = validateIntereset(interestRate);
-        this.id = id2;
-        this.type = type;
-        this.name = "Ny konto";
-        this.accountNumber = generateAccountNumber();
-        Bank.getInstanceBank().addAccount(this);
-        this.user.addAccount(this);
-    }
-
-    /**
      * Constructur for class Account with existing account number, instead of generating new.
      * @param id - unique id
      * @param user - User that owns this account
@@ -68,15 +49,31 @@ public abstract class Account {
      * @param name - Name of the account
     */
     public Account(Long id, User user, double interestRate, AccountType type, int accountNumber, String name) {
-        this.user = user;
-        this.interestRate = validateIntereset(interestRate);
+        validateId(id);
         this.id = id;
+        validateUser(user);
+        this.user = user;
+        validateInterest(interestRate);
+        this.interestRate = interestRate;
+        validateType(type);
         this.type = type;
-        this.name = "Ny konto";
+        validateAccountNumber(accountNumber);
         this.accountNumber = accountNumber;
+        validateName(name);
         this.name = name;
         this.user.addAccount(this);
-        Bank.getInstanceBank().addAccount(this);
+    }
+
+    /**
+     * Constructur for class Account with default name.
+     * @param id2 - unique id
+     * @param user - User that owns this account
+     * @param interestRate - Accounts interest rate in percent
+     * @param type - Account type
+    */
+    public Account(Long id2, User user, double interestRate, AccountType type) {
+        this(id2, user, interestRate, type, 1, "Ny konto");
+        this.accountNumber = generateAccountNumber();
     }
 
     /**
@@ -89,6 +86,7 @@ public abstract class Account {
     */
     public Account(User user, double interestRate, AccountType type, String name) {
         this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, user, interestRate, type);
+        validateName(name);
         this.name = name;
     }
 
@@ -106,10 +104,16 @@ public abstract class Account {
      * @throws IllegalArgumentException if name is null
     */
     public void setName(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name cannot be null");
-        }
-        this.name = name;
+        this.name = validateName(name);
+    }
+
+    private String validateName(String name) {
+        if (name == null) throw new IllegalArgumentException("Name cannot be null");
+        else if (name.length() < 4) throw new IllegalArgumentException("Name is too short, must be 4 characters minimum.");
+        else if (name.length() > 30) throw new IllegalArgumentException("Name is too long, must be 30 characters maximum.");
+        else if (!name.trim().equals(name)) throw new IllegalArgumentException("Name cannot start or end with a space.");
+
+        return name;
     }
 
     /**
@@ -152,7 +156,7 @@ public abstract class Account {
      * @param ir interestRate
      * @return interest rate.
     */
-    public double validateIntereset(double ir) {
+    public double validateInterest(double ir) {
         if(ir < 0) throw new IllegalArgumentException("Interest rate cannot be negative");
         return ir;
     }
@@ -169,7 +173,14 @@ public abstract class Account {
     }
 
     public void setType(AccountType type) {
-        this.type = type;
+        this.type = validateType(type);
+    }
+
+    private AccountType validateType(AccountType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type cannot be null");
+        }
+        return type;
     }
 
     public User getUser() {
@@ -177,8 +188,13 @@ public abstract class Account {
     }
 
     public void setUser(User user) {
+        this.user = validateUser(user);
+    }
+
+    private User validateUser(User user) {
         if (user == null) throw new IllegalArgumentException("User cannot be null");
-        this.user = user;
+
+        return user;
     }
     
     public double getBalance() {
@@ -194,8 +210,13 @@ public abstract class Account {
     }
 
     public void setId(Long id) {
+        this.id = validateId(id);
+    }
+
+    private Long validateId(Long id) {
         if (id == null) throw new IllegalArgumentException("new Id cannot be null");
-        this.id = id;
+
+        return id;
     }
 
     public double getInterestRate() {
@@ -203,10 +224,13 @@ public abstract class Account {
     }
 
     public void setInterestRate(double i) {
-        this.interestRate = i;
+        this.interestRate = validateInterest(i);
     } 
 
     public void setTransactions(List<Transaction> t) {
+        if (t == null) {
+            throw new IllegalArgumentException("New transactions cannot be null");
+        }
         this.transactions = t;
     }
 
@@ -216,7 +240,10 @@ public abstract class Account {
      * @exception IllegalStateException if the transaction already is registered.
     */
     public void addTransaction(Transaction t) {
-        if (this.transactions.contains(t)) {
+        if (t == null) {
+            throw new IllegalArgumentException("New transaction cannot be null");
+        }
+        else if (this.transactions.contains(t)) {
             throw new IllegalStateException("Transaction is already registered");
         }
         this.transactions.add(t);
@@ -250,12 +277,21 @@ public abstract class Account {
         return getTransactions().size();
     }
 
-    public void setAccountNumber() {
-        this.accountNumber = generateAccountNumber();
+    public void setAccountNumber(int accNum) {
+        this.accountNumber = validateAccountNumber(accNum);
+    }
+
+    private int validateAccountNumber(int accNum) {
+        if (accNum < 0) {
+            throw new IllegalArgumentException("Account number cannot be null");
+        }
+        return accNum;
     }
 
     public abstract int generateAccountNumber();
 
-    public abstract String getAccountType();
+    public String getTypeString() {
+        return this.type.getTypeString();
+    }
     
 }

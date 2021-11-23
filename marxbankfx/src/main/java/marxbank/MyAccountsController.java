@@ -33,8 +33,8 @@ public class MyAccountsController {
         for (Account a : accounts) {
             Button accountBtn = new Button();
             accountBtn.getStyleClass().add("accBtn");
-            accountBtn.setText("Kontonummer: " + a.getAccountNumber());
-            accountBtn.setId(String.format("%d", a.getAccountNumber()));
+            accountBtn.setText("Kontonummer: " + a.getId());
+            accountBtn.setId(String.format("%d", a.getId()));
             accountBtn.setOnAction(ev -> {
                 account = a;
                 try {

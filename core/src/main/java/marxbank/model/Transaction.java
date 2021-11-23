@@ -56,9 +56,9 @@ public class Transaction {
     */
     public Transaction(Long id, Account from, Account reciever, double amount, String date, boolean commit, boolean add) {
         this.id = id;
-        this.from = from;
-        this.reciever = reciever;
-        this.amount = validateAmount(amount);
+        setFrom(from);
+        setReciever(reciever);
+        setAmount(amount);
         if (date == null) {
             this.transactionDate=LocalDateTime.now();
             this.dateString=DATE_FORMATTER.format(transactionDate);
@@ -113,8 +113,8 @@ public class Transaction {
     */
     public Transaction(Account from, Account reciever, double amount) {
         this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-        this.from = from;
-        this.reciever = reciever;
+        setFrom(from);
+        setReciever(reciever);
         this.amount = validateAmount(amount);
         this.transactionDate=LocalDateTime.now();
         this.dateString=DATE_FORMATTER.format(transactionDate);
@@ -163,7 +163,23 @@ public class Transaction {
     }
 
     public void setFrom(Account from) {
-        this.from = from;
+        this.from = validateFrom(from);
+    }
+
+    /**
+     * From account cannot be null or equal to reciever
+     * @param from 
+     * @return
+     * @throws IllegalArgumentException if account is null
+     * @throws IllegalStateException if account is equal to reciever
+     */
+    private Account validateFrom(Account from) {
+        if (from == null) {
+            throw new IllegalArgumentException("Sender account cannot be null");
+        } else if (from.equals(reciever)) {
+            throw new IllegalStateException("Cannot transfer between the same account");
+        }
+        return from;
     }
 
     /**
@@ -174,8 +190,24 @@ public class Transaction {
         return reciever;
     }
 
-    public void setReciever(Account to) {
-        this.reciever = to;
+    public void setReciever(Account reciever) {
+        this.reciever = validateReciever(reciever);
+    }
+
+    /**
+     * Reciever account cannot be null or equal to from
+     * @param from 
+     * @return
+     * @throws IllegalArgumentException if account is null
+     * @throws IllegalStateException if account is equal to from
+     */
+    private Account validateReciever(Account reciever) {
+        if (reciever == null) {
+            throw new IllegalArgumentException("Reciever account cannot be null");
+        } else if (reciever.equals(from)) {
+            throw new IllegalStateException("Cannot transfer between the same account");
+        }
+        return reciever;
     }
 
     /**
@@ -187,11 +219,12 @@ public class Transaction {
     }
 
     public void setAmount(double amount) {
-        this.amount = amount;
+        this.amount = validateAmount(amount);
     }
 
     /**
      * checks if the transaction is between different users or not
+     * (used in backend).
      * @return true if different users
      */
     public boolean isBetweenDifferentUsers() {
@@ -211,16 +244,9 @@ public class Transaction {
 
     /**
      * Commits transaction by withdrawing from and depositing to the respective
-     * accounts, and adding this transaction object to their history.
-     * 
-     * @throws IllegalStateException if either of the accounts are null 
-    */    
+     * accounts.
+     */  
     public void commitTransaction() {
-        if (from == null || reciever == null) {
-            throw new IllegalStateException("Cannot commit transaction");
-        } else if (from.equals(reciever)) {
-            throw new IllegalArgumentException("Cannot transfer between the same account");
-        }
         from.withdraw(this.amount);
         reciever.deposit(this.amount);
     }
