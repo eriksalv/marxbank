@@ -21,121 +21,122 @@ import marxbank.model.Transaction;
 import marxbank.model.User;
 
 public class DataManagerTest {
-    
-    private User user;
-    private Account account;
-    private Account account2;
-    private Transaction transaction;
 
-    @TempDir
-    static Path tempDir;
+  private User user;
+  private Account account;
+  private Account account2;
+  private Transaction transaction;
 
-    @BeforeAll
-    static void init() throws IOException {
-        Files.createDirectory(tempDir.resolve("data"));
-    }
+  @TempDir
+  static Path tempDir;
 
-    @BeforeEach
-    public void setup() {
-        resetAll();
-        user = DataManager.manager().createUser("yeetman", "email@email.com", "password");
-        account = DataManager.manager().createAccount("Sparekonto", user, "name");
-        account2 = DataManager.manager().createAccount("Sparekonto", user, "name2");
-        account.deposit(500.0);
-        transaction = DataManager.manager().createTransaction(account, account2, 50.0);
-    }
+  @BeforeAll
+  static void init() throws IOException {
+    Files.createDirectory(tempDir.resolve("data"));
+  }
 
-    @Test
-    @DisplayName("Test Create User, Account and Transaction, Adders and deleters")
-    public void testCreatorsAddersDeleters() {
-        // test creators and adders
-        assertTrue(DataManager.manager().getUsers().get(0).equals(user));
-        assertTrue(DataManager.manager().getAccounts().get(0).equals(account));
-        assertTrue(DataManager.manager().getAccounts().get(1).equals(account2));
-        assertTrue(DataManager.manager().getTransactions().get(0).equals(transaction));
+  @BeforeEach
+  public void setup() {
+    resetAll();
+    user = DataManager.manager().createUser("yeetman", "email@email.com", "password");
+    account = DataManager.manager().createAccount("Sparekonto", user, "name");
+    account2 = DataManager.manager().createAccount("Sparekonto", user, "name2");
+    account.deposit(500.0);
+    transaction = DataManager.manager().createTransaction(account, account2, 50.0);
+  }
 
-        // test adders throw
-        assertThrows(IllegalArgumentException.class, () -> {
-            DataManager.manager().addUser(user);
-        });
+  @Test
+  @DisplayName("Test Create User, Account and Transaction, Adders and deleters")
+  public void testCreatorsAddersDeleters() {
+    // test creators and adders
+    assertTrue(DataManager.manager().getUsers().get(0).equals(user));
+    assertTrue(DataManager.manager().getAccounts().get(0).equals(account));
+    assertTrue(DataManager.manager().getAccounts().get(1).equals(account2));
+    assertTrue(DataManager.manager().getTransactions().get(0).equals(transaction));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            DataManager.manager().addAccount(account);
-        });
+    // test adders throw
+    assertThrows(IllegalArgumentException.class, () -> {
+      DataManager.manager().addUser(user);
+    });
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            DataManager.manager().addTransaction(transaction);
-        });
+    assertThrows(IllegalArgumentException.class, () -> {
+      DataManager.manager().addAccount(account);
+    });
 
-        // test deleters
-        DataManager.manager().deleteTransaction(transaction);
-        DataManager.manager().deleteAccount(account);
-        DataManager.manager().deleteUser(user);
+    assertThrows(IllegalArgumentException.class, () -> {
+      DataManager.manager().addTransaction(transaction);
+    });
 
-        assertTrue(DataManager.manager().getUsers().size() == 0);
-        assertTrue(DataManager.manager().getAccounts().size() == 1);
-        assertTrue(DataManager.manager().getTransactions().size() == 0);
+    // test deleters
+    DataManager.manager().deleteTransaction(transaction);
+    DataManager.manager().deleteAccount(account);
+    DataManager.manager().deleteUser(user);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            DataManager.manager().deleteUser(user);
-        });
+    assertTrue(DataManager.manager().getUsers().size() == 0);
+    assertTrue(DataManager.manager().getAccounts().size() == 1);
+    assertTrue(DataManager.manager().getTransactions().size() == 0);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            DataManager.manager().deleteAccount(account);
-        });
-   
-        assertThrows(IllegalArgumentException.class, () -> {
-            DataManager.manager().deleteTransaction(transaction);
-        });
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      DataManager.manager().deleteUser(user);
+    });
 
-    @Test
-    @DisplayName("test different checkers")
-    public void testDifferenctCheckers() {
-        assertTrue(DataManager.manager().checkIfUserExists(user.getId()));
-        assertTrue(DataManager.manager().checkIfAccountExists(account));
-        assertTrue(DataManager.manager().checkIfAccountExists(account2.getId()));
-        assertTrue(DataManager.manager().checkIfTransactionExists(transaction));
-        assertTrue(DataManager.manager().checkIfTransactionExists(transaction.getId()));
+    assertThrows(IllegalArgumentException.class, () -> {
+      DataManager.manager().deleteAccount(account);
+    });
 
-        assertFalse(DataManager.manager().checkIfUserExists(99999));
-        assertFalse(DataManager.manager().checkIfAccountExists(99999));
-        assertFalse(DataManager.manager().checkIfAccountExists(new SavingsAccount(user, "yeet")));
-        assertFalse(DataManager.manager().checkIfTransactionExists(999999999));
-        assertFalse(DataManager.manager().checkIfTransactionExists(new Transaction((long) 1, account, account2, 50.0, false)));
-        
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      DataManager.manager().deleteTransaction(transaction);
+    });
+  }
 
-    @Test
-    @DisplayName("Test differnet getters")
-    public void testDifferentGetters() {
-        assertTrue(DataManager.manager().getUserByUsername("yeetman").equals(user));
-        assertTrue(DataManager.manager().getUser(user.getId()).equals(user));
-        assertNull(DataManager.manager().getUser((long) -50.0));
-        assertTrue(DataManager.manager().getAccount(account.getId()).equals(account));
-        assertNull(DataManager.manager().getAccount((long) -50.0));
-        assertTrue(DataManager.manager().getTransaction(transaction.getId()).equals(transaction));
-        assertNull(DataManager.manager().getTransaction((long) -50.0));
-    }
-    
-    @Test
-    @DisplayName("Test save and parse")
-    public void testSaveAndParse() throws IOException {
-        DataManager.manager().setPath(tempDir.resolve("data").toFile().getCanonicalPath());
-        DataManager.manager().save();
-        assertTrue(tempDir.resolve("data").toFile().exists());
+  @Test
+  @DisplayName("test different checkers")
+  public void testDifferenctCheckers() {
+    assertTrue(DataManager.manager().checkIfUserExists(user.getId()));
+    assertTrue(DataManager.manager().checkIfAccountExists(account));
+    assertTrue(DataManager.manager().checkIfAccountExists(account2.getId()));
+    assertTrue(DataManager.manager().checkIfTransactionExists(transaction));
+    assertTrue(DataManager.manager().checkIfTransactionExists(transaction.getId()));
 
-        DataManager.manager().resetData();
-        DataManager.manager().parse();
-        assertTrue(DataManager.manager().getUsers().get(0).equals(user));
-        assertTrue(DataManager.manager().getAccounts().size() == 2);
-        assertTrue(DataManager.manager().getAccount(account.getId()).getId().equals(account.getId()));
-        assertTrue(DataManager.manager().getTransactions().get(0).equals(transaction));
-    }
+    assertFalse(DataManager.manager().checkIfUserExists(99999));
+    assertFalse(DataManager.manager().checkIfAccountExists(99999));
+    assertFalse(DataManager.manager().checkIfAccountExists(new SavingsAccount(user, "yeet")));
+    assertFalse(DataManager.manager().checkIfTransactionExists(999999999));
+    assertFalse(DataManager.manager()
+        .checkIfTransactionExists(new Transaction((long) 1, account, account2, 50.0, false)));
 
-    private void resetAll() {
-        DataManager.manager().resetData();
-    }
+  }
+
+  @Test
+  @DisplayName("Test differnet getters")
+  public void testDifferentGetters() {
+    assertTrue(DataManager.manager().getUserByUsername("yeetman").equals(user));
+    assertTrue(DataManager.manager().getUser(user.getId()).equals(user));
+    assertNull(DataManager.manager().getUser((long) -50.0));
+    assertTrue(DataManager.manager().getAccount(account.getId()).equals(account));
+    assertNull(DataManager.manager().getAccount((long) -50.0));
+    assertTrue(DataManager.manager().getTransaction(transaction.getId()).equals(transaction));
+    assertNull(DataManager.manager().getTransaction((long) -50.0));
+  }
+
+  @Test
+  @DisplayName("Test save and parse")
+  public void testSaveAndParse() throws IOException {
+    DataManager.manager().setPath(tempDir.resolve("data").toFile().getCanonicalPath());
+    DataManager.manager().save();
+    assertTrue(tempDir.resolve("data").toFile().exists());
+
+    DataManager.manager().resetData();
+    DataManager.manager().parse();
+    assertTrue(DataManager.manager().getUsers().get(0).equals(user));
+    assertTrue(DataManager.manager().getAccounts().size() == 2);
+    assertTrue(DataManager.manager().getAccount(account.getId()).getId().equals(account.getId()));
+    assertTrue(DataManager.manager().getTransactions().get(0).equals(transaction));
+  }
+
+  private void resetAll() {
+    DataManager.manager().resetData();
+  }
 
 
 }
