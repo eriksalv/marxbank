@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,11 +60,11 @@ public class AccountController {
     @Transactional
     public ResponseEntity<List<PublicAccountResponse>> findByTransactions(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+
+        if (token == null || authService.getUserFromToken(token) == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+
         User user = authService.getUserFromToken(token);
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         List<PublicAccountResponse> result = new ArrayList<>();
 
@@ -94,13 +95,10 @@ public class AccountController {
     @Transactional
     public ResponseEntity<ArrayList<AccountResponse>> findByUser(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (token == null || authService.getUserFromToken(token) == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         User user = authService.getUserFromToken(token);
-
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         ArrayList<AccountResponse> accounts = new ArrayList<AccountResponse>();
 
@@ -121,16 +119,11 @@ public class AccountController {
     @Transactional
     public ResponseEntity<AccountResponse> findByUserAndId(
             @RequestHeader(name = "Authorization", required = true) @Nullable String token, @PathVariable Long id) {
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-        User user = authService.getUserFromToken(token);
-
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (token == null || authService.getUserFromToken(token) == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         if (!accountRepository.findById(id).isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
         }
         Account acc = accountRepository.findById(id).get();
 
@@ -150,18 +143,17 @@ public class AccountController {
     public ResponseEntity<AccountResponse> createAccount(
             @RequestHeader(name = "Authorization", required = true) @Nullable String token,
             @RequestBody AccountRequest request) {
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (token == null || authService.getUserFromToken(token) == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         User user = authService.getUserFromToken(token);
 
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-        Account a = accountService.createAccount(request, user.getId());
-
-        if (a == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        Account a;
+        try {
+            a = accountService.createAccount(request, user.getId());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
         a.setAccountNumber(a.generateAccountNumber());
 
@@ -183,25 +175,23 @@ public class AccountController {
     public ResponseEntity<AccountResponse> depositIntoAccount(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token,
             @RequestBody DepositWithdrawRequest request) {
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (token == null || authService.getUserFromToken(token) == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         User user = this.authService.getUserFromToken(token);
 
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
         if (!accountRepository.findById(request.getAccountId()).isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-        if (request.getAmount() <= 0)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+        
         Account a = accountRepository.findById(request.getAccountId()).get();
-        a.deposit(request.getAmount());
+        try {
+            a.deposit(request.getAmount());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
         accountRepository.save(a);
 
@@ -221,29 +211,24 @@ public class AccountController {
     public ResponseEntity<AccountResponse> withdrawFromAccount(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token,
             @RequestBody DepositWithdrawRequest request) {
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (token == null || authService.getUserFromToken(token) == null)
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         User user = this.authService.getUserFromToken(token);
 
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
         if (!accountRepository.findById(request.getAccountId()).isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
         if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-        if (request.getAmount() <= 0)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         Account a = accountRepository.findById(request.getAccountId()).get();
 
-        if (a.getBalance() - request.getAmount() < 0)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-        a.withdraw(request.getAmount());
+        try {
+            a.withdraw(request.getAmount());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
         accountRepository.save(a);
 

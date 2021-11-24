@@ -1,6 +1,8 @@
 package marxbank;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.web.server.ResponseStatusException;
 
 import marxbank.API.AccountRequest;
 import marxbank.API.DepositWithdrawRequest;
@@ -62,18 +65,31 @@ public class TransactionTest {
     @DisplayName("test my transactions")
     public void testMyTransactions() {
         // check token
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findAllTransactionForUser(null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findAllTransactionForUser("yeet").getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByAccount_Id(accountId1, null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByAccount_Id(accountId1, "yeet").getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findAllTransactionForUser(null);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findAllTransactionForUser("yeet");
+        });
+        ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByAccount_Id(accountId1, null);
+        });
+        ResponseStatusException thrown4 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByAccount_Id(accountId1, "yeet");
+        });
 
         // check if account exists
-        assertEquals(HttpStatus.NOT_FOUND, transactionController.findByAccount_Id((long) 999, token).getStatusCode());
+        ResponseStatusException thrown5 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByAccount_Id((long) 999, token);
+        });
 
-        // check if user is trying ton get account that is not theirs
+        // check if user is trying to get account that is not theirs
         String newUserToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
         Long newAccountId = accountController.createAccount(newUserToken, new AccountRequest(AccountType.SAVING.getTypeString(), "name")).getBody().getId();
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByAccount_Id(newAccountId, token).getStatusCode());
+
+        ResponseStatusException thrown6 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByAccount_Id(newAccountId, token);
+        });
         
         // check my transactions
         transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, 250));
@@ -86,7 +102,14 @@ public class TransactionTest {
         assertEquals(HttpStatus.OK, repsonse.getStatusCode());
         assertEquals(1, repsonse.getBody().size());
 
-        
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown3.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown4.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown5.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown6.getStatus())
+        );        
     }
 
     @Test
@@ -95,23 +118,37 @@ public class TransactionTest {
         accountId1 = accountController.createAccount(token, new AccountRequest(AccountType.SAVING.getTypeString(), "yeet")).getBody().getId();
         accountId2 = accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "yote")).getBody().getId();
         
-        authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
-        String secondUser = authController.login(new LogInRequest("username", "password")).getBody().getToken();
+        authController.signUp(new SignUpRequest("username2", "password", "email@email.com"));
+        String secondUser = authController.login(new LogInRequest("username2", "password")).getBody().getToken();
         
         // test token
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.transferBetweenAccounts(null, null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.transferBetweenAccounts("token", null).getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts(null, null);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts("token", null);
+        });
         
         // test not owner of from account
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.transferBetweenAccounts(secondUser, new TransactionRequest(accountId1, accountId2, 500)).getStatusCode());
+        ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts(secondUser, new TransactionRequest(accountId1, accountId2, 500));
+        });
 
         // test invalid accounts
-        assertEquals(HttpStatus.BAD_REQUEST, transactionController.transferBetweenAccounts(token, new TransactionRequest((long) 99999, accountId2, 500)).getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, (long) 9999, 500)).getStatusCode());
+        ResponseStatusException thrown4 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts(token, new TransactionRequest((long) 99999, accountId2, 500));
+        });
+        ResponseStatusException thrown5 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, (long) 9999, 500));
+        });
         
         // test invalid amount
-        assertEquals(HttpStatus.BAD_REQUEST, transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, -500)).getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId2, accountId1, 500)).getStatusCode());
+        ResponseStatusException thrown6 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, -500));
+        });
+        ResponseStatusException thrown7 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId2, accountId1, 500));
+        });
         
         accountController.depositIntoAccount(token, new DepositWithdrawRequest(500, accountId1));
 
@@ -119,19 +156,37 @@ public class TransactionTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(250, response.getBody().getAmount());
+
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown3.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown4.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown5.getStatus()),
+            () -> assertEquals(HttpStatus.BAD_REQUEST, thrown6.getStatus()),
+            () -> assertEquals(HttpStatus.BAD_REQUEST, thrown7.getStatus())
+        ); 
     }
 
     @Test
     @DisplayName("test find by reciever")
     public void testFindByReciever() {
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByReciever_Id(accountId1, null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByReciever_Id(accountId1, "token").getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByReciever_Id(accountId1, null);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByReciever_Id(accountId1, "token");
+        });
 
-        assertEquals(HttpStatus.NOT_FOUND, transactionController.findByReciever_Id((long) 999, token).getStatusCode());
+        ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByReciever_Id((long) 999, token);
+        });
 
         String newToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
 
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByReciever_Id(accountId1, newToken).getStatusCode());
+        ResponseStatusException thrown4 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByReciever_Id(accountId1, newToken);
+        });
 
         transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, 250));
 
@@ -139,19 +194,34 @@ public class TransactionTest {
 
         assertEquals(1, response.getBody().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown3.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown4.getStatus())
+        ); 
     }
 
     @Test
     @DisplayName("test find by from")
     public void testFindByFrom() {
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByFrom_Id(accountId1, null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByFrom_Id(accountId1, "token").getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByFrom_Id(accountId1, null);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByFrom_Id(accountId1, "token");
+        });
 
-        assertEquals(HttpStatus.NOT_FOUND, transactionController.findByFrom_Id((long) 999, token).getStatusCode());
+        ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByFrom_Id((long) 999, token);
+        });
 
         String newToken = authController.login(new LogInRequest("username", "password")).getBody().getToken();
 
-        assertEquals(HttpStatus.UNAUTHORIZED, transactionController.findByFrom_Id(accountId1, newToken).getStatusCode());
+        ResponseStatusException thrown4 = assertThrows(ResponseStatusException.class, () -> {
+            transactionController.findByFrom_Id(accountId1, newToken);
+        });
 
         transactionController.transferBetweenAccounts(token, new TransactionRequest(accountId1, accountId2, 250));
 
@@ -159,6 +229,13 @@ public class TransactionTest {
 
         assertEquals(1, response.getBody().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown3.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown4.getStatus())
+        ); 
     }
 
     @AfterEach

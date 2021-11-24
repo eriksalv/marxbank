@@ -12,14 +12,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import marxbank.model.Account;
 import marxbank.model.User;
 
 public class LogInControllerTest extends ApplicationTest {
 
-    private static LogInController controller;
     private User user;
-    private Account acc;
     private Scene s;
     private Stage st;
 
@@ -27,7 +24,6 @@ public class LogInControllerTest extends ApplicationTest {
     public void start(final Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
         Parent root = loader.load();
-        controller = loader.getController();
         s = new Scene(root);
         this.st = stage;
         stage.setScene(s);
@@ -38,7 +34,7 @@ public class LogInControllerTest extends ApplicationTest {
     void setup() throws Exception {
         DataManager.manager().resetData();
         user = DataManager.manager().createUser("testUser", "test@email.com", "password");
-        acc = DataManager.manager().createAccount("sparekonto", user, "nicu");
+        DataManager.manager().createAccount("sparekonto", user, "nicu");
     }
 
     @Test

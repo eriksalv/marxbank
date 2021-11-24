@@ -1,8 +1,10 @@
 package marxbank;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.web.server.ResponseStatusException;
 
 import marxbank.API.AccountRequest;
 import marxbank.API.AccountResponse;
@@ -59,11 +62,20 @@ public class AccountTest {
         AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
 
         // test invalid token
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.createAccount(null, aRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.createAccount("yeet", aRequest).getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.createAccount(null, aRequest);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.createAccount("yeet", aRequest);
+        });
 
         // create account
         assertEquals(HttpStatus.CREATED, accountController.createAccount(token, aRequest).getStatusCode());
+
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus())
+        ); 
     }
 
     @Test
@@ -77,25 +89,47 @@ public class AccountTest {
 
         DepositWithdrawRequest dwRequest = new DepositWithdrawRequest(500, id1);
         // check token
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount(null, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount("token", dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount(null, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount("token", dwRequest).getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.depositIntoAccount(null, dwRequest);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.depositIntoAccount("token", dwRequest);
+        });
+        ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.withdrawFromAccount(null, dwRequest);
+        });
+        ResponseStatusException thrown4 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.withdrawFromAccount("token", dwRequest);
+        });
 
         // check invalid id
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.depositIntoAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
+        ResponseStatusException thrown5 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.depositIntoAccount(token, new DepositWithdrawRequest(500, (long) 99999));
+        });
+        ResponseStatusException thrown6 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.withdrawFromAccount(token, new DepositWithdrawRequest(500, (long) 99999));
+        });
 
         // check invalid amount
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.depositIntoAccount(token, new DepositWithdrawRequest(-500, id1)).getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, new DepositWithdrawRequest(-500, id1)).getStatusCode());
+        ResponseStatusException thrown7 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.depositIntoAccount(token, new DepositWithdrawRequest(-500, id1));
+        });
+        ResponseStatusException thrown8 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.withdrawFromAccount(token, new DepositWithdrawRequest(-500, id1));
+        });
 
         // check for sufficient funds in account
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, dwRequest).getStatusCode());
+        ResponseStatusException thrown9 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.withdrawFromAccount(token, dwRequest);
+        });
 
         // check if user doesnt own account
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount(secondUser, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount(secondUser, dwRequest).getStatusCode());
+        ResponseStatusException thrown10 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.depositIntoAccount(secondUser, dwRequest);
+        });
+        ResponseStatusException thrown11 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.withdrawFromAccount(secondUser, dwRequest);
+        });
 
         ResponseEntity<AccountResponse> response1 = accountController.depositIntoAccount(token, dwRequest);
         ResponseEntity<AccountResponse> response2 = accountController.withdrawFromAccount(token, dwRequest);
@@ -104,18 +138,41 @@ public class AccountTest {
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         assertEquals(500, response1.getBody().getBalance());
         assertEquals(0, response2.getBody().getBalance());
+
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown3.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown4.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown5.getStatus()),
+            () -> assertEquals(HttpStatus.NOT_FOUND, thrown6.getStatus()),
+            () -> assertEquals(HttpStatus.BAD_REQUEST, thrown7.getStatus()),
+            () -> assertEquals(HttpStatus.BAD_REQUEST, thrown8.getStatus()),
+            () -> assertEquals(HttpStatus.BAD_REQUEST, thrown9.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown10.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown11.getStatus())
+        ); 
     }
 
     @Test
     @DisplayName("Test get myAccounts")
     public void testGetMyAccounts() {
         // test token
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser(null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser("token").getStatusCode());
+        ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.findByUser(null);
+        });
+        ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+            accountController.findByUser("token");
+        });
 
         assertEquals(0, accountController.findByUser(token).getBody().size());
         accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "name"));
         assertEquals(1, accountController.findByUser(token).getBody().size());
+
+        assertAll(
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+            () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus())
+        ); 
     }
 
     @Test

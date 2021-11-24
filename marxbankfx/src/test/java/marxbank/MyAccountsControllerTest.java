@@ -33,7 +33,6 @@ public class MyAccountsControllerTest extends ApplicationTest {
     private User user;
     private Account account1;
     private Account account2;
-    private Transaction transaction;
 
     @TempDir
     static Path tempDir;
@@ -62,7 +61,7 @@ public class MyAccountsControllerTest extends ApplicationTest {
         this.account1 = new SavingsAccount(user, "Annas brukskonto");
         this.account1.deposit(500);
         this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
-        this.transaction = new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
+        new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
         Platform.runLater(new Runnable(){
             @Override public void run() {
                 controller.initData(user);

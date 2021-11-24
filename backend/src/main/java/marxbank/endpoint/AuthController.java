@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import marxbank.API.LogInRequest;
 import marxbank.API.LogInResponse;
@@ -56,37 +56,17 @@ public class AuthController {
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<LogInResponse> login(@RequestBody LogInRequest request) {
-
-        if (request.getUsername().length() < 4 || request.getPassword().length() < 4)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
         if (!userRepository.findByUsername(request.getUsername()).isPresent())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username doesn't exist");
 
         User user = userRepository.findByUsername(request.getUsername()).get();
 
         if (!encoder.matches(request.getPassword(), user.getPassword()))
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
 
         String token = authService.createTokenForUser(user);
 
         return ResponseEntity.status(HttpStatus.OK).body(new LogInResponse(token, new UserResponse(user)));
-    }
-
-    @GetMapping("/login")
-    @Transactional
-    public ResponseEntity<UserResponse> login(
-            @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-
-        if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-
-        if (authService.getUserFromToken(token) == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new UserResponse(userRepository.findByToken_Token(AuthService.removeBearer(token)).get()));
     }
 
     /**
@@ -105,16 +85,16 @@ public class AuthController {
         try {
             user = request.createUser();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
         if (userRepository.findByUsername(user.getUsername()).isPresent())
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken");
 
         user.setPassword(encoder.encode(request.getPassword()));
-
         userRepository.save(user);
         String token = authService.createTokenForUser(user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(new LogInResponse(token, new UserResponse(user)));
     }
 
@@ -129,12 +109,12 @@ public class AuthController {
     public ResponseEntity<String> logout(
             @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
         if (token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
         if (!tokenRepository.findByToken(token).isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid/expired token");
         authService.removeToken(token);
+
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 

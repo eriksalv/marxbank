@@ -2,7 +2,6 @@ package marxbank.model;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -89,8 +88,6 @@ public class AccountTest {
 
         a.setName("yeet");
         assertTrue(a.getName().equals("yeet"));
-
-        assertFalse(a.equals(new User("username", "email@email.com", "password")));
         
         assertThrows(IllegalArgumentException.class, () -> {
             a.setId(null);

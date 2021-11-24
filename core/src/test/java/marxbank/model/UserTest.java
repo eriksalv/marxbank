@@ -92,8 +92,6 @@ public class UserTest {
         user.setId((long) 1);
         assertTrue(user.getId().equals((long) 1));
 
-        assertFalse(user.equals(new SavingsAccount((long) 5, user)));
-
         assertFalse(user.equals(new User((long) 69, "username", "email@email.com", "password")));
     }
 }

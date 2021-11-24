@@ -103,7 +103,6 @@ public class TransactionTest {
         transaction = new Transaction((long) 69, a1, a2, 50, true);
 
         assertTrue(transaction.equals(transaction));
-        assertFalse(transaction.equals("yeet"));
         assertFalse(transaction.equals(new Transaction((long) 99, a1, a2, 5, false)));
     }
 

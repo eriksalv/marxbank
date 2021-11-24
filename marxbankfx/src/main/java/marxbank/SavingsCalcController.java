@@ -1,6 +1,5 @@
 package marxbank;
 
-import marxbank.SavingsCalc;
 import marxbank.util.TextFieldFormatter;
 
 import java.util.Arrays;

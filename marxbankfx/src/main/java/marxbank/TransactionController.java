@@ -2,7 +2,6 @@ package marxbank;
 
 import marxbank.util.TextFieldFormatter;
 import marxbank.model.Account;
-import marxbank.model.Transaction;
 import marxbank.model.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,9 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import marxbank.model.Account;
-import marxbank.model.Transaction;
-import marxbank.model.User;
 
 public class TransactionController {
 
@@ -21,7 +17,6 @@ public class TransactionController {
     private Account from;
     private Account reciever;
     private double amount;
-    private Transaction t;
 
     @FXML private MenuButton myAccountsList;
     @FXML private TextField recieverText;
@@ -70,7 +65,7 @@ public class TransactionController {
             reciever = user.getAccountById(Long.parseLong(recieverText.getText()));
             amount = Integer.parseInt(amountText.getText());
             
-            t = DataManager.manager().createTransaction(from, reciever, amount);
+            DataManager.manager().createTransaction(from, reciever, amount);
             transactionFailedMsg.setVisible(false);
             transactionCompleteMsg.setVisible(true);
             try {
@@ -87,7 +82,6 @@ public class TransactionController {
             System.err.println(e.getMessage());
             transactionFailedMsg.setVisible(true);
             transactionCompleteMsg.setVisible(false);
-            //TODO: endre til from.getAvailableBalance() når forfallsdato er ferdig implementert
             transactionFailedMsg.setText("Ikke nok disponibelt beløp på konto: "
              + from.getName() + ". Tilgjengelig beløp: " + from.getBalance());
         }         
