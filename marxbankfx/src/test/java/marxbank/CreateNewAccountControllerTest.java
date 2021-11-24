@@ -26,11 +26,11 @@ import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
 import marxbank.model.User;
 
-public class CreateNewAccountControllerTest extends ApplicationTest{
-    private CreateNewAccountController controller;
-    private User user;
-    private Account account1;
-    private Account account2;
+public class CreateNewAccountControllerTest extends ApplicationTest {
+  private CreateNewAccountController controller;
+  private User user;
+  private Account account1;
+  private Account account2;
 
   @TempDir
   static Path tempDir;
@@ -52,16 +52,16 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     Files.createDirectories(tempDir.resolve("data"));
   }
 
-    @BeforeEach
-    public void beforeEachSetup() throws IOException {
-        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
-        this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
-        this.account1 = new SavingsAccount(user, "Annas brukskonto");
-        this.account1.deposit(500);
-        this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
-        new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
-        this.controller.initData(user);
-    }
+  @BeforeEach
+  public void beforeEachSetup() throws IOException {
+    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
+    this.account1 = new SavingsAccount(user, "Annas brukskonto");
+    this.account1.deposit(500);
+    this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
+    new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
+    this.controller.initData(user);
+  }
 
   @Test
   @DisplayName("test create new account no name")

@@ -60,26 +60,27 @@ public class CreateNewAccountController {
     accName = accountName.getText();
     System.out.println(accountName.getText());
 
-        errorMsg.setText("");
-        if(accName.isBlank()) {
-            errorMsg.setText("Konto trenger et navn.");
-            return;
-        }
-        try {
-            acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
-        } catch (IllegalArgumentException e) {
-            errorMsg.setText(e.getLocalizedMessage());
-        }
-        if (acc==null) {
-            errorMsg.setText("Ingen kontotype valgt.");
-            return;
-        }
-        creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: " + acc.getName() + " ble opprettet");
-        creationCompleteMsg.setVisible(true);
-        try {
-            DataManager.manager().save();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    errorMsg.setText("");
+    if (accName.isBlank()) {
+      errorMsg.setText("Konto trenger et navn.");
+      return;
+    }
+    try {
+      acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
+    } catch (IllegalArgumentException e) {
+      errorMsg.setText(e.getLocalizedMessage());
+    }
+    if (acc == null) {
+      errorMsg.setText("Ingen kontotype valgt.");
+      return;
+    }
+    creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: "
+        + acc.getName() + " ble opprettet");
+    creationCompleteMsg.setVisible(true);
+    try {
+      DataManager.manager().save();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
+}

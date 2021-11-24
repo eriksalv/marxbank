@@ -13,10 +13,10 @@ import javafx.scene.control.TextField;
 
 public class TransactionController {
 
-    private User user;
-    private Account from;
-    private Account reciever;
-    private double amount;
+  private User user;
+  private Account from;
+  private Account reciever;
+  private double amount;
 
   @FXML
   private MenuButton myAccountsList;
@@ -64,32 +64,32 @@ public class TransactionController {
     amountText.setTextFormatter(TextFieldFormatter.getNumberFormatter());
   }
 
-    @FXML
-    private void handleCommitTransaction(ActionEvent ev) {
-        try {
-            from = user.getAccountById(Long.parseLong(myAccountsList.getText()));
-            reciever = user.getAccountById(Long.parseLong(recieverText.getText()));
-            amount = Integer.parseInt(amountText.getText());
-            
-            DataManager.manager().createTransaction(from, reciever, amount);
-            transactionFailedMsg.setVisible(false);
-            transactionCompleteMsg.setVisible(true);
-            try {
-                DataManager.manager().save();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-            transactionFailedMsg.setVisible(true);
-            transactionCompleteMsg.setVisible(false);
-            transactionFailedMsg.setText("Noe gikk galt.");
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
-            transactionFailedMsg.setVisible(true);
-            transactionCompleteMsg.setVisible(false);
-            transactionFailedMsg.setText("Ikke nok disponibelt beløp på konto: "
-             + from.getName() + ". Tilgjengelig beløp: " + from.getBalance());
-        }         
+  @FXML
+  private void handleCommitTransaction(ActionEvent ev) {
+    try {
+      from = user.getAccountById(Long.parseLong(myAccountsList.getText()));
+      reciever = user.getAccountById(Long.parseLong(recieverText.getText()));
+      amount = Integer.parseInt(amountText.getText());
+
+      DataManager.manager().createTransaction(from, reciever, amount);
+      transactionFailedMsg.setVisible(false);
+      transactionCompleteMsg.setVisible(true);
+      try {
+        DataManager.manager().save();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    } catch (IllegalArgumentException e) {
+      System.err.println(e.getMessage());
+      transactionFailedMsg.setVisible(true);
+      transactionCompleteMsg.setVisible(false);
+      transactionFailedMsg.setText("Noe gikk galt.");
+    } catch (IllegalStateException e) {
+      System.err.println(e.getMessage());
+      transactionFailedMsg.setVisible(true);
+      transactionCompleteMsg.setVisible(false);
+      transactionFailedMsg.setText("Ikke nok disponibelt beløp på konto: " + from.getName()
+          + ". Tilgjengelig beløp: " + from.getBalance());
     }
   }
+}

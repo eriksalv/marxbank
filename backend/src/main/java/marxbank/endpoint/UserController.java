@@ -40,9 +40,12 @@ public class UserController {
    * 
    * @param token token of logged in user
    * @param id id of user
-   * @return <p>user response with http status (200) if request is valid, or null with http 
-   * status 403 (forbidden) if token is null or user is null, or null with http status 404 
-   * (not found) if the provided id doesn't match the actual id.</p>
+   * @return
+   *         <p>
+   *         user response with http status (200) if request is valid, or null with http status 403
+   *         (forbidden) if token is null or user is null, or null with http status 404 (not found)
+   *         if the provided id doesn't match the actual id.
+   *         </p>
    */
   @GetMapping("/{id}")
   @Transactional
@@ -66,16 +69,19 @@ public class UserController {
    * @param token for user
    * @param id of user
    * @param request the updated user information
-   * @return <p> userresponse with the updates user information with http status 200 (OK)
-   * if request is valid. </p>
-   * @throws ResponseStatusException with message "Unauthorized access" 
-   * and http status 401 (UNAUTHORIZED) if the token is invalid.
-   * @throws ResponseStatusException with message "Id not found" and http status 404 (NOT FOUND)
-   * if the id of user was not found.
-   * @throws ResponseStatusException with message "Incorrect password" and http status 403 
-   * (FORBIDDEN) if oldPassword in request is not correct.
-   * @throws RespsoneStatusException with message "Username already taken" and http status 409 
-   * (CONFLICT) if username in request is already taken.
+   * @return
+   *         <p>
+   *         userresponse with the updates user information with http status 200 (OK) if request is
+   *         valid.
+   *         </p>
+   * @throws ResponseStatusException with message "Unauthorized access" and http status 401
+   *         (UNAUTHORIZED) if the token is invalid.
+   * @throws ResponseStatusException with message "Id not found" and http status 404 (NOT FOUND) if
+   *         the id of user was not found.
+   * @throws ResponseStatusException with message "Incorrect password" and http status 403
+   *         (FORBIDDEN) if oldPassword in request is not correct.
+   * @throws RespsoneStatusException with message "Username already taken" and http status 409
+   *         (CONFLICT) if username in request is already taken.
    */
   @PostMapping("/{id}/edit")
   @Transactional
