@@ -150,7 +150,6 @@ public class User {
     return username;
   }
 
-  @SuppressWarnings({"LineLength"})
   private String validateEmail(String email) {
     if (email == null) {
       throw new IllegalArgumentException("Email cannot be null");
