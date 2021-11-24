@@ -69,11 +69,11 @@ public class AuthTest {
   @Test
   @DisplayName("test login get")
   public void testLoginGet() {
-    assertEquals(HttpStatus.FORBIDDEN, authController.login(((String) null)).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED, authController.login(((String) null)).getStatusCode());
 
     String invalidToken = "Bearer:yeetyeet";
 
-    assertEquals(HttpStatus.FORBIDDEN, authController.login(invalidToken).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED, authController.login(invalidToken).getStatusCode());
 
     User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
     userRepository.save(user);
