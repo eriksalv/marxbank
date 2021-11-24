@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import marxbank.repository.AccountRepository;
@@ -49,19 +51,17 @@ public class AccountController {
    * finds all accounts that a given user has had transactions with.
    * 
    * @param token token of logged in user
-   * @return <p>on valid request returns a list of accounts with HttpStatus 200,
-   * on request with an invalid token returns a response with null body and 
-   * a code of 401</p>
+   * @return list of accounts with HttpStatus 200
    */
   @GetMapping("/transactions")
   @Transactional
   public ResponseEntity<List<PublicAccountResponse>> findByTransactions(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+
+    if (token == null || authService.getUserFromToken(token) == null)
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+
     User user = authService.getUserFromToken(token);
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
     List<PublicAccountResponse> result = new ArrayList<>();
 
@@ -88,20 +88,17 @@ public class AccountController {
    * Gets all accounts for an User.
    * 
    * @param token for user
-   * @return <p> returns list of accounts with resposne 200
-   * a response with null body and code 401 if token is invalid.</p>
+   * @return returns list of accounts with resposne 200
+   * @return a response with null body and code 401 if token is invalid
    */
   @GetMapping("/myAccounts")
   @Transactional
   public ResponseEntity<ArrayList<AccountResponse>> findByUser(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null)
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     User user = authService.getUserFromToken(token);
-
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
     ArrayList<AccountResponse> accounts = new ArrayList<AccountResponse>();
 
@@ -116,25 +113,20 @@ public class AccountController {
    * 
    * @param token for user
    * @param id of account
-   * @return <p> account data with response 200 if found
-   *  a response with null body and a status code 401 if token is invalid
-   *  a repsonse with null body and status code 404 if account is not found </p>
+   * @return account data with response 200 if found
+   * @return a response with null body and a status code 401 if token is invalid
+   * @return a repsonse with null body and status code 404 if account is not found
    */
   @GetMapping("/myAccounts/{id}")
   @Transactional
   public ResponseEntity<AccountResponse> findByUserAndId(
       @RequestHeader(name = "Authorization", required = true) @Nullable String token,
       @PathVariable Long id) {
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-    User user = authService.getUserFromToken(token);
-
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null)
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     if (!accountRepository.findById(id).isPresent()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
     }
     Account acc = accountRepository.findById(id).get();
 
@@ -146,27 +138,26 @@ public class AccountController {
    * 
    * @param token for user
    * @param request for new account
-   * @return <p>a response with body of the account and a code of 201
-   * a response with null body and code 401 if token is invalid
-   * a resposne with null body and code 400 if request is invalid</p>
+   * @return a response with body of the account and a code of 201
+   * @return a response with null body and code 401 if token is invalid
+   * @return a resposne with null body and code 400 if request is invalid
    */
   @PostMapping("/createAccount")
   @Transactional
   public ResponseEntity<AccountResponse> createAccount(
       @RequestHeader(name = "Authorization", required = true) @Nullable String token,
       @RequestBody AccountRequest request) {
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null)
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     User user = authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-    Account a = accountService.createAccount(request, user.getId());
-
-    if (a == null)
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    Account a;
+    try {
+      a = accountService.createAccount(request, user.getId());
+    } catch (IllegalArgumentException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
 
     a.setAccountNumber(a.generateAccountNumber());
 
@@ -180,34 +171,32 @@ public class AccountController {
    * 
    * @param token for user
    * @param request deposit request with data
-   * @return <p>a response with body of the account and a code of 200
-   * a response with null body and code 401 if token is invalid
-   * a resposne with null body and code 400 if request is invalid</p>
+   * @return a response with body of the account and a code of 200
+   * @return a response with null body and code 401 if token is invalid
+   * @return a resposne with null body and code 400 if request is invalid
    */
   @PostMapping("/deposit")
   @Transactional
   public ResponseEntity<AccountResponse> depositIntoAccount(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token,
       @RequestBody DepositWithdrawRequest request) {
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null)
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     User user = this.authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
     if (!accountRepository.findById(request.getAccountId()).isPresent())
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
     if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-    if (request.getAmount() <= 0)
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     Account a = accountRepository.findById(request.getAccountId()).get();
-    a.deposit(request.getAmount());
+    try {
+      a.deposit(request.getAmount());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
 
     accountRepository.save(a);
 
@@ -219,38 +208,33 @@ public class AccountController {
    * 
    * @param token for user
    * @param request deposit request with data
-   * @return <p> a response with body of the account and a code of 200
-   * a response with null body and code 401 if token is invalid
-   * a resposne with null body and code 400 if request is invalid </p>
+   * @return a response with body of the account and a code of 200
+   * @return a response with null body and code 401 if token is invalid
+   * @return a resposne with null body and code 400 if request is invalid
    */
   @PostMapping("/withdraw")
   @Transactional
   public ResponseEntity<AccountResponse> withdrawFromAccount(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token,
       @RequestBody DepositWithdrawRequest request) {
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null)
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     User user = this.authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
     if (!accountRepository.findById(request.getAccountId()).isPresent())
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
     if (!accountService.checkIfUserOwnsAccount(user.getId(), request.getAccountId()))
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-    if (request.getAmount() <= 0)
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     Account a = accountRepository.findById(request.getAccountId()).get();
 
-    if (a.getBalance() - request.getAmount() < 0)
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-    a.withdraw(request.getAmount());
+    try {
+      a.withdraw(request.getAmount());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
 
     accountRepository.save(a);
 

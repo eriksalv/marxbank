@@ -16,8 +16,11 @@ public class AccountFactory {
    * @param accountType - input string from user (in norwegian)
    * @param user owner of account
    * @param name name of account
-   * @return <p> a new account if input is valid,
-   * otherwise if none of the text strings match the input string, null will be returned. </p>
+   * @return
+   *         <p>
+   *         a new account if input is valid, otherwise if none of the text strings match the input
+   *         string, null will be returned.
+   *         </p>
    */
   public static Account create(String accountType, User user, String name) {
     if ("Sparekonto".equalsIgnoreCase(accountType)) {

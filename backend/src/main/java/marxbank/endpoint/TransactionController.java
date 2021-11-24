@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import marxbank.API.TransactionRequest;
 import marxbank.API.TransactionResponse;
 import marxbank.model.Account;
@@ -53,30 +55,28 @@ public class TransactionController {
    * 
    * @param fromId id of account
    * @param token of user
-   * @return <p>a response with body of a list of transaction and code of 200,
-   * and returns a response with null body and code 401 if token is invalid or account is not users
-   * and returns a resposne with null body and code 404 if account is not found.</p>
+   * @return a response with body of a list of transaction and code of 200
+   * @return a response with null body and code 401 if token is invalid or account is not the users
+   * @return a resposne with null body and code 404 if account is not found
    */
   @GetMapping("/from/{fromId}")
   @Transactional
   public ResponseEntity<ArrayList<TransactionResponse>> findByFrom_Id(@PathVariable Long fromId,
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
 
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+    }
 
     User user = this.authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
     Optional<Account> optionalAccount = accountRepository.findById(fromId);
     if (!optionalAccount.isPresent())
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
     Account account = optionalAccount.get();
 
-    if (!user.getId().equals(account.getUser().getId()))
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (user.getId() != account.getUser().getId())
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
     transactionRepository.findByFrom_Id(fromId).get()
@@ -89,9 +89,9 @@ public class TransactionController {
    * 
    * @param recieverId id of account
    * @param token of user
-   * @return <p>a response with body of a list of transaction and code of 200
-   * and returns a response with null body and code 401 if token is invalid or account is not users
-   * and returns a resposne with null body and code 404 if account is not found.</p>
+   * @return a response with body of a list of transaction and code of 200
+   * @return a response with null body and code 401 if token is invalid or account is not the users
+   * @return a resposne with null body and code 404 if account is not found
    */
   @GetMapping("/reciever/{recieverId}")
   @Transactional
@@ -99,19 +99,17 @@ public class TransactionController {
       @PathVariable Long recieverId,
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
 
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+    }
 
     User user = this.authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
     if (!accountRepository.findById(recieverId).isPresent())
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
     if (!accountService.checkIfUserOwnsAccount(user.getId(), recieverId))
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 
@@ -125,9 +123,9 @@ public class TransactionController {
    * 
    * @param accountId id of account
    * @param token for user
-   * @return <p>a response with body of a list of transaction and code of 200
-   * and returns a response with null body and code 401 if token is invalid or account is not users
-   * and returns a resposne with null body and code 404 if account is not found</p>
+   * @return a response with body of a list of transaction and code of 200
+   * @return a response with null body and code 401 if token is invalid or account is not the users
+   * @return a resposne with null body and code 404 if account is not found
    */
   @GetMapping("/myTransactions/{accountId}")
   @Transactional
@@ -135,24 +133,22 @@ public class TransactionController {
       @PathVariable Long accountId,
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
 
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+    }
 
     User user = this.authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-    Optional<Account> optionalAccount = accountRepository.findById(accountId);
-    if (!optionalAccount.isPresent())
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    Account account = optionalAccount.get();
+    Optional<Account> OptionalAccount = accountRepository.findById(accountId);
+    if (!OptionalAccount.isPresent())
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
+    Account account = OptionalAccount.get();
 
     if (account == null)
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
-    if (!user.getId().equals(account.getUser().getId()))
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (user.getId() != account.getUser().getId())
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 
@@ -165,22 +161,19 @@ public class TransactionController {
    * Gets all transactions for user without duplicates
    * 
    * @param token for user
-   * @return <p>a response with body of a list of transaction and code of 200
-   * and will return a response with null body 
-   * and code 401 if token is invalid or account is not users</p>
+   * @return a response with body of a list of transaction and code of 200
+   * @return a response with null body and code 401 if token is invalid or account is not the users
    */
   @GetMapping("/myTransactions")
   @Transactional
   public ResponseEntity<List<TransactionResponse>> findAllTransactionForUser(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
 
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+    }
 
     User user = authService.getUserFromToken(token);
-
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
     List<TransactionResponse> transactions =
         this.transactionService.getTransactionForUser(user.getId()).stream()
@@ -194,9 +187,9 @@ public class TransactionController {
    * 
    * @param token for user
    * @param request transfer request data
-   * @return a response with body of a transaction and a status code of 200,
-   * and will return a response with null body and code 401 if token is invalid
-   * and will return a resposne with null body and code 400 if the request is not valid
+   * @return a response with body of a transaction and a status code of 200
+   * @return a response with null body and code 401 if token is invalid
+   * @return a resposne with null body and code 400 the request is not valid
    */
   @PostMapping("/transfer")
   @Transactional
@@ -204,28 +197,26 @@ public class TransactionController {
       @RequestHeader(name = "Authorization", required = false) @Nullable String token,
       @RequestBody TransactionRequest request) {
 
-    if (token == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    if (token == null || authService.getUserFromToken(token) == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+    }
 
     User user = this.authService.getUserFromToken(token);
 
-    if (user == null)
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-
-    if (!this.accountRepository.findById(request.getFrom()).isPresent()
-        || !this.accountRepository.findById(request.getTo()).isPresent())
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    if (!this.accountRepository.findById(request.getFrom()).isPresent())
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sender account doesn't exist");
+    if (!this.accountRepository.findById(request.getTo()).isPresent())
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reciever account doesn't exist");
 
     if (!this.accountService.checkIfUserOwnsAccount(user.getId(), request.getFrom()))
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
-    if (request.getAmount() <= 0)
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-    if (this.accountRepository.findById(request.getFrom()).get().getBalance()
-        - request.getAmount() < 0)
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    TransactionResponse t = this.transactionService.resolveTransactionRequest(request);
+    TransactionResponse t;
+    try {
+      t = this.transactionService.resolveTransactionRequest(request);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
 
     return ResponseEntity.status(HttpStatus.OK).body(t);
   }

@@ -53,13 +53,18 @@ public class UserControllerTest {
   @DisplayName("test get user")
   public void testGetUser() {
 
-    assertAll(() -> assertThrows(ResponseStatusException.class, () -> {
+    ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
       userController.findById((String) null, (long) 1);
-    }), () -> assertThrows(ResponseStatusException.class, () -> {
+    });
+    ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
       userController.findById("token", (long) 1);
-    }), () -> assertThrows(ResponseStatusException.class, () -> {
+    });
+    ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
       userController.findById(token, (long) 99);
-    }));
+    });
+    assertAll(() -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+        () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+        () -> assertEquals(HttpStatus.NOT_FOUND, thrown3.getStatus()));
 
     assertEquals(userController.findById(token, userId).getBody().getId(), userId);
   }
@@ -68,47 +73,43 @@ public class UserControllerTest {
   @DisplayName("test edit user")
   public void testEditUser() {
 
-    // token and id check
-    assertAll(
-        // null token
-        () -> assertThrows(ResponseStatusException.class, () -> {
-          EditUserRequest request =
-              new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
-          userController.editUser((String) null, (long) 1, request);
-        }),
-        // not valid token
-        () -> assertThrows(ResponseStatusException.class, () -> {
-          EditUserRequest request =
-              new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
-          userController.editUser("token", (long) 1, request);
-        }),
-        // not valid id
-        () -> assertThrows(ResponseStatusException.class, () -> {
-          EditUserRequest request =
-              new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
-          userController.editUser(token, (long) 99, request);
-        }));
+    ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+      EditUserRequest request =
+          new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
+      userController.editUser((String) null, (long) 1, request);
+    });
+    // not valid token
+    ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+      EditUserRequest request =
+          new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
+      userController.editUser("token", (long) 1, request);
+    });
+    // not valid id
+    ResponseStatusException thrown3 = assertThrows(ResponseStatusException.class, () -> {
+      EditUserRequest request =
+          new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
+      userController.editUser(token, (long) 99, request);
+    });
 
-    // bad input
-    assertAll(
-        // wrong password old password
-        () -> assertThrows(ResponseStatusException.class, () -> {
-          EditUserRequest request =
-              new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
-          userController.editUser(token, userId, request);
-        }),
-        // username taken
-        () -> assertThrows(ResponseStatusException.class, () -> {
-          authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
-          EditUserRequest request =
-              new EditUserRequest("username", "password", "yeet", "yeet@yeet.com");
-          userController.editUser(token, userId, request);
-        }),
-        // bad email
-        () -> assertThrows(ResponseStatusException.class, () -> {
-          EditUserRequest request = new EditUserRequest("yeet", "password", "yeet", "emailbad");
-          userController.editUser(token, userId, request);
-        }));
+
+    // wrong password old password
+    ResponseStatusException thrown4 = assertThrows(ResponseStatusException.class, () -> {
+      EditUserRequest request =
+          new EditUserRequest("yeet", "password", "oldPassword", "yeet@yeet.com");
+      userController.editUser(token, userId, request);
+    });
+    // username taken
+    ResponseStatusException thrown5 = assertThrows(ResponseStatusException.class, () -> {
+      authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
+      EditUserRequest request =
+          new EditUserRequest("username", "password", "yeet", "yeet@yeet.com");
+      userController.editUser(token, userId, request);
+    });
+    // bad email
+    ResponseStatusException thrown6 = assertThrows(ResponseStatusException.class, () -> {
+      EditUserRequest request = new EditUserRequest("yeet", "password", "yeet", "emailbad");
+      userController.editUser(token, userId, request);
+    });
 
 
     // valid edit
@@ -117,6 +118,13 @@ public class UserControllerTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(userId, response.getBody().getId());
     assertEquals("new@email.com", response.getBody().getEmail());
+
+    assertAll(() -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+        () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
+        () -> assertEquals(HttpStatus.NOT_FOUND, thrown3.getStatus()),
+        () -> assertEquals(HttpStatus.FORBIDDEN, thrown4.getStatus()),
+        () -> assertEquals(HttpStatus.CONFLICT, thrown5.getStatus()),
+        () -> assertEquals(HttpStatus.BAD_REQUEST, thrown6.getStatus()));
   }
 
 }

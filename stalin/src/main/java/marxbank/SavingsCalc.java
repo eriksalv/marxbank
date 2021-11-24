@@ -9,7 +9,7 @@ public class SavingsCalc {
    * @param monthlyAmount monthly amount of money to save
    * @param lumpAmount starting money
    * @param interestRate (in percent)
-   * @param period how many months to save for 
+   * @param period how many months to save for
    * @return the total amount after the given period.
    */
   public static long calculation(long monthlyAmount, long lumpAmount, long period,

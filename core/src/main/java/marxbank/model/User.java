@@ -153,8 +153,7 @@ public class User {
   private String validateEmail(String email) {
     if (email == null) {
       throw new IllegalArgumentException("Email cannot be null");
-    } else if (!email.matches(
-        "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/="
+    } else if (!email.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/="
         .concat("?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}"))) {
       throw new IllegalArgumentException("Email is not valid");
     }

@@ -21,7 +21,7 @@ public class CreditAccountTest {
   @DisplayName("test contructor")
   public void testConstructor() {
     assertThrows(IllegalArgumentException.class, () -> {
-      Account a = new CreditAccount((long) 1, user, -5.0, "navn", 69000);
+      new CreditAccount((long) 1, user, -5.0, "navn", 69000);
     });
 
     String name = "kredittkonto";

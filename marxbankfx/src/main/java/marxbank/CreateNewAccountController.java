@@ -80,7 +80,6 @@ public class CreateNewAccountController {
     try {
       DataManager.manager().save();
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
