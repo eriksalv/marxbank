@@ -1,7 +1,6 @@
 package marxbank.model;
 
 import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,60 +10,62 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Token {
-    
-    @Id
-    @GeneratedValue
-    private Long id;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-    @Column(nullable = false)
-    private String token;
+  @OneToOne(optional = false)
+  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+  private User user;
 
-    public Token() {}
+  @Column(nullable = false)
+  private String token;
 
-    public Token(User user, String token) {
-        this.user = user;
-        this.token = token;
-    }
+  public Token() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Token(User user, String token) {
+    this.user = user;
+    this.token = token;
+  }
 
-    public Long getId() {
-        return this.id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  public Long getId() {
+    return this.id;
+  }
 
-    public String getToken() {
-        return this.token;
-    }
+  public void setToken(String token) {
+    this.token = token;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public String getToken() {
+    return this.token;
+  }
 
-    public User getUser() {
-        return this.user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Token)) return false;
-        Token t = (Token) obj;
-        return Objects.equals(id, t.getId());
-    }
+  public User getUser() {
+    return this.user;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!(obj instanceof Token))
+      return false;
+    Token t = (Token) obj;
+    return Objects.equals(id, t.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
 
 }

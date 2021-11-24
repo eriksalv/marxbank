@@ -25,55 +25,53 @@ import marxbank.model.User;
 
 public class MainControllerTest extends ApplicationTest {
 
-    private MainController controller;
+  private MainController controller;
 
-    @TempDir
-    static Path tempDir;
+  @TempDir
+  static Path tempDir;
 
-    @Override
-    public void start(final Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main_test.fxml"));
-        final Parent root = loader.load();
-        controller = loader.getController();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
+  @Override
+  public void start(final Stage stage) throws Exception {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("Main_test.fxml"));
+    final Parent root = loader.load();
+    controller = loader.getController();
+    stage.setScene(new Scene(root));
+    stage.show();
+  }
 
-     /**
-     * sets up tempDir for DataMananger
-     * @throws IOException
-     */
-    @BeforeAll
-    static void setup() throws IOException {
-        Files.createDirectories(tempDir.resolve("data"));
-    }
+  /**
+   * sets up tempDir for DataMananger
+   * 
+   * @throws IOException
+   */
+  @BeforeAll
+  static void setup() throws IOException {
+    Files.createDirectories(tempDir.resolve("data"));
+  }
 
-    @BeforeEach
-    private void beforeEach() throws IOException {
-        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
-        User user = new User("username", "email@email.com", "password");
-        controller.initData(user);
-    }
+  @BeforeEach
+  private void beforeEach() throws IOException {
+    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    User user = new User("username", "email@email.com", "password");
+    controller.initData(user);
+  }
 
 
-    @Test
-    public void testController_main() {
-        assertNotNull(controller);
-    }
+  @Test
+  public void testController_main() {
+    assertNotNull(controller);
+  }
 
-    @ParameterizedTest
-    @MethodSource("provideStringsForHandleClickBtnsTest")
-    public void handleClickBtnsTest(String operation, String expected) {
-        clickOn(operation);
-        assertEquals(expected, controller.getCurrentContent());
-    }
+  @ParameterizedTest
+  @MethodSource("provideStringsForHandleClickBtnsTest")
+  public void handleClickBtnsTest(String operation, String expected) {
+    clickOn(operation);
+    assertEquals(expected, controller.getCurrentContent());
+  }
 
-    private static Stream<Arguments> provideStringsForHandleClickBtnsTest() {
-        return Stream.of(
-            Arguments.of("#menuBtn2", "MyAccounts"),
-            Arguments.of("#menuBtn3", "Transaction"),
-            Arguments.of("#menuBtn4", "MyTransactions"),
-            Arguments.of("#menuBtn5", "MyProfile")
-        );
-    }
+  private static Stream<Arguments> provideStringsForHandleClickBtnsTest() {
+    return Stream.of(Arguments.of("#menuBtn2", "MyAccounts"),
+        Arguments.of("#menuBtn3", "Transaction"), Arguments.of("#menuBtn4", "MyTransactions"),
+        Arguments.of("#menuBtn5", "MyProfile"));
+  }
 }

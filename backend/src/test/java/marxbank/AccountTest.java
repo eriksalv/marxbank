@@ -30,104 +30,123 @@ import marxbank.util.AccountType;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AccountTest {
-    
-    @LocalServerPort
-    private int port;
 
-    @Autowired
-    private AccountController accountController;
+  @LocalServerPort
+  private int port;
 
-    @Autowired
-    private AccountService accountService;
+  @Autowired
+  private AccountController accountController;
 
-    @Autowired
-    private AuthController authController;
+  @Autowired
+  private AccountService accountService;
 
-    private String token;
+  @Autowired
+  private AuthController authController;
 
-    @BeforeEach
-    public void setup() {
-        SignUpRequest request = new SignUpRequest("yeet", "yeet", "yeet@yeet.com");
-        authController.signUp(request);
-        LogInRequest lRequest = new LogInRequest("yeet", "yeet");
-        token = authController.login(lRequest).getBody().getToken();
-    }
+  private String token;
 
-    @Test
-    @DisplayName("Testing create account")
-    public void testCreateAccount() {
-        AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
+  @BeforeEach
+  public void setup() {
+    SignUpRequest request = new SignUpRequest("yeet", "yeet", "yeet@yeet.com");
+    authController.signUp(request);
+    LogInRequest lRequest = new LogInRequest("yeet", "yeet");
+    token = authController.login(lRequest).getBody().getToken();
+  }
 
-        // test invalid token
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.createAccount(null, aRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.createAccount("yeet", aRequest).getStatusCode());
+  @Test
+  @DisplayName("Testing create account")
+  public void testCreateAccount() {
+    AccountRequest aRequest = new AccountRequest("Sparekonto", "yeet");
 
-        // create account
-        assertEquals(HttpStatus.CREATED, accountController.createAccount(token, aRequest).getStatusCode());
-    }
+    // test invalid token
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.createAccount(null, aRequest).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.createAccount("yeet", aRequest).getStatusCode());
 
-    @Test
-    @DisplayName("Test deposit and withdraw")
-    public void testDepositAndWithdraw() {
-        AccountRequest aRequest = new AccountRequest(AccountType.SAVING.getTypeString(), "yeet");
-        Long id1 = accountController.createAccount(token, aRequest).getBody().getId();
+    // create account
+    assertEquals(HttpStatus.CREATED,
+        accountController.createAccount(token, aRequest).getStatusCode());
+  }
 
-        authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
-        String secondUser = authController.login(new LogInRequest("username", "password")).getBody().getToken();
+  @Test
+  @DisplayName("Test deposit and withdraw")
+  public void testDepositAndWithdraw() {
+    AccountRequest aRequest = new AccountRequest(AccountType.SAVING.getTypeString(), "yeet");
+    Long id1 = accountController.createAccount(token, aRequest).getBody().getId();
 
-        DepositWithdrawRequest dwRequest = new DepositWithdrawRequest(500, id1);
-        // check token
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount(null, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount("token", dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount(null, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount("token", dwRequest).getStatusCode());
+    authController.signUp(new SignUpRequest("username", "password", "email@email.com"));
+    String secondUser =
+        authController.login(new LogInRequest("username", "password")).getBody().getToken();
 
-        // check invalid id
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.depositIntoAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
+    DepositWithdrawRequest dwRequest = new DepositWithdrawRequest(500, id1);
+    // check token
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.depositIntoAccount(null, dwRequest).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.depositIntoAccount("token", dwRequest).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.withdrawFromAccount(null, dwRequest).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.withdrawFromAccount("token", dwRequest).getStatusCode());
 
-        // check invalid amount
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.depositIntoAccount(token, new DepositWithdrawRequest(-500, id1)).getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, new DepositWithdrawRequest(-500, id1)).getStatusCode());
+    // check invalid id
+    assertEquals(HttpStatus.BAD_REQUEST, accountController
+        .depositIntoAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
+    assertEquals(HttpStatus.BAD_REQUEST, accountController
+        .withdrawFromAccount(token, new DepositWithdrawRequest(500, (long) 99999)).getStatusCode());
 
-        // check for sufficient funds in account
-        assertEquals(HttpStatus.BAD_REQUEST, accountController.withdrawFromAccount(token, dwRequest).getStatusCode());
+    // check invalid amount
+    assertEquals(HttpStatus.BAD_REQUEST, accountController
+        .depositIntoAccount(token, new DepositWithdrawRequest(-500, id1)).getStatusCode());
+    assertEquals(HttpStatus.BAD_REQUEST, accountController
+        .withdrawFromAccount(token, new DepositWithdrawRequest(-500, id1)).getStatusCode());
 
-        // check if user doesnt own account
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.depositIntoAccount(secondUser, dwRequest).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.withdrawFromAccount(secondUser, dwRequest).getStatusCode());
+    // check for sufficient funds in account
+    assertEquals(HttpStatus.BAD_REQUEST,
+        accountController.withdrawFromAccount(token, dwRequest).getStatusCode());
 
-        ResponseEntity<AccountResponse> response1 = accountController.depositIntoAccount(token, dwRequest);
-        ResponseEntity<AccountResponse> response2 = accountController.withdrawFromAccount(token, dwRequest);
+    // check if user doesnt own account
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.depositIntoAccount(secondUser, dwRequest).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED,
+        accountController.withdrawFromAccount(secondUser, dwRequest).getStatusCode());
 
-        assertEquals(HttpStatus.OK, response1.getStatusCode());
-        assertEquals(HttpStatus.OK, response2.getStatusCode());
-        assertEquals(500, response1.getBody().getBalance());
-        assertEquals(0, response2.getBody().getBalance());
-    }
+    ResponseEntity<AccountResponse> response1 =
+        accountController.depositIntoAccount(token, dwRequest);
+    ResponseEntity<AccountResponse> response2 =
+        accountController.withdrawFromAccount(token, dwRequest);
 
-    @Test
-    @DisplayName("Test get myAccounts")
-    public void testGetMyAccounts() {
-        // test token
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser(null).getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser("token").getStatusCode());
+    assertEquals(HttpStatus.OK, response1.getStatusCode());
+    assertEquals(HttpStatus.OK, response2.getStatusCode());
+    assertEquals(500, response1.getBody().getBalance());
+    assertEquals(0, response2.getBody().getBalance());
+  }
 
-        assertEquals(0, accountController.findByUser(token).getBody().size());
-        accountController.createAccount(token, new AccountRequest(AccountType.CHECKING.getTypeString(), "name"));
-        assertEquals(1, accountController.findByUser(token).getBody().size());
-    }
+  @Test
+  @DisplayName("Test get myAccounts")
+  public void testGetMyAccounts() {
+    // test token
+    assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser(null).getStatusCode());
+    assertEquals(HttpStatus.UNAUTHORIZED, accountController.findByUser("token").getStatusCode());
 
-    @Test
-    @DisplayName("Test checks in accountService")
-    public void testChecksInAccountService() {
-        assertNull(accountService.createAccount(new AccountRequest(AccountType.CHECKING.getTypeString(), "yeet"), (long) 99999999));
-        assertFalse(accountService.checkIfUserOwnsAccount((long) 9999, (long) 80085));
-    }
+    assertEquals(0, accountController.findByUser(token).getBody().size());
+    accountController.createAccount(token,
+        new AccountRequest(AccountType.CHECKING.getTypeString(), "name"));
+    assertEquals(1, accountController.findByUser(token).getBody().size());
+  }
 
-    @AfterEach
-    public void cleanUp() {
-        authController.logout(token);
-    }
+  @Test
+  @DisplayName("Test checks in accountService")
+  public void testChecksInAccountService() {
+    assertNull(accountService.createAccount(
+        new AccountRequest(AccountType.CHECKING.getTypeString(), "yeet"), (long) 99999999));
+    assertFalse(accountService.checkIfUserOwnsAccount((long) 9999, (long) 80085));
+  }
+
+  @AfterEach
+  public void cleanUp() {
+    authController.logout(token);
+  }
 
 }

@@ -1,7 +1,6 @@
 package marxbank;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,57 +15,63 @@ import marxbank.model.User;
 import javafx.scene.Node;
 
 public class ProfileController {
-    
-    @FXML private Label nameLabel;
-    @FXML private Label IDLabel;
-    @FXML private Label usernameLabel;
-    @FXML private Label passwordLabel;
-    @FXML private Button changePasswordButton;
-    @FXML private Pane newPane;
 
-    private User user;
+  @FXML
+  private Label nameLabel;
+  @FXML
+  private Label idLabel;
+  @FXML
+  private Label usernameLabel;
+  @FXML
+  private Label passwordLabel;
+  @FXML
+  private Button changePasswordButton;
+  @FXML
+  private Pane newPane;
 
-    public void initData(User u) {
-        this.user = u;
-        nameLabel.setText(user.getEmail());
-        IDLabel.setText(user.getId().toString());
-        usernameLabel.setText(user.getUsername());
-        passwordLabel.setText(user.getPassword());
-    }
+  private User user;
 
-    @FXML
-    private void handleChangePassword(ActionEvent e) throws IOException {       
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ChangePassword.fxml"));
-        AnchorPane pane = loader.load();
-        ChangePasswordController controller = loader.getController();
-        controller.initData(user, this);
+  public void initData(User u) {
+    this.user = u;
+    nameLabel.setText(user.getEmail());
+    idLabel.setText(user.getId().toString());
+    usernameLabel.setText(user.getUsername());
+    passwordLabel.setText(user.getPassword());
+  }
 
-        newPane.getChildren().setAll(pane);
-    }
+  @FXML
+  private void handleChangePassword(ActionEvent e) throws IOException {
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("ChangePassword.fxml"));
+    AnchorPane pane = loader.load();
+    ChangePasswordController controller = loader.getController();
+    controller.initData(user, this);
 
-    public void updatePassword() {
-        passwordLabel.setText(user.getPassword());
-    }
+    newPane.getChildren().setAll(pane);
+  }
 
-    public void closeChangePassword() {
-        newPane.getChildren().clear();
-    }
+  public void updatePassword() {
+    passwordLabel.setText(user.getPassword());
+  }
 
-    @FXML
-    private void handleSignOut(ActionEvent e) throws IOException {
-        DataManager.manager().setLoggedInUser(null);
+  public void closeChangePassword() {
+    newPane.getChildren().clear();
+  }
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("LogIn.fxml"));
-        Parent tableViewParent = loader.load();
-        
-        Scene tableViewScene = new Scene(tableViewParent);
-        
-        //Get stage information
-        Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
-        
-        window.setScene(tableViewScene);
-        window.show();
-    }
+  @FXML
+  private void handleSignOut(ActionEvent e) throws IOException {
+    DataManager.manager().setLoggedInUser(null);
+
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getResource("LogIn.fxml"));
+    Parent tableViewParent = loader.load();
+
+    Scene tableViewScene = new Scene(tableViewParent);
+
+    // Get stage information
+    Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+    window.setScene(tableViewScene);
+    window.show();
+  }
 }

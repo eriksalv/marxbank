@@ -3,50 +3,50 @@ package marxbank.API;
 import marxbank.model.User;
 
 public class SignUpRequest {
-    
-    private String username;
-    private String password;
-    private String email;
-    
-    protected SignUpRequest() {}
 
-    public SignUpRequest(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
+  private String username;
+  private String password;
+  private String email;
 
-    public void setUsername(String newUsername) {
-        this.username = newUsername;
-    }
+  protected SignUpRequest() {}
 
-    public String getUsername() {
-        return this.username;
-    }
+  public SignUpRequest(String username, String password, String email) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+  }
 
-    public void setPassword(String newPassword) {
-        this.password = newPassword;
-    }
+  public void setUsername(String newUsername) {
+    this.username = newUsername;
+  }
 
-    public String getPassword() {
-        return this.password;
-    }
+  public String getUsername() {
+    return this.username;
+  }
 
-    public void setEmail(String newEmail) {
-        this.email = newEmail;
-    }
+  public void setPassword(String newPassword) {
+    this.password = newPassword;
+  }
 
-    public String getEmail() {
-        return this.email;
-    }
+  public String getPassword() {
+    return this.password;
+  }
 
-    public User createUser() {
-        User user = new User();
+  public void setEmail(String newEmail) {
+    this.email = newEmail;
+  }
 
-        user.setUsername(this.username);
-        user.setEmail(this.email);
-        user.setPassword(this.password);
+  public String getEmail() {
+    return this.email;
+  }
 
-        return user;
-    }
+  public User createUser() {
+    User user = new User();
+
+    user.setUsername(this.username);
+    user.setEmail(this.email);
+    user.setPassword(this.password);
+
+    return user;
+  }
 }

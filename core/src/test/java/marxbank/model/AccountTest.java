@@ -15,103 +15,100 @@ import org.junit.jupiter.api.Test;
 
 public class AccountTest {
 
-    private User user;
+  private User user;
 
-    @BeforeEach
-    public void beforeEach() throws IOException {
-        user = new User((long) 1, "username", "email@email.com", "password");
-    }
+  @BeforeEach
+  public void beforeEach() throws IOException {
+    user = new User((long) 1, "username", "email@email.com", "password");
+  }
 
-    @Test
-    @DisplayName("test constructor")
-    public void testConstructor() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new SavingsAccount((long) 1, user, -5.0);
-        });
+  @Test
+  @DisplayName("test constructor")
+  public void testConstructor() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new SavingsAccount((long) 1, user, -5.0);
+    });
 
-        Account a = new SavingsAccount((long) 1, user, 5.0);
-        assertEquals(this.user.getAccountById(1l), a);
-    }
+    Account a = new SavingsAccount((long) 1, user, 5.0);
+    assertEquals(this.user.getAccountById(1l), a);
+  }
 
-    @Test
-    @DisplayName("test deposit withdraw addInterest")
-    public void testDepositWithdraw() {
-        Account a = new SavingsAccount((long) 1, user, 5.0);
+  @Test
+  @DisplayName("test deposit withdraw addInterest")
+  public void testDepositWithdraw() {
+    Account a = new SavingsAccount((long) 1, user, 5.0);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            a.deposit(-500.0);
-        });
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.deposit(-500.0);
+    });
 
-        assertAll(
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                a.withdraw(-50.0);
-            }),
-            () -> assertThrows(IllegalStateException.class, () -> {
-                a.withdraw(500.0);
-            })
-        );
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      a.withdraw(-50.0);
+    }), () -> assertThrows(IllegalStateException.class, () -> {
+      a.withdraw(500.0);
+    }));
 
-        a.deposit(5000);
-        assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
+    a.deposit(5000);
+    assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
 
-        a.withdraw(500);
-        assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
+    a.withdraw(500);
+    assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
 
-        a.addInterest();
-        assertEquals(4500 + 4500*(a.getInterestRate()/100), a.getBalance());
-        assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
-    }
+    a.addInterest();
+    assertEquals(4500 + 4500 * (a.getInterestRate() / 100), a.getBalance());
+    assertEquals(this.user.getAccounts().get(0).getBalance(), a.getBalance());
+  }
 
-    @Test
-    @DisplayName("test transactions")
-    public void testTransactions() {
-        Account a = new SavingsAccount((long) 1, user, 5.0);
-        Account a2 = new SavingsAccount((long) 2, user, 5.0);
-        a.deposit(5000);
-        Transaction t = new Transaction((long) 1, a, a2, 500, true);
+  @Test
+  @DisplayName("test transactions")
+  public void testTransactions() {
+    Account a = new SavingsAccount((long) 1, user, 5.0);
+    Account a2 = new SavingsAccount((long) 2, user, 5.0);
+    a.deposit(5000);
+    Transaction t = new Transaction((long) 1, a, a2, 500, true);
 
-        assertThrows(IllegalStateException.class, () -> {
-            a.addTransaction(t);
-        });
+    assertThrows(IllegalStateException.class, () -> {
+      a.addTransaction(t);
+    });
 
-        assertEquals(4500, a.getBalance());
-        assertEquals(500, a2.getBalance());
-    }
+    assertEquals(4500, a.getBalance());
+    assertEquals(500, a2.getBalance());
+  }
 
-    @Test
-    @DisplayName("test setters and equals")
-    public void testSetters() {
-        Account a = new SavingsAccount((long) 1, user, 5.0);
+  @Test
+  @DisplayName("test setters and equals")
+  public void testSetters() {
+    Account a = new SavingsAccount((long) 1, user, 5.0);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            a.setName(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.setName(null);
+    });
 
-        a.setName("yeet");
-        assertTrue(a.getName().equals("yeet"));
+    a.setName("yeet");
+    assertTrue(a.getName().equals("yeet"));
 
-        assertFalse(a.equals(new User("username", "email@email.com", "password")));
-        
-        assertThrows(IllegalArgumentException.class, () -> {
-            a.setId(null);
-        });
+    assertFalse(a.equals(new User("username", "email@email.com", "password")));
 
-        a.setId((long) 99);
-        assertTrue(a.getId().equals((long) 99));
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.setId(null);
+    });
 
-        User u = new User("kristina", "kristina@kristina.no", "password");
-        assertThrows(IllegalArgumentException.class, () -> {
-            a.setUser(null);
-        });
+    a.setId((long) 99);
+    assertTrue(a.getId().equals((long) 99));
 
-        a.setUser(u);
-        assertEquals(u, a.getUser());
+    User u = new User("kristina", "kristina@kristina.no", "password");
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.setUser(null);
+    });
 
-        ArrayList<Transaction> t = new ArrayList<Transaction>();
-        Account b = new SavingsAccount((long) 5, user);
-        a.deposit(100.0);
-        t.add(new Transaction((long) 10, a, b, 10, true));
-        a.setTransactions(t);
-        assertEquals(t, a.getTransactions());
-    }
+    a.setUser(u);
+    assertEquals(u, a.getUser());
+
+    ArrayList<Transaction> t = new ArrayList<Transaction>();
+    Account b = new SavingsAccount((long) 5, user);
+    a.deposit(100.0);
+    t.add(new Transaction((long) 10, a, b, 10, true));
+    a.setTransactions(t);
+    assertEquals(t, a.getTransactions());
+  }
 }

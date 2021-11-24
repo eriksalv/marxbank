@@ -12,72 +12,76 @@ import marxbank.util.AccountType;
 import javafx.scene.control.MenuItem;
 
 public class CreateNewAccountController {
-    @FXML private MenuButton selectAccountType;
-    @FXML private TextField accountName;
-    @FXML private Label creationCompleteMsg;
-    @FXML private Label errorMsg;
+  @FXML
+  private MenuButton selectAccountType;
+  @FXML
+  private TextField accountName;
+  @FXML
+  private Label creationCompleteMsg;
+  @FXML
+  private Label errorMsg;
 
-    private User user;
-    private String accName;
+  private User user;
+  private String accName;
 
-    private Account acc;
+  private Account acc;
 
-    public CreateNewAccountController() {
-        
+  public CreateNewAccountController() {
+
+  }
+
+  private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
+    @Override
+    public void handle(ActionEvent e) {
+      selectAccountType.setText(((MenuItem) e.getSource()).getText());
     }
+  };
 
-    private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e)
-        {
-            selectAccountType.setText(((MenuItem)e.getSource()).getText());
-        }
-    };
+  public void initData(User user) {
+    this.user = user;
+  }
 
-    public void initData(User user) {
-        this.user = user;
+  @FXML
+  private void initialize() {
+    creationCompleteMsg.setVisible(false);
+    createSelectAccountTypeItems();
+  }
+
+  private void createSelectAccountTypeItems() {
+    AccountType.stream().forEach(type -> {
+      MenuItem item = new MenuItem(type.getTypeString());
+      item.setOnAction(accountsMenuEvent);
+      selectAccountType.getItems().add(item);
+    });
+  }
+
+  @FXML
+  private void handleCreateAccount() {
+    accName = accountName.getText();
+    System.out.println(accountName.getText());
+
+    errorMsg.setText("");
+    if (accName.isBlank()) {
+      errorMsg.setText("Konto trenger et navn.");
+      return;
     }
-
-    @FXML
-    private void initialize() {
-        creationCompleteMsg.setVisible(false);
-        createSelectAccountTypeItems();
+    try {
+      acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
+    } catch (IllegalArgumentException e) {
+      errorMsg.setText(e.getLocalizedMessage());
     }
-
-    private void createSelectAccountTypeItems() {
-        AccountType.stream().forEach(type -> {
-            MenuItem item = new MenuItem(type.getTypeString());
-            item.setOnAction(accountsMenuEvent);
-            selectAccountType.getItems().add(item);
-        });
+    if (acc == null) {
+      errorMsg.setText("Ingen kontotype valgt.");
+      return;
     }
-
-    @FXML
-    private void handleCreateAccount() {
-        accName = accountName.getText();
-        System.out.println(accountName.getText());
-
-        errorMsg.setText("");
-        if(accName.isBlank()) {
-            errorMsg.setText("Konto trenger et navn.");
-            return;
-        }
-        try {
-            acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
-        } catch (IllegalArgumentException e) {
-            errorMsg.setText(e.getLocalizedMessage());
-        }
-        if (acc==null) {
-            errorMsg.setText("Ingen kontotype valgt.");
-            return;
-        }
-        creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: " + acc.getName() + " ble opprettet");
-        creationCompleteMsg.setVisible(true);
-        try {
-            DataManager.manager().save();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: "
+        + acc.getName() + " ble opprettet");
+    creationCompleteMsg.setVisible(true);
+    try {
+      DataManager.manager().save();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
+  }
 }
