@@ -22,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import marxbank.Bank;
 import marxbank.model.Account;
 import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
@@ -58,7 +57,6 @@ public class MyAccountsControllerTest extends ApplicationTest {
 
     @BeforeEach
     public void beforeEachSetup() throws IOException, InterruptedException {
-        resetSingleton();
         DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
         this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
         this.account1 = new SavingsAccount(user, "Annas brukskonto");
@@ -97,10 +95,6 @@ public class MyAccountsControllerTest extends ApplicationTest {
         VBox content = lookup("#myAccounts").queryAs(VBox.class);
         clickOn("#createNewAccountButton");
         assertEquals("createNewAccount", (((AnchorPane)content.getChildren().get(0)).getId()));
-    }
-
-    private void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 
     public static void waitForRunLater() throws InterruptedException {

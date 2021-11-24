@@ -144,7 +144,6 @@ public class ProfileControllerTest extends ApplicationTest{
     }
 
     private void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
         DataManager.manager().resetData();
     }
 

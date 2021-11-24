@@ -24,9 +24,9 @@ public class AccountController {
     public void initData(Account a) {
         account = a;
         accountName.setText(a.getName());
-        accountType.setText(a.getAccountType());
+        accountType.setText(a.getTypeString());
         balance.setText("Disponibelt beløp: " + account.getBalance());
-        accountNumber.setText("Kontonummer: " + account.getAccountNumber());
+        accountNumber.setText("Kontonummer: " + account.getId());
         List<TransactionComponent> l = new ArrayList<TransactionComponent>();
         this.account.getTransactions().stream().forEach(t -> l.add(new TransactionComponent(t)));
         ObservableList<TransactionComponent> ol = FXCollections.observableList(l);

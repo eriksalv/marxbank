@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import marxbank.Bank;
 import marxbank.model.Account;
 import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
@@ -56,7 +55,6 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
 
     @BeforeEach
     public void beforeEachSetup() throws IOException {
-        resetSingleton();
         DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
         this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
         this.account1 = new SavingsAccount(user, "Annas brukskonto");
@@ -64,10 +62,6 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
         this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
         this.transaction = new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
         this.controller.initData(user);
-    }
-
-    private void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 
     @Test

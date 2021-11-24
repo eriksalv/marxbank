@@ -52,8 +52,8 @@ public class TransactionController {
 
     private void createMyAccountsListItems() {
         user.getAccounts().forEach(acc -> {
-            MenuItem item = new MenuItem(String.valueOf(acc.getAccountNumber()));
-            item.setId(String.valueOf(acc.getAccountNumber()));
+            MenuItem item = new MenuItem(String.valueOf(acc.getId()));
+            item.setId(String.valueOf(acc.getId()));
             item.setOnAction(accountsMenuEvent);
             myAccountsList.getItems().add(item);
         });
@@ -66,8 +66,8 @@ public class TransactionController {
     @FXML
     private void handleCommitTransaction(ActionEvent ev) {
         try {
-            from = Bank.getInstanceBank().getAccount(Integer.parseInt(myAccountsList.getText()));
-            reciever = Bank.getInstanceBank().getAccount(Integer.parseInt(recieverText.getText()));
+            from = user.getAccountById(Long.parseLong(myAccountsList.getText()));
+            reciever = user.getAccountById(Long.parseLong(recieverText.getText()));
             amount = Integer.parseInt(amountText.getText());
             
             t = DataManager.manager().createTransaction(from, reciever, amount);
@@ -76,7 +76,6 @@ public class TransactionController {
             try {
                 DataManager.manager().save();
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } catch (IllegalArgumentException e) {

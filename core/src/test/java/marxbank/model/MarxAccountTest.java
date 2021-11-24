@@ -8,15 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import marxbank.Bank;
-
 public class MarxAccountTest {
 
     private User user;
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        resetSingleton();
         user = new User((long) 1, "username", "email@email.com", "password");
     }
 
@@ -57,9 +54,5 @@ public class MarxAccountTest {
         assertEquals(maxBalance, a.getBalance());
         assertEquals(30, a3.getBalance());
         assertEquals(0, a2.getBalance());
-    }
-
-    public void resetSingleton() {
-        Bank.getInstanceBank().clearAccounts();
     }
 }
