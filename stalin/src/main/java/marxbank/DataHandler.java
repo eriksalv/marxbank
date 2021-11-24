@@ -3,7 +3,7 @@ package marxbank;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,39 +22,31 @@ import marxbank.model.User;
 public class DataHandler {
 
     public static boolean save(DataManager dm, String path) {
-        if(path == null || path == "") throw new IllegalArgumentException("Path cannot be null or empty");
+        if (path == null || path.isEmpty() || path.isBlank()) throw new IllegalArgumentException("Path cannot be null, empty or blank");
         DataManagerWrapper d = new DataManagerWrapper(dm);
         File dataFile = new File(String.format("%s/data.json", path));
+
         if(!dataFile.exists()) {
             try {
                 if(!dataFile.createNewFile()) {
                     return false;
                 }
             } catch (IOException e) {
-                // TODO legg til egne exceptions
                 return false;
             }
         }
+
         FileWriter fw;
-        try {
-            fw = new FileWriter(dataFile);
-        } catch (IOException e1) {
-            // TODO legg til egne exceptions
-            return false;
-        }
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addSerializer(DataManagerWrapper.class, new DataManagerSerializer());
         objectMapper.registerModule(module);
 
         try {
+            fw = new FileWriter(dataFile, Charset.defaultCharset());
             fw.write(objectMapper.writeValueAsString(d));
             fw.close();
-        } catch (JsonProcessingException e) {
-            // TODO legge til egne exceptions
-            return false;
-        } catch (IOException e) {
-            // TODO legge til egne exceptions
+        } catch (IOException e1) {
             return false;
         }
 
@@ -69,10 +61,6 @@ public class DataHandler {
         module.addDeserializer(Transaction.class, new TransactionDeserializer(Transaction.class));
         objectMapper.registerModule(module);
 
-        ArrayList<User> uList = new ArrayList<User>();
-        ArrayList<Account> aList = new ArrayList<Account>();
-        ArrayList<Transaction> tList = new ArrayList<Transaction>();
-
         File dataFile = new File(String.format("%s/data.json", path));
 
         if(!dataFile.exists()) return false;
@@ -82,7 +70,6 @@ public class DataHandler {
         try {
             masterNode = objectMapper.readTree(dataFile);
         } catch (IOException e) {
-            // TODO legg til egne exceptions
             return false;
         }
         
@@ -92,7 +79,6 @@ public class DataHandler {
             User u;
             try {
                 u = objectMapper.treeToValue(n, User.class);
-                uList.add(u);
                 // check if user with id exists
                 if(!dm.checkIfUserExists(u.getId())) {
                     dm.addUser(u);
@@ -103,7 +89,6 @@ public class DataHandler {
                     dm.addUser(u);
                 }
             } catch (JsonProcessingException e) {
-                // TODO legg til egne exceptions
                 return false;
             }
         }
@@ -113,7 +98,6 @@ public class DataHandler {
         for(JsonNode a : node) {
             try {
                 Account acc = objectMapper.treeToValue(a, Account.class);
-                aList.add(acc);
                 if(!dm.checkIfAccountExists(acc.getId())) {
                     dm.addAccount(acc);
                     continue;
@@ -123,7 +107,6 @@ public class DataHandler {
                     dm.addAccount(acc);
                 }
             } catch (JsonProcessingException e) {
-                // TODO legg til egne exceptions her
                 return false;
             }
         }
@@ -134,13 +117,11 @@ public class DataHandler {
         for(JsonNode t : node) {
             try {
                 Transaction transaction = objectMapper.treeToValue(t, Transaction.class);
-                tList.add(transaction);
                 if(!dm.checkIfTransactionExists(transaction.getId())) {
                     dm.addTransaction(transaction);
                     continue;
                 }
             } catch (JsonProcessingException e) {
-                // TODO legg til egne exceptions her
                 return false;
             }
         }

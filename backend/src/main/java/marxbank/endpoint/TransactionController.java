@@ -71,7 +71,7 @@ public class TransactionController {
         if (!optionalAccount.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         Account account = optionalAccount.get();
 
-        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (!user.getId().equals(account.getUser().getId())) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
         transactionRepository.findByFrom_Id(fromId).get().forEach(e -> transactions.add(new TransactionResponse(e)));
@@ -130,7 +130,7 @@ public class TransactionController {
         
         if (account == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
-        if (user.getId() != account.getUser().getId()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (!user.getId().equals(account.getUser().getId())) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
 

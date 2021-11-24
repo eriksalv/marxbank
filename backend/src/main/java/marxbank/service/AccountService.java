@@ -44,7 +44,7 @@ public class AccountService {
     
     public boolean checkIfUserOwnsAccount(Long userId, Long accountId) {
         if (!accountRepository.findById(accountId).isPresent()) return false;
-        return accountRepository.findById(accountId).get().getUser().getId() == userId;
+        return accountRepository.findById(accountId).get().getUser().getId().equals(userId);
     }
 
 }

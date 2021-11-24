@@ -16,8 +16,8 @@ import marxbank.util.AccountType;
 @Entity
 public class MarxAccount extends Account {
 
-    public static double MAX_BALANCE = 500;
-    public static double DEFAULT_INTEREST = 0.01;
+    public final static double MAX_BALANCE = 500;
+    public final static double DEFAULT_INTEREST = 0.01;
 
     public MarxAccount() {
         super();
