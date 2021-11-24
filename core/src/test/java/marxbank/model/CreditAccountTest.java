@@ -10,36 +10,36 @@ import org.junit.jupiter.api.Test;
 
 public class CreditAccountTest {
 
-    private User user;
+  private User user;
 
-    @BeforeEach
-    public void beforeEach() throws IOException {
-        user = new User((long) 1, "username", "email@email.com", "password");
-    }
+  @BeforeEach
+  public void beforeEach() throws IOException {
+    user = new User((long) 1, "username", "email@email.com", "password");
+  }
 
-    @Test
-    @DisplayName("test contructor")
-    public void testConstructor() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Account a = new CreditAccount((long) 1, user, -5.0, "navn", 69000);
-        });
+  @Test
+  @DisplayName("test contructor")
+  public void testConstructor() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      Account a = new CreditAccount((long) 1, user, -5.0, "navn", 69000);
+    });
 
-        String name = "kredittkonto";
+    String name = "kredittkonto";
 
-        CreditAccount a = new CreditAccount(user, name);
-        assertEquals(this.user.getAccounts().get(0), a);
-        assertEquals(200, a.getCreditLimit());
-    }
+    CreditAccount a = new CreditAccount(user, name);
+    assertEquals(this.user.getAccounts().get(0), a);
+    assertEquals(200, a.getCreditLimit());
+  }
 
-    @Test
-    @DisplayName("test withdraw")
-    public void testWithdraw() {
-        CreditAccount a = new CreditAccount(user, "name");
-        a.deposit(200);
-        a.withdraw(50);
-        assertEquals(150, a.getBalance());
+  @Test
+  @DisplayName("test withdraw")
+  public void testWithdraw() {
+    CreditAccount a = new CreditAccount(user, "name");
+    a.deposit(200);
+    a.withdraw(50);
+    assertEquals(150, a.getBalance());
 
-        a.withdraw(200);
-        assertEquals(-50, a.getBalance());
-    }
+    a.withdraw(200);
+    assertEquals(-50, a.getBalance());
+  }
 }

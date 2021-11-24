@@ -22,96 +22,99 @@ import marxbank.model.CheckingAccount;
 import marxbank.model.User;
 import javafx.scene.control.Label;
 
-public class MyTransactionControllerTest extends ApplicationTest{
-    
-    private TransactionController controller;
-    private Account a;
-    private Account b;
-    private User user;
+public class MyTransactionControllerTest extends ApplicationTest {
 
-    @TempDir
-    static Path tempDir;
+  private TransactionController controller;
+  private Account a;
+  private Account b;
+  private User user;
 
-    @Override
-    public void start(final Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Transaction.fxml"));
-        final Parent root = loader.load();
-        controller = loader.getController();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
+  @TempDir
+  static Path tempDir;
 
-     /**
-     * sets up tempDir for DataMananger
-     * @throws IOException
-     */
-    @BeforeAll
-    static void setup() throws IOException {
-        Files.createDirectories(tempDir.resolve("data"));
-    }
+  @Override
+  public void start(final Stage stage) throws Exception {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("Transaction.fxml"));
+    final Parent root = loader.load();
+    controller = loader.getController();
+    stage.setScene(new Scene(root));
+    stage.show();
+  }
 
-    @BeforeEach
-    private void beforeEach() throws IOException {
-        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
-        user = new User("username", "email@email.com", "password");
-        a = new CheckingAccount(user, "test1");
-        b = new CheckingAccount(user, "test2");
-        controller.initData(user);
-    }
+  /**
+   * sets up tempDir for DataMananger
+   * 
+   * @throws IOException
+   */
+  @BeforeAll
+  static void setup() throws IOException {
+    Files.createDirectories(tempDir.resolve("data"));
+  }
 
-    @Test
-    public void testController() {
-        assertNotNull(controller);
-    }
+  @BeforeEach
+  private void beforeEach() throws IOException {
+    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    user = new User("username", "email@email.com", "password");
+    a = new CheckingAccount(user, "test1");
+    b = new CheckingAccount(user, "test2");
+    controller.initData(user);
+  }
 
-    @Test
-    public void testValidTransaction() {
-        a.deposit(100);
-        clickOn("#myAccountsList").clickOn("#" + a.getId());
-        clickOn("#recieverText").write("#" + b.getId());
-        clickOn("#amountText").write("100");
-        clickOn("#transactionBtn");
-        assertEquals(0, a.getBalance());
-        assertEquals(100, b.getBalance());
-        assertEquals("Overføringen var vellykket", ((Label) lookup("#transactionCompleteMsg").query()).getText());
-    }
+  @Test
+  public void testController() {
+    assertNotNull(controller);
+  }
 
-    @Test
-    public void testEmptyAccountNum() {
-        a.deposit(100);
-        clickOn("#amountText").write("100");
-        clickOn("#transactionBtn");
-        assertEquals(100, a.getBalance());
-        assertEquals(0, b.getBalance());
-        assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
+  @Test
+  public void testValidTransaction() {
+    a.deposit(100);
+    clickOn("#myAccountsList").clickOn("#" + a.getId());
+    clickOn("#recieverText").write("#" + b.getId());
+    clickOn("#amountText").write("100");
+    clickOn("#transactionBtn");
+    assertEquals(0, a.getBalance());
+    assertEquals(100, b.getBalance());
+    assertEquals("Overføringen var vellykket",
+        ((Label) lookup("#transactionCompleteMsg").query()).getText());
+  }
 
-        clickOn("#myAccountsList").clickOn("#" + a.getId());
-        assertEquals(100, a.getBalance());
-        assertEquals(0, b.getBalance());
-        assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
-    }
+  @Test
+  public void testEmptyAccountNum() {
+    a.deposit(100);
+    clickOn("#amountText").write("100");
+    clickOn("#transactionBtn");
+    assertEquals(100, a.getBalance());
+    assertEquals(0, b.getBalance());
+    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
 
-    @Test
-    public void testEmptyAmount() {
-        a.deposit(100);
-        clickOn("#myAccountsList").clickOn("#" + a.getId());
-        clickOn("#recieverText").write("#" + b.getId());
-        clickOn("#transactionBtn");
-        assertEquals(100, a.getBalance());
-        assertEquals(0, b.getBalance());
-        assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
-    }
+    clickOn("#myAccountsList").clickOn("#" + a.getId());
+    assertEquals(100, a.getBalance());
+    assertEquals(0, b.getBalance());
+    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
+  }
 
-    @Test
-    public void testInvalidAmount() {
-        a.deposit(100);
-        a.setName("name");
-        clickOn("#myAccountsList").clickOn("#" + a.getId());
-        clickOn("#recieverText").write("#" + b.getId());
-        clickOn("#amountText").write("101");
-        clickOn("#transactionBtn");
-        assertEquals(100, a.getBalance());
-        assertEquals(0, b.getBalance());
-        assertEquals("Ikke nok disponibelt beløp på konto: name. Tilgjengelig beløp: 100.0", ((Label) lookup("#transactionFailedMsg").query()).getText());
-    }
+  @Test
+  public void testEmptyAmount() {
+    a.deposit(100);
+    clickOn("#myAccountsList").clickOn("#" + a.getId());
+    clickOn("#recieverText").write("#" + b.getId());
+    clickOn("#transactionBtn");
+    assertEquals(100, a.getBalance());
+    assertEquals(0, b.getBalance());
+    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
+  }
+
+  @Test
+  public void testInvalidAmount() {
+    a.deposit(100);
+    a.setName("name");
+    clickOn("#myAccountsList").clickOn("#" + a.getId());
+    clickOn("#recieverText").write("#" + b.getId());
+    clickOn("#amountText").write("101");
+    clickOn("#transactionBtn");
+    assertEquals(100, a.getBalance());
+    assertEquals(0, b.getBalance());
+    assertEquals("Ikke nok disponibelt beløp på konto: name. Tilgjengelig beløp: 100.0",
+        ((Label) lookup("#transactionFailedMsg").query()).getText());
+  }
 }
