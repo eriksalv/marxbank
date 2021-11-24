@@ -49,7 +49,7 @@ describe("mutations", () => {
   it("test setStatus", () => {
     const newStatus = "error";
 
-    mutations.setStatus(testState, newStatus);
+    mutations.setStatus(testState, { status: newStatus });
 
     expect(testState.status).toEqual("error");
   }),
@@ -94,8 +94,8 @@ describe("actions", () => {
 
       await login({ commit, testState }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(5);
-        expect(commit).toHaveBeenCalledWith("setStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setStatus", { status: "loading" });
+        expect(commit).toHaveBeenCalledWith("setStatus", { status: "success" });
         expect(commit).toHaveBeenCalledWith("setUserId", 1);
         expect(commit).toHaveBeenCalledWith("setToken", "token");
         expect(commit).toHaveBeenCalledWith("setStatusCode", 200);
@@ -108,14 +108,17 @@ describe("actions", () => {
       const commit = jest.fn();
       const badRequest = {};
       const login = actions.login as Function;
-      mock.onPost(`/auth/login`).reply(404);
+      mock.onPost(`/auth/login`).reply(404, { message: "Not Found" });
 
       try {
         await login({ commit, testState }, badRequest);
       } catch (e) {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setStatus", "error");
+        expect(commit).toHaveBeenCalledWith("setStatus", { status: "loading" });
+        expect(commit).toHaveBeenCalledWith("setStatus", {
+          status: "error",
+          errorMsg: "Not Found",
+        });
         expect(commit).toHaveBeenCalledWith("setStatusCode", 404);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/auth/login`);
@@ -144,8 +147,8 @@ describe("actions", () => {
 
       await signup({ commit, testState }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(5);
-        expect(commit).toHaveBeenCalledWith("setStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setStatus", { status: "loading" });
+        expect(commit).toHaveBeenCalledWith("setStatus", { status: "success" });
         expect(commit).toHaveBeenCalledWith("setUserId", 1);
         expect(commit).toHaveBeenCalledWith("setToken", "token");
         expect(commit).toHaveBeenCalledWith("setStatusCode", 200);
@@ -153,25 +156,30 @@ describe("actions", () => {
         expect(mock.history.post[0].url).toEqual(`/auth/signup`);
         expect(mock.history.post[0].data).toBe(JSON.stringify(request));
       });
-    }),
-      it("signup error", async () => {
-        const commit = jest.fn();
-        const badRequest = {};
-        const signup = actions.signup as Function;
-        mock.onPost(`/auth/signup`).reply(500);
+    });
+    it("signup error", async () => {
+      const commit = jest.fn();
+      const badRequest = {};
+      const signup = actions.signup as Function;
+      mock.onPost(`/auth/signup`).reply(500, { message: "Error" });
 
-        try {
-          await signup({ commit, testState }, badRequest);
-        } catch (e) {
-          expect(commit).toHaveBeenCalledTimes(3);
-          expect(commit).toHaveBeenCalledWith("setStatus", "loading");
-          expect(commit).toHaveBeenCalledWith("setStatus", "error");
-          expect(commit).toHaveBeenCalledWith("setStatusCode", 500);
-          expect(mock.history.post.length).toEqual(1);
-          expect(mock.history.post[0].url).toEqual(`/auth/signup`);
-          expect(mock.history.post[0].data).toBe(JSON.stringify(badRequest));
-        }
-      });
+      try {
+        await signup({ commit, testState }, badRequest);
+      } catch (e) {
+        expect(commit).toHaveBeenCalledTimes(3);
+        expect(commit).toHaveBeenCalledWith("setStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setStatus", {
+          status: "error",
+          errorMsg: "Error",
+        });
+        expect(commit).toHaveBeenCalledWith("setStatusCode", 500);
+        expect(mock.history.post.length).toEqual(1);
+        expect(mock.history.post[0].url).toEqual(`/auth/signup`);
+        expect(mock.history.post[0].data).toBe(JSON.stringify(badRequest));
+      }
+    });
   });
 
   describe("logout", () => {
@@ -183,7 +191,7 @@ describe("actions", () => {
 
       await logout({ commit, testState }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(2);
-        expect(commit).toHaveBeenCalledWith("setStatus", "");
+        expect(commit).toHaveBeenCalledWith("setStatus", { status: "" });
         expect(commit).toHaveBeenCalledWith("setToken", null);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/auth/logout`);

@@ -96,6 +96,10 @@ public class UserController {
     }
     User user = authService.getUserFromToken(token);
 
+    if (request.getOldPassword() == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Your current password is required to save changes");
+    }
+
     if (!encoder.matches(request.getOldPassword(), user.getPassword())) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
     }

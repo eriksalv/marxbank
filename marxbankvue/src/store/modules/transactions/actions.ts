@@ -13,7 +13,7 @@ export const actions: ActionTree<TransactionState, RootState> = {
    * setTransactions-mutation.
    */
   async fetchTransactions({ commit, rootGetters }) {
-    commit("setTransactionStatus", "loading");
+    commit("setTransactionStatus", { status: "loading" });
     await axios
       .get(BASE_URL + "/myTransactions", rootGetters.getToken)
       .then((response) => {
@@ -29,10 +29,10 @@ export const actions: ActionTree<TransactionState, RootState> = {
           transactions = [...transactions, newTransaction];
         });
         commit("setTransactions", transactions);
-        commit("setTransactionStatus", "success");
+        commit("setTransactionStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setTransactionStatus", "error");
+        commit("setTransactionStatus", { status: "error" });
       });
   },
   /**
@@ -45,7 +45,7 @@ export const actions: ActionTree<TransactionState, RootState> = {
     { commit, rootGetters },
     transactionRequest: TransactionRequest
   ) {
-    commit("setTransactionStatus", "loading");
+    commit("setTransactionStatus", { status: "loading" });
     await axios
       .post(BASE_URL + "/transfer", transactionRequest, {
         headers: {
@@ -61,10 +61,13 @@ export const actions: ActionTree<TransactionState, RootState> = {
           date: response.data.transactionDate,
         };
         commit("addTransaction", transaction);
-        commit("setTransactionStatus", "success");
+        commit("setTransactionStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setTransactionStatus", "error");
+        commit("setTransactionStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
+        });
       });
   },
   /**
@@ -74,7 +77,7 @@ export const actions: ActionTree<TransactionState, RootState> = {
    * @param id id of account
    */
   async fetchTransactionsByAccount({ commit, rootGetters }, id: number) {
-    commit("setTransactionStatus", "loading");
+    commit("setTransactionStatus", { status: "loading" });
     await axios
       .get(`${BASE_URL}/myTransactions/${id}`, rootGetters.getToken)
       .then((response) => {
@@ -90,10 +93,10 @@ export const actions: ActionTree<TransactionState, RootState> = {
           transactions = [...transactions, newTransaction];
         });
         commit("setTransactions", transactions);
-        commit("setTransactionStatus", "success");
+        commit("setTransactionStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setTransactionStatus", "error");
+        commit("setTransactionStatus", { status: "error" });
       });
   },
 };

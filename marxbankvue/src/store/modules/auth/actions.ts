@@ -14,7 +14,7 @@ export const actions: ActionTree<AuthState, RootState> = {
    */
   async logout({ commit }, token: object | null) {
     await axios.post(BASE_URL + "/logout", token).then(() => {
-      commit("setStatus", "");
+      commit("setStatus", { status: "" });
       commit("setToken", null);
       delete axios.defaults.headers.common["Authorization"];
     });
@@ -25,7 +25,7 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param user login request
    */
   async login({ commit }, user: LoginRequest): Promise<void> {
-    commit("setStatus", "loading");
+    commit("setStatus", { status: "loading" });
     return new Promise<void>((resolve, reject) => {
       axios
         .post(BASE_URL + "/login", {
@@ -37,14 +37,17 @@ export const actions: ActionTree<AuthState, RootState> = {
           const token: string = response.data.token;
           axios.defaults.headers.common["Authorization"] = token;
           commit("setUserId", userId);
-          commit("setStatus", "success");
+          commit("setStatus", { status: "success" });
           commit("setToken", token);
           commit("setStatusCode", response.status);
           resolve();
         })
         .catch((err) => {
           if (err.response.status !== undefined) {
-            commit("setStatus", "error");
+            commit("setStatus", {
+              status: "error",
+              errorMsg: err.response.data.message,
+            });
             commit("setStatusCode", err.response.status);
           }
           reject();
@@ -57,7 +60,7 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param user signup request
    */
   async signup({ commit }, user: SignUpRequest): Promise<void> {
-    commit("setStatus", "loading");
+    commit("setStatus", { status: "loading" });
     return new Promise<void>((resolve, reject) => {
       axios
         .post(BASE_URL + "/signup", {
@@ -70,14 +73,17 @@ export const actions: ActionTree<AuthState, RootState> = {
           const token = response.data.token;
           axios.defaults.headers.common["Authorization"] = token;
           commit("setUserId", userId);
-          commit("setStatus", "success");
+          commit("setStatus", { status: "success" });
           commit("setToken", token);
           commit("setStatusCode", response.status);
           resolve();
         })
         .catch((err) => {
           commit("setStatusCode", err.response.status);
-          commit("setStatus", "error");
+          commit("setStatus", {
+            status: "error",
+            errorMsg: err.response.data.message,
+          });
           reject();
         });
     });

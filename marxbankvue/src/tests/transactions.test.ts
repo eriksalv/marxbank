@@ -137,8 +137,12 @@ describe("actions", () => {
 
       await fetchTransactions({ commit, rootGetters }).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setTransactionStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setTransactionStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setTransactionStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setTransactionStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("setTransactions", expected);
         expect(mock.history.get.length).toEqual(1);
         expect(mock.history.get[0].url).toEqual(`/transactions/myTransactions`);
@@ -152,8 +156,12 @@ describe("actions", () => {
 
       await fetchTransactionsByAccount({ commit, rootGetters }, 3).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setTransactionStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setTransactionStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setTransactionStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setTransactionStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("setTransactions", expected);
         expect(mock.history.get.length).toEqual(1);
         expect(mock.history.get[0].url).toEqual(
@@ -193,8 +201,12 @@ describe("actions", () => {
 
       await createTransaction({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setTransactionStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setTransactionStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setTransactionStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setTransactionStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("addTransaction", expected);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/transactions/transfer`);
