@@ -12,50 +12,53 @@ import marxbank.util.AccountType;
 import javafx.scene.control.MenuItem;
 
 public class CreateNewAccountController {
-    @FXML private MenuButton selectAccountType;
-    @FXML private TextField accountName;
-    @FXML private Label creationCompleteMsg;
-    @FXML private Label errorMsg;
+  @FXML
+  private MenuButton selectAccountType;
+  @FXML
+  private TextField accountName;
+  @FXML
+  private Label creationCompleteMsg;
+  @FXML
+  private Label errorMsg;
 
-    private User user;
-    private String accName;
+  private User user;
+  private String accName;
 
-    private Account acc;
+  private Account acc;
 
-    public CreateNewAccountController() {
-        
+  public CreateNewAccountController() {
+
+  }
+
+  private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
+    @Override
+    public void handle(ActionEvent e) {
+      selectAccountType.setText(((MenuItem) e.getSource()).getText());
     }
+  };
 
-    private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e)
-        {
-            selectAccountType.setText(((MenuItem)e.getSource()).getText());
-        }
-    };
+  public void initData(User user) {
+    this.user = user;
+  }
 
-    public void initData(User user) {
-        this.user = user;
-    }
+  @FXML
+  private void initialize() {
+    creationCompleteMsg.setVisible(false);
+    createSelectAccountTypeItems();
+  }
 
-    @FXML
-    private void initialize() {
-        creationCompleteMsg.setVisible(false);
-        createSelectAccountTypeItems();
-    }
+  private void createSelectAccountTypeItems() {
+    AccountType.stream().forEach(type -> {
+      MenuItem item = new MenuItem(type.getTypeString());
+      item.setOnAction(accountsMenuEvent);
+      selectAccountType.getItems().add(item);
+    });
+  }
 
-    private void createSelectAccountTypeItems() {
-        AccountType.stream().forEach(type -> {
-            MenuItem item = new MenuItem(type.getTypeString());
-            item.setOnAction(accountsMenuEvent);
-            selectAccountType.getItems().add(item);
-        });
-    }
-
-    @FXML
-    private void handleCreateAccount() {
-        accName = accountName.getText();
-        System.out.println(accountName.getText());
+  @FXML
+  private void handleCreateAccount() {
+    accName = accountName.getText();
+    System.out.println(accountName.getText());
 
         errorMsg.setText("");
         if(accName.isBlank()) {
@@ -79,4 +82,4 @@ public class CreateNewAccountController {
             e.printStackTrace();
         }
     }
-}
+  }

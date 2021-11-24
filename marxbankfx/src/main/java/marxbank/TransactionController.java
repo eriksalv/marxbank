@@ -18,45 +18,51 @@ public class TransactionController {
     private Account reciever;
     private double amount;
 
-    @FXML private MenuButton myAccountsList;
-    @FXML private TextField recieverText;
-    @FXML private TextField dateText;
-    @FXML private TextField amountText;
-    @FXML private Label transactionCompleteMsg;
-    @FXML private Label transactionFailedMsg;
+  @FXML
+  private MenuButton myAccountsList;
+  @FXML
+  private TextField recieverText;
+  @FXML
+  private TextField dateText;
+  @FXML
+  private TextField amountText;
+  @FXML
+  private Label transactionCompleteMsg;
+  @FXML
+  private Label transactionFailedMsg;
 
-    private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e)
-        {
-            myAccountsList.setText(((MenuItem)e.getSource()).getText());
-        }
-    };
+  private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
+    @Override
+    public void handle(ActionEvent e) {
+      myAccountsList.setText(((MenuItem) e.getSource()).getText());
+    }
+  };
 
-    @FXML 
-    private void initialize() {
-        transactionCompleteMsg.setVisible(false);
-        transactionFailedMsg.setVisible(false);
-        setNumericOnlyTextFields();
-    }
+  @FXML
+  private void initialize() {
+    transactionCompleteMsg.setVisible(false);
+    transactionFailedMsg.setVisible(false);
+    setNumericOnlyTextFields();
+  }
 
-    public void initData(User user) {
-        this.user = user;
-        createMyAccountsListItems();
-    }
+  public void initData(User user) {
+    this.user = user;
+    createMyAccountsListItems();
+  }
 
-    private void createMyAccountsListItems() {
-        user.getAccounts().forEach(acc -> {
-            MenuItem item = new MenuItem(String.valueOf(acc.getId()));
-            item.setId(String.valueOf(acc.getId()));
-            item.setOnAction(accountsMenuEvent);
-            myAccountsList.getItems().add(item);
-        });
-    }
-    private void setNumericOnlyTextFields() {     
-        recieverText.setTextFormatter(TextFieldFormatter.getNumberFormatter());
-        amountText.setTextFormatter(TextFieldFormatter.getNumberFormatter());
-    }
+  private void createMyAccountsListItems() {
+    user.getAccounts().forEach(acc -> {
+      MenuItem item = new MenuItem(String.valueOf(acc.getId()));
+      item.setId(String.valueOf(acc.getId()));
+      item.setOnAction(accountsMenuEvent);
+      myAccountsList.getItems().add(item);
+    });
+  }
+
+  private void setNumericOnlyTextFields() {
+    recieverText.setTextFormatter(TextFieldFormatter.getNumberFormatter());
+    amountText.setTextFormatter(TextFieldFormatter.getNumberFormatter());
+  }
 
     @FXML
     private void handleCommitTransaction(ActionEvent ev) {
@@ -86,5 +92,4 @@ public class TransactionController {
              + from.getName() + ". Tilgjengelig beløp: " + from.getBalance());
         }         
     }
-    
-}
+  }

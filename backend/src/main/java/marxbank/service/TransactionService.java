@@ -3,12 +3,9 @@ package marxbank.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import marxbank.API.TransactionRequest;
 import marxbank.API.TransactionResponse;
 import marxbank.model.Account;
@@ -18,56 +15,58 @@ import marxbank.repository.TransactionRepository;
 
 @Service
 public class TransactionService {
-    
-    private final TransactionRepository transactionRepository;
-    private final AccountRepository accountRepository;
 
-    @Autowired
-    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
-        this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
-    }
+  private final TransactionRepository transactionRepository;
+  private final AccountRepository accountRepository;
 
-    @Transactional
-    public ArrayList<Transaction> getTransactionsForAccount(Long id) {
-        ArrayList<Transaction> data = new ArrayList<Transaction>();
-        transactionRepository.findByFrom_Id(id).map(e -> data.addAll(e));
-        transactionRepository.findByReciever_Id(id).map(e -> data.addAll(e));
-        return data;
-    }
+  @Autowired
+  public TransactionService(TransactionRepository transactionRepository,
+      AccountRepository accountRepository) {
+    this.transactionRepository = transactionRepository;
+    this.accountRepository = accountRepository;
+  }
 
-    @Transactional
-    public List<Transaction> getTransactionForUser(Long userId) {
+  @Transactional
+  public ArrayList<Transaction> getTransactionsForAccount(Long id) {
+    ArrayList<Transaction> data = new ArrayList<Transaction>();
+    transactionRepository.findByFrom_Id(id).map(e -> data.addAll(e));
+    transactionRepository.findByReciever_Id(id).map(e -> data.addAll(e));
+    return data;
+  }
 
-        List<Long> accountsId = this.accountRepository.findByUser_Id(userId).get().stream().map(Account::getId).collect(Collectors.toList());
-        ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+  @Transactional
+  public List<Transaction> getTransactionForUser(Long userId) {
 
-        accountsId.stream().forEach(a -> {
-            transactions.addAll(this.transactionRepository.findByFrom_Id(a).get());
-            transactions.addAll(this.transactionRepository.findByReciever_Id(a).get());
-        });
+    List<Long> accountsId = this.accountRepository.findByUser_Id(userId).get().stream()
+        .map(Account::getId).collect(Collectors.toList());
+    ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
-        List<Transaction> distinct = transactions.stream().distinct().collect(Collectors.toList());
-        
-        return distinct;
-    }
+    accountsId.stream().forEach(a -> {
+      transactions.addAll(this.transactionRepository.findByFrom_Id(a).get());
+      transactions.addAll(this.transactionRepository.findByReciever_Id(a).get());
+    });
 
-    @Transactional
-    public TransactionResponse resolveTransactionRequest(TransactionRequest request) {
-        Account toAccount = this.accountRepository.findById(request.getTo()).get();
-        Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
+    List<Transaction> distinct = transactions.stream().distinct().collect(Collectors.toList());
 
-        Transaction t = new Transaction();
-        t.setAmount(request.getAmount());
-        t.setFrom(fromAccount);
-        t.setReciever(toAccount);
-        t.commitTransaction();
+    return distinct;
+  }
 
-        this.accountRepository.save(toAccount);
-        this.accountRepository.save(fromAccount);
-        this.transactionRepository.save(t);
+  @Transactional
+  public TransactionResponse resolveTransactionRequest(TransactionRequest request) {
+    Account toAccount = this.accountRepository.findById(request.getTo()).get();
+    Account fromAccount = this.accountRepository.findById(request.getFrom()).get();
 
-        return new TransactionResponse(t);
-    }
+    Transaction t = new Transaction();
+    t.setAmount(request.getAmount());
+    t.setFrom(fromAccount);
+    t.setReciever(toAccount);
+    t.commitTransaction();
+
+    this.accountRepository.save(toAccount);
+    this.accountRepository.save(fromAccount);
+    this.transactionRepository.save(t);
+
+    return new TransactionResponse(t);
+  }
 
 }

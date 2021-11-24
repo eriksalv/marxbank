@@ -16,7 +16,7 @@
                   <Font size="36.0" />
                </font>
             </Label>
-            <Label fx:id="IDLabel" text="Unik ID: ">
+            <Label fx:id="idLabel" text="Unik ID: ">
                <font>
                   <Font size="16.0" />
                </font>

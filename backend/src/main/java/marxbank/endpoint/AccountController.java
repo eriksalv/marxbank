@@ -7,11 +7,8 @@ import marxbank.API.PublicAccountResponse;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
-
 import java.util.ArrayList;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +24,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import marxbank.repository.AccountRepository;
 import marxbank.service.AccountService;
 import marxbank.service.AuthService;

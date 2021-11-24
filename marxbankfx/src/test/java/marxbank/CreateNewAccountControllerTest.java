@@ -32,25 +32,25 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
     private Account account1;
     private Account account2;
 
-    @TempDir
-    static Path tempDir;
+  @TempDir
+  static Path tempDir;
 
-    @Override
-    public void start(final Stage stage) throws Exception {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateNewAccount.fxml"));
-        Parent root = loader.load();
-        this.controller = loader.getController();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
+  @Override
+  public void start(final Stage stage) throws Exception {
+    final FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateNewAccount.fxml"));
+    Parent root = loader.load();
+    this.controller = loader.getController();
+    stage.setScene(new Scene(root));
+    stage.show();
+  }
 
-    /**
-     * Sets up tempdir for Datamananger
-     */
-    @BeforeAll
-    static void setup() throws IOException {
-        Files.createDirectories(tempDir.resolve("data"));
-    }
+  /**
+   * Sets up tempdir for Datamananger
+   */
+  @BeforeAll
+  static void setup() throws IOException {
+    Files.createDirectories(tempDir.resolve("data"));
+  }
 
     @BeforeEach
     public void beforeEachSetup() throws IOException {
@@ -63,30 +63,30 @@ public class CreateNewAccountControllerTest extends ApplicationTest{
         this.controller.initData(user);
     }
 
-    @Test
-    @DisplayName("test create new account no name")
-    public void testCreateNewAccountNoName() {
-        clickOn("#handleCreateAccountButton");
-        assertEquals("Konto trenger et navn.", lookup("#errorMsg").queryAs(Label.class).getText());
-    }
+  @Test
+  @DisplayName("test create new account no name")
+  public void testCreateNewAccountNoName() {
+    clickOn("#handleCreateAccountButton");
+    assertEquals("Konto trenger et navn.", lookup("#errorMsg").queryAs(Label.class).getText());
+  }
 
-    @Test
-    @DisplayName("test create new account no account type")
-    public void testCreateNewAccountNoType() {
-        clickOn("#accountName").write("hello");
-        clickOn("#handleCreateAccountButton");
-        assertEquals("Ingen kontotype valgt.", lookup("#errorMsg").queryAs(Label.class).getText());
-    }
+  @Test
+  @DisplayName("test create new account no account type")
+  public void testCreateNewAccountNoType() {
+    clickOn("#accountName").write("hello");
+    clickOn("#handleCreateAccountButton");
+    assertEquals("Ingen kontotype valgt.", lookup("#errorMsg").queryAs(Label.class).getText());
+  }
 
-    @Test
-    @DisplayName("test create new account succesfull")
-    public void testCreateNewAccount() {
-        Label completeLabel = (Label) lookup("#creationCompleteMsg").queryLabeled();
-        clickOn("#accountName").write("hello");
-        MenuButton b = lookup("#selectAccountType").queryAs(MenuButton.class);
-        clickOn(b).moveBy(0, 25).clickOn(MouseButton.PRIMARY);
+  @Test
+  @DisplayName("test create new account succesfull")
+  public void testCreateNewAccount() {
+    Label completeLabel = (Label) lookup("#creationCompleteMsg").queryLabeled();
+    clickOn("#accountName").write("hello");
+    MenuButton b = lookup("#selectAccountType").queryAs(MenuButton.class);
+    clickOn(b).moveBy(0, 25).clickOn(MouseButton.PRIMARY);
 
-        clickOn("#handleCreateAccountButton");
-        assertTrue(completeLabel.isVisible());
-    }
+    clickOn("#handleCreateAccountButton");
+    assertTrue(completeLabel.isVisible());
+  }
 }
