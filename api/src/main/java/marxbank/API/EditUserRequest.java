@@ -4,10 +4,10 @@ package marxbank.API;
  * Klassen holder på informasjon en bruker sender inn om de ønsker å endre på informasjonen koblet til profilen deres.
  */
 public class EditUserRequest {
-    private String username;
-    private String password;
-    private String oldPassword;
-    private String email;
+  private String username;
+  private String password;
+  private String oldPassword;
+  private String email;
 
 /**
  * Tom konstruktør.
@@ -35,36 +35,36 @@ public class EditUserRequest {
         this.username = username;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
+  public String getUsername() {
+    return this.username;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public String getPassword() {
-        return this.password;
-    }
+  public String getPassword() {
+    return this.password;
+  }
 
-    public void setOldPassword(String password) {
-        this.oldPassword = password;
-    }
+  public void setOldPassword(String password) {
+    this.oldPassword = password;
+  }
 
-    public String getOldPassword() {
-        return this.oldPassword;
-    }
+  public String getOldPassword() {
+    return this.oldPassword;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public String getEmail() {
-        return this.email;
-    }
+  public String getEmail() {
+    return this.email;
+  }
 
-    @Override
-    public String toString() {
-        return "username: " + username;
-    }
+  @Override
+  public String toString() {
+    return "username: " + username;
+  }
 }

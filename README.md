@@ -14,13 +14,17 @@ Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 stude
 >
 > -- <cite>Karl Marx</cite>
 
-# Innhold 
+## Pakkediagram av løsning
+
+![pakkediagram av løsning](diagrammer/pakkediagram.svg)
+
+## Innhold
 
 ### Kodingsprosjektet
 
-Kodingsprosjektet består av fem moduler: core, backend, stalin, marxbankfx og marxbankvue. Se egne readmes i disse mappene for mer detaljer om hva de består av.
+Kodingsprosjektet består av fem moduler: core, backend, storage, marxbankfx og marxbankvue. Se egne readmes i disse mappene for mer detaljer om hva de består av.
 
-# Hvordan kjøre appen
+## Hvordan kjøre appen
 
 Først kjør
 
@@ -38,7 +42,7 @@ eller starte javafx med
 
 ``` mvn javafx:run -pl marxbankfx ```
 
-# Jacoco code coverage
+## Jacoco code coverage
 
 ### Installasjon
 
@@ -50,9 +54,4 @@ Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. V
 
 ## JSON datastruktur
 
-For å se hvordan vi lagrer dataen vår lokalt med json, se [Readme i stalin](stalin/Readme.md#lagring-i-Json)
-
-
-
-
-
+For å se hvordan vi lagrer dataen vår lokalt med json, se [Readme i storage](storage/Readme.md#lagring-i-Json)

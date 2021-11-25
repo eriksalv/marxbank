@@ -24,192 +24,197 @@ import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
 import marxbank.model.User;
 
-public class HomeControllerTest extends ApplicationTest{
-    
-    /**
-     * Creating a user and a belonging account to test with.
-     */
-    private HomeController controller;
-    private User user;
-    private Account account1;
-    private Account account2;
-    private Transaction transaction;
-    private Parent root;
-    
-    @TempDir
-    static Path tempDir;
-    
-    @Override
-    public void start(final Stage stage) throws Exception {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
-        this.root = loader.load();
-        this.controller = loader.getController();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
+public class HomeControllerTest extends ApplicationTest {
 
-    /**
-     * sets up tempDir for DataMananger
-     * @throws IOException
-     */
-    @BeforeAll
-    static void setup() throws IOException {
-        Files.createDirectories(tempDir.resolve("data"));
-    }
+  /**
+   * Creating a user and a belonging account to test with.
+   */
+  private HomeController controller;
+  private User user;
+  private Account account1;
+  private Account account2;
+  private Transaction transaction;
+  private Parent root;
 
-    /**
-     * Sets up all the data that is getting used in the test
-     * @throws IOException
-     */
-    @BeforeEach
-    void beforeEachSetup() throws IOException {
-        DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
-        this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
-        this.account1 = new SavingsAccount(user, "Annas brukskonto");
-        this.account1.deposit(500);
-        this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
-        this.transaction = new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
-    }
+  @TempDir
+  static Path tempDir;
 
-    /**
-     * Setting up some necessary values for the account and user to be tested.
-     */
-    // @BeforeAll
-    // public void setup(){
-    //     account1.setBalance(100.0);
-    //     account1.setName("Annas sparekonto");
-    //     user.addAccount(account1);
-    //     account1.addTransaction(transaction);
-    //     account2.addTransaction(transaction);
-    //     controller.initData(user, dm);
-    // }
+  @Override
+  public void start(final Stage stage) throws Exception {
+    final FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+    this.root = loader.load();
+    this.controller = loader.getController();
+    stage.setScene(new Scene(root));
+    stage.show();
+  }
 
-    /**
-     * Testing if the controller exists and works.
-     */
-    @Test
-    public void testController_main() {
-        assertNotNull(controller);
-    }
+  /**
+   * sets up tempDir for DataMananger
+   * 
+   * @throws IOException
+   */
+  @BeforeAll
+  static void setup() throws IOException {
+    Files.createDirectories(tempDir.resolve("data"));
+  }
 
-    /**
-     * Testing whether the account name label matches the actual name of the account.
-     */
-    @Test
-    public void testAccountName(){
+  /**
+   * Sets up all the data that is getting used in the test
+   * 
+   * @throws IOException
+   */
+  @BeforeEach
+  void beforeEachSetup() throws IOException {
+    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
+    this.account1 = new SavingsAccount(user, "Annas brukskonto");
+    this.account1.deposit(500);
+    this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
+    this.transaction = new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
+  }
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#AccountLabel").query();
-                assertNotNull(label);
-                assertTrue(label.getText().equals("Annas brukskonto"));
-            }
-        });
+  /**
+   * Setting up some necessary values for the account and user to be tested.
+   */
+  // @BeforeAll
+  // public void setup(){
+  // account1.setBalance(100.0);
+  // account1.setName("Annas sparekonto");
+  // user.addAccount(account1);
+  // account1.addTransaction(transaction);
+  // account2.addTransaction(transaction);
+  // controller.initData(user, dm);
+  // }
 
-    }
+  /**
+   * Testing if the controller exists and works.
+   */
+  @Test
+  public void testController_main() {
+    assertNotNull(controller);
+  }
 
-    /**
-     * Testing whether the balance label matches the actual balance of the account.
-     */
-    @Test
-    public void testBalance(){
+  /**
+   * Testing whether the account name label matches the actual name of the account.
+   */
+  @Test
+  public void testAccountName() {
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#AmountLabel").query();
-                assertTrue(label.getText().equals("kr " + account1.getBalance()));
-            }
-        });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#accountLabel").query();
+        assertNotNull(label);
+        assertTrue(label.getText().equals("Annas brukskonto"));
+      }
+    });
 
-    }
+  }
 
-    /**
-     * Testing whether the account number label matches the actual account number of the account.
-     */
-    @Test
-    public void testAccountNumber(){
+  /**
+   * Testing whether the balance label matches the actual balance of the account.
+   */
+  @Test
+  public void testBalance() {
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#AccountNumberLabel").query();
-                assertTrue(label.getText().equals(Integer.toString(account1.getAccountNumber())));
-            }
-        });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#amountLabel").query();
+        assertTrue(label.getText().equals("kr " + account1.getBalance()));
+      }
+    });
 
-    }
+  }
 
-   /**
-     * Testing whether the date for the transaction is represented with the correct label.
-     */
-    @Test
-    public void testDate(){
+  /**
+   * Testing whether the account number label matches the actual account number of the account.
+   */
+  @Test
+  public void testAccountNumber() {
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#DateLabel").query();
-                assertTrue(label.getText().equals(transaction.getDateString()));
-            }
-        });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#accountNumberLabel").query();
+        assertTrue(label.getText().equals(Long.toString(account1.getId())));
+      }
+    });
 
-    }
+  }
 
-    /**
-     * Testing whether the label for the account that has recieved or been deducted money from matches the correct account.
-     */
-    @Test
-    public void testRelevantAccount(){
+  /**
+   * Testing whether the date for the transaction is represented with the correct label.
+   */
+  @Test
+  public void testDate() {
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#LAaccountLabel").query();
-                assertTrue(label.getText().equals("Fra: " + transaction.getFrom().getName()));
-            }
-        });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#dateLabel").query();
+        assertTrue(label.getText().equals(transaction.getDateString()));
+      }
+    });
 
-    }
+  }
 
-    /**
-     * Testing whether the label for the account that money was sent from/to matches the actual account.
-     */
-    @Test
-    public void testOtherAccount(){
+  /**
+   * Testing whether the label for the account that has recieved or been deducted money from matches
+   * the correct account.
+   */
+  @Test
+  public void testRelevantAccount() {
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#OtherAccountLabel").query();
-                assertTrue(label.getText().equals("Til: " + transaction.getReciever().getName()));
-            }
-        });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#secondAccountLabel").query();
+        assertTrue(label.getText().equals("Fra: " + transaction.getFrom().getName()));
+      }
+    });
 
-    }
+  }
 
-    /**
-     * Testing whether the label for the account that money was sent from/to matches the actual account.
-     */
-    @Test
-    public void testAmount(){
+  /**
+   * Testing whether the label for the account that money was sent from/to matches the actual
+   * account.
+   */
+  @Test
+  public void testOtherAccount() {
 
-        Platform.runLater(new Runnable(){
-            @Override
-            public void run() {
-                controller.initData(user);
-                Label label = lookup("#LAamountLabel").query();
-                assertTrue(label.getText().equals("kr " + Double.toString(transaction.getAmount())));
-            }
-        });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#otherAccountLabel").query();
+        assertTrue(label.getText().equals("Til: " + transaction.getReciever().getName()));
+      }
+    });
 
-    }
+  }
+
+  /**
+   * Testing whether the label for the account that money was sent from/to matches the actual
+   * account.
+   */
+  @Test
+  public void testAmount() {
+
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        controller.initData(user);
+        Label label = lookup("#secondAmountLabel").query();
+        assertTrue(label.getText().equals("kr " + Double.toString(transaction.getAmount())));
+      }
+    });
+
+  }
 
 }

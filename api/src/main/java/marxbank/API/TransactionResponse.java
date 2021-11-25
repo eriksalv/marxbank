@@ -7,61 +7,61 @@ import marxbank.model.Transaction;
  */
 
 public class TransactionResponse {
-    
-    private Long Id;
-    private Long fromId;
-    private Long recieverId;
-    private double amount;
-    private String transactionDate;
 
-    public TransactionResponse(){
-    }
-    
-    public TransactionResponse(Transaction transaction){
-        this.Id = transaction.getId();
-        this.fromId = transaction.getFrom().getId();
-        this.recieverId = transaction.getReciever().getId();
-        this.amount = transaction.getAmount();
-        this.transactionDate = transaction.getDateString();
-    }
+  private Long id;
+  private Long fromId;
+  private Long recieverId;
+  private double amount;
+  private String transactionDate;
 
-    public void setId(Long newId) {
-        this.Id=newId;
-    }
-    
-    public Long getId() {
-        return this.Id;
-    }
+  public TransactionResponse() {}
 
-    public void setFromId(Long fromAccount) {
-        this.fromId = fromAccount;
-    }
+  public TransactionResponse(Transaction transaction) {
+    this.id = transaction.getId();
+    this.fromId = transaction.getFrom().getId();
+    this.recieverId = transaction.getReciever().getId();
+    this.amount = transaction.getAmount();
+    this.transactionDate = transaction.getDateString();
+  }
 
-    public Long getFromId(){
-        return this.fromId;
-    }
-    
-    public void setRecieverId(Long receivingAccount) {
-        this.recieverId = receivingAccount;
-    }
+  public void setId(Long newId) {
+    this.id = newId;
+  }
 
-    public Long getRecieverId() {
-        return this.recieverId;
-    }
+  public Long getId() {
+    return this.id;
+  }
 
-    public void setAmount(double newAmount ){
-        this.amount = newAmount;
-    }
+  public void setFromId(Long fromAccount) {
+    this.fromId = fromAccount;
+  }
 
-    public double getAmount() {
-        return this.amount;
-    }
+  public Long getFromId() {
+    return this.fromId;
+  }
 
-    public void setTransactionDate(String newDate) {
-        this.transactionDate = newDate;
-    }
-    public String getTransactionDate() {
-        return this.transactionDate;
-    }
+  public void setRecieverId(Long receivingAccount) {
+    this.recieverId = receivingAccount;
+  }
+
+  public Long getRecieverId() {
+    return this.recieverId;
+  }
+
+  public void setAmount(double newAmount) {
+    this.amount = newAmount;
+  }
+
+  public double getAmount() {
+    return this.amount;
+  }
+
+  public void setTransactionDate(String newDate) {
+    this.transactionDate = newDate;
+  }
+
+  public String getTransactionDate() {
+    return this.transactionDate;
+  }
 
 }

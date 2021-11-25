@@ -4,8 +4,8 @@ package marxbank.API;
  * Klassen tar inn den nøvendige informasjonen fra en bruker for å gjennomføre et innskudd eller uttak av penger.
  */
 public class DepositWithdrawRequest {
-    private double amount;
-    private Long accountId;
+  private double amount;
+  private Long accountId;
 
 /**
  * Tom konstruktør.
@@ -29,15 +29,15 @@ public class DepositWithdrawRequest {
         return this.amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+  public void setAmount(double amount) {
+    this.amount = amount;
+  }
 
-    public Long getAccountId() {
-        return this.accountId;
-    }
+  public Long getAccountId() {
+    return this.accountId;
+  }
 
-    public void setAccountId(Long id) {
-        this.accountId = id;
-    }
+  public void setAccountId(Long id) {
+    this.accountId = id;
+  }
 }

@@ -15,85 +15,107 @@ import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
-    private User user;
+  private User user;
 
-    @Test
-    @DisplayName("test constructor")
-    public void testConstructor() {
-        assertAll(
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                new User((long) 1, " notvalidusername", "email@test.com", "test password");
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                new User((long) 1, "user name", "email@email.com", "password");
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                new User((long) 1, "username ", "email@email.com", "password");
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                new User((long) 1, "us", "email@email.com", "password");
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                new User((long) 1, "usernameiswaaaaaaaayyyyytooooooooooooooooooooooooooooooooooooooolooooooooooooooooooooooooooooooooong", "email@email.com", "password");
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                new User((long) 1, "username", ".email@emai..com", "password");
-            })
-        );
+  @Test
+  @DisplayName("test constructor")
+  public void testConstructor() {
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      new User((long) 1, " notvalidusername", "email@test.com", "test password");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      new User((long) 1, "user name", "email@email.com", "password");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      new User((long) 1, "username ", "email@email.com", "password");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      new User((long) 1, "us", "email@email.com", "password");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      new User((long) 1,
+          "usernameiswaaaaaaaayyyyytooooooooooooooooooooooooooooooooooooooolooooooooooooooooooooooooooooooooong",
+          "email@email.com", "password");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      new User((long) 1, "username", ".email@emai..com", "password");
+    }));
 
-        user = new User((long) 1, "username", "email@email.com", "password");
-    }
+    user = new User((long) 1, "username", "email@email.com", "password");
+  }
 
-    @Test
-    @DisplayName("test account management")
-    public void testAccountManagement() {
-        user = new User((long) 1, "username", "email@email.com", "password");
-        Account a = new SavingsAccount((long) 1, user, 5.0);
-        assertEquals(user.getAccounts().get(0), a);
-        
-        assertThrows(IllegalArgumentException.class, () -> {
-            user.addAccount(a);
-        });
+  @Test
+  @DisplayName("test account management")
+  public void testAccountManagement() {
+    user = new User((long) 1, "username", "email@email.com", "password");
+    Account a = new SavingsAccount((long) 1, user, 5.0);
+    assertEquals(user.getAccounts().get(0), a);
 
-        user.removeAccount(a);
-        assertEquals(0, user.getAccounts().size());
+    assertThrows(IllegalArgumentException.class, () -> {
+      user.addAccount(a);
+    });
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            user.removeAccount(a);
-        });
-    }
+    user.removeAccount(a);
+    assertEquals(0, user.getAccounts().size());
 
-    @Test
-    @DisplayName("test setters and stuff")
-    public void testSetters() {
-        user = new User((long) 1, "username", "email@email.com", "password");
-        assertEquals(Objects.hash(user.getId()), user.hashCode());
+    assertThrows(IllegalArgumentException.class, () -> {
+      user.removeAccount(a);
+    });
+  }
 
-        user.setEmail("newEmail@email.com");
-        assertTrue(user.getEmail().equals("newEmail@email.com"));
+  @Test
+  @DisplayName("test setters and stuff")
+  public void testSetters() {
+    user = new User((long) 1, "username", "email@email.com", "password");
+    assertEquals(Objects.hash(user.getId()), user.hashCode());
 
-        user.setUsername("newUsername");
-        assertTrue(user.getUsername().equals("newUsername"));
+    user.setEmail("newEmail@email.com");
+    assertEquals(user.getEmail(), "newEmail@email.com");
 
-        user.setPassword("newPassword");
-        assertTrue(user.getPassword().equals("newPassword"));
+    user.setUsername("newUsername");
+    assertTrue(user.getUsername().equals("newUsername"));
 
-        ArrayList<Account> a = new ArrayList<Account>();
+    user.setPassword("newPassword");
+    assertTrue(user.getPassword().equals("newPassword"));
 
-        a.add(new SavingsAccount((long) 1, user));
+    assertAll(
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setAccounts(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.addAccount(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setEmail(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setUsername(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setPassword(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setPassword("ye");
+      })
+    );
 
-        user.setAccounts(a);
-        assertEquals(a, user.getAccounts());
-        
-        assertThrows(IllegalArgumentException.class, () -> {
-            user.setId(null);
-        });
 
-        user.setId((long) 1);
-        assertTrue(user.getId().equals((long) 1));
+    ArrayList<Account> a = new ArrayList<Account>();
 
-        assertFalse(user.equals(new SavingsAccount((long) 5, user)));
+    a.add(new SavingsAccount((long) 1, user));
 
-        assertFalse(user.equals(new User((long) 69, "username", "email@email.com", "password")));
-    }
+    user.setAccounts(a);
+    assertEquals(a, user.getAccounts());
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      user.setId(null);
+    });
+
+    user.setId((long) 1);
+    assertTrue(user.getId().equals((long) 1));
+
+    assertFalse(user.equals(new User((long) 69, "username", "email@email.com", "password")));
+  }
+
+  @Test
+  @DisplayName("test equals")
+  public void testEquals() {
+    user = new User((long) 1, "username", "email@email.com", "password");
+    assertFalse(user.equals("ikkeUser"));
+  }
 }

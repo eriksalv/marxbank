@@ -15,7 +15,7 @@ default:
 stages:
   - build
   - test_core
-  - test_stalin
+  - test_storage
   - test_fx
   - test_backend
   - test_vue
@@ -48,8 +48,8 @@ test_core:
     - mvn jacoco:prepare-agent test -pl core jacoco:report
     - cat core/target/site/jacoco/index.html
 
-test_stalin:
-  stage: test_stalin
+test_storage:
+  stage: test_storage
   needs: [build, test_core]
   retry:
     max: 1
@@ -59,8 +59,8 @@ test_stalin:
       - job_execution_timeout
       - data_integrity_failure
   script:
-    - mvn jacoco:prepare-agent test -pl stalin jacoco:report
-    - cat stalin/target/site/jacoco/index.html
+    - mvn jacoco:prepare-agent test -pl storage jacoco:report
+    - cat storage/target/site/jacoco/index.html
 
 test_fx:
   stage: test_fx
@@ -106,7 +106,7 @@ test_manual:
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat core/target/site/jacoco/index.html
     - cat marxbankfx/target/site/jacoco/index.html
-    - cat stalin/target/site/jacoco/index.html
+    - cat storage/target/site/jacoco/index.html
     - cat backend/target/site/jacoco/index.html
   when: manual
 

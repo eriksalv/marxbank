@@ -1,5 +1,6 @@
 package marxbank;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -13,12 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.web.server.ResponseStatusException;
 
 import marxbank.API.LogInRequest;
 import marxbank.API.SignUpRequest;
 import marxbank.endpoint.AuthController;
 import marxbank.model.User;
-import marxbank.repository.TokenRepository;
 import marxbank.repository.UserRepository;
 import marxbank.service.AuthService;
 
@@ -26,140 +27,137 @@ import marxbank.service.AuthService;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AuthTest {
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    
-    @LocalServerPort
-    private int port;
+  private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    @Autowired
-    private AuthController authController;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TokenRepository tokenRepository;
-    @Autowired
-    private AuthService authService;
+  @LocalServerPort
+  private int port;
 
-    @Test
-    @DisplayName("test login post")
-    public void testLoginPost() {
-        // too short username/password
-        LogInRequest badRequest = new LogInRequest("u", "bbbbbbbb");
-        assertEquals(HttpStatus.BAD_REQUEST, authController.login(badRequest).getStatusCode());
-        badRequest = new LogInRequest("bbbbbbbb", "u");
-        assertEquals(HttpStatus.BAD_REQUEST, authController.login(badRequest).getStatusCode());
+  @Autowired
+  private AuthController authController;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private AuthService authService;
 
-        // user doesn't exist
-        LogInRequest notFoundRequest = new LogInRequest("username", "password");
-        assertEquals(HttpStatus.NOT_FOUND, authController.login(notFoundRequest).getStatusCode());
+  @Test
+  @DisplayName("test login post")
+  public void testLoginPost() {
+    // too short username/password
+    ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+      LogInRequest badRequest = new LogInRequest("username", "password");
+      authController.login(badRequest);
+    });
 
-        // create user
-        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
-        userRepository.save(user);
+    // create user
+    User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
+    userRepository.save(user);
 
-        // wrong password
-        LogInRequest wrongPassword = new LogInRequest("yeet", "password");
-        assertEquals(HttpStatus.FORBIDDEN, authController.login(wrongPassword).getStatusCode());
+    // wrong password
+    ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+      LogInRequest wrongPassword = new LogInRequest("yeet", "password");
+      authController.login(wrongPassword);
+    });
 
-        // correct password
-        LogInRequest correctRequest = new LogInRequest("yeet", "yeet");
-        assertEquals(HttpStatus.OK, authController.login(correctRequest).getStatusCode());
-    }
+    // correct password
+    LogInRequest correctRequest = new LogInRequest("yeet", "yeet");
+    assertEquals(HttpStatus.OK, authController.login(correctRequest).getStatusCode());
 
-    @Test
-    @DisplayName("test login get")
-    public void testLoginGet() {
-        assertEquals(HttpStatus.FORBIDDEN, authController.login(((String) null)).getStatusCode());
-        
-        String invalidToken ="Bearer:yeetyeet";
+    assertAll(() -> assertEquals(HttpStatus.NOT_FOUND, thrown1.getStatus()),
+        () -> assertEquals(HttpStatus.FORBIDDEN, thrown2.getStatus()));
+  }
 
-        assertEquals(HttpStatus.FORBIDDEN, authController.login(invalidToken).getStatusCode());
+  @Test
+  @DisplayName("test signup")
+  public void testSignup() {
+    ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+      SignUpRequest badRequest = new SignUpRequest("ye", "ye", "yeet");
+      authController.signUp(badRequest);
+    });
 
-        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
-        userRepository.save(user);
+    User user = (new SignUpRequest("yeet", "yeet", "yeet@email.com")).createUser();
+    userRepository.save(user);
 
-        String token = String.format("Bearer:%s", authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken());
-        assertEquals(HttpStatus.OK, authController.login(token).getStatusCode());
-    }
+    ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+      SignUpRequest usernameTaken = new SignUpRequest("yeet", "yeet", "yeet@email.com");
+      authController.signUp(usernameTaken);
+    });
 
-    @Test
-    @DisplayName("test signup")
-    public void testSignup() {
-        SignUpRequest badRequest = new SignUpRequest("ye", "ye", "yeet");
-        assertEquals(HttpStatus.BAD_REQUEST, authController.signUp(badRequest).getStatusCode());
+    SignUpRequest created = new SignUpRequest("yeet2", "yeet2", "yeet2@email.com");
+    assertEquals(HttpStatus.CREATED, authController.signUp(created).getStatusCode());
 
-        User user = (new SignUpRequest("yeet", "yeet", "yeet@email.com")).createUser();
-        userRepository.save(user);
+    assertAll(() -> assertEquals(HttpStatus.BAD_REQUEST, thrown1.getStatus()),
+        () -> assertEquals(HttpStatus.CONFLICT, thrown2.getStatus()));
+  }
 
-        SignUpRequest usernameTaken = new SignUpRequest("yeet", "yeet", "yeet@email.com");
-        assertEquals(HttpStatus.CONFLICT, authController.signUp(usernameTaken).getStatusCode());
+  @Test
+  @DisplayName("test logout")
+  public void testLogout() {
+    User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
+    userRepository.save(user);
 
-        SignUpRequest created = new SignUpRequest("yeet2", "yeet2", "yeet2@email.com");
-        assertEquals(HttpStatus.CREATED, authController.signUp(created).getStatusCode());
-    }
+    String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
 
-    @Test
-    @DisplayName("test logout")
-    public void testLogout() {
-        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
-        userRepository.save(user);
+    ResponseStatusException thrown1 = assertThrows(ResponseStatusException.class, () -> {
+      authController.logout(((String) null));
+    });
+    ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
+      authController.logout("yeetyeet");
+    });
 
-        String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
+    assertEquals(HttpStatus.OK, authController.logout(token).getStatusCode());
 
-        assertEquals(HttpStatus.FORBIDDEN, authController.logout(((String) null)).getStatusCode());
+    assertAll(() -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+        () -> assertEquals(HttpStatus.BAD_REQUEST, thrown2.getStatus()));
+  }
 
-        assertEquals(HttpStatus.BAD_REQUEST, authController.logout("yeetyeet").getStatusCode());
+  @Test
+  @DisplayName("test authService bearer add remove")
+  public void testTokenAddRemoveBearer() {
+    assertEquals("Bearer:yeet", AuthService.addBearer("yeet"));
 
-        assertEquals(HttpStatus.OK, authController.logout(token).getStatusCode());
-    }
+    assertEquals("yeet", AuthService.removeBearer("Bearer:yeet"));
+  }
 
-    @Test
-    @DisplayName("test authService bearer add remove")
-    public void testTokenAddRemoveBearer() {
-        assertEquals("Bearer:yeet", AuthService.addBearer("yeet"));
+  @Test
+  @DisplayName("test authService createTokenForUser")
+  public void testCreateTokenForUser() {
 
-        assertEquals("yeet", AuthService.removeBearer("Bearer:yeet"));
-    }
+    User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
+    userRepository.save(user);
 
-    @Test
-    @DisplayName("test authService createTokenForUser")
-    public void testCreateTokenForUser() {
-        
-        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
-        userRepository.save(user);
+    // test updating token
+    authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
+    String newToken = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
 
-        // test updating token
-        String oldtoken = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
-        String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
-        
-        //ser litt rart ut å kalle getToken().getToken()... ¯\_(ツ)_/¯
-        assertEquals(userRepository.findByUsername("yeet").get().getToken().getToken(), token);
+    // ser litt rart ut å kalle getToken().getToken()... ¯\_(ツ)_/¯
+    assertEquals(userRepository.findByUsername("yeet").get().getToken().getToken(), newToken);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            authService.createTokenForUser(Long.valueOf(999999));
-        });
-        
-        authService.createTokenForUser(user.getId());
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      authService.createTokenForUser(Long.valueOf(999999));
+    });
 
-    @Test
-    @DisplayName("test authService getUserFromToken")
-    public void testGetUserFromToken() {
-        User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
-        userRepository.save(user);
+    authService.createTokenForUser(user.getId());
+  }
 
-        // test updating token
-        String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
+  @Test
+  @DisplayName("test authService getUserFromToken")
+  public void testGetUserFromToken() {
+    User user = (new SignUpRequest("yeet", encoder.encode("yeet"), "yeet@yeet.com")).createUser();
+    userRepository.save(user);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            authService.getUserFromToken(null);
-        });
+    // test updating token
+    String token = authController.login(new LogInRequest("yeet", "yeet")).getBody().getToken();
 
-        assertEquals(userRepository.findByUsername(user.getUsername()).get().getId(), authService.getUserIdFromToken(token));
+    assertThrows(IllegalArgumentException.class, () -> {
+      authService.getUserFromToken(null);
+    });
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            authService.removeToken(null);
-        });
-    }
+    assertEquals(userRepository.findByUsername(user.getUsername()).get().getId(),
+        authService.getUserIdFromToken(token));
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      authService.removeToken(null);
+    });
+  }
 
 }

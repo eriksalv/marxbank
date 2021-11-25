@@ -12,8 +12,8 @@ import marxbank.util.AccountType;
  * Den esensielle informasjonen for dette er type konto og kontonavn.
  */
 public class AccountRequest {
-    private String type;
-    private String name;
+  private String type;
+  private String name;
 
 /**
  * Tom konstruktør.
