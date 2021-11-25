@@ -14,7 +14,7 @@ export const actions: ActionTree<AuthState, RootState> = {
    */
   async logout({ commit }, token: object | null) {
     await axios.post(BASE_URL + "/logout", token).then(() => {
-      commit("setStatus", "");
+      commit("setStatus", { status: "" });
       commit("setToken", null);
       delete axios.defaults.headers.common["Authorization"];
     });
@@ -25,61 +25,59 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param user login request
    */
   async login({ commit }, user: LoginRequest): Promise<void> {
-    commit("setStatus", "loading");
-    return new Promise<void>((resolve, reject) => {
-      axios
-        .post(BASE_URL + "/login", {
-          username: user.username,
-          password: user.password,
-        })
-        .then((response) => {
-          const userId: Number = response.data.userResponse.id;
-          const token: string = response.data.token;
-          axios.defaults.headers.common["Authorization"] = token;
-          commit("setUserId", userId);
-          commit("setStatus", "success");
-          commit("setToken", token);
-          commit("setStatusCode", response.status);
-          resolve();
-        })
-        .catch((err) => {
-          if (err.response.status !== undefined) {
-            commit("setStatus", "error");
-            commit("setStatusCode", err.response.status);
-          }
-          reject();
-        });
-    });
+    commit("setStatus", { status: "loading" });
+    await axios
+      .post(BASE_URL + "/login", {
+        username: user.username,
+        password: user.password,
+      })
+      .then((response) => {
+        const userId: Number = response.data.userResponse.id;
+        const token: string = response.data.token;
+        axios.defaults.headers.common["Authorization"] = token;
+        commit("setUserId", userId);
+        commit("setStatus", { status: "success" });
+        commit("setToken", token);
+        commit("setStatusCode", response.status);
+      })
+      .catch((err) => {
+        if (err.response.status !== undefined) {
+          commit("setStatus", {
+            status: "error",
+            errorMsg: err.response.data.message,
+          });
+          commit("setStatusCode", err.response.status);
+        }
+      });
   },
   /**
    * creates a signup request to api and stores the returned
    * user
    * @param user signup request
    */
-  async signup({ commit }, user: SignUpRequest): Promise<void> {
-    commit("setStatus", "loading");
-    return new Promise<void>((resolve, reject) => {
-      axios
-        .post(BASE_URL + "/signup", {
-          username: user.username,
-          password: user.password,
-          email: user.email,
-        })
-        .then((response) => {
-          const userId = response.data.userResponse.id;
-          const token = response.data.token;
-          axios.defaults.headers.common["Authorization"] = token;
-          commit("setUserId", userId);
-          commit("setStatus", "success");
-          commit("setToken", token);
-          commit("setStatusCode", response.status);
-          resolve();
-        })
-        .catch((err) => {
-          commit("setStatusCode", err.response.status);
-          commit("setStatus", "error");
-          reject();
+  async signup({ commit }, user: SignUpRequest) {
+    commit("setStatus", { status: "loading" });
+    await axios
+      .post(BASE_URL + "/signup", {
+        username: user.username,
+        password: user.password,
+        email: user.email,
+      })
+      .then((response) => {
+        const userId = response.data.userResponse.id;
+        const token = response.data.token;
+        axios.defaults.headers.common["Authorization"] = token;
+        commit("setUserId", userId);
+        commit("setStatus", { status: "success" });
+        commit("setToken", token);
+        commit("setStatusCode", response.status);
+      })
+      .catch((err) => {
+        commit("setStatusCode", err.response.status);
+        commit("setStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
         });
-    });
+      });
   },
 };

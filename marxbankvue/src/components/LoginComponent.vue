@@ -8,7 +8,7 @@
         w-1/4
         h-auto
         mx-auto
-        mt-40
+        mt-20
         mb-auto
         drop-shadow-lg
         rounded-md
@@ -21,6 +21,7 @@
             <input
               id="username"
               v-model="username"
+              class="input"
               type="text"
               name="username"
               :disabled="authStatus === 'loading'" />
@@ -30,9 +31,13 @@
             <input
               id="password"
               v-model="password"
+              class="input"
               type="password"
               name="password"
               :disabled="authStatus === 'loading'" />
+          </div>
+          <div v-if="error" class="errorText">
+            {{ errorMessage }}
           </div>
           <button
             class="
@@ -128,20 +133,45 @@ export default defineComponent({
       username: "",
       password: "",
       register: false,
+      error: false,
+      errorMessage: "",
     };
   },
   methods: {
     ...mapActions(["login"]),
     requestLogin(): void {
+      this.error = false;
+      this.errorMessage = "";
+
+      /**
+       * Some basic client side validation to prevent unnecessary
+       * requests to backend
+       */
+      if (this.username.length < 4) {
+        this.errorMessage = "Invalid username";
+        this.error = true;
+        return;
+      } else if (this.username.match(/[^a-zA-Z ]/g)) {
+        this.errorMessage = "Username contains illegal characters";
+        this.error = true;
+        return;
+      } else if (this.password.length < 4) {
+        this.errorMessage = "Invalid password";
+        this.error = true;
+        return;
+      }
+
       const request: LoginRequest = {
         username: this.username,
         password: this.password,
       };
-      console.log(request);
 
       this.login(request)
         .then(() => this.$router.push("/"))
-        .catch(() => console.log(this.getStatusCode));
+        .catch((err: Error) => {
+          this.errorMessage = err.message;
+          this.error = true;
+        });
     },
 
     createNewUser(): void {
@@ -162,10 +192,6 @@ export default defineComponent({
 
 .input-style label {
   @apply text-red-500 text-xl font-bold;
-}
-
-.input-style input {
-  @apply w-full h-8 p-1 rounded-sm drop-shadow-sm;
 }
 
 .communismIcon {

@@ -1,5 +1,11 @@
 <template>
   <main class="w-1/4">
+    <Alert
+        :message="successMsg"
+        @onHideAlert="successMsg = null" />
+    <ErrorAlert
+        :message="errorMsg"
+        @onHideAlert="errorMsg = null" />
     <h1>Fra</h1>
     <SearchBar
       id="fromAccount"
@@ -26,15 +32,17 @@
 
 <script lang="ts">
 import SearchBar from "../components/SearchBar.vue";
+import Alert from "../components/global/Alert.vue";
+import ErrorAlert from "../components/global/ErrorAlert.vue";
 import { mapGetters, mapActions } from "vuex";
 import { Account, TransactionRequest } from "../types/types";
 import { defineComponent } from "@vue/runtime-core";
-// import { defineComponent } from "@vue/runtime-core";
-// import { TransactionRequest } from '../types/types';
 
 export default defineComponent({
   components: {
     SearchBar,
+    Alert,
+    ErrorAlert,
   },
   data() {
     return {
@@ -43,6 +51,8 @@ export default defineComponent({
       selectedFromAccount: {} as Account,
       fromSearchTerm: "",
       amount: 0,
+      errorMsg: null as unknown,
+      successMsg: null as unknown,
     };
   },
   computed: {
@@ -81,13 +91,17 @@ export default defineComponent({
       console.log(searchTerm);
     },
     commitTransaction() {
+      this.errorMsg = null;
+      this.successMsg = null;
       const transactionRequest: TransactionRequest = {
         from: this.selectedFromAccount.id,
         to: this.selectedRecieverAccount.id,
         amount: this.amount,
       };
-      this.createTransaction(transactionRequest).catch((err: any) =>
-        console.log(err)
+      this.createTransaction(transactionRequest).then(() => {
+        this.successMsg = "Transaction successfully commited"
+      }).catch((err: Error) =>
+        this.errorMsg = err.message
       );
     },
   },

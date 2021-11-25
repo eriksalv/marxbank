@@ -157,7 +157,7 @@ describe("mutations", () => {
   });
 
   it("test set account status", () => {
-    mutations.setAccountStatus(testState, "error");
+    mutations.setAccountStatus(testState, { status: "error" });
 
     expect("error").toEqual(testState.accountStatus);
   });
@@ -214,8 +214,12 @@ describe("actions", () => {
 
       await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("addAccount", expected);
         expect(mock.history.get.length).toEqual(1);
         expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts/3`);
@@ -261,8 +265,12 @@ describe("actions", () => {
 
       await fetchAccountById({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("updateAccount", expected);
         expect(mock.history.get.length).toEqual(1);
         expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts/2`);
@@ -313,8 +321,12 @@ describe("actions", () => {
 
       await deposit({ commit, rootGetters }, depositRequest).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("updateAccount", expected);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/accounts/deposit`);
@@ -365,8 +377,12 @@ describe("actions", () => {
 
       await withdraw({ commit, rootGetters }, withdrawRequest).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("updateAccount", expected);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/accounts/withdraw`);
@@ -417,8 +433,12 @@ describe("actions", () => {
 
       await createAccount({ commit, rootGetters }, request).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("addAccount", expected);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/accounts/createAccount`);
@@ -459,8 +479,12 @@ describe("actions", () => {
 
       await fetchAccounts({ commit, rootGetters }).then(() => {
         expect(commit).toHaveBeenCalledTimes(3);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("setAccounts", expected);
         expect(mock.history.get.length).toEqual(1);
         expect(mock.history.get[0].url).toEqual(`/accounts/myAccounts`);
@@ -530,8 +554,12 @@ describe("actions", () => {
 
       await fetchAccountsByTransactions({ commit, rootGetters }).then(() => {
         expect(commit).toHaveBeenCalledTimes(4);
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-        expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "loading",
+        });
+        expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+          status: "success",
+        });
         expect(commit).toHaveBeenCalledWith("updateAccount", expected[0]);
         expect(commit).toHaveBeenCalledWith("addAccount", expected[1]);
         expect(mock.history.get.length).toEqual(1);
@@ -571,8 +599,12 @@ describe("actions", () => {
       await fetchPublicAccountById({ commit, rootGetters }, requestId).then(
         () => {
           expect(commit).toHaveBeenCalledTimes(3);
-          expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-          expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+            status: "loading",
+          });
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+            status: "success",
+          });
           expect(commit).toHaveBeenCalledWith("addAccount", expected);
           expect(mock.history.get.length).toEqual(1);
           expect(mock.history.get[0].url).toEqual(`/accounts/3`);
@@ -619,8 +651,12 @@ describe("actions", () => {
       await fetchPublicAccountById({ commit, rootGetters }, requestId).then(
         () => {
           expect(commit).toHaveBeenCalledTimes(3);
-          expect(commit).toHaveBeenCalledWith("setAccountStatus", "loading");
-          expect(commit).toHaveBeenCalledWith("setAccountStatus", "success");
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+            status: "loading",
+          });
+          expect(commit).toHaveBeenCalledWith("setAccountStatus", {
+            status: "success",
+          });
           expect(commit).toHaveBeenCalledWith("updateAccount", expected);
           expect(mock.history.get.length).toEqual(1);
           expect(mock.history.get[0].url).toEqual(`/accounts/3`);

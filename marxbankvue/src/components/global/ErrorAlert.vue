@@ -1,5 +1,6 @@
 <template>
-  <div class="rounded-md bg-red-50 p-4">
+<transition name="fade">
+  <div v-if="message" class="rounded-md bg-red-50 p-4">
     <div class="flex">
       <div class="flex-shrink-0">
         <fa :icon="'exclamation-triangle'" />
@@ -34,6 +35,7 @@
       </div>
     </div>
   </div>
+</transition>
 </template>
 
 <script>
@@ -47,4 +49,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -14,7 +14,10 @@ export const mutations: MutationTree<AccountState> = {
     const i = state.accounts.findIndex((x) => x.id === account.id);
     if (i > -1) state.accounts[i] = account;
   },
-  setAccountStatus: (state, status: Status) => {
-    state.accountStatus = status;
+  setAccountStatus: (state, payload: { status: Status; errorMsg?: String }) => {
+    state.accountStatus = payload.status;
+    if (typeof payload.errorMsg !== "undefined") {
+      throw new Error(payload.errorMsg.toString());
+    }
   },
 };

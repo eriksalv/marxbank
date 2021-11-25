@@ -12,8 +12,11 @@ export const mutations: MutationTree<AuthState> = {
   setToken: (state, token: string | null) => {
     state.token = token;
   },
-  setStatus: (state, status: Status) => {
-    state.status = status;
+  setStatus: (state, payload: { status: Status; errorMsg?: String }) => {
+    state.status = payload.status;
+    if (typeof payload.errorMsg !== "undefined") {
+      throw new Error(payload.errorMsg.toString());
+    }
   },
   setUserId: (state, userId: number) => {
     state.userId = userId;

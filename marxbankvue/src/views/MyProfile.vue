@@ -1,17 +1,11 @@
 <template>
   <div class="w-2/3">
-    <transition name="fade">
-      <Alert
-        v-if="!errorMsg && successMsg"
-        :message="successMsg"
-        @onHideAlert="resetMsg" />
-    </transition>
-    <transition name="fade">
-      <ErrorAlert
-        v-if="errorMsg && !successMsg"
-        :message="errorMsg"
-        @onHideAlert="resetMsg" />
-    </transition>
+    <Alert
+      :message="successMsg"
+      @onHideAlert="resetMsg" />
+    <ErrorAlert
+      :message="errorMsg"
+      @onHideAlert="resetMsg" />
     <h1 class="title">
       {{ getLoggedInUser.username }}
     </h1>
@@ -90,6 +84,7 @@ export default {
       if (!this.currentPassword) {
         this.successMsg = false;
         this.errorMsg = "Must enter current password to edit profile";
+        return;
       }
       const username = this.newUsername
         ? this.newUsername
@@ -123,13 +118,4 @@ export default {
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
 </style>

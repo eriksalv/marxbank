@@ -7,8 +7,11 @@ import { AccountState } from "./types";
 const BASE_URL = "/accounts";
 
 export const actions: ActionTree<AccountState, RootState> = {
+  /**
+   * Fetches all accounts of the logged in user and saves response data
+   */
   async fetchAccounts({ commit, rootGetters }) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .get(`${BASE_URL}/myAccounts`, rootGetters.getToken)
       .then((response) => {
@@ -27,15 +30,19 @@ export const actions: ActionTree<AccountState, RootState> = {
           accounts = [...accounts, account];
         });
         commit("setAccounts", accounts);
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error");
+        commit("setAccountStatus", { status: "error" });
       });
   },
 
+  /**
+   * Fecthes all accounts that a user has had a transaction with,
+   * and saves response data
+   */
   async fetchAccountsByTransactions({ commit, rootGetters }) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .get(`${BASE_URL}/transactions`, {
         headers: {
@@ -65,15 +72,19 @@ export const actions: ActionTree<AccountState, RootState> = {
             commit("addAccount", acc);
           }
         });
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error");
+        commit("setAccountStatus", { status: "error" });
       });
   },
 
+  /**
+   * Fecthes users account by id and saves response data
+   * @param id
+   */
   async fetchAccountById({ commit, rootGetters }, id: number) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .get(`${BASE_URL}/myAccounts/${id}`, {
         headers: {
@@ -96,15 +107,20 @@ export const actions: ActionTree<AccountState, RootState> = {
         } else {
           commit("addAccount", account);
         }
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error", err);
+        commit("setAccountStatus", { status: "error" });
       });
   },
 
+  /**
+   * Fetches a public account (all accounts) by id and saves
+   * response data
+   * @param id
+   */
   async fetchPublicAccountById({ commit, rootGetters }, id: number) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .get(`${BASE_URL}/${id}`)
       .then((response) => {
@@ -123,15 +139,19 @@ export const actions: ActionTree<AccountState, RootState> = {
         } else {
           commit("addAccount", account);
         }
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error", err);
+        commit("setAccountStatus", { status: "error" });
       });
   },
 
+  /**
+   * Creates a new account from request and saves response data
+   * @param request to create account
+   */
   async createAccount({ commit, rootGetters }, request: AccountRequest) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .post(`${BASE_URL}/createAccount`, request, {
         headers: {
@@ -149,15 +169,22 @@ export const actions: ActionTree<AccountState, RootState> = {
           interest: response.data.interestRate,
         };
         commit("addAccount", account);
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error");
+        commit("setAccountStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
+        });
       });
   },
 
+  /**
+   * Deposits to the account specified by request and updates account
+   * @param request to deposit
+   */
   async deposit({ commit, rootGetters }, request: DepositWithdrawRequest) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .post(`${BASE_URL}/deposit`, request, {
         headers: {
@@ -175,15 +202,22 @@ export const actions: ActionTree<AccountState, RootState> = {
           interest: response.data.interestRate,
         };
         commit("updateAccount", account);
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error");
+        commit("setAccountStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
+        });
       });
   },
 
+  /**
+   * Withdraws from the account specified by request and updates account
+   * @param request to withdraw
+   */
   async withdraw({ commit, rootGetters }, request: DepositWithdrawRequest) {
-    commit("setAccountStatus", "loading");
+    commit("setAccountStatus", { status: "loading" });
     await axios
       .post(`${BASE_URL}/withdraw`, request, {
         headers: {
@@ -201,10 +235,13 @@ export const actions: ActionTree<AccountState, RootState> = {
           interest: response.data.interestRate,
         };
         commit("updateAccount", account);
-        commit("setAccountStatus", "success");
+        commit("setAccountStatus", { status: "success" });
       })
       .catch((err) => {
-        commit("setAccountStatus", "error");
+        commit("setAccountStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
+        });
       });
   },
 };

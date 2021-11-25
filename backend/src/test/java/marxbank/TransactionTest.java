@@ -139,7 +139,8 @@ public class TransactionTest {
       transactionController.transferBetweenAccounts(null, null);
     });
     ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
-      transactionController.transferBetweenAccounts("token", null);
+      transactionController.transferBetweenAccounts("token", 
+          new TransactionRequest(accountId1, accountId2, 200));
     });
 
     // test not owner of from account
@@ -176,7 +177,7 @@ public class TransactionTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(250, response.getBody().getAmount());
 
-    assertAll(() -> assertEquals(HttpStatus.UNAUTHORIZED, thrown1.getStatus()),
+    assertAll(() -> assertEquals(HttpStatus.BAD_REQUEST, thrown1.getStatus()),
         () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown2.getStatus()),
         () -> assertEquals(HttpStatus.UNAUTHORIZED, thrown3.getStatus()),
         () -> assertEquals(HttpStatus.NOT_FOUND, thrown4.getStatus()),

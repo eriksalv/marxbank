@@ -50,7 +50,11 @@ describe("Login", () => {
       global: { plugins: [store] },
     });
     const loginBtn = wrapper.find("button");
+    const usernameInput = wrapper.find("#username");
+    const passwordInput = wrapper.find("#password");
 
+    await usernameInput.setValue("username");
+    await passwordInput.setValue("password");
     await loginBtn.trigger("click");
 
     expect(mockLogin).toHaveBeenCalledTimes(1);

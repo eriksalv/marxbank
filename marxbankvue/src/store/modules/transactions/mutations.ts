@@ -9,7 +9,13 @@ export const mutations: MutationTree<TransactionState> = {
   addTransaction: (state, transaction: Transaction) => {
     state.transactions = [...state.transactions, transaction];
   },
-  setTransactionStatus: (state, status: Status) => {
-    state.transactionStatus = status;
+  setTransactionStatus: (
+    state,
+    payload: { status: Status; errorMsg?: String }
+  ) => {
+    state.transactionStatus = payload.status;
+    if (typeof payload.errorMsg !== "undefined") {
+      throw new Error(payload.errorMsg.toString());
+    }
   },
 };
