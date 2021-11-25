@@ -14,7 +14,7 @@ Det meste av nødvendig funksjonalitet ble ferdig implementert i `Release 1`, me
 - Laget en AccountFactory klasse for å gjøre det lettere å opprette kontoer av en bestemt type 
 - Laget en SavingsCalc klasse for å håndtere logikk som brukes av sparekalkulatoren
 ### Modularisering
-Når vi implementerte lagring med JSON i forrige release, la vi til logikken for dette i core modulen. Vi tenkte etterhvert at det var mer hensiktsmessig å lage en egen modul for dette, som er gjort til `Release 2`. Den nye modulen for JSON lagring heter `stalin`. Mer info om modulen ligger i egen readme fil i modulen.
+Når vi implementerte lagring med JSON i forrige release, la vi til logikken for dette i core modulen. Vi tenkte etterhvert at det var mer hensiktsmessig å lage en egen modul for dette, som er gjort til `Release 2`. Den nye modulen for JSON lagring heter `storage`. Mer info om modulen ligger i egen readme fil i modulen.
 ## Implisitt lagring 
 Vi har valgt å basere appen vår på en "implisitt lagring"-metafor, der alt lagres automatisk etter å ha blitt opprettet av bruker
 
