@@ -51,7 +51,7 @@ public class MainControllerTest extends ApplicationTest {
 
   @BeforeEach
   private void beforeEach() throws IOException {
-    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    DataManager.setPath(tempDir.toFile().getCanonicalPath());
     User user = new User("username", "email@email.com", "password");
     controller.initData(user);
   }

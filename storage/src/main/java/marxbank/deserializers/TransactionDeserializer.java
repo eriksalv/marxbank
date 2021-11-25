@@ -28,17 +28,17 @@ public class TransactionDeserializer extends StdDeserializer<Transaction> {
       throws IOException, JsonProcessingException {
     JsonNode node = jp.getCodec().readTree(jp);
     try {
-      if (!DataManager.manager().checkIfAccountExists(node.get("from").get("id").asLong())
-          || !DataManager.manager().checkIfAccountExists(node.get("reciever").get("id").asLong()))
+      if (!DataManager.checkIfAccountExists(node.get("from").get("id").asLong())
+          || !DataManager.checkIfAccountExists(node.get("reciever").get("id").asLong()))
         throw new IllegalStateException("Accounts doesn't exist");
-      from = DataManager.manager().getAccount(node.get("from").get("id").asLong());
-      reciever = DataManager.manager().getAccount(node.get("reciever").get("id").asLong());
+      from = DataManager.getAccount(node.get("from").get("id").asLong());
+      reciever = DataManager.getAccount(node.get("reciever").get("id").asLong());
     } catch (NullPointerException e) {
-      if (!DataManager.manager().checkIfAccountExists(node.get("from").asLong())
-          || !DataManager.manager().checkIfAccountExists(node.get("reciever").asLong()))
+      if (!DataManager.checkIfAccountExists(node.get("from").asLong())
+          || !DataManager.checkIfAccountExists(node.get("reciever").asLong()))
         throw new IllegalStateException("Accounts doesn't exist");
-      from = DataManager.manager().getAccount(node.get("from").asLong());
-      reciever = DataManager.manager().getAccount(node.get("reciever").asLong());
+      from = DataManager.getAccount(node.get("from").asLong());
+      reciever = DataManager.getAccount(node.get("reciever").asLong());
     }
     return new Transaction(node.get("id").asLong(), from, reciever, node.get("amount").asDouble(),
         node.get("dateString").asText(), false, true);

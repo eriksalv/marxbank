@@ -60,7 +60,7 @@ public class ProfileController {
 
   @FXML
   private void handleSignOut(ActionEvent e) throws IOException {
-    DataManager.manager().setLoggedInUser(null);
+    DataManager.setLoggedInUser(null);
 
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("LogIn.fxml"));

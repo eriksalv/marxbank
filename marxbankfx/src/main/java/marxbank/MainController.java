@@ -62,7 +62,7 @@ public class MainController {
   }
 
   public void initData() throws IOException {
-    this.initData(DataManager.manager().getLoggedInUser());
+    this.initData(DataManager.getLoggedInUser());
   }
 
   public void initData(User user) throws IOException {

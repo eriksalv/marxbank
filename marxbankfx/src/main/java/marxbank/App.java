@@ -19,9 +19,9 @@ public class App extends Application {
     scene = new Scene(loadFxml("LogIn"), 640, 480);
     stage.setScene(scene);
     stage.show();
-    DataManager.manager().setPath("../data");
+    DataManager.setPath("../data");
     try {
-      DataManager.manager().parse();
+      DataManager.parse();
     } catch (Exception e) {
       e.printStackTrace();
     }

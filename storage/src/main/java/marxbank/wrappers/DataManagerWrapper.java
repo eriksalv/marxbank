@@ -1,23 +1,32 @@
 package marxbank.wrappers;
 
-import java.util.List;
-import marxbank.DataManager;
+import java.util.ArrayList;
+
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
 
-/**
- * To be rewritten soon :)
- */
 public class DataManagerWrapper {
+    private ArrayList<User> userList = new ArrayList<User>();
+    private ArrayList<Account> accountList = new ArrayList<Account>();
+    private ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
 
-  public List<User> users;
-  public List<Account> accounts;
-  public List<Transaction> transactions;
+    public DataManagerWrapper(ArrayList<User> userList, ArrayList<Account> accountList,
+                                 ArrayList<Transaction> transactionList) {
+        this.userList = userList;
+        this.accountList = accountList;
+        this.transactionList = transactionList;
+    }
 
-  public DataManagerWrapper(DataManager dm) {
-    this.users = dm.getUsers();
-    this.accounts = dm.getAccounts();
-    this.transactions = dm.getTransactions();
-  }
+    public ArrayList<User> getUsers() {
+        return this.userList;
+    }
+
+    public ArrayList<Account> getAccounts() {
+        return this.accountList;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return this.transactionList;
+    }
 }

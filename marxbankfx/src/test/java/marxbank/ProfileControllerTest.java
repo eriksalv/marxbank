@@ -57,9 +57,9 @@ public class ProfileControllerTest extends ApplicationTest {
   @BeforeEach
   private void beforeEach() throws IOException, InterruptedException {
     resetSingleton();
-    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
-    user = DataManager.manager().createUser("username", "email@email.com", "password");
-    DataManager.manager().setLoggedInUser(user);
+    DataManager.setPath(tempDir.toFile().getCanonicalPath());
+    user = DataManager.createUser("username", "email@email.com", "password");
+    DataManager.setLoggedInUser(user);
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
@@ -89,11 +89,11 @@ public class ProfileControllerTest extends ApplicationTest {
 
   @Test
   public void testSignOut() {
-    assertEquals(user, DataManager.manager().getLoggedInUser());
+    assertEquals(user, DataManager.getLoggedInUser());
     clickOn("#signOutButton");
     AnchorPane logInScreen = lookup("#root").queryAs(AnchorPane.class);
     assertEquals(logInScreen.getId(), "root");
-    assertNull(DataManager.manager().getLoggedInUser());
+    assertNull(DataManager.getLoggedInUser());
   }
 
   @Test
@@ -148,7 +148,7 @@ public class ProfileControllerTest extends ApplicationTest {
   }
 
   private void resetSingleton() {
-    DataManager.manager().resetData();
+    DataManager.resetData();
   }
 
   public static void waitForRunLater() throws InterruptedException {

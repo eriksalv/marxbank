@@ -53,7 +53,7 @@ public class MyTransactionControllerTest extends ApplicationTest {
 
   @BeforeEach
   private void beforeEach() throws IOException {
-    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    DataManager.setPath(tempDir.toFile().getCanonicalPath());
     user = new User("username", "email@email.com", "password");
     a = new CheckingAccount(user, "test1");
     b = new CheckingAccount(user, "test2");

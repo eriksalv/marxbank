@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,11 +21,12 @@ import marxbank.model.User;
 
 public class DataHandler {
 
-  public static boolean save(DataManager dm, String path) {
+  public static boolean save(ArrayList<User> userList, ArrayList<Account> accountList, 
+                              ArrayList<Transaction> transactionList, String path) {
     if (path == null || path.isEmpty() || path.isBlank())
       throw new IllegalArgumentException("Path cannot be null, empty or blank");
-    DataManagerWrapper d = new DataManagerWrapper(dm);
     File dataFile = new File(String.format("%s/data.json", path));
+    DataManagerWrapper d = new DataManagerWrapper(userList, accountList, transactionList);
 
     if (!dataFile.exists()) {
       try {
@@ -38,7 +41,7 @@ public class DataHandler {
     FileWriter fw;
     ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
-    module.addSerializer(DataManagerWrapper.class, new DataManagerSerializer());
+    module.addSerializer(DataManagerWrapper.class, new DataManagerSerializer(objectMapper, module));
     objectMapper.registerModule(module);
 
     try {
@@ -52,7 +55,7 @@ public class DataHandler {
     return true;
   }
 
-  public static boolean parse(DataManager dm, String path) {
+  public static boolean parse(String path) {
     final ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
     module.addDeserializer(User.class, new UserDeserializer(User.class));
@@ -80,13 +83,13 @@ public class DataHandler {
       try {
         u = objectMapper.treeToValue(n, User.class);
         // check if user with id exists
-        if (!dm.checkIfUserExists(u.getId())) {
-          dm.addUser(u);
+        if (!DataManager.checkIfUserExists(u.getId())) {
+          DataManager.addUser(u);
           continue;
-        } else if (!dm.checkIfUserExists(u.getId())) {
+        } else if (!DataManager.checkIfUserExists(u.getId())) {
           // delete user with id and replace it with this user
-          dm.deleteUser(dm.getUser(u.getId()));
-          dm.addUser(u);
+          DataManager.deleteUser(DataManager.getUser(u.getId()));
+          DataManager.addUser(u);
         }
       } catch (JsonProcessingException e) {
         return false;
@@ -98,13 +101,13 @@ public class DataHandler {
     for (JsonNode a : node) {
       try {
         Account acc = objectMapper.treeToValue(a, Account.class);
-        if (!dm.checkIfAccountExists(acc.getId())) {
-          dm.addAccount(acc);
+        if (!DataManager.checkIfAccountExists(acc.getId())) {
+          DataManager.addAccount(acc);
           continue;
-        } else if (!dm.checkIfAccountExists(acc)) {
+        } else if (!DataManager.checkIfAccountExists(acc)) {
           // delete account that exists witht the same id and replace it with new one
-          dm.deleteAccount(dm.getAccount(acc.getId()));
-          dm.addAccount(acc);
+          DataManager.deleteAccount(DataManager.getAccount(acc.getId()));
+          DataManager.addAccount(acc);
         }
       } catch (JsonProcessingException e) {
         return false;
@@ -117,8 +120,8 @@ public class DataHandler {
     for (JsonNode t : node) {
       try {
         Transaction transaction = objectMapper.treeToValue(t, Transaction.class);
-        if (!dm.checkIfTransactionExists(transaction.getId())) {
-          dm.addTransaction(transaction);
+        if (!DataManager.checkIfTransactionExists(transaction.getId())) {
+          DataManager.addTransaction(transaction);
           continue;
         }
       } catch (JsonProcessingException e) {

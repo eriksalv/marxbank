@@ -9,21 +9,30 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import marxbank.wrappers.ArrayTransactionsWrapper;
 import marxbank.model.Transaction;
 
+/**
+ * Here we use the ArrayAccountWrapper to be able to correctly pass 
+ * the arraylist in with the correct type
+ */
 public class ArrayTransactionSerializer extends StdSerializer<ArrayTransactionsWrapper> {
 
-  public ArrayTransactionSerializer() {
-    this(null);
+  private ObjectMapper objectMapper;
+  private SimpleModule module;
+
+  public ArrayTransactionSerializer(ObjectMapper objectMapper, SimpleModule sm) {
+    this(null, objectMapper, sm);
+    this.objectMapper = objectMapper;
+    this.module = sm;
   }
 
-  public ArrayTransactionSerializer(Class<ArrayTransactionsWrapper> t) {
+  public ArrayTransactionSerializer(Class<ArrayTransactionsWrapper> t, ObjectMapper objectMapper, SimpleModule sm) {
     super(t);
+    this.objectMapper = objectMapper;
+    this.module = sm;
   }
 
   @Override
   public void serialize(ArrayTransactionsWrapper transactions, JsonGenerator gen,
       SerializerProvider provider) throws IOException {
-    final ObjectMapper objectMapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
     module.addSerializer(Transaction.class, new TransactionSerializer());
     objectMapper.registerModule(module);
 

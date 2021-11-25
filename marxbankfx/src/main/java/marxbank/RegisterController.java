@@ -35,9 +35,9 @@ public class RegisterController {
   private Button cancelBtn;
 
   public RegisterController() {
-    // DataManager.manager().setPath("../data");
+    // DataManager.setPath("../data");
     // try {
-    // DataManager.manager().parse();
+    // DataManager.parse();
     // } catch (Exception e) {
     // e.printStackTrace();
     // }
@@ -57,22 +57,22 @@ public class RegisterController {
       registerFailedMsg.setText("Passwords dont match");
       return;
     }
-    if (DataManager.manager().checkIfUsernameIsTaken(usernameText.getText())) {
+    if (DataManager.checkIfUsernameIsTaken(usernameText.getText())) {
       System.err.println("Username is already taken");
       registerFailedMsg.setVisible(true);
       registerFailedMsg.setText("Username is already taken");
       return;
     }
     try {
-      User user = DataManager.manager().createUser(usernameText.getText(), emailText.getText(),
+      User user = DataManager.createUser(usernameText.getText(), emailText.getText(),
           password1Text.getText());
       Account initialAccount =
-          DataManager.manager().createAccount("Brukskonto", user, "Min brukskonto");
+          DataManager.createAccount("Brukskonto", user, "Min brukskonto");
 
       initialAccount.deposit(200);
 
       try {
-        DataManager.manager().save();
+        DataManager.save();
       } catch (IllegalStateException e) {
         e.printStackTrace();
       }
@@ -84,7 +84,7 @@ public class RegisterController {
       return;
     }
     try {
-      DataManager.manager().save();
+      DataManager.save();
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("LogIn.fxml"));
       AnchorPane pane = loader.load();
@@ -97,7 +97,7 @@ public class RegisterController {
 
   @FXML
   private void handleCancel(ActionEvent e) throws IOException {
-    DataManager.manager().setLoggedInUser(null);
+    DataManager.setLoggedInUser(null);
 
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("LogIn.fxml"));
