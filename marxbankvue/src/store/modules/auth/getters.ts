@@ -9,16 +9,19 @@ export const getters: GetterTree<AuthState, RootState> = {
    * @returns true if token is not equal to null
    */
   isLoggedIn: (state): boolean => {
-    return !!state.token;
+    return !!state.tokenData.token;
+  },
+  expiresIn: (state): number | null => {
+    return state.tokenData.expiresIn;
   },
   getToken: (state): string | null => {
-    return state.token;
+    return state.tokenData.token;
   },
   authStatus: (state): string => {
     return state.status;
   },
   getUserId: (state): number | null => {
-    return state.userId;
+    return state.tokenData.userId;
   },
   getStatusCode: (state): number => {
     return state.statusCode;

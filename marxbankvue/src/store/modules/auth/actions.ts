@@ -9,14 +9,18 @@ const BASE_URL = "/auth";
 export const actions: ActionTree<AuthState, RootState> = {
   /**
    * creates a logout request to api, and logs the user
-   * out by setting token to null
-   * @param token before logout
+   * out by setting tokenData to null
    */
-  async logout({ commit }, token: object | null) {
-    await axios.post(BASE_URL + "/logout", token).then(() => {
+  async logout({ commit }) {
+    await axios.post(BASE_URL + "/logout").then(() => {
       commit("setStatus", { status: "" });
-      commit("setToken", null);
+      commit("setTokenData", {
+        userId: null,
+        token: null,
+        expiresIn: null,
+      });
       delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem("tokenData");
     });
   },
   /**
@@ -32,12 +36,15 @@ export const actions: ActionTree<AuthState, RootState> = {
         password: user.password,
       })
       .then((response) => {
-        const userId: Number = response.data.userResponse.id;
-        const token: string = response.data.token;
-        axios.defaults.headers.common["Authorization"] = token;
-        commit("setUserId", userId);
+        const tokenData = {
+          userId: response.data.userResponse.id,
+          token: response.data.token,
+          expiresIn: response.data.expiresIn,
+        };
+        axios.defaults.headers.common["Authorization"] = tokenData.token;
+        localStorage.setItem("tokenData", JSON.stringify(tokenData));
         commit("setStatus", { status: "success" });
-        commit("setToken", token);
+        commit("setTokenData", tokenData);
         commit("setStatusCode", response.status);
       })
       .catch((err) => {
@@ -64,12 +71,15 @@ export const actions: ActionTree<AuthState, RootState> = {
         email: user.email,
       })
       .then((response) => {
-        const userId = response.data.userResponse.id;
-        const token = response.data.token;
-        axios.defaults.headers.common["Authorization"] = token;
-        commit("setUserId", userId);
+        const tokenData = {
+          userId: response.data.userResponse.id,
+          token: response.data.token,
+          expiresIn: response.data.expiresIn,
+        };
+        axios.defaults.headers.common["Authorization"] = tokenData.token;
+        localStorage.setItem("tokenData", JSON.stringify(tokenData));
         commit("setStatus", { status: "success" });
-        commit("setToken", token);
+        commit("setTokenData", tokenData);
         commit("setStatusCode", response.status);
       })
       .catch((err) => {
@@ -79,5 +89,14 @@ export const actions: ActionTree<AuthState, RootState> = {
           errorMsg: err.response.data.message,
         });
       });
+  },
+
+  autoLogin({ commit }) {
+    const tokenData = localStorage.getItem("tokenData");
+    if (tokenData) {
+      commit("setTokenData", JSON.parse(tokenData));
+      axios.defaults.headers.common["Authorization"] =
+        JSON.parse(tokenData).token;
+    }
   },
 };

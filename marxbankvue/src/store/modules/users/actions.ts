@@ -7,14 +7,10 @@ import { EditUserRequest } from "../../../types/types";
 const BASE_URL = "/users";
 
 export const actions: ActionTree<UserState, RootState> = {
-  async fetchUserById({ commit, rootGetters }, id: number) {
+  async fetchUserById({ commit }, id: number) {
     commit("setUserStatus", { status: "loading" });
     await axios
-      .get(`${BASE_URL}/${id}`, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .get(`${BASE_URL}/${id}`)
       .then((response) => {
         const user: User = {
           id: response.data.id,
@@ -30,7 +26,7 @@ export const actions: ActionTree<UserState, RootState> = {
   },
 
   async editUser(
-    { commit, rootGetters },
+    { commit },
     body: {
       id: number;
       request: EditUserRequest;
@@ -38,11 +34,7 @@ export const actions: ActionTree<UserState, RootState> = {
   ) {
     commit("setUserStatus", { status: "loading" });
     await axios
-      .post(`${BASE_URL}/${body.id}/edit`, body.request, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .post(`${BASE_URL}/${body.id}/edit`, body.request)
       .then((response) => {
         const user: User = {
           id: response.data.id,

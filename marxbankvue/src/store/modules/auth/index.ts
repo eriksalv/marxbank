@@ -7,8 +7,11 @@ import { actions } from "./actions";
 
 const state: AuthState = {
   status: "",
-  token: null,
-  userId: null,
+  tokenData: {
+    userId: null,
+    token: null,
+    expiresIn: null,
+  },
   statusCode: 0,
 };
 

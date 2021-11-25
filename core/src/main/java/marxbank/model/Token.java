@@ -11,6 +11,9 @@ import javax.persistence.OneToOne;
 @Entity
 public class Token {
 
+  //token expiration time in milliseconds
+  public static final int EXPIRES_IN = 900000;
+
   @Id
   @GeneratedValue
   private Long id;

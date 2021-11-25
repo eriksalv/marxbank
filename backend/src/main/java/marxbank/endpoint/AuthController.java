@@ -17,6 +17,7 @@ import marxbank.API.LogInRequest;
 import marxbank.API.LogInResponse;
 import marxbank.API.SignUpRequest;
 import marxbank.API.UserResponse;
+import marxbank.model.Token;
 import marxbank.model.User;
 import marxbank.repository.TokenRepository;
 import marxbank.repository.UserRepository;
@@ -63,10 +64,10 @@ public class AuthController {
     if (!encoder.matches(request.getPassword(), user.getPassword()))
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
 
-    String token = authService.createTokenForUser(user);
+    Token token = authService.createTokenForUser(user);
 
     return ResponseEntity.status(HttpStatus.OK)
-        .body(new LogInResponse(token, new UserResponse(user)));
+        .body(new LogInResponse(token.getToken(), Token.EXPIRES_IN, new UserResponse(user)));
   }
 
   /**
@@ -94,10 +95,10 @@ public class AuthController {
 
     user.setPassword(encoder.encode(request.getPassword()));
     userRepository.save(user);
-    String token = authService.createTokenForUser(user);
+    Token token = authService.createTokenForUser(user);
 
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(new LogInResponse(token, new UserResponse(user)));
+        .body(new LogInResponse(token.getToken(), Token.EXPIRES_IN, new UserResponse(user)));
   }
 
   /**
@@ -111,11 +112,16 @@ public class AuthController {
   @PostMapping("/logout")
   public ResponseEntity<String> logout(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-    if (token == null)
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+    System.out.println(token);
+
+    if (token == null) {
+      System.out.println("WTFFFFFFFFFFFFFFFFFFF");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Fuck you");
+    }
 
     if (!tokenRepository.findByToken(token).isPresent())
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid/expired token");
+
     authService.removeToken(token);
 
     return ResponseEntity.status(HttpStatus.OK).body(null);

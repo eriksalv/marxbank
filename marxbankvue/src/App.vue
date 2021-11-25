@@ -1,6 +1,23 @@
 <template>
-  <div class="p-0 m-0 bg-gray-200 h-screen w-screen overflow-x-hidden flex flex-wrap justify-center">
-    <Loading class="mt-20" :loading="accountStatus === 'loading' || authStatus === 'loading' || transactionStatus === 'loading' || userStatus === 'loading'" />
+  <div
+    class="
+      p-0
+      m-0
+      bg-gray-200
+      h-screen
+      w-screen
+      overflow-x-hidden
+      flex flex-wrap
+      justify-center
+    ">
+    <Loading
+      class="mt-20"
+      :loading="
+        accountStatus === 'loading' ||
+        authStatus === 'loading' ||
+        transactionStatus === 'loading' ||
+        userStatus === 'loading'
+      " />
     <div v-if="isLoggedIn">
       <Header />
       <SideBar />
@@ -23,8 +40,8 @@
 <script>
 import Header from "@/components/Header.vue";
 import SideBar from "@/components/SideBar.vue";
-import Loading from './components/global/Loading.vue';
-import { mapGetters } from "vuex";
+import Loading from "./components/global/Loading.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -33,13 +50,27 @@ export default {
     Loading,
   },
   computed: {
-    ...mapGetters(["getToken", "isLoggedIn", "authStatus", "transactionStatus", "userStatus", "accountStatus"]),
+    ...mapGetters([
+      "getToken",
+      "isLoggedIn",
+      "authStatus",
+      "transactionStatus",
+      "userStatus",
+      "accountStatus",
+    ]),
+  },
+  created() {
+    //localStorage.removeItem("tokenData");
+    this.autoLogin();
   },
   mounted() {
     //if user is not logged in, send to login page
     if (!this.isLoggedIn) {
       this.$router.push({ path: "/login" });
     }
+  },
+  methods: {
+    ...mapActions(["autoLogin"]),
   },
 };
 </script>

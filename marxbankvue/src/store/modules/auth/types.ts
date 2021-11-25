@@ -2,9 +2,14 @@ import { Status } from "@/store/types";
 
 export interface AuthState {
   status: Status;
-  token: string | null;
-  userId: number | null;
+  tokenData: TokenData;
   statusCode: number;
+}
+
+export interface TokenData {
+  userId: number | null;
+  token: string | null;
+  expiresIn: number | null;
 }
 
 export interface LoginRequest {
