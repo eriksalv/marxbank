@@ -2,6 +2,10 @@ package marxbank.API;
 
 import marxbank.model.User;
 
+/**
+ * Klassen holder på informasjon en bruker må gi for å opprette en ny profil hos banken.
+ */
+
 public class SignUpRequest {
 
   private String username;

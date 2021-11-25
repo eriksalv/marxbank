@@ -8,60 +8,76 @@ import marxbank.model.SavingsAccount;
 import marxbank.util.AccountType;
 
 /**
- * 
+ * Klassen holder på informasjonen frontenden må formidle fra brukeren når de ønsker å oppprette en ny bankkonto. 
+ * Den esensielle informasjonen for dette er type konto og kontonavn.
  */
 public class AccountRequest {
   private String type;
   private String name;
 
-  protected AccountRequest() {}
+/**
+ * Tom konstruktør.
+ */
+    protected AccountRequest() {}
 
-  public AccountRequest(String type, String name) {
-    this.type = type;
-    this.name = name;
-  }
-
-  public String getType() {
-    return this.type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Account buildAccount() {
-    Account a = null;
-
-    if (AccountType.SAVING.getTypeString().equalsIgnoreCase(type)) {
-      a = new SavingsAccount();
-      a.setName(name);
-      a.setInterestRate(3.0);
-      a.setType(AccountType.SAVING);
-    } else if (AccountType.CHECKING.getTypeString().equalsIgnoreCase(type)) {
-      a = new CheckingAccount();
-      a.setName(name);
-      a.setInterestRate(0.5);
-      a.setType(AccountType.CHECKING);
-    } else if (AccountType.CREDIT.getTypeString().equalsIgnoreCase(type)) {
-      a = new CreditAccount();
-      a.setName(name);
-      a.setInterestRate(0);
-      a.setType(AccountType.CREDIT);
-    } else if (AccountType.MARX.getTypeString().equalsIgnoreCase(type)) {
-      a = new MarxAccount();
-      a.setName(name);
-      a.setInterestRate(0.01);
-      a.setType(AccountType.MARX);
+/**
+ * Konstruktør for AccountRequest.
+ * @param type - kontotype
+ * @param name - kontonavn
+ */
+    public AccountRequest(String type, String name) {
+        this.type = type;
+        this.name = name;
     }
 
-    return a;
-  }
+/**
+ * Getters og setters.
+ */
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+/**
+ * En metode for å bygge en ny konto ved å bruke input-parameterne og sette all den nødvendige kontoinformasjonen ut i fra dette.
+ * @return - en ny konto
+ */
+    public Account buildAccount() {
+        Account a = null;
+
+        if (AccountType.SAVING.getTypeString().equalsIgnoreCase(type)) {
+            a = new SavingsAccount();
+            a.setName(name);
+            a.setInterestRate(3.0);
+            a.setType(AccountType.SAVING);
+        } else if (AccountType.CHECKING.getTypeString().equalsIgnoreCase(type)) {
+            a = new CheckingAccount();
+            a.setName(name);
+            a.setInterestRate(0.5);
+            a.setType(AccountType.CHECKING);
+        } else if (AccountType.CREDIT.getTypeString().equalsIgnoreCase(type)) {
+            a = new CreditAccount();
+            a.setName(name);
+            a.setInterestRate(0);
+            a.setType(AccountType.CREDIT);
+        } else if (AccountType.MARX.getTypeString().equalsIgnoreCase(type)) {
+            a = new MarxAccount();
+            a.setName(name);
+            a.setInterestRate(0.01);
+            a.setType(AccountType.MARX);
+        }
+
+        return a;
+    }
 }

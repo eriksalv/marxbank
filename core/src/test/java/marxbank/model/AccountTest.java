@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import marxbank.util.AccountType;
+
 public class AccountTest {
 
   private User user;
@@ -66,9 +68,14 @@ public class AccountTest {
     a.deposit(5000);
     Transaction t = new Transaction((long) 1, a, a2, 500, true);
 
-    assertThrows(IllegalStateException.class, () -> {
-      a.addTransaction(t);
-    });
+    assertAll(
+      () -> assertThrows(IllegalStateException.class, () -> {
+        a.addTransaction(t);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        a.addTransaction(null);
+      })
+    );
 
     assertEquals(4500, a.getBalance());
     assertEquals(500, a2.getBalance());
@@ -79,12 +86,38 @@ public class AccountTest {
   public void testSetters() {
     Account a = new SavingsAccount((long) 1, user, 5.0);
 
-    assertThrows(IllegalArgumentException.class, () -> {
-      a.setName(null);
-    });
+    // test setName and usernameValidator
+    assertAll(
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        a.setName(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        a.setName("ye");
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        a.setName("suuuuuuuuuuuuuuuuuuuuuuuupeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerloooooooooooooooooooooooooooooongNaaaaaaaaaaaaameeeeeeeeee");
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        a.setName(" ve ry spac y n a m e");
+      })
+    );
 
     a.setName("yeet");
     assertTrue(a.getName().equals("yeet"));
+
+    // test setType and validateType
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.setType(null);
+    });
+    a.setType(AccountType.CHECKING);
+    assertEquals(AccountType.CHECKING, a.getType());
+
+    // test setAccountNumber and validateAccountNumber
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.setAccountNumber(-50);
+    });
+    a.setAccountNumber(500);
+    assertEquals(500, a.getAccountNumber());
 
     assertThrows(IllegalArgumentException.class, () -> {
       a.setId(null);
@@ -101,6 +134,9 @@ public class AccountTest {
     a.setUser(u);
     assertEquals(u, a.getUser());
 
+    assertThrows(IllegalArgumentException.class, () -> {
+      a.setTransactions(null);
+    });
     ArrayList<Transaction> t = new ArrayList<Transaction>();
     Account b = new SavingsAccount((long) 5, user);
     a.deposit(100.0);

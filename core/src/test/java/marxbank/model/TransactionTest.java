@@ -1,5 +1,6 @@
 package marxbank.model;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -7,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +56,7 @@ public class TransactionTest {
     assertThrows(IllegalArgumentException.class, () -> {
       transaction = new Transaction(a1, a2, -1);
     });
+
   }
 
   @Test
@@ -108,6 +111,57 @@ public class TransactionTest {
 
     assertTrue(transaction.equals(transaction));
     assertFalse(transaction.equals(new Transaction((long) 99, a1, a2, 5, false)));
+  }
+
+  @Test
+  @DisplayName("test different smaller functions")
+  public void testSmallerFunctions() {
+    Account a3 = new SavingsAccount(new User("username", "email@email.com", "password"), "name");
+    a3.deposit(500);
+    transaction = new Transaction((long) 1, a1, a2, 50, true);
+    assertEquals(Objects.hash((long) 1), transaction.hashCode());
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      transaction.setAmount(-500);
+    });
+
+    transaction.setAmount(10);
+    assertEquals(10, transaction.getAmount());
+
+    assertTrue(transaction.isBetweenDifferentUsers());
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      transaction.setId(null);
+    });
+
+    transaction.setId((long) 50);
+    assertEquals(50, transaction.getId());
+
+    assertAll(
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        transaction.setFrom(null);
+      }),
+      () -> assertThrows(IllegalStateException.class, () -> {
+        transaction.setFrom(a2);
+      })
+    );
+
+    transaction.setFrom(a3);
+    assertEquals(a3, transaction.getFrom());
+
+    transaction.setFrom(a1);
+    assertAll(
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        transaction.setReciever(null);
+      }),
+      () -> assertThrows(IllegalStateException.class, () -> {
+        transaction.setReciever(a1);
+      })
+    );
+
+    transaction.setReciever(a3);
+    assertEquals(a3, transaction.getReciever());
+
   }
 
   @ParameterizedTest

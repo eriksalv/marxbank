@@ -1,19 +1,33 @@
 package marxbank.API;
 
+/**
+ * Klassen tar inn den nøvendige informasjonen fra en bruker for å gjennomføre et innskudd eller uttak av penger.
+ */
 public class DepositWithdrawRequest {
   private double amount;
   private Long accountId;
 
-  protected DepositWithdrawRequest() {}
+/**
+ * Tom konstruktør.
+ */
+    protected DepositWithdrawRequest() {}
 
-  public DepositWithdrawRequest(double amount, Long accountId) {
-    this.amount = amount;
-    this.accountId = accountId;
-  }
+/**
+ * En konstruktør som tar inn beløpet og kontoen, og setter tilstanden til this lik dette.
+ * @param amount - beløpet
+ * @param accountId - kontoen brukeren ønsker å ta ut fra eller sette penger inn på
+ */
+    public DepositWithdrawRequest(double amount, Long accountId) {
+        this.amount = amount;
+        this.accountId = accountId;
+    }
 
-  public double getAmount() {
-    return this.amount;
-  }
+/**
+ * Getters og setters.
+ */
+    public double getAmount() {
+        return this.amount;
+    }
 
   public void setAmount(double amount) {
     this.amount = amount;
