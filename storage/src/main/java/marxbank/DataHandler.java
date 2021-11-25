@@ -12,7 +12,6 @@ import marxbank.deserializers.AccountDeserializer;
 import marxbank.deserializers.TransactionDeserializer;
 import marxbank.deserializers.UserDeserializer;
 import marxbank.serializers.DataManagerSerializer;
-import marxbank.wrappers.DataManagerWrapper;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
@@ -22,7 +21,6 @@ public class DataHandler {
   public static boolean save(DataManager dm, String path) {
     if (path == null || path.isEmpty() || path.isBlank())
       throw new IllegalArgumentException("Path cannot be null, empty or blank");
-    DataManagerWrapper d = new DataManagerWrapper(dm);
     File dataFile = new File(String.format("%s/data.json", path));
 
     if (!dataFile.exists()) {
@@ -38,12 +36,12 @@ public class DataHandler {
     FileWriter fw;
     ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
-    module.addSerializer(DataManagerWrapper.class, new DataManagerSerializer());
+    module.addSerializer(DataManager.class, new DataManagerSerializer(objectMapper, module));
     objectMapper.registerModule(module);
 
     try {
       fw = new FileWriter(dataFile, Charset.defaultCharset());
-      fw.write(objectMapper.writeValueAsString(d));
+      fw.write(objectMapper.writeValueAsString(dm));
       fw.close();
     } catch (IOException e1) {
       return false;

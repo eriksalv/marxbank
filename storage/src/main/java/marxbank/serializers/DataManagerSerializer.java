@@ -6,38 +6,44 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
+import marxbank.DataManager;
 import marxbank.wrappers.ArrayAccountWrapper;
 import marxbank.wrappers.ArrayUserWrapper;
-import marxbank.wrappers.DataManagerWrapper;
 import marxbank.wrappers.ArrayTransactionsWrapper;
 
-public class DataManagerSerializer extends StdSerializer<DataManagerWrapper> {
+public class DataManagerSerializer extends StdSerializer<DataManager> {
 
-  public DataManagerSerializer() {
-    this(null);
+  private ObjectMapper objectMapper;
+  private SimpleModule module;
+
+  public DataManagerSerializer(ObjectMapper objectMapper, SimpleModule sm) {
+    this(null, objectMapper, sm);
+    this.objectMapper = objectMapper;
+    this.module = sm;
   }
 
-  public DataManagerSerializer(Class<DataManagerWrapper> t) {
+  public DataManagerSerializer(Class<DataManager> t, ObjectMapper objectMapper, SimpleModule sm) {
     super(t);
+    this.objectMapper = objectMapper;
+    this.module = sm;
   }
 
   @Override
-  public void serialize(DataManagerWrapper dm, JsonGenerator gen, SerializerProvider provider)
+  public void serialize(DataManager dm, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
-    final ObjectMapper objectMapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    module.addSerializer(ArrayUserWrapper.class, new ArrayUserSerializer());
-    module.addSerializer(ArrayAccountWrapper.class, new ArrayAccountSerializer());
-    module.addSerializer(ArrayTransactionsWrapper.class, new ArrayTransactionSerializer());
+    module.addSerializer(ArrayUserWrapper.class, new ArrayUserSerializer(objectMapper, module));
+    module.addSerializer(ArrayAccountWrapper.class, new ArrayAccountSerializer(objectMapper, module));
+    module.addSerializer(ArrayTransactionsWrapper.class, new ArrayTransactionSerializer(objectMapper, module));
     objectMapper.registerModule(module);
 
     gen.writeStartObject();
     gen.writeObjectField("users",
-        objectMapper.valueToTree(new ArrayUserWrapper(dm.users)).get("users"));
+        objectMapper.valueToTree(new ArrayUserWrapper(dm.getUsers())).get("users"));
     gen.writeObjectField("accounts",
-        objectMapper.valueToTree(new ArrayAccountWrapper(dm.accounts)).get("accounts"));
+        objectMapper.valueToTree(new ArrayAccountWrapper(dm.getAccounts())).get("accounts"));
     gen.writeObjectField("transactions", objectMapper
-        .valueToTree(new ArrayTransactionsWrapper(dm.transactions)).get("transactions"));
+        .valueToTree(new ArrayTransactionsWrapper(dm.getTransactions())).get("transactions"));
     gen.writeEndObject();
   }
 
