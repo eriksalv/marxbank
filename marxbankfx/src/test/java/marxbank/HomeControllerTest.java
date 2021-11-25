@@ -104,7 +104,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#AccountLabel").query();
+        Label label = lookup("#accountLabel").query();
         assertNotNull(label);
         assertTrue(label.getText().equals("Annas brukskonto"));
       }
@@ -122,7 +122,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#AmountLabel").query();
+        Label label = lookup("#amountLabel").query();
         assertTrue(label.getText().equals("kr " + account1.getBalance()));
       }
     });
@@ -139,7 +139,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#AccountNumberLabel").query();
+        Label label = lookup("#accountNumberLabel").query();
         assertTrue(label.getText().equals(Long.toString(account1.getId())));
       }
     });
@@ -156,7 +156,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#DateLabel").query();
+        Label label = lookup("#dateLabel").query();
         assertTrue(label.getText().equals(transaction.getDateString()));
       }
     });
@@ -174,7 +174,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#LAaccountLabel").query();
+        Label label = lookup("#secondAccountLabel").query();
         assertTrue(label.getText().equals("Fra: " + transaction.getFrom().getName()));
       }
     });
@@ -192,7 +192,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#OtherAccountLabel").query();
+        Label label = lookup("#otherAccountLabel").query();
         assertTrue(label.getText().equals("Til: " + transaction.getReciever().getName()));
       }
     });
@@ -210,7 +210,7 @@ public class HomeControllerTest extends ApplicationTest {
       @Override
       public void run() {
         controller.initData(user);
-        Label label = lookup("#LAamountLabel").query();
+        Label label = lookup("#secondAmountLabel").query();
         assertTrue(label.getText().equals("kr " + Double.toString(transaction.getAmount())));
       }
     });
