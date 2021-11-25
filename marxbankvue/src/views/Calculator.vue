@@ -1,7 +1,7 @@
 <template>
   <div class="calculator">
     <main class="text-on-same-line">
-      <TextInput type="amount" text="Fast månedlig beløp" @termChanged="onInputChanged1"/>
+      <TextInput id="i1" type="amount" text="Fast månedlig beløp" @termChanged="onInputChanged1"/>
       <TextInput id="i3" type="year" text="Periode" @termChanged="onInputChanged3"/>
     </main>
     <br>
@@ -9,8 +9,7 @@
       <TextInput id="i2" type="amount" text="Engangsbeløp" @termChanged="onInputChanged2"/>
       <TextInput id="i4" type="interest" text="Årlig rente" @termChanged="onInputChanged4"/>
     </main>
-    <button id="yeetyeet" 
-      class="
+    <button class="
         bg-green-500
         hover:bg-green-400
         text-white
@@ -23,8 +22,7 @@
         w-80
         mt-6
       "
-      @click="calc"
-      >
+      @click="calc">
       Beregn beløp
     </button>
     <div v-if="showTotalAmount">
@@ -47,13 +45,10 @@
 </template>
 
 <script>
-import TextInput from "@/components/TextInput.vue";
-import { defineComponent } from "@vue/runtime-core";
+import TextInput from "../components/TextInput.vue";
 
-export default defineComponent({
+export default({
   name: "Calculator",
-
-  
 
   components: {
     TextInput,
@@ -82,9 +77,6 @@ export default defineComponent({
     onInputChanged4(input) {
       this.input4 = input;
     },
-    isDisable() {
-      return this.input1.length > 3 
-    },
     calc() { 
       this.showTotalAmount = true
 
@@ -97,7 +89,8 @@ export default defineComponent({
 
       if (period == 0) {
         let textString = "  (engangsbeløp)"
-        this.amount = unit + Math.round(lumpAmount) + textString  
+        let sum = Math.round(lumpAmount)
+        this.amount = unit + sum.toLocaleString() + textString 
       }
       else {
         let lumpAmountSum = lumpAmount
