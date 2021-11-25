@@ -2,6 +2,10 @@ package marxbank.API;
 
 import marxbank.model.User;
 
+
+/**
+ * Klassen inneholder det brukeren trenger å vite om sin egen profil.
+ */
 public class UserResponse {
 
   private long id;
