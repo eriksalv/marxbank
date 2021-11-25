@@ -36,7 +36,7 @@ public abstract class Account {
   @Column
   private double interestRate; // In percent
 
-  public Account() {}
+  protected Account() {}
 
   /**
    * Constructur for class Account with existing account number, instead of generating new.

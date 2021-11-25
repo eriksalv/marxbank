@@ -22,14 +22,16 @@ public class Token {
   @Column(nullable = false)
   private String token;
 
-  public Token() {}
+  protected Token() {}
 
   public Token(User user, String token) {
+    if (user == null || token == null) throw new IllegalArgumentException();
     this.user = user;
     this.token = token;
   }
 
   public void setId(Long id) {
+    if (id == null) throw new IllegalArgumentException();
     this.id = id;
   }
 
@@ -38,6 +40,7 @@ public class Token {
   }
 
   public void setToken(String token) {
+    if (token == null || token.isEmpty() || token.isBlank()) throw new IllegalArgumentException();
     this.token = token;
   }
 
@@ -46,6 +49,7 @@ public class Token {
   }
 
   public void setUser(User user) {
+    if (user == null) throw new IllegalArgumentException();
     this.user = user;
   }
 
@@ -65,7 +69,7 @@ public class Token {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id);
+    return Objects.hash(id);
   }
 
 }

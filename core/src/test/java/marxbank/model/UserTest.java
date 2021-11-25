@@ -73,6 +73,28 @@ public class UserTest {
     user.setPassword("newPassword");
     assertTrue(user.getPassword().equals("newPassword"));
 
+    assertAll(
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setAccounts(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.addAccount(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setEmail(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setUsername(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setPassword(null);
+      }),
+      () -> assertThrows(IllegalArgumentException.class, () -> {
+        user.setPassword("ye");
+      })
+    );
+
+
     ArrayList<Account> a = new ArrayList<Account>();
 
     a.add(new SavingsAccount((long) 1, user));
@@ -88,5 +110,12 @@ public class UserTest {
     assertTrue(user.getId().equals((long) 1));
 
     assertFalse(user.equals(new User((long) 69, "username", "email@email.com", "password")));
+  }
+
+  @Test
+  @DisplayName("test equals")
+  public void testEquals() {
+    user = new User((long) 1, "username", "email@email.com", "password");
+    assertFalse(user.equals("ikkeUser"));
   }
 }
