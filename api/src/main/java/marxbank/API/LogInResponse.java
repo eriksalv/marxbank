@@ -6,6 +6,9 @@ package marxbank.API;
 
 public class LogInResponse {
 
+  private String token;
+  private UserResponse userResponse;
+
 /**
  * Tom konstruktør.
  */
@@ -24,14 +27,6 @@ public class LogInResponse {
 /**
  * Setters og getters.
  */
-    public void setToken(String token) {
-        this.token = token;
-    }
-    
-    public String getToken() {
-        return this.token;
-    }
-
   public void setToken(String token) {
     this.token = token;
   }

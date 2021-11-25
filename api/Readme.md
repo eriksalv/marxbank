@@ -22,13 +22,10 @@ Det er også 3 requestklasser, som holder informasjonen som må fomidles fra bru
 
 * AccountRequest: En klasse som holder på informasjonen som kreves av brukeren for å opprette en ny konto, nemlig type konto og kontonavn. 
 
-<<<<<<< HEAD
 * DepositWithdrawRequest: En klasse som holder på informasjonen fra brukeren om de ønsker å ta ut eller sette inn penger på en konto, og dermed har felter som omhandler beløp og id-en til kontoen.
 
 * EditUserRequest: En klasse som holder på informasjon fra brukeren om de ønsker å redigere profilen sin i banken. Feltene er brukernavn, passord, gammelt passord og email. 
 
-=======
->>>>>>> master
 * LogInRequest: En klasse som holder på den nødvendige informasjonen fra brukeren i en forespørsel om å logge inn i banken og få tilgang til en brukers informasjon. Feltene er brukernavn og passord.
 
 * SignUpRequest: En klasse som inneholder den viktigste informasjonen en bruker må oppgi om en bruker ønsker å opprette en bruker i banken. Disse er brukernavn, passord og email.

@@ -6,6 +6,9 @@ package marxbank.API;
 
 public class LogInRequest {
 
+    private String username;
+    private String password;
+
 /**
  * Tom konstruktør.
  */
@@ -25,10 +28,6 @@ public class LogInRequest {
 /**
  * Setters og getters.
  */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
   public void setUsername(String username) {
     this.username = username;
   }
