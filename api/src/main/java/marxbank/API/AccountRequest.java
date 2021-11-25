@@ -16,7 +16,7 @@ public class AccountRequest {
     private String name;
 
 /**
- * Det er ndøvendig for at SpringBoot skal kjøre rett med en tom konstruktør.
+ * Tom konstruktør.
  */
     protected AccountRequest() {}
 
@@ -31,7 +31,7 @@ public class AccountRequest {
     }
 
 /**
- * Getters og setters for parameterne.
+ * Getters og setters.
  */
     public String getType() {
         return this.type;

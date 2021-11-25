@@ -4,8 +4,7 @@ import marxbank.model.Account;
 import marxbank.util.AccountType;
 
 /**
- * Alternative account-response that hides sensitive
- * information, i.e. balance and interestRate. 
+ * Klassen fungerer som en alternativ account-response som gjemmer sensitiv informasjon, f.eks. saldo and interestRate. 
  */
 public class PublicAccountResponse {
     private Long id;

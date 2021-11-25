@@ -17,7 +17,7 @@ public class AccountResponse {
     private double balance;
     private double interestRate;
 /**
- * Tom konstruktør nødvendig for at SpringBoot skal fungere ordentlig.
+ * Tom konstruktør.
  */
     public AccountResponse() {
     

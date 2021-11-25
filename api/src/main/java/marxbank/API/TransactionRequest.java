@@ -1,5 +1,9 @@
 package marxbank.API;
 
+/**
+ * Klassen inneholder nødvendig informasjon backenden trenger å vite for å gjennomføre en transaksjon.
+ */
+
 public class TransactionRequest {
     private Long from;
     private Long to;

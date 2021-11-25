@@ -8,7 +8,7 @@ public class DepositWithdrawRequest {
     private Long accountId;
 
 /**
- * En tom konstruktør nøvdendig for at SpringBoot skal fungere på rett måte.
+ * Tom konstruktør.
  */
     protected DepositWithdrawRequest() {}
 
