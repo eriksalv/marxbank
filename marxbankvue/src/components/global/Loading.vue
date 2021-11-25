@@ -1,25 +1,40 @@
 <template>
-  <img
-    src="/Sickle.svg"
-    alt=""
-    :class="
-    status === 'loading'
-        ? 'communismIcon left-1 loading'
-        : 'communismIcon left-1'
-    " />
+  <div
+    v-if="loading"
+    class="
+      ease-linear
+      transition-colors
+      rounded-full
+      border-8 border-t-8 border-red-600
+      h-20
+      w-20
+      p-1
+      fixed
+      flex
+      justify-center
+      items-center
+      z-50
+      shadow-lg
+      bg-gray-200
+    ">
+    <img
+      src="/Sickle.svg"
+      alt=""
+      :class="
+        loading
+          ? 'communismIcon left-1 loading'
+          : 'communismIcon left-1'
+      " />
+  </div>
 </template>
 
 <script>
 export default {
-    props: ["status"],
-}
+  props: ["loading"],
+};
 </script>
 
 <style>
-.communismIcon {
-  @apply w-12 absolute top-3 z-0 origin-center;
-}
-
 @keyframes newCommunsim {
   from {
     transform: rotate(0deg);

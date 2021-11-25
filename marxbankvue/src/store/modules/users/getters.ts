@@ -4,5 +4,5 @@ import { User, UserState } from "./types";
 
 export const getters: GetterTree<UserState, RootState> = {
   getLoggedInUser: (state) => state.loggedInUser,
-  getUserStatus: (state) => state.userStatus,
+  userStatus: (state) => state.userStatus,
 };

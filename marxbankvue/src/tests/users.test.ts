@@ -27,7 +27,7 @@ describe("getters", () => {
     expect(actual).toEqual(testState.loggedInUser);
   });
   it("test get user status", () => {
-    const actual = getters.getUserStatus(testState, null, rootState, null);
+    const actual = getters.userStatus(testState, null, rootState, null);
 
     expect(actual).toEqual(testState.userStatus);
   });

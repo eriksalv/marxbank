@@ -9,13 +9,16 @@
 // @ is an alias to /src
 import AccountList from "../components/AccountList.vue";
 import AccountForm from "../components/AccountForm.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "MyAccounts",
   components: {
     AccountList,
     AccountForm,
+  },
+  computed: {
+    ...mapGetters(["accountStatus"]),
   },
   methods: {
     ...mapActions(["fetchAccounts"]),

@@ -4,9 +4,9 @@
       <div class="input-style">
         <label for="username">Username</label>
         <input
-          class="input"
           id="username"
           v-model="username"
+          class="input"
           type="text"
           name="username"
           :disabled="authStatus === 'loading'" />
@@ -14,9 +14,9 @@
       <div class="input-style">
         <label for="email">Email</label>
         <input
-        class="input"
           id="email"
           v-model="email"
+          class="input"
           type="email"
           name="email"
           :disabled="authStatus === 'loading'" />
@@ -24,9 +24,9 @@
       <div class="input-style">
         <label for="password">Password</label>
         <input
-          class="input"
           id="password"
           v-model="password"
+          class="input"
           type="password"
           name="password"
           :disabled="authStatus === 'loading'" />
@@ -34,9 +34,9 @@
       <div class="input-style">
         <label for="repeatPassword">Repeat password</label>
         <input
-          class="input"
           id="repeatPassword"
           v-model="repeatPassword"
+          class="input"
           type="password"
           name="repeatPassword"
           :disabled="authStatus === 'loading'" />
@@ -132,8 +132,8 @@ export default defineComponent({
           return;
         })
         .catch((err: Error) => {
-            this.errorMessage = err.message;
-            this.error = true;
+          this.errorMessage = err.message;
+          this.error = true;
         });
     },
   },

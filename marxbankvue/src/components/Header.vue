@@ -1,6 +1,6 @@
 <template>
-  <header class="w-full text-left bg-gray-600 text-white p-4 mb-10 shadow-lg">
-    <div class="w-full flex flex-row flex-wrap justify-center">
+  <header class="w-screen text-left bg-gray-600 text-white p-4 mb-10 shadow-lg">
+    <div class="w-screen flex flex-row flex-wrap justify-center">
       <img
         class="mr-6 float-left w-12 h-12 md:w-24 md:h-24"
         src="../assets/logo.png"

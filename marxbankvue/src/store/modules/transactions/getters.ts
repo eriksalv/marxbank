@@ -3,7 +3,7 @@ import { GetterTree } from "vuex";
 import { Transaction, TransactionState } from "./types";
 
 export const getters: GetterTree<TransactionState, RootState> = {
-  getTransactionStatus: (state): string => state.transactionStatus,
+  transactionStatus: (state): string => state.transactionStatus,
   allTransactions: (state): Array<Transaction> => state.transactions,
   /**
    * Filters transactions in state by a specific account

@@ -19,9 +19,9 @@
           <div class="input-style">
             <label for="username">Username</label>
             <input
-              class="input"
               id="username"
               v-model="username"
+              class="input"
               type="text"
               name="username"
               :disabled="authStatus === 'loading'" />
@@ -29,9 +29,9 @@
           <div class="input-style">
             <label for="password">Password</label>
             <input
-              class="input"
               id="password"
               v-model="password"
+              class="input"
               type="password"
               name="password"
               :disabled="authStatus === 'loading'" />
@@ -54,7 +54,14 @@
               duration-300
             "
             @click.prevent="requestLogin">
-            <Loading :status="authStatus" />
+            <img
+              src="/Sickle.svg"
+              alt=""
+              :class="
+                authStatus === 'loading'
+                  ? 'communismIcon left-1 loading'
+                  : 'communismIcon left-1'
+              " />
             <p class="inline-block font-bold text-2xl z-10 relative">Login</p>
           </button>
         </form>
@@ -112,13 +119,11 @@ import { defineComponent } from "vue";
 import RegisterComponent from "./RegisterComponent.vue";
 import { mapGetters, mapActions } from "vuex";
 import { LoginRequest } from "../types/types";
-import Loading from './global/Loading.vue';
 
 export default defineComponent({
   name: "LoginComponent",
   components: {
     RegisterComponent,
-    Loading,
   },
   computed: {
     ...mapGetters(["authStatus", "getStatusCode"]),

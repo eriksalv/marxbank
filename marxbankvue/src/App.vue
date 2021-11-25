@@ -1,6 +1,7 @@
 <template>
-  <div class="p-0 m-0 bg-gray-200 h-screen w-screen overflow-x-hidden">
-    <div v-if="loggedIn">
+  <div class="p-0 m-0 bg-gray-200 h-screen w-screen overflow-x-hidden flex flex-wrap justify-center">
+    <Loading class="mt-20" :loading="accountStatus === 'loading' || authStatus === 'loading' || transactionStatus === 'loading' || userStatus === 'loading'" />
+    <div v-if="isLoggedIn">
       <Header />
       <SideBar />
     </div>
@@ -22,25 +23,21 @@
 <script>
 import Header from "@/components/Header.vue";
 import SideBar from "@/components/SideBar.vue";
+import Loading from './components/global/Loading.vue';
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Header,
     SideBar,
-  },
-  data() {
-    return {
-      loggedIn: true,
-    };
+    Loading,
   },
   computed: {
-    ...mapGetters(["getToken"]),
+    ...mapGetters(["getToken", "isLoggedIn", "authStatus", "transactionStatus", "userStatus", "accountStatus"]),
   },
   mounted() {
     //if user is not logged in, send to login page
-    if (this.getToken === null) {
-      //this.loggedIn = false
+    if (!this.isLoggedIn) {
       this.$router.push({ path: "/login" });
     }
   },
