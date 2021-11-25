@@ -4,7 +4,6 @@
     <div v-if="type == 'amount'" class="amount-input-wrapper" >
       <input
         @input="onInput"
-        v-model="input"
         type="number"
         min="0"
         class="my-input"
@@ -14,7 +13,6 @@
     <div v-else-if="type == 'year'" class="year-interest-input-wrapper">
       <input
         @input="onInput"
-        v-model="input"
         type="number"
         min="0"
         class="my-input"
@@ -24,7 +22,6 @@
     <div v-else-if="type == 'interest'" class="year-interest-input-wrapper">
       <input
         @input="onInput"
-        v-model="input"
         type="number"
         min="0"
         class="my-input"
@@ -39,11 +36,6 @@ export default {
   props: {
     type: String,
     text: String,
-  },
-  data() {
-    return {
-      input: null
-    };
   },
   methods: {
     isFloat: function (evt) {
