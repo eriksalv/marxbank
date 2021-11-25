@@ -57,8 +57,6 @@ public class TransactionTest {
       transaction = new Transaction(a1, a2, -1);
     });
 
-    Transaction t50 = new Transaction();
-    assertEquals(LocalDateTime.now(), t50.getTransactionDate());
   }
 
   @Test
