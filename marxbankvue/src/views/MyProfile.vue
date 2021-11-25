@@ -43,15 +43,19 @@
       type="password"
       placeholder="Nåværende passord"
       class="input" />
-    <button class="button" @click="editProfile">Lagre endringer</button>
-    <button class="button bg-red-600" @click="requestLogout">Logg ut</button>
+    <button id="edit" class="button" @click="editProfile">
+      Lagre endringer
+    </button>
+    <button id="logout" class="button bg-red-600" @click="requestLogout">
+      Logg ut
+    </button>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Alert from "@/components/global/Alert.vue";
-import ErrorAlert from "@/components/global/ErrorAlert.vue";
+import Alert from "../components/global/Alert.vue";
+import ErrorAlert from "../components/global/ErrorAlert.vue";
 
 export default {
   name: "MyProfile",
