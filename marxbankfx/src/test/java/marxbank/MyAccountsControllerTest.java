@@ -92,7 +92,6 @@ public class MyAccountsControllerTest extends ApplicationTest {
   @Test
   @DisplayName("Test handle create new account")
   public void testHandleCreateNewAccount() {
-    // clickOn("#menuBtn2");
     VBox content = lookup("#myAccounts").queryAs(VBox.class);
     clickOn("#createNewAccountButton");
     assertEquals("createNewAccount", (((AnchorPane) content.getChildren().get(0)).getId()));
