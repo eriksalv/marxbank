@@ -9,7 +9,7 @@
     <modules>
         <module>core</module>
         <module>marxbankfx</module>
-        <module>stalin</module>
+        <module>storage</module>
         <module>backend</module>
         <module>marxbankvue</module>
         <module>api</module>
