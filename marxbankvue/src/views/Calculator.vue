@@ -1,15 +1,8 @@
 <template>
   <div class="calculator">
     <main class="text-on-same-line">
-      <TextInput
-        type="amount"
-        text="Fast månedlig beløp"
-        @termChanged="onInputChanged1" />
-      <TextInput
-        id="i3"
-        type="year"
-        text="Periode"
-        @termChanged="onInputChanged3" />
+      <TextInput id="i1" type="amount" text="Fast månedlig beløp" @termChanged="onInputChanged1"/>
+      <TextInput id="i3" type="year" text="Periode" @termChanged="onInputChanged3"/>
     </main>
     <br />
     <main class="text-on-same-line">
@@ -24,9 +17,7 @@
         text="Årlig rente"
         @termChanged="onInputChanged4" />
     </main>
-    <button
-      id="yeetyeet"
-      class="
+    <button class="
         bg-green-500
         hover:bg-green-400
         text-white
@@ -62,10 +53,9 @@
 </template>
 
 <script>
-import TextInput from "@/components/TextInput.vue";
-import { defineComponent } from "@vue/runtime-core";
+import TextInput from "../components/TextInput.vue";
 
-export default defineComponent({
+export default({
   name: "Calculator",
 
   components: {
@@ -94,11 +84,8 @@ export default defineComponent({
     onInputChanged4(input) {
       this.input4 = input;
     },
-    isDisable() {
-      return this.input1.length > 3;
-    },
-    calc() {
-      this.showTotalAmount = true;
+    calc() { 
+      this.showTotalAmount = true
 
       const monthlyAmount = this.input1;
       const lumpAmount = this.input2;
@@ -108,11 +95,13 @@ export default defineComponent({
       let unit = "kr  ";
 
       if (period == 0) {
-        let textString = "  (engangsbeløp)";
-        this.amount = unit + Math.round(lumpAmount) + textString;
-      } else {
-        let lumpAmountSum = lumpAmount;
-        let monthlyAmountSum = 0;
+        let textString = "  (engangsbeløp)"
+        let sum = Math.round(lumpAmount)
+        this.amount = unit + sum.toLocaleString() + textString 
+      }
+      else {
+        let lumpAmountSum = lumpAmount
+        let monthlyAmountSum = 0
 
         let interestRateFactor = interestRate / 100;
 

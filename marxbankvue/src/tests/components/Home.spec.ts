@@ -2,15 +2,9 @@ import { AccountState } from "../../store/modules/accounts/types";
 import { TransactionState } from "../../store/modules/transactions/types";
 import { mount } from "@vue/test-utils";
 import { createStore, Store } from "vuex";
-import AccountList from "../../components/AccountList.vue";
-import Account from "../../components/Account.vue";
-import AccountInfo from "../../views/AccountInfo.vue";
 import { Plugin } from "@vue/runtime-core";
-import flushPromises from "flush-promises";
 
 import Home from "../../views/Home.vue";
-import MyFavorite from "../../components/MyFavorite.vue";
-import MyFavorites from "../../components/MyFavorites.vue";
 
 describe("Home", () => {
   const initAccountState: AccountState = {

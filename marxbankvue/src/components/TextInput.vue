@@ -3,31 +3,28 @@
     <p class="w-2/3 text-left">{{ text }}:</p>
     <div v-if="type == 'amount'" class="amount-input-wrapper">
       <input
-        v-model="input"
+        @input="onInput"
         type="number"
         min="0"
         class="my-input"
-        @input="onInput"
         @keypress="isInteger($event)" />
       <p class="text-ending">kr</p>
     </div>
     <div v-else-if="type == 'year'" class="year-interest-input-wrapper">
       <input
-        v-model="input"
+        @input="onInput"
         type="number"
         min="0"
         class="my-input"
-        @input="onInput"
         @keypress="isInteger($event)" />
       <p class="text-ending">år</p>
     </div>
     <div v-else-if="type == 'interest'" class="year-interest-input-wrapper">
       <input
-        v-model="input"
+        @input="onInput"
         type="number"
         min="0"
         class="my-input"
-        @input="onInput"
         @keypress="isFloat($event)" />
       <p class="text-ending">%</p>
     </div>
@@ -39,11 +36,6 @@ export default {
   props: {
     type: String,
     text: String,
-  },
-  data() {
-    return {
-      input: null,
-    };
   },
   methods: {
     isFloat: function (evt) {
