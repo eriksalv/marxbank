@@ -26,66 +26,58 @@ export const actions: ActionTree<AuthState, RootState> = {
    */
   async login({ commit }, user: LoginRequest): Promise<void> {
     commit("setStatus", { status: "loading" });
-    return new Promise<void>((resolve, reject) => {
-      axios
-        .post(BASE_URL + "/login", {
-          username: user.username,
-          password: user.password,
-        })
-        .then((response) => {
-          const userId: Number = response.data.userResponse.id;
-          const token: string = response.data.token;
-          axios.defaults.headers.common["Authorization"] = token;
-          commit("setUserId", userId);
-          commit("setStatus", { status: "success" });
-          commit("setToken", token);
-          commit("setStatusCode", response.status);
-          resolve();
-        })
-        .catch((err) => {
-          if (err.response.status !== undefined) {
-            commit("setStatus", {
-              status: "error",
-              errorMsg: err.response.data.message,
-            });
-            commit("setStatusCode", err.response.status);
-          }
-          reject();
-        });
-    });
+    await axios
+      .post(BASE_URL + "/login", {
+        username: user.username,
+        password: user.password,
+      })
+      .then((response) => {
+        const userId: Number = response.data.userResponse.id;
+        const token: string = response.data.token;
+        axios.defaults.headers.common["Authorization"] = token;
+        commit("setUserId", userId);
+        commit("setStatus", { status: "success" });
+        commit("setToken", token);
+        commit("setStatusCode", response.status);
+      })
+      .catch((err) => {
+        if (err.response.status !== undefined) {
+          commit("setStatus", {
+            status: "error",
+            errorMsg: err.response.data.message,
+          });
+          commit("setStatusCode", err.response.status);
+        }
+      });
   },
   /**
    * creates a signup request to api and stores the returned
    * user
    * @param user signup request
    */
-  async signup({ commit }, user: SignUpRequest): Promise<void> {
+  async signup({ commit }, user: SignUpRequest) {
     commit("setStatus", { status: "loading" });
-    return new Promise<void>((resolve, reject) => {
-      axios
-        .post(BASE_URL + "/signup", {
-          username: user.username,
-          password: user.password,
-          email: user.email,
-        })
-        .then((response) => {
-          const userId = response.data.userResponse.id;
-          const token = response.data.token;
-          axios.defaults.headers.common["Authorization"] = token;
-          commit("setUserId", userId);
-          commit("setStatus", { status: "success" });
-          commit("setToken", token);
-          commit("setStatusCode", response.status);
-          resolve();
-        })
-        .catch((err) => {
-          commit("setStatusCode", err.response.status);
-          commit("setStatus", {
-            status: "error",
-            errorMsg: err.response.data.message,
-          });
-          reject();
+    await axios
+      .post(BASE_URL + "/signup", {
+        username: user.username,
+        password: user.password,
+        email: user.email,
+      })
+      .then((response) => {
+        const userId = response.data.userResponse.id;
+        const token = response.data.token;
+        axios.defaults.headers.common["Authorization"] = token;
+        commit("setUserId", userId);
+        commit("setStatus", { status: "success" });
+        commit("setToken", token);
+        commit("setStatusCode", response.status);
+      })
+      .catch((err) => {
+        commit("setStatusCode", err.response.status);
+        commit("setStatus", {
+          status: "error",
+          errorMsg: err.response.data.message,
         });
-    });
+      });
   },
 };

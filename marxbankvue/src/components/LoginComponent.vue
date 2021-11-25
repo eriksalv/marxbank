@@ -8,7 +8,7 @@
         w-1/4
         h-auto
         mx-auto
-        mt-40
+        mt-20
         mb-auto
         drop-shadow-lg
         rounded-md
@@ -19,6 +19,7 @@
           <div class="input-style">
             <label for="username">Username</label>
             <input
+              class="input"
               id="username"
               v-model="username"
               type="text"
@@ -28,11 +29,15 @@
           <div class="input-style">
             <label for="password">Password</label>
             <input
+              class="input"
               id="password"
               v-model="password"
               type="password"
               name="password"
               :disabled="authStatus === 'loading'" />
+          </div>
+          <div v-if="error" class="errorText">
+            {{ errorMessage }}
           </div>
           <button
             class="
@@ -49,14 +54,7 @@
               duration-300
             "
             @click.prevent="requestLogin">
-            <img
-              src="/Sickle.svg"
-              alt=""
-              :class="
-                authStatus === 'loading'
-                  ? 'communismIcon left-1 loading'
-                  : 'communismIcon left-1'
-              " />
+            <Loading :status="authStatus" />
             <p class="inline-block font-bold text-2xl z-10 relative">Login</p>
           </button>
         </form>
@@ -114,11 +112,13 @@ import { defineComponent } from "vue";
 import RegisterComponent from "./RegisterComponent.vue";
 import { mapGetters, mapActions } from "vuex";
 import { LoginRequest } from "../types/types";
+import Loading from './global/Loading.vue';
 
 export default defineComponent({
   name: "LoginComponent",
   components: {
     RegisterComponent,
+    Loading,
   },
   computed: {
     ...mapGetters(["authStatus", "getStatusCode"]),
@@ -128,20 +128,45 @@ export default defineComponent({
       username: "",
       password: "",
       register: false,
+      error: false,
+      errorMessage: "",
     };
   },
   methods: {
     ...mapActions(["login"]),
     requestLogin(): void {
+      this.error = false;
+      this.errorMessage = "";
+
+      /**
+       * Some basic client side validation to prevent unnecessary
+       * requests to backend
+       */
+      if (this.username.length < 4) {
+        this.errorMessage = "Invalid username";
+        this.error = true;
+        return;
+      } else if (this.username.match(/[^a-zA-Z ]/g)) {
+        this.errorMessage = "Username contains illegal characters";
+        this.error = true;
+        return;
+      } else if (this.password.length < 4) {
+        this.errorMessage = "Invalid password";
+        this.error = true;
+        return;
+      }
+
       const request: LoginRequest = {
         username: this.username,
         password: this.password,
       };
-      console.log(request);
 
       this.login(request)
         .then(() => this.$router.push("/"))
-        .catch(() => console.log(this.getStatusCode));
+        .catch((err: Error) => {
+          this.errorMessage = err.message;
+          this.error = true;
+        });
     },
 
     createNewUser(): void {
@@ -162,10 +187,6 @@ export default defineComponent({
 
 .input-style label {
   @apply text-red-500 text-xl font-bold;
-}
-
-.input-style input {
-  @apply w-full h-8 p-1 rounded-sm drop-shadow-sm;
 }
 
 .communismIcon {

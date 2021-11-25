@@ -4,6 +4,7 @@
       <div class="input-style">
         <label for="username">Username</label>
         <input
+          class="input"
           id="username"
           v-model="username"
           type="text"
@@ -13,6 +14,7 @@
       <div class="input-style">
         <label for="email">Email</label>
         <input
+        class="input"
           id="email"
           v-model="email"
           type="email"
@@ -22,6 +24,7 @@
       <div class="input-style">
         <label for="password">Password</label>
         <input
+          class="input"
           id="password"
           v-model="password"
           type="password"
@@ -31,6 +34,7 @@
       <div class="input-style">
         <label for="repeatPassword">Repeat password</label>
         <input
+          class="input"
           id="repeatPassword"
           v-model="repeatPassword"
           type="password"
@@ -94,36 +98,20 @@ export default defineComponent({
       this.error = false;
       this.errorMessage = "";
 
+      /**
+       * Some basic client side validation to prevent unnecessary
+       * requests to backend
+       */
       if (this.username.length < 4) {
         this.errorMessage = "Username is too short";
-        this.error = true;
-        return;
-      } else if (this.username.length > 30) {
-        this.errorMessage = "Username is too long";
         this.error = true;
         return;
       } else if (this.username.match(/[^a-zA-Z ]/g)) {
         this.errorMessage = "Username contains illegal characters";
         this.error = true;
         return;
-      } else if (this.username.trim() !== this.username) {
-        this.errorMessage = "Username cannot contain spaces";
-        this.error = true;
-        return;
-      } else if (
-        !this.email.match(
-          "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}"
-        )
-      ) {
-        this.errorMessage = "Email is not valid";
-        this.error = true;
-        return;
-      } else if (this.password.length < 6) {
+      } else if (this.password.length < 4) {
         this.errorMessage = "Password is too short";
-        this.error = true;
-        return;
-      } else if (this.password.trim() !== this.password) {
-        this.errorMessage = "Password canno't contain spaces";
         this.error = true;
         return;
       } else if (this.password !== this.repeatPassword) {
@@ -143,16 +131,9 @@ export default defineComponent({
           this.$router.push("/");
           return;
         })
-        .catch(() => {
-          if (this.getStatusCode === 400) {
-            this.errorMessage = "Bad request";
+        .catch((err: Error) => {
+            this.errorMessage = err.message;
             this.error = true;
-            return;
-          } else if (this.getStatusCode === 409) {
-            this.errorMessage = "Username already taken";
-            this.error = true;
-            return;
-          }
         });
     },
   },
@@ -165,10 +146,6 @@ export default defineComponent({
 
 .input-style label {
   @apply text-red-500 text-xl font-bold;
-}
-
-.input-style input {
-  @apply w-full h-8 p-1 rounded-sm drop-shadow-sm;
 }
 
 .communismIcon {

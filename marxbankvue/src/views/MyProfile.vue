@@ -86,6 +86,7 @@ export default {
       if (!this.currentPassword) {
         this.successMsg = false;
         this.errorMsg = "Must enter current password to edit profile";
+        return;
       }
       const username = this.newUsername
         ? this.newUsername
