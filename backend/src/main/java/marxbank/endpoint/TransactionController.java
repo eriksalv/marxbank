@@ -197,6 +197,10 @@ public class TransactionController {
       @RequestHeader(name = "Authorization", required = false) @Nullable String token,
       @RequestBody TransactionRequest request) {
 
+    if (request.getFrom() == null || request.getTo() == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error: Must fill out sender and reciever accounts");
+    }
+
     if (token == null || authService.getUserFromToken(token) == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
     }

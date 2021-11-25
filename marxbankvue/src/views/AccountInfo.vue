@@ -8,6 +8,7 @@
         <h1 class="title">Sett inn eller ta ut penger</h1>
         <h1>Kroner</h1>
         <input v-model="amount" type="number" placeholder="0" class="input" />
+        <p v-if="error" class="text-red-600">{{ errorMsg }}</p>
         <button id="deposit" class="button" @click="handleDeposit">
           Sett inn
         </button>
@@ -85,6 +86,8 @@ export default defineComponent({
       selectedAccount: Object,
       showModal: false,
       amount: Number,
+      error: false,
+      errorMsg: "",
     };
   },
   computed: {
@@ -115,26 +118,36 @@ export default defineComponent({
      * page by setting the selectedAccount again, and hides the modal.
      */
     async handleDeposit() {
+      this.error = false;
       const request = {
         amount: this.amount,
         accountId: this.selectedAccount.id,
       };
-      await this.deposit(request).catch((err) => console.log(err));
-      this.setSelectedAccount(this.id);
-      this.showModal = false;
+      await this.deposit(request).then(() => {
+        this.setSelectedAccount(this.id);
+        this.showModal = false;
+      }).catch((err) => {
+        this.error = true;
+        this.errorMsg = err.message;
+      });
     },
     /**
      * creates a withdraw request and uses the withdraw-action. Then updates
      * page by setting the selectedAccount again, and hides the modal.
      */
     async handleWithdraw() {
+      this.error = false;
       const request = {
         amount: this.amount,
         accountId: this.selectedAccount.id,
       };
-      await this.withdraw(request).catch((err) => console.log(err));
-      this.setSelectedAccount(this.id);
-      this.showModal = false;
+      await this.withdraw(request).then(() => {
+        this.setSelectedAccount(this.id);
+        this.showModal = false;
+      }).catch((err) => {
+        this.error = true;
+        this.errorMsg = err.message;
+      });
     },
     /**
      * updates the selectedAccount data property using the getAccountById-getter

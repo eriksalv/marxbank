@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row flex-wrap min-w-[80%] justify-center">
-    <AccountList class="min-w-max" />
     <AccountForm />
+    <AccountList class="min-w-max" />
   </div>
 </template>
 
