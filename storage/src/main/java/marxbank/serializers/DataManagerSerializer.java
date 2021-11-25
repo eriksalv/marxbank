@@ -10,9 +10,10 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import marxbank.DataManager;
 import marxbank.wrappers.ArrayAccountWrapper;
 import marxbank.wrappers.ArrayUserWrapper;
+import marxbank.wrappers.DataManagerWrapper;
 import marxbank.wrappers.ArrayTransactionsWrapper;
 
-public class DataManagerSerializer extends StdSerializer<DataManager> {
+public class DataManagerSerializer extends StdSerializer<DataManagerWrapper> {
 
   private ObjectMapper objectMapper;
   private SimpleModule module;
@@ -23,14 +24,14 @@ public class DataManagerSerializer extends StdSerializer<DataManager> {
     this.module = sm;
   }
 
-  public DataManagerSerializer(Class<DataManager> t, ObjectMapper objectMapper, SimpleModule sm) {
+  public DataManagerSerializer(Class<DataManagerWrapper> t, ObjectMapper objectMapper, SimpleModule sm) {
     super(t);
     this.objectMapper = objectMapper;
     this.module = sm;
   }
 
   @Override
-  public void serialize(DataManager dm, JsonGenerator gen, SerializerProvider provider)
+  public void serialize(DataManagerWrapper dm, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
     module.addSerializer(ArrayUserWrapper.class, new ArrayUserSerializer(objectMapper, module));
     module.addSerializer(ArrayAccountWrapper.class, new ArrayAccountSerializer(objectMapper, module));

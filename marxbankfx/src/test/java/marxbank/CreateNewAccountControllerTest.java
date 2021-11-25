@@ -54,7 +54,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest {
 
   @BeforeEach
   public void beforeEachSetup() throws IOException {
-    DataManager.manager().setPath(tempDir.toFile().getCanonicalPath());
+    DataManager.setPath(tempDir.toFile().getCanonicalPath());
     this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
     this.account1 = new SavingsAccount(user, "Annas brukskonto");
     this.account1.deposit(500);

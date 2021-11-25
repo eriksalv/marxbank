@@ -66,7 +66,7 @@ public class CreateNewAccountController {
       return;
     }
     try {
-      acc = DataManager.manager().createAccount(selectAccountType.getText(), user, accName);
+      acc = DataManager.createAccount(selectAccountType.getText(), user, accName);
     } catch (IllegalArgumentException e) {
       errorMsg.setText(e.getLocalizedMessage());
     }
@@ -78,7 +78,7 @@ public class CreateNewAccountController {
         + acc.getName() + " ble opprettet");
     creationCompleteMsg.setVisible(true);
     try {
-      DataManager.manager().save();
+      DataManager.save();
     } catch (Exception e) {
       e.printStackTrace();
     }

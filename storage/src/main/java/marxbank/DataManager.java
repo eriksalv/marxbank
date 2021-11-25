@@ -10,44 +10,25 @@ import marxbank.util.ValidPath;
 
 public class DataManager {
 
-  private static DataManager dataInstance = null;
+  private static String dataPath = "data";
 
-  private String path = "data";
+  private static User loggedInUser;
 
-  private User loggedInUser;
-
-  private List<User> userList = new ArrayList<User>();
-  private List<Account> accountList = new ArrayList<Account>();
-  private List<Transaction> transactionList = new ArrayList<Transaction>();
+  private static List<User> userList = new ArrayList<User>();
+  private static List<Account> accountList = new ArrayList<Account>();
+  private static List<Transaction> transactionList = new ArrayList<Transaction>();
 
   private DataManager() {}
-
-  /**
-   * Get DataManager instance.
-   * 
-   * @return the DataManager instance, and creates it if it doesn't exist
-   */
-  public static DataManager manager() {
-    if (dataInstance == null) {
-      synchronized (DataManager.class) {
-        if (dataInstance == null) {
-          dataInstance = new DataManager();
-        }
-      }
-    }
-
-    return dataInstance;
-  }
 
   /**
    * Sets path for DataManager to use the standard storage directory should not be used.
    * 
    * @param path to storage directory
    */
-  public void setPath(String path) {
+  public static void setPath(String path) {
     if (!ValidPath.isValidPath(path))
       throw new IllegalArgumentException("Not a valid path.");
-    this.path = path;
+    dataPath = path;
   }
 
   /**
@@ -59,7 +40,7 @@ public class DataManager {
    * @return the created User
    * @throws IllegalArguementException if username is already taken
    */
-  public User createUser(String username, String email, String password) {
+  public static User createUser(String username, String email, String password) {
     if (checkIfUsernameIsTaken(username))
       throw new IllegalArgumentException("Username is already taken");
     User u = new User(username, email, password);
@@ -75,7 +56,7 @@ public class DataManager {
    * @param name of account
    * @return account that has been created
    */
-  public Account createAccount(String type, User user, String name) {
+  public static Account createAccount(String type, User user, String name) {
     Account a = AccountFactory.create(type, user, name);
     addAccount(a);
     return a;
@@ -89,7 +70,7 @@ public class DataManager {
    * @param amount of money
    * @return transaction that has been created
    */
-  public Transaction createTransaction(Account from, Account reciever, double amount) {
+  public static Transaction createTransaction(Account from, Account reciever, double amount) {
     Transaction t = new Transaction(from, reciever, amount);
     addTransaction(t);
     return t;
@@ -101,8 +82,8 @@ public class DataManager {
    * @param u user to add
    * @throws IllegalArgumentException user already exists in userList
    */
-  public void addUser(User u) {
-    if (this.userList.contains(u))
+  public static void addUser(User u) {
+    if (userList.contains(u))
       throw new IllegalArgumentException("User already in userList");
     userList.add(u);
   }
@@ -113,8 +94,8 @@ public class DataManager {
    * @param u user to delete
    * @throws IllegalArgumentException if user does not exist in userList
    */
-  public void deleteUser(User u) {
-    if (!this.userList.contains(u))
+  public static void deleteUser(User u) {
+    if (!userList.contains(u))
       throw new IllegalArgumentException("User doesn't exist");
     userList.remove(u);
   }
@@ -125,8 +106,8 @@ public class DataManager {
    * @param a account to add
    * @throws IllegalArgumentException if account already exists in accountList
    */
-  public void addAccount(Account a) {
-    if (this.accountList.contains(a))
+  public static void addAccount(Account a) {
+    if (accountList.contains(a))
       throw new IllegalArgumentException("Account already in accountList");
     accountList.add(a);
   }
@@ -137,8 +118,8 @@ public class DataManager {
    * @param a account to delete
    * @throws IllegalArgumentException if account does not exist in accountList
    */
-  public void deleteAccount(Account a) {
-    if (!this.accountList.contains(a))
+  public static void deleteAccount(Account a) {
+    if (!accountList.contains(a))
       throw new IllegalArgumentException("Account doesn't exist");
     accountList.remove(a);
     for (User u : userList) {
@@ -154,8 +135,8 @@ public class DataManager {
    * @param t transaction to add
    * @throws IllegalArgumentException if transaction already exists in transactionList
    */
-  public void addTransaction(Transaction t) {
-    if (this.transactionList.contains(t))
+  public static void addTransaction(Transaction t) {
+    if (transactionList.contains(t))
       throw new IllegalArgumentException("Transaction already in transactionList");
     transactionList.add(t);
   }
@@ -166,8 +147,8 @@ public class DataManager {
    * @param t transaction to delete
    * @throws IllegalArgumentException if transaction does not exist in transactionList
    */
-  public void deleteTransaction(Transaction t) {
-    if (!this.transactionList.contains(t))
+  public static void deleteTransaction(Transaction t) {
+    if (!transactionList.contains(t))
       throw new IllegalArgumentException("Transaction doesn't exist");
     transactionList.remove(t);
     for (Account a : accountList) {
@@ -177,16 +158,16 @@ public class DataManager {
     }
   }
 
-  public List<User> getUsers() {
-    return this.userList;
+  public static List<User> getUsers() {
+    return userList;
   }
 
-  public List<Account> getAccounts() {
-    return this.accountList;
+  public static List<Account> getAccounts() {
+    return accountList;
   }
 
-  public List<Transaction> getTransactions() {
-    return this.transactionList;
+  public static List<Transaction> getTransactions() {
+    return transactionList;
   }
 
   /**
@@ -195,8 +176,8 @@ public class DataManager {
    * @param username user to check for
    * @return true if found, false otherwise
    */
-  public boolean checkIfUsernameIsTaken(String username) {
-    return this.userList.stream().anyMatch(user -> user.getUsername().equals(username));
+  public static boolean checkIfUsernameIsTaken(String username) {
+    return userList.stream().anyMatch(user -> user.getUsername().equals(username));
   }
 
   /**
@@ -205,9 +186,9 @@ public class DataManager {
    * @param id of user
    * @return true if user is found, false otherwise
    */
-  public boolean checkIfUserExists(long id) {
+  public static boolean checkIfUserExists(long id) {
     try {
-      this.userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
+      userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
       return true;
     } catch (NoSuchElementException e) {
       return false;
@@ -220,8 +201,8 @@ public class DataManager {
    * @param a Account to check for
    * @return true if account is found, false otherwise
    */
-  public boolean checkIfAccountExists(Account a) {
-    return this.accountList.contains(a);
+  public static boolean checkIfAccountExists(Account a) {
+    return accountList.contains(a);
   }
 
   /**
@@ -230,9 +211,9 @@ public class DataManager {
    * @param id of account
    * @return true if found, false otherwise
    */
-  public boolean checkIfAccountExists(long id) {
+  public static boolean checkIfAccountExists(long id) {
     try {
-      this.accountList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
+      accountList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
       return true;
     } catch (NoSuchElementException e) {
       return false;
@@ -245,8 +226,8 @@ public class DataManager {
    * @param t transaction
    * @return true if found, false otherwise
    */
-  public boolean checkIfTransactionExists(Transaction t) {
-    return this.transactionList.contains(t);
+  public static boolean checkIfTransactionExists(Transaction t) {
+    return transactionList.contains(t);
   }
 
   /**
@@ -255,9 +236,9 @@ public class DataManager {
    * @param id of transaction
    * @return true if found, false otherwise
    */
-  public boolean checkIfTransactionExists(long id) {
+  public static boolean checkIfTransactionExists(long id) {
     try {
-      this.transactionList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
+      transactionList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
       return true;
     } catch (NoSuchElementException e) {
       return false;
@@ -269,8 +250,8 @@ public class DataManager {
    * 
    * @return user that is logged in
    */
-  public User getLoggedInUser() {
-    return this.loggedInUser;
+  public static User getLoggedInUser() {
+    return loggedInUser;
   }
 
   /**
@@ -278,8 +259,8 @@ public class DataManager {
    * 
    * @param u to be logged in
    */
-  public void setLoggedInUser(User u) {
-    this.loggedInUser = u;
+  public static void setLoggedInUser(User u) {
+    loggedInUser = u;
   }
 
   /**
@@ -288,9 +269,9 @@ public class DataManager {
    * @param username of user
    * @return User if found, otherwise null
    */
-  public User getUserByUsername(String username) {
+  public static User getUserByUsername(String username) {
     try {
-      return this.userList.stream().filter(u -> u.getUsername().equals(username)).findFirst().get();
+      return userList.stream().filter(u -> u.getUsername().equals(username)).findFirst().get();
     } catch (NoSuchElementException e) {
       return null;
     }
@@ -302,9 +283,9 @@ public class DataManager {
    * @param id of User object
    * @return User object if found, null otherwise
    */
-  public User getUser(long id) {
+  public static User getUser(long id) {
     if (checkIfUserExists(id))
-      return this.userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
+      return userList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
     return null;
   }
 
@@ -314,9 +295,9 @@ public class DataManager {
    * @param id of Account object
    * @return Account object if found, null otherwise
    */
-  public Account getAccount(long id) {
+  public static Account getAccount(long id) {
     if (checkIfAccountExists(id))
-      return this.accountList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
+      return accountList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
     return null;
   }
 
@@ -326,9 +307,9 @@ public class DataManager {
    * @param id of Transaction Object
    * @return Transaction object if found, null otherwise
    */
-  public Transaction getTransaction(long id) {
+  public static Transaction getTransaction(long id) {
     if (checkIfTransactionExists(id))
-      return this.transactionList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
+      return transactionList.stream().filter(e -> e.getId().equals(id)).findFirst().get();
     return null;
   }
 
@@ -338,8 +319,8 @@ public class DataManager {
    * @param user user
    * @return index of User if found, -1 otherwise
    */
-  public int getIndexOfUser(User user) {
-    return this.userList.indexOf(user);
+  public static int getIndexOfUser(User user) {
+    return userList.indexOf(user);
   }
 
   /**
@@ -348,8 +329,8 @@ public class DataManager {
    * @param account account
    * @return index of Account if found, -1 otherwise
    */
-  public int getIndexOfAccount(Account account) {
-    return this.accountList.indexOf(account);
+  public static int getIndexOfAccount(Account account) {
+    return accountList.indexOf(account);
   }
 
   /**
@@ -358,8 +339,8 @@ public class DataManager {
    * @param transaction transaction
    * @return index of Transaction if found, -1 otherwise
    */
-  public int getIndexOfTransaction(Transaction transaction) {
-    return this.transactionList.indexOf(transaction);
+  public static int getIndexOfTransaction(Transaction transaction) {
+    return transactionList.indexOf(transaction);
   }
 
   /**
@@ -367,8 +348,8 @@ public class DataManager {
    * 
    * @throws IllegalStateException if it cannot save data
    */
-  public void save() {
-    boolean saved = DataHandler.save(this, this.path);
+  public static void save() {
+    boolean saved = DataHandler.save(new ArrayList<User>(userList), new ArrayList<Account>(accountList), new ArrayList<Transaction>(transactionList), dataPath);
     if (!saved)
       throw new IllegalStateException();
   }
@@ -378,8 +359,8 @@ public class DataManager {
    * 
    * @throws IllegalStateException if it cannot read data
    */
-  public void parse() {
-    boolean parsed = DataHandler.parse(this, this.path);
+  public static void parse() {
+    boolean parsed = DataHandler.parse(dataPath);
     if (!parsed)
       throw new IllegalStateException();
   }
@@ -387,10 +368,9 @@ public class DataManager {
   /**
    * Used to clear all data in the DataManager, used mostly for testing
    */
-  public void resetData() {
-    this.userList = new ArrayList<User>();
-    this.accountList = new ArrayList<Account>();
-    this.transactionList = new ArrayList<Transaction>();
+  public static void resetData() {
+    userList = new ArrayList<User>();
+    accountList = new ArrayList<Account>();
+    transactionList = new ArrayList<Transaction>();
   }
-
 }

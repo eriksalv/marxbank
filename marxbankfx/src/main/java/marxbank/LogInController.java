@@ -35,9 +35,9 @@ public class LogInController {
 
 
   public LogInController() {
-    // DataManager.manager().setPath("../data");
+    // DataManager.setPath("../data");
     // try {
-    // DataManager.manager().parse();
+    // DataManager.parse();
     // } catch (Exception e) {
     // e.printStackTrace();
     // }
@@ -61,7 +61,7 @@ public class LogInController {
       return;
     }
 
-    User u = DataManager.manager().getUserByUsername(username);
+    User u = DataManager.getUserByUsername(username);
 
     if (u == null) {
       usernameError.setText("Username is wrong");
@@ -80,7 +80,7 @@ public class LogInController {
       return;
     }
 
-    DataManager.manager().setLoggedInUser(u);
+    DataManager.setLoggedInUser(u);
 
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("Main.fxml"));

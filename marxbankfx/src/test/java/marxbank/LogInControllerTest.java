@@ -32,9 +32,9 @@ public class LogInControllerTest extends ApplicationTest {
 
   @BeforeEach
   void setup() throws Exception {
-    DataManager.manager().resetData();
-    user = DataManager.manager().createUser("testUser", "test@email.com", "password");
-    DataManager.manager().createAccount("sparekonto", user, "nicu");
+    DataManager.resetData();
+    user = DataManager.createUser("testUser", "test@email.com", "password");
+    DataManager.createAccount("sparekonto", user, "nicu");
   }
 
   @Test
@@ -97,7 +97,7 @@ public class LogInControllerTest extends ApplicationTest {
     clickOn("#typeUsername").write("testUser");
     clickOn("#typePassword").write("password");
     clickOn("#logInButton");
-    assertEquals(user, DataManager.manager().getLoggedInUser());
+    assertEquals(user, DataManager.getLoggedInUser());
   }
 
   @Test

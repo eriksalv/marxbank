@@ -71,11 +71,11 @@ public class TransactionController {
       reciever = user.getAccountById(Long.parseLong(recieverText.getText()));
       amount = Integer.parseInt(amountText.getText());
 
-      DataManager.manager().createTransaction(from, reciever, amount);
+      DataManager.createTransaction(from, reciever, amount);
       transactionFailedMsg.setVisible(false);
       transactionCompleteMsg.setVisible(true);
       try {
-        DataManager.manager().save();
+        DataManager.save();
       } catch (Exception e) {
         e.printStackTrace();
       }
