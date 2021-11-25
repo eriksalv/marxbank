@@ -7,23 +7,19 @@ import Calculator from "../../views/Calculator.vue";
 import TextInput from "../../components/TextInput.vue";
 
 describe("My profile", () => {
-
-
   test("initial state", async () => {
-    const wrapper = mount(Calculator, {
-    });
+    const wrapper = mount(Calculator, {});
 
     expect(wrapper.vm.$data.showTotalAmount).toEqual(false);
     expect(wrapper.vm.$data.input1).toEqual("");
     expect(wrapper.vm.$data.input2).toEqual("");
     expect(wrapper.vm.$data.input3).toEqual("");
     expect(wrapper.vm.$data.input4).toEqual("");
-    expect(wrapper.vm.$data.amount).toEqual(null)
+    expect(wrapper.vm.$data.amount).toEqual(null);
   });
 
   test("valid calculation", async () => {
-    const wrapper = mount(Calculator, {
-    });
+    const wrapper = mount(Calculator, {});
 
     const button = wrapper.find("button");
 
@@ -34,12 +30,13 @@ describe("My profile", () => {
     await button.trigger("click");
 
     expect(wrapper.vm.$data.showTotalAmount).toEqual(true);
-    expect(wrapper.vm.$data.amount).toEqual("kr  " + Number(43407).toLocaleString());
+    expect(wrapper.vm.$data.amount).toEqual(
+      "kr  " + Number(43407).toLocaleString()
+    );
   });
 
   test("invalid calculation", async () => {
-    const wrapper = mount(Calculator, {
-    });
+    const wrapper = mount(Calculator, {});
 
     const button = wrapper.find("button");
 
@@ -53,10 +50,8 @@ describe("My profile", () => {
     expect(wrapper.vm.$data.amount).toEqual(" beløpet er utenfor rekkevidde!");
   });
 
-
   test("period equal to 0 calculation", async () => {
-    const wrapper = mount(Calculator, {
-    });
+    const wrapper = mount(Calculator, {});
 
     const button = wrapper.find("button");
 
@@ -67,18 +62,12 @@ describe("My profile", () => {
     await button.trigger("click");
 
     expect(wrapper.vm.$data.showTotalAmount).toEqual(true);
-    expect(wrapper.vm.$data.amount).toEqual("kr  " + Number(1000).toLocaleString() + "  (engangsbeløp)");
+    expect(wrapper.vm.$data.amount).toEqual(
+      "kr  " + Number(1000).toLocaleString() + "  (engangsbeløp)"
+    );
   });
-
 
   test("text input", async () => {
-    const wrapper = mount(TextInput, {
-    });
-
-    
+    const wrapper = mount(TextInput, {});
   });
-
-
-  
-
 });

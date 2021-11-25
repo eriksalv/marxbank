@@ -1,8 +1,16 @@
 <template>
   <div class="calculator">
     <main class="text-on-same-line">
-      <TextInput id="i1" type="amount" text="Fast månedlig beløp" @termChanged="onInputChanged1"/>
-      <TextInput id="i3" type="year" text="Periode" @termChanged="onInputChanged3"/>
+      <TextInput
+        id="i1"
+        type="amount"
+        text="Fast månedlig beløp"
+        @termChanged="onInputChanged1" />
+      <TextInput
+        id="i3"
+        type="year"
+        text="Periode"
+        @termChanged="onInputChanged3" />
     </main>
     <br />
     <main class="text-on-same-line">
@@ -17,7 +25,8 @@
         text="Årlig rente"
         @termChanged="onInputChanged4" />
     </main>
-    <button class="
+    <button
+      class="
         bg-green-500
         hover:bg-green-400
         text-white
@@ -55,7 +64,7 @@
 <script>
 import TextInput from "../components/TextInput.vue";
 
-export default({
+export default {
   name: "Calculator",
 
   components: {
@@ -84,8 +93,8 @@ export default({
     onInputChanged4(input) {
       this.input4 = input;
     },
-    calc() { 
-      this.showTotalAmount = true
+    calc() {
+      this.showTotalAmount = true;
 
       const monthlyAmount = this.input1;
       const lumpAmount = this.input2;
@@ -95,13 +104,12 @@ export default({
       let unit = "kr  ";
 
       if (period == 0) {
-        let textString = "  (engangsbeløp)"
-        let sum = Math.round(lumpAmount)
-        this.amount = unit + sum.toLocaleString() + textString 
-      }
-      else {
-        let lumpAmountSum = lumpAmount
-        let monthlyAmountSum = 0
+        let textString = "  (engangsbeløp)";
+        let sum = Math.round(lumpAmount);
+        this.amount = unit + sum.toLocaleString() + textString;
+      } else {
+        let lumpAmountSum = lumpAmount;
+        let monthlyAmountSum = 0;
 
         let interestRateFactor = interestRate / 100;
 
@@ -126,5 +134,5 @@ export default({
       }
     },
   },
-});
+};
 </script>
