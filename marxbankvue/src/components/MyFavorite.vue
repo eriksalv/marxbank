@@ -17,7 +17,20 @@
 <script>
 export default {
   name: "MyFavorite",
-  props: ["accName", "balance", "accNumber"],
+  props: {
+    accName: {
+      type: String,
+      default: "",
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
+    accNumber: {
+      type: Number,
+      default: 0,
+    },
+  },
 };
 </script>
 

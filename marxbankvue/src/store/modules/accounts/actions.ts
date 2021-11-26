@@ -10,14 +10,13 @@ export const actions: ActionTree<AccountState, RootState> = {
   /**
    * Fetches all accounts of the logged in user and saves response data
    */
-  async fetchAccounts({ commit, rootGetters }) {
+  async fetchAccounts({ commit }) {
     commit("setAccountStatus", { status: "loading" });
     await axios
-      .get(`${BASE_URL}/myAccounts`, rootGetters.getToken)
+      .get(`${BASE_URL}/myAccounts`)
       .then((response) => {
         let accounts: Array<Account> = [];
         response.data.forEach((element: any) => {
-          console.log(element);
           const account: Account = {
             id: element.id,
             userId: element.user,
@@ -44,15 +43,10 @@ export const actions: ActionTree<AccountState, RootState> = {
   async fetchAccountsByTransactions({ commit, rootGetters }) {
     commit("setAccountStatus", { status: "loading" });
     await axios
-      .get(`${BASE_URL}/transactions`, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .get(`${BASE_URL}/transactions`)
       .then((response) => {
         let accounts: Array<Account> = [];
         response.data.forEach((element: any) => {
-          console.log(element);
           const account: Account = {
             id: element.id,
             userId: element.userId,
@@ -86,11 +80,7 @@ export const actions: ActionTree<AccountState, RootState> = {
   async fetchAccountById({ commit, rootGetters }, id: number) {
     commit("setAccountStatus", { status: "loading" });
     await axios
-      .get(`${BASE_URL}/myAccounts/${id}`, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .get(`${BASE_URL}/myAccounts/${id}`)
       .then((response) => {
         const account: Account = {
           id: response.data.id,
@@ -150,14 +140,10 @@ export const actions: ActionTree<AccountState, RootState> = {
    * Creates a new account from request and saves response data
    * @param request to create account
    */
-  async createAccount({ commit, rootGetters }, request: AccountRequest) {
+  async createAccount({ commit }, request: AccountRequest) {
     commit("setAccountStatus", { status: "loading" });
     await axios
-      .post(`${BASE_URL}/createAccount`, request, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .post(`${BASE_URL}/createAccount`, request)
       .then((response) => {
         const account: Account = {
           id: response.data.id,
@@ -183,14 +169,10 @@ export const actions: ActionTree<AccountState, RootState> = {
    * Deposits to the account specified by request and updates account
    * @param request to deposit
    */
-  async deposit({ commit, rootGetters }, request: DepositWithdrawRequest) {
+  async deposit({ commit }, request: DepositWithdrawRequest) {
     commit("setAccountStatus", { status: "loading" });
     await axios
-      .post(`${BASE_URL}/deposit`, request, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .post(`${BASE_URL}/deposit`, request)
       .then((response) => {
         const account: Account = {
           id: response.data.id,
@@ -219,11 +201,7 @@ export const actions: ActionTree<AccountState, RootState> = {
   async withdraw({ commit, rootGetters }, request: DepositWithdrawRequest) {
     commit("setAccountStatus", { status: "loading" });
     await axios
-      .post(`${BASE_URL}/withdraw`, request, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .post(`${BASE_URL}/withdraw`, request)
       .then((response) => {
         const account: Account = {
           id: response.data.id,

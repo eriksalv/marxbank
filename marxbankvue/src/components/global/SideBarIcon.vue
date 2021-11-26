@@ -9,16 +9,22 @@
 </template>
 
 <script>
-//import { useRoute } from "vue-router";
-
 export default {
   name: "SideBarIcon",
-  props: ["icon", "text", "to"],
-  /*setup(props) {
-        const route = useRoute()
-        const isActive = route.path === props.to
-        return isActive
-    }*/
+  props: {
+    icon: {
+      type: String,
+      default: "",
+    },
+    text: {
+      type: String,
+      default: "",
+    },
+    to: {
+      type: String,
+      default: "",
+    },
+  },
 };
 </script>
 

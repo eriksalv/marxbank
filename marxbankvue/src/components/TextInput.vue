@@ -2,15 +2,30 @@
   <main>
     <p class="w-2/3 text-left">{{ text }}:</p>
     <div v-if="type == 'amount'" class="amount-input-wrapper">
-      <input type="number" class="my-input" />
+      <input
+        type="number"
+        min="0"
+        class="my-input"
+        @input="onInput"
+        @keypress="isInteger($event)" />
       <p class="text-ending">kr</p>
     </div>
     <div v-else-if="type == 'year'" class="year-interest-input-wrapper">
-      <input type="number" class="my-input" />
+      <input
+        type="number"
+        min="0"
+        class="my-input"
+        @input="onInput"
+        @keypress="isInteger($event)" />
       <p class="text-ending">år</p>
     </div>
     <div v-else-if="type == 'interest'" class="year-interest-input-wrapper">
-      <input type="number" class="my-input" />
+      <input
+        type="number"
+        min="0"
+        class="my-input"
+        @input="onInput"
+        @keypress="isFloat($event)" />
       <p class="text-ending">%</p>
     </div>
   </main>
@@ -19,8 +34,42 @@
 <script>
 export default {
   props: {
-    type: String,
-    text: String,
+    type: {
+      type: String,
+      default: "",
+    },
+    text: {
+      type: String,
+      default: "",
+    },
+  },
+  emits: ["termChanged"],
+  methods: {
+    isFloat: function (evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+    isInteger: function (evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+    onInput(event) {
+      this.$emit("termChanged", event.target.value);
+    },
   },
 };
 </script>
@@ -45,7 +94,7 @@ export default {
   height: 100%;
 }
 .text-ending {
-  padding: 12px 20px;
+  padding: 12px 10px;
   margin: 8px 0;
   border: lpx solid #ccc;
   border-radius: 2px;

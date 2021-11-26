@@ -34,8 +34,16 @@
               Totalbeløp på konto:
             </p>
             <p class="text-white text-2xl mt-2 font-bold">
-              <!---- Sett inn logikk under><-->
-              kr 25 000
+              {{
+                filterAccountsByUserId(getUserId).length
+                  ? filterAccountsByUserId(getUserId)
+                      .map((acc) => acc.balance)
+                      .reduce(
+                        (prevBalance, curBalance) => prevBalance + curBalance
+                      )
+                  : 0
+              }}
+              kr
             </p>
           </div>
         </div>
@@ -54,8 +62,11 @@
           " />
         <div v-if="allTransactions.length">
           <RecentTransaction
-            v-for="transaction in allTransactions.slice(0, 1)"
-            :key="transaction.amount"
+            v-for="transaction in allTransactions.slice(
+              allTransactions.length - 1,
+              allTransactions.length
+            )"
+            :key="transaction.id"
             :date="transaction.date"
             :from="transaction.from"
             :to="transaction.to"
@@ -117,16 +128,32 @@
 <script>
 import MyFavorites from "../components/MyFavorites.vue";
 import RecentTransaction from "../components/RecentTransaction.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
-  computed: mapGetters(["allTransactions"]),
   components: {
     MyFavorites,
     RecentTransaction,
   },
+  computed: mapGetters([
+    "allTransactions",
+    "getUserId",
+    "filterAccountsByUserId",
+  ]),
+  async created() {
+    await Promise.all([
+      this.fetchAccounts(),
+      this.fetchAccountsByTransactions(),
+    ]);
+    await this.fetchTransactions();
+  },
   methods: {
+    ...mapActions([
+      "fetchTransactions",
+      "fetchAccounts",
+      "fetchAccountsByTransactions",
+    ]),
     goToCalc() {
       this.$router.push({ name: "Calculator" });
     },

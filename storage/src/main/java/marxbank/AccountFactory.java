@@ -6,6 +6,7 @@ import marxbank.model.CreditAccount;
 import marxbank.model.MarxAccount;
 import marxbank.model.SavingsAccount;
 import marxbank.model.User;
+import marxbank.util.AccountType;
 
 public class AccountFactory {
 
@@ -35,6 +36,33 @@ public class AccountFactory {
 
     return null;
   }
+
+  public static Account create(String type, String name){
+      Account a = null;
+        if (AccountType.SAVING.getTypeString().equalsIgnoreCase(type)) {
+            a = new SavingsAccount();
+            a.setName(name);
+            a.setInterestRate(3.0);
+            a.setType(AccountType.SAVING);
+        } else if (AccountType.CHECKING.getTypeString().equalsIgnoreCase(type)) {
+            a = new CheckingAccount();
+            a.setName(name);
+            a.setInterestRate(0.5);
+            a.setType(AccountType.CHECKING);
+        } else if (AccountType.CREDIT.getTypeString().equalsIgnoreCase(type)) {
+            a = new CreditAccount();
+            a.setName(name);
+            a.setInterestRate(0);
+            a.setType(AccountType.CREDIT);
+        } else if (AccountType.MARX.getTypeString().equalsIgnoreCase(type)) {
+            a = new MarxAccount();
+            a.setName(name);
+            a.setInterestRate(0.01);
+            a.setType(AccountType.MARX);
+        }
+
+        return a;
+    }
 
   /**
    * second create method, primarily intended to be used when reading in account from file/database

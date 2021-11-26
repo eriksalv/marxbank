@@ -2,15 +2,9 @@ import { AccountState } from "../../store/modules/accounts/types";
 import { TransactionState } from "../../store/modules/transactions/types";
 import { mount } from "@vue/test-utils";
 import { createStore, Store } from "vuex";
-import AccountList from "../../components/AccountList.vue";
-import Account from "../../components/Account.vue";
-import AccountInfo from "../../views/AccountInfo.vue";
 import { Plugin } from "@vue/runtime-core";
-import flushPromises from "flush-promises";
 
 import Home from "../../views/Home.vue";
-import MyFavorite from "../../components/MyFavorite.vue";
-import MyFavorites from "../../components/MyFavorites.vue";
 
 describe("Home", () => {
   const initAccountState: AccountState = {
@@ -50,15 +44,25 @@ describe("Home", () => {
     ],
   };
 
+  let mockFilterAccountsByUserId: jest.Mock<any, any>;
   let mockAllTransactions: jest.Mock<any, any>;
-  let mockAllAccounts: jest.Mock<any, any>;
+  let mockGetUserId: jest.Mock<any, any>;
+  let mockFetchAccounts: jest.Mock<any, any>;
+  let mockFetchAccountsByTransactions: jest.Mock<any, any>;
+  let mockFetchTransactions: jest.Mock<any, any>;
   let store: Store<any> | Plugin | [Plugin, ...any[]];
 
   beforeEach(() => {
     mockAllTransactions = jest
       .fn()
       .mockReturnValue(initTransactionState.transactions);
-    mockAllAccounts = jest.fn().mockReturnValue(initAccountState.accounts);
+    mockFilterAccountsByUserId = jest
+      .fn()
+      .mockReturnValue(initAccountState.accounts);
+    mockGetUserId = jest.fn();
+    mockFetchAccounts = jest.fn();
+    mockFetchAccountsByTransactions = jest.fn();
+    mockFetchTransactions = jest.fn();
 
     store = createStore({
       state: {
@@ -67,7 +71,13 @@ describe("Home", () => {
       },
       getters: {
         allTransactions: mockAllTransactions,
-        allAccounts: mockAllAccounts,
+        filterAccountsByUserId: () => mockFilterAccountsByUserId,
+        getUserId: mockGetUserId,
+      },
+      actions: {
+        fetchAccounts: mockFetchAccounts,
+        fetchAccountsByTransactions: mockFetchAccountsByTransactions,
+        fetchTransactions: mockFetchTransactions,
       },
     });
   });
@@ -84,7 +94,8 @@ describe("Home", () => {
     expect(wrapper.html()).toContain("Totalbeløp på konto:");
 
     expect(mockAllTransactions).toHaveBeenCalled();
-    expect(mockAllAccounts).toHaveBeenCalled();
+    expect(mockFilterAccountsByUserId).toHaveBeenCalled();
+    expect(mockGetUserId).toHaveBeenCalled();
   });
 
   test("test go to savings calculator", async () => {

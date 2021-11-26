@@ -41,12 +41,28 @@
 export default {
   name: "Account",
   props: {
-    accName: String,
-    balance: Number,
-    accNumber: Number,
-    type: String,
-    id: Number,
+    accName: {
+      type: String,
+      default: "",
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
+    accNumber: {
+      type: Number,
+      default: 0,
+    },
+    type: {
+      type: String,
+      default: "",
+    },
+    id: {
+      type: Number,
+      default: 0,
+    },
   },
+  emits: ["accountSelected"],
 };
 </script>
 

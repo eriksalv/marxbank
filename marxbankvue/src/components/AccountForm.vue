@@ -1,11 +1,7 @@
 <template>
   <div class="w-1/4">
-    <Alert
-        :message="successMsg"
-        @onHideAlert="successMsg = null" />
-    <ErrorAlert
-        :message="errorMsg"
-        @onHideAlert="errorMsg = null" />
+    <Alert :message="successMsg" @onHideAlert="successMsg = null" />
+    <ErrorAlert :message="errorMsg" @onHideAlert="errorMsg = null" />
     <h1 class="title">Ny konto</h1>
     <h1>Kontonavn</h1>
     <input
@@ -42,7 +38,7 @@ export default {
     return {
       errorMsg: null,
       successMsg: null,
-    }
+    };
   },
   methods: {
     ...mapActions(["createAccount"]),
@@ -53,11 +49,13 @@ export default {
         name: this.$refs.accountName.value,
         type: this.$refs.accountType.value,
       };
-      this.createAccount(request).then(() => {
-        this.successMsg = "Konto ble opprettet"
-      }).catch((err) => {
-        this.errorMsg = err.message;
-      });
+      this.createAccount(request)
+        .then(() => {
+          this.successMsg = "Konto ble opprettet";
+        })
+        .catch((err) => {
+          this.errorMsg = err.message;
+        });
     },
   },
 };

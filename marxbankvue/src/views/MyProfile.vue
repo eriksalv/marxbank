@@ -1,11 +1,7 @@
 <template>
   <div class="w-2/3">
-    <Alert
-      :message="successMsg"
-      @onHideAlert="resetMsg" />
-    <ErrorAlert
-      :message="errorMsg"
-      @onHideAlert="resetMsg" />
+    <Alert :message="successMsg" @onHideAlert="resetMsg" />
+    <ErrorAlert :message="errorMsg" @onHideAlert="resetMsg" />
     <h1 class="title">
       {{ getLoggedInUser.username }}
     </h1>
@@ -76,7 +72,7 @@ export default {
   methods: {
     ...mapActions(["logout", "fetchUserById", "editUser"]),
     requestLogout() {
-      this.logout(this.getToken).then(() => {
+      this.logout().then(() => {
         this.$router.push("/login");
       });
     },
@@ -117,5 +113,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -12,10 +12,10 @@ export const actions: ActionTree<TransactionState, RootState> = {
    * and sets the returned transactions using the
    * setTransactions-mutation.
    */
-  async fetchTransactions({ commit, rootGetters }) {
+  async fetchTransactions({ commit }) {
     commit("setTransactionStatus", { status: "loading" });
     await axios
-      .get(BASE_URL + "/myTransactions", rootGetters.getToken)
+      .get(BASE_URL + "/myTransactions")
       .then((response) => {
         let transactions: Array<Transaction> = [];
         response.data.forEach((element: any) => {
@@ -41,17 +41,10 @@ export const actions: ActionTree<TransactionState, RootState> = {
    * using the addTransaction-mutation assuming nothing went wrong
    * @param transactionRequest request to be sent
    */
-  async createTransaction(
-    { commit, rootGetters },
-    transactionRequest: TransactionRequest
-  ) {
+  async createTransaction({ commit }, transactionRequest: TransactionRequest) {
     commit("setTransactionStatus", { status: "loading" });
     await axios
-      .post(BASE_URL + "/transfer", transactionRequest, {
-        headers: {
-          Authorization: rootGetters.getToken,
-        },
-      })
+      .post(BASE_URL + "/transfer", transactionRequest)
       .then((response) => {
         const transaction: Transaction = {
           id: response.data.id,
@@ -76,10 +69,10 @@ export const actions: ActionTree<TransactionState, RootState> = {
    * for a user isn't necessary
    * @param id id of account
    */
-  async fetchTransactionsByAccount({ commit, rootGetters }, id: number) {
+  async fetchTransactionsByAccount({ commit }, id: number) {
     commit("setTransactionStatus", { status: "loading" });
     await axios
-      .get(`${BASE_URL}/myTransactions/${id}`, rootGetters.getToken)
+      .get(`${BASE_URL}/myTransactions/${id}`)
       .then((response) => {
         let transactions: Array<Transaction> = [];
         response.data.forEach((element: any) => {

@@ -7,6 +7,7 @@ package marxbank.API;
 public class LogInResponse {
 
   private String token;
+  private int expiresIn;
   private UserResponse userResponse;
 
 /**
@@ -18,9 +19,11 @@ public class LogInResponse {
  * Konstruktør for LogInResponse.
  * @param token - bestemmer om innloggingsforespørselen er godkjent.
  * @param userResponse - informasjon om og for en bruker.
+ * @param expiresIn - tid før token går ut på dato, håndteres i frontend.
  */
-    public LogInResponse(String token, UserResponse userResponse) {
+    public LogInResponse(String token, int expiresIn, UserResponse userResponse) {
         this.token = token;
+        this.expiresIn = expiresIn;
         this.userResponse = userResponse;
     }
 
@@ -33,6 +36,14 @@ public class LogInResponse {
 
   public String getToken() {
     return this.token;
+  }
+
+  public void setExpiresIn(int exp) {
+    this.expiresIn = exp;
+  }
+
+  public int getExpiresIn() {
+    return this.expiresIn;
   }
 
   public void setUserRespone(UserResponse u) {

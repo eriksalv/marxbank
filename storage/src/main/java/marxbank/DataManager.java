@@ -17,6 +17,7 @@ public class DataManager {
   private static List<User> userList = new ArrayList<User>();
   private static List<Account> accountList = new ArrayList<Account>();
   private static List<Transaction> transactionList = new ArrayList<Transaction>();
+  private static int accountCounter = 0;
 
   private DataManager() {}
 
@@ -109,6 +110,8 @@ public class DataManager {
   public static void addAccount(Account a) {
     if (accountList.contains(a))
       throw new IllegalArgumentException("Account already in accountList");
+    accountCounter +=1;
+    a.setId((long) accountCounter);
     accountList.add(a);
   }
 

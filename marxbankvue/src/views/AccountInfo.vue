@@ -123,13 +123,15 @@ export default defineComponent({
         amount: this.amount,
         accountId: this.selectedAccount.id,
       };
-      await this.deposit(request).then(() => {
-        this.setSelectedAccount(this.id);
-        this.showModal = false;
-      }).catch((err) => {
-        this.error = true;
-        this.errorMsg = err.message;
-      });
+      await this.deposit(request)
+        .then(() => {
+          this.setSelectedAccount(this.id);
+          this.showModal = false;
+        })
+        .catch((err) => {
+          this.error = true;
+          this.errorMsg = err.message;
+        });
     },
     /**
      * creates a withdraw request and uses the withdraw-action. Then updates
@@ -141,13 +143,15 @@ export default defineComponent({
         amount: this.amount,
         accountId: this.selectedAccount.id,
       };
-      await this.withdraw(request).then(() => {
-        this.setSelectedAccount(this.id);
-        this.showModal = false;
-      }).catch((err) => {
-        this.error = true;
-        this.errorMsg = err.message;
-      });
+      await this.withdraw(request)
+        .then(() => {
+          this.setSelectedAccount(this.id);
+          this.showModal = false;
+        })
+        .catch((err) => {
+          this.error = true;
+          this.errorMsg = err.message;
+        });
     },
     /**
      * updates the selectedAccount data property using the getAccountById-getter

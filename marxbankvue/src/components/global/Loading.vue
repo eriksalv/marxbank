@@ -21,16 +21,19 @@
       src="/Sickle.svg"
       alt=""
       :class="
-        loading
-          ? 'communismIcon left-1 loading'
-          : 'communismIcon left-1'
+        loading ? 'communismIcon left-1 loading' : 'communismIcon left-1'
       " />
   </div>
 </template>
 
 <script>
 export default {
-  props: ["loading"],
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
 };
 </script>
 
