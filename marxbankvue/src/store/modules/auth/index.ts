@@ -12,6 +12,7 @@ const state: AuthState = {
     token: null,
     expiresIn: null,
   },
+  autoLogout: false,
   statusCode: 0,
 };
 

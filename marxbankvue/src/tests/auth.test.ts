@@ -18,6 +18,7 @@ const testState: AuthState = {
     token: null,
     expiresIn: null,
   },
+  autoLogout: false,
 };
 
 describe("getters", () => {

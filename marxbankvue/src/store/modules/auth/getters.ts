@@ -26,4 +26,7 @@ export const getters: GetterTree<AuthState, RootState> = {
   getStatusCode: (state): number => {
     return state.statusCode;
   },
+  getAutoLogout: (state): boolean => {
+    return state.autoLogout;
+  },
 };

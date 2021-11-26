@@ -112,11 +112,8 @@ public class AuthController {
   @PostMapping("/logout")
   public ResponseEntity<String> logout(
       @RequestHeader(name = "Authorization", required = false) @Nullable String token) {
-    System.out.println(token);
-
     if (token == null) {
-      System.out.println("WTFFFFFFFFFFFFFFFFFFF");
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Fuck you");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
     }
 
     if (!tokenRepository.findByToken(token).isPresent())

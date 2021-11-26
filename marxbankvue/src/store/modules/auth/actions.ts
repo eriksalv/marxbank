@@ -5,6 +5,7 @@ import { LoginRequest, LoginResponse, SignUpRequest } from "@/types/types";
 import axios from "axios";
 
 const BASE_URL = "/auth";
+let timer: number;
 
 export const actions: ActionTree<AuthState, RootState> = {
   /**
@@ -21,6 +22,9 @@ export const actions: ActionTree<AuthState, RootState> = {
       });
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("tokenData");
+      if (timer) {
+        clearTimeout(timer);
+      }
     });
   },
   /**
@@ -28,7 +32,7 @@ export const actions: ActionTree<AuthState, RootState> = {
    * user
    * @param user login request
    */
-  async login({ commit }, user: LoginRequest): Promise<void> {
+  async login({ commit, dispatch }, user: LoginRequest): Promise<void> {
     commit("setStatus", { status: "loading" });
     await axios
       .post(BASE_URL + "/login", {
@@ -36,10 +40,15 @@ export const actions: ActionTree<AuthState, RootState> = {
         password: user.password,
       })
       .then((response) => {
+        const expirationTime = +response.data.expiresIn;
+        timer = setTimeout(() => {
+          dispatch("autoLogout");
+        }, expirationTime);
+
         const tokenData = {
           userId: response.data.userResponse.id,
           token: response.data.token,
-          expiresIn: response.data.expiresIn,
+          expiresIn: expirationTime,
         };
         axios.defaults.headers.common["Authorization"] = tokenData.token;
         localStorage.setItem("tokenData", JSON.stringify(tokenData));
@@ -62,7 +71,7 @@ export const actions: ActionTree<AuthState, RootState> = {
    * user
    * @param user signup request
    */
-  async signup({ commit }, user: SignUpRequest) {
+  async signup({ commit, dispatch }, user: SignUpRequest) {
     commit("setStatus", { status: "loading" });
     await axios
       .post(BASE_URL + "/signup", {
@@ -71,10 +80,15 @@ export const actions: ActionTree<AuthState, RootState> = {
         email: user.email,
       })
       .then((response) => {
+        const expirationTime = +response.data.expiresIn;
+        timer = setTimeout(() => {
+          dispatch("autoLogout");
+        }, expirationTime);
+
         const tokenData = {
           userId: response.data.userResponse.id,
           token: response.data.token,
-          expiresIn: response.data.expiresIn,
+          expiresIn: expirationTime,
         };
         axios.defaults.headers.common["Authorization"] = tokenData.token;
         localStorage.setItem("tokenData", JSON.stringify(tokenData));
@@ -91,12 +105,31 @@ export const actions: ActionTree<AuthState, RootState> = {
       });
   },
 
-  autoLogin({ commit }) {
-    const tokenData = localStorage.getItem("tokenData");
-    if (tokenData) {
-      commit("setTokenData", JSON.parse(tokenData));
-      axios.defaults.headers.common["Authorization"] =
-        JSON.parse(tokenData).token;
+  autoLogin({ commit, dispatch }) {
+    const tokenDataString = localStorage.getItem("tokenData");
+    if (tokenDataString) {
+      const tokenData = JSON.parse(tokenDataString);
+      const expirationTime = tokenData.expiresIn - new Date().getTime();
+
+      if (expirationTime < 60000) {
+        //refresh token if expirationTime is less than 60 seconds
+        commit("setExpiresIn", tokenData.expiresIn);
+        timer = setTimeout(() => {
+          dispatch("autoLogout");
+        }, tokenData.expiresIn);
+      } else {
+        timer = setTimeout(() => {
+          dispatch("autoLogout");
+        }, expirationTime);
+      }
+
+      commit("setTokenData", tokenData);
+      axios.defaults.headers.common["Authorization"] = tokenData.token;
     }
+  },
+
+  autoLogout({ commit, dispatch }) {
+    dispatch("logout");
+    commit("setAutoLogout");
   },
 };

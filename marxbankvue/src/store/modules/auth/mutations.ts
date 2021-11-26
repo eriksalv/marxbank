@@ -14,6 +14,7 @@ export const mutations: MutationTree<AuthState> = {
   },
   setExpiresIn: (state, expiresIn: number | null) => {
     state.tokenData.expiresIn = expiresIn;
+    state.autoLogout = false;
   },
   setStatus: (state, payload: { status: Status; errorMsg?: String }) => {
     state.status = payload.status;
@@ -29,5 +30,9 @@ export const mutations: MutationTree<AuthState> = {
   },
   setTokenData: (state, tokenData: TokenData) => {
     state.tokenData = tokenData;
+    state.autoLogout = false;
+  },
+  setAutoLogout: (state) => {
+    state.autoLogout = true;
   },
 };

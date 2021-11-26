@@ -32,6 +32,7 @@
         w-screen
         min-h-screen
       ">
+      <ErrorAlert class="mt-3" :message="loginExpired" @onHideAlert="loginExpired = null" />
       <router-view />
     </main>
   </div>
@@ -41,6 +42,7 @@
 import Header from "@/components/Header.vue";
 import SideBar from "@/components/SideBar.vue";
 import Loading from "./components/global/Loading.vue";
+import ErrorAlert from "./components/global/ErrorAlert.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -48,6 +50,12 @@ export default {
     Header,
     SideBar,
     Loading,
+    ErrorAlert,
+  },
+  data() {
+    return {
+      loginExpired: false,
+    }
   },
   computed: {
     ...mapGetters([
@@ -57,10 +65,23 @@ export default {
       "transactionStatus",
       "userStatus",
       "accountStatus",
+      "getAutoLogout",
     ]),
   },
+  watch: {
+    getAutoLogout(curValue, oldValue) {
+      if (curValue && curValue != oldValue) {
+        this.$router.replace({ path: "/login" });
+        this.loginExpired = "Login expired";
+      }
+    },
+    isLoggedIn(curValue, oldValue) {
+      if (curValue && curValue != oldValue) {
+        this.loginExpired = null;
+      }
+    }
+  },
   created() {
-    //localStorage.removeItem("tokenData");
     this.autoLogin();
   },
   mounted() {

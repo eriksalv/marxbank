@@ -3,6 +3,7 @@ import { Status } from "@/store/types";
 export interface AuthState {
   status: Status;
   tokenData: TokenData;
+  autoLogout: boolean;
   statusCode: number;
 }
 
