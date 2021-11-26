@@ -34,7 +34,16 @@
               Totalbeløp på konto:
             </p>
             <p class="text-white text-2xl mt-2 font-bold">
-              {{ filterAccountsByUserId(getUserId).length ? filterAccountsByUserId(getUserId).map(acc => acc.balance).reduce((prevBalance, curBalance) => prevBalance + curBalance) : 0 }} kr 
+              {{
+                filterAccountsByUserId(getUserId).length
+                  ? filterAccountsByUserId(getUserId)
+                      .map((acc) => acc.balance)
+                      .reduce(
+                        (prevBalance, curBalance) => prevBalance + curBalance
+                      )
+                  : 0
+              }}
+              kr
             </p>
           </div>
         </div>
@@ -123,7 +132,11 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
-  computed: mapGetters(["allTransactions", "getUserId", "filterAccountsByUserId"]),
+  computed: mapGetters([
+    "allTransactions",
+    "getUserId",
+    "filterAccountsByUserId",
+  ]),
   components: {
     MyFavorites,
     RecentTransaction,

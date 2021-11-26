@@ -56,7 +56,9 @@ describe("Home", () => {
     mockAllTransactions = jest
       .fn()
       .mockReturnValue(initTransactionState.transactions);
-    mockFilterAccountsByUserId = jest.fn().mockReturnValue(initAccountState.accounts);
+    mockFilterAccountsByUserId = jest
+      .fn()
+      .mockReturnValue(initAccountState.accounts);
     mockGetUserId = jest.fn();
     mockFetchAccounts = jest.fn();
     mockFetchAccountsByTransactions = jest.fn();
@@ -76,7 +78,7 @@ describe("Home", () => {
         fetchAccounts: mockFetchAccounts,
         fetchAccountsByTransactions: mockFetchAccountsByTransactions,
         fetchTransactions: mockFetchTransactions,
-      }
+      },
     });
   });
 
