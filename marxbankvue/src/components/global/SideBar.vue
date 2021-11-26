@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import SideBarIcon from "@/components/SideBarIcon.vue";
+import SideBarIcon from "@/components/global/SideBarIcon.vue";
 
 export default {
   name: "SideBar",

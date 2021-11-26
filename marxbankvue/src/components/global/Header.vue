@@ -3,7 +3,7 @@
     <div class="w-screen flex flex-row flex-wrap justify-center">
       <img
         class="mr-6 float-left w-12 h-12 md:w-24 md:h-24"
-        src="../assets/logo.png"
+        src="../../assets/logo.png"
         alt="logo" />
       <h1 class="relative top-2 md:top-4 text-3xl md:text-6xl font-bold mb-3">
         Marx Bank

@@ -17,7 +17,6 @@ export const actions: ActionTree<AccountState, RootState> = {
       .then((response) => {
         let accounts: Array<Account> = [];
         response.data.forEach((element: any) => {
-          console.log(element);
           const account: Account = {
             id: element.id,
             userId: element.user,
@@ -48,7 +47,6 @@ export const actions: ActionTree<AccountState, RootState> = {
       .then((response) => {
         let accounts: Array<Account> = [];
         response.data.forEach((element: any) => {
-          console.log(element);
           const account: Account = {
             id: element.id,
             userId: element.userId,
