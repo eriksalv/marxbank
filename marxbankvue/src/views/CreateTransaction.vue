@@ -1,11 +1,7 @@
 <template>
   <main class="w-1/4">
-    <Alert
-        :message="successMsg"
-        @onHideAlert="successMsg = null" />
-    <ErrorAlert
-        :message="errorMsg"
-        @onHideAlert="errorMsg = null" />
+    <Alert :message="successMsg" @onHideAlert="successMsg = null" />
+    <ErrorAlert :message="errorMsg" @onHideAlert="errorMsg = null" />
     <h1>Fra</h1>
     <SearchBar
       id="fromAccount"
@@ -98,11 +94,11 @@ export default defineComponent({
         to: this.selectedRecieverAccount.id,
         amount: this.amount,
       };
-      this.createTransaction(transactionRequest).then(() => {
-        this.successMsg = "Transaction successfully commited"
-      }).catch((err: Error) =>
-        this.errorMsg = err.message
-      );
+      this.createTransaction(transactionRequest)
+        .then(() => {
+          this.successMsg = "Transaction successfully commited";
+        })
+        .catch((err: Error) => (this.errorMsg = err.message));
     },
   },
   async created() {

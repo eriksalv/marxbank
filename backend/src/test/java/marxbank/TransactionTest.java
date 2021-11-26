@@ -139,7 +139,7 @@ public class TransactionTest {
       transactionController.transferBetweenAccounts(null, null);
     });
     ResponseStatusException thrown2 = assertThrows(ResponseStatusException.class, () -> {
-      transactionController.transferBetweenAccounts("token", 
+      transactionController.transferBetweenAccounts("token",
           new TransactionRequest(accountId1, accountId2, 200));
     });
 

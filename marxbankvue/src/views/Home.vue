@@ -54,7 +54,10 @@
           " />
         <div v-if="allTransactions.length">
           <RecentTransaction
-            v-for="transaction in allTransactions.slice(allTransactions.length - 1, allTransactions.length)"
+            v-for="transaction in allTransactions.slice(
+              allTransactions.length - 1,
+              allTransactions.length
+            )"
             :key="transaction.amount"
             :date="transaction.date"
             :from="transaction.from"

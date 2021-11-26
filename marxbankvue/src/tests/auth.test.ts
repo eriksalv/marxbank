@@ -13,8 +13,12 @@ const rootState = {
 const testState: AuthState = {
   statusCode: 200,
   status: "",
-  token: null,
-  userId: null,
+  tokenData: {
+    userId: null,
+    token: null,
+    expiresIn: null,
+  },
+  autoLogout: false,
 };
 
 describe("getters", () => {
@@ -43,7 +47,7 @@ describe("mutations", () => {
 
     const isLoggedIn = getters.isLoggedIn(testState, null, rootState, null);
 
-    expect(testState.token).toEqual(newToken);
+    expect(testState.tokenData.token).toEqual(newToken);
     expect(isLoggedIn).toEqual(true);
   });
   it("test setStatus", () => {
@@ -58,7 +62,7 @@ describe("mutations", () => {
 
       mutations.setUserId(testState, newId);
 
-      expect(testState.userId).toEqual(newId);
+      expect(testState.tokenData.userId).toEqual(newId);
     });
 });
 
@@ -87,17 +91,21 @@ describe("actions", () => {
           id: 1,
         },
         token: "token",
+        expiresIn: 10,
         status: 200,
       };
       const login = actions.login as Function;
       mock.onPost("/auth/login").reply(200, response);
 
       await login({ commit, testState }, request).then(() => {
-        expect(commit).toHaveBeenCalledTimes(5);
+        expect(commit).toHaveBeenCalledTimes(4);
         expect(commit).toHaveBeenCalledWith("setStatus", { status: "loading" });
         expect(commit).toHaveBeenCalledWith("setStatus", { status: "success" });
-        expect(commit).toHaveBeenCalledWith("setUserId", 1);
-        expect(commit).toHaveBeenCalledWith("setToken", "token");
+        expect(commit).toHaveBeenCalledWith("setTokenData", {
+          token: "token",
+          expiresIn: 10,
+          userId: 1,
+        });
         expect(commit).toHaveBeenCalledWith("setStatusCode", 200);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/auth/login`);
@@ -140,17 +148,21 @@ describe("actions", () => {
           id: 1,
         },
         token: "token",
+        expiresIn: 10,
         status: 200,
       };
       const signup = actions.signup as Function;
       mock.onPost("/auth/signup").reply(200, response);
 
       await signup({ commit, testState }, request).then(() => {
-        expect(commit).toHaveBeenCalledTimes(5);
+        expect(commit).toHaveBeenCalledTimes(4);
         expect(commit).toHaveBeenCalledWith("setStatus", { status: "loading" });
         expect(commit).toHaveBeenCalledWith("setStatus", { status: "success" });
-        expect(commit).toHaveBeenCalledWith("setUserId", 1);
-        expect(commit).toHaveBeenCalledWith("setToken", "token");
+        expect(commit).toHaveBeenCalledWith("setTokenData", {
+          token: "token",
+          expiresIn: 10,
+          userId: 1,
+        });
         expect(commit).toHaveBeenCalledWith("setStatusCode", 200);
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/auth/signup`);
@@ -185,17 +197,19 @@ describe("actions", () => {
   describe("logout", () => {
     it("valid logout", async () => {
       const commit = jest.fn();
-      const request = "token";
       const logout = actions.logout as Function;
       mock.onPost("/auth/logout").reply(200);
 
-      await logout({ commit, testState }, request).then(() => {
+      await logout({ commit, testState }).then(() => {
         expect(commit).toHaveBeenCalledTimes(2);
         expect(commit).toHaveBeenCalledWith("setStatus", { status: "" });
-        expect(commit).toHaveBeenCalledWith("setToken", null);
+        expect(commit).toHaveBeenCalledWith("setTokenData", {
+          token: null,
+          userId: null,
+          expiresIn: null,
+        });
         expect(mock.history.post.length).toEqual(1);
         expect(mock.history.post[0].url).toEqual(`/auth/logout`);
-        expect(mock.history.post[0].data).toBe(request);
       });
     });
   });

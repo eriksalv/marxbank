@@ -79,7 +79,6 @@ describe("My profile", () => {
     await wrapper.find("#logout").trigger("click");
 
     expect(mockLogout).toHaveBeenCalledTimes(1);
-    expect(mockGetToken).toHaveBeenCalledTimes(1);
     expect(mockRouter.push).toHaveBeenCalledTimes(1);
     expect(mockRouter.push).toHaveBeenCalledWith("/login");
   });

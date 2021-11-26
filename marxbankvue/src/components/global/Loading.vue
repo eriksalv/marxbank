@@ -21,9 +21,7 @@
       src="/Sickle.svg"
       alt=""
       :class="
-        loading
-          ? 'communismIcon left-1 loading'
-          : 'communismIcon left-1'
+        loading ? 'communismIcon left-1 loading' : 'communismIcon left-1'
       " />
   </div>
 </template>

@@ -29,7 +29,7 @@ public class AuthService {
   }
 
   @Transactional
-  public String createTokenForUser(User user) {
+  public Token createTokenForUser(User user) {
     String token = UUID.randomUUID().toString();
 
     Token t = user.getToken();
@@ -40,11 +40,11 @@ public class AuthService {
       user.setToken(new Token(user, token));
     }
 
-    return token;
+    return user.getToken();
   }
 
   @Transactional
-  public String createTokenForUser(Long userId) {
+  public Token createTokenForUser(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return createTokenForUser(user);
   }

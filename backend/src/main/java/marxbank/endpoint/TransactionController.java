@@ -198,7 +198,8 @@ public class TransactionController {
       @RequestBody TransactionRequest request) {
 
     if (request == null || request.getFrom() == null || request.getTo() == null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error: Must fill out sender and reciever accounts");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Error: Must fill out sender and reciever accounts");
     }
 
     if (token == null || authService.getUserFromToken(token) == null) {
