@@ -59,6 +59,9 @@ export default defineComponent({
       "getUserId",
     ]),
   },
+  async created() {
+    await this.fetchAccounts();
+  },
   methods: {
     ...mapActions(["createTransaction", "fetchAccounts"]),
     /**
@@ -100,9 +103,6 @@ export default defineComponent({
         })
         .catch((err: Error) => (this.errorMsg = err.message));
     },
-  },
-  async created() {
-    await this.fetchAccounts();
   },
 });
 </script>

@@ -28,7 +28,12 @@
 
 <script>
 export default {
-  props: ["loading"],
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
 };
 </script>
 

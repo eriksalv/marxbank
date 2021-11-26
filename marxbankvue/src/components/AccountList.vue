@@ -42,10 +42,10 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "AccountList",
-  computed: mapGetters(["filterAccountsByUserId", "getUserId"]),
   components: {
     Account,
   },
+  computed: mapGetters(["filterAccountsByUserId", "getUserId"]),
   methods: {
     showAccount(id) {
       this.$router.push({ name: "AccountInfo", params: { id: id } });
