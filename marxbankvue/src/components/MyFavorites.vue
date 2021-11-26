@@ -11,12 +11,15 @@
         class="account"
         @click="showAccount(account.id)" />
     </div>
-    <div v-else class="italic">Ingen kontoer tilknyttet</div>
+    <div v-else>
+      <CreateAccountPath />
+    </div>
   </div>
 </template>
 
 <script>
 import MyFavorite from "./MyFavorite.vue";
+import CreateAccountPath from "./CreateAccountPath.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -24,6 +27,7 @@ export default {
   computed: mapGetters(["filterAccountsByUserId", "getUserId"]),
   components: {
     MyFavorite,
+    CreateAccountPath,
   },
   methods: {
     showAccount(id) {
