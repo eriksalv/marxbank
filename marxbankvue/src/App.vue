@@ -32,7 +32,10 @@
         w-screen
         min-h-screen
       ">
-      <ErrorAlert class="mt-3" :message="loginExpired" @onHideAlert="loginExpired = null" />
+      <ErrorAlert
+        class="mt-3"
+        :message="loginExpired"
+        @onHideAlert="loginExpired = null" />
       <router-view />
     </main>
   </div>
@@ -55,7 +58,7 @@ export default {
   data() {
     return {
       loginExpired: false,
-    }
+    };
   },
   computed: {
     ...mapGetters([
@@ -79,7 +82,7 @@ export default {
       if (curValue && curValue != oldValue) {
         this.loginExpired = null;
       }
-    }
+    },
   },
   created() {
     this.autoLogin();
