@@ -6,9 +6,17 @@ For den siste releasen bestemte vi oss for å lage en ny frontend klient som tar
 
 Den nye web-klienten er laget med Vue 3 og TypeScript. Målet var å få denne klienten til å støtte omtrent samme funksjonalitet som FX-klienten, men med et bedre design. Vi endte også opp med å legge til noe ny funksjonalitet, f.eks å kunne sette inn og ta ut penger fra konto, men ingen store forandringer. For mer info om Vue-appen, les readme fila i `marxbankvue`-modulen.
 
+## Ny funksjonalitet
+
+### Kryptering av passord
+
+### Autentisering med token
+
+En ny klasse, Token.java, er laget i `core`-modulen, som er tilknyttet en User, og brukes for autentisering i `backend`-modulen. Token har et felt som angir ekspirasjonstiden dens, og brukes av web-klienten til å logge ut automatisk etter at ekspirasjonstiden er nådd. Token brukes også til å logge inn automatisk ved at den lagres i localStorage. 
+
 ## Backend
 
-(skriv om backend her)
+Backend-modulen består av 4 endpoints: AuthController, UserController, AccountController, og TransactionController
 
 ## Arbeidsvaner
 
