@@ -44,7 +44,7 @@ export default {
   props: {
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * if the searchbar is for the reciever account,
