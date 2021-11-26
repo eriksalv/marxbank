@@ -79,9 +79,6 @@ import { SignUpRequest } from "../types/types";
 
 export default defineComponent({
   name: "RegisterComponent",
-  computed: {
-    ...mapGetters(["authStatus", "getStatusCode"]),
-  },
   data() {
     return {
       username: "",
@@ -91,6 +88,9 @@ export default defineComponent({
       errorMessage: "",
       error: false,
     };
+  },
+  computed: {
+    ...mapGetters(["authStatus", "getStatusCode"]),
   },
   methods: {
     ...mapActions(["signup"]),

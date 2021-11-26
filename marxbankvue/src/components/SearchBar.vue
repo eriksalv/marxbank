@@ -41,6 +41,31 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "SearchBar",
+  props: {
+    data: {
+      type: Array,
+      default: () => []
+    },
+    /**
+     * if the searchbar is for the reciever account,
+     * additional information should not be displayed
+     */
+    reciever: {
+      type: Boolean,
+      default: false,
+    },
+    placeholder: {
+      type: String,
+      default: "",
+    },
+  },
+  emits: ["termChanged", "accountSelected"],
+  data() {
+    return {
+      selectedAccount: {},
+      accountNotFound: false,
+    };
+  },
   computed: {
     ...mapGetters(["getAccountById", "accountStatus"]),
   },
@@ -66,21 +91,6 @@ export default {
       console.log(account);
       this.onSelectAccount(account);
     },
-  },
-  props: {
-    data: Array,
-    /**
-     * if the searchbar is for the reciever account,
-     * additional information should not be displayed
-     */
-    reciever: Boolean,
-    placeholder: String,
-  },
-  data() {
-    return {
-      selectedAccount: {},
-      accountNotFound: false,
-    };
   },
 };
 </script>

@@ -132,15 +132,15 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
+  components: {
+    MyFavorites,
+    RecentTransaction,
+  },
   computed: mapGetters([
     "allTransactions",
     "getUserId",
     "filterAccountsByUserId",
   ]),
-  components: {
-    MyFavorites,
-    RecentTransaction,
-  },
   async created() {
     await Promise.all([
       this.fetchAccounts(),

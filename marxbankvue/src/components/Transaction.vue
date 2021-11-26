@@ -38,7 +38,24 @@
 <script>
 export default {
   name: "Transaction",
-  props: ["date", "from", "to", "amount"],
+  props: {
+    date: {
+      type: String,
+      default: "",
+    },
+    from: {
+      type: Number,
+      default: 0,
+    },
+    to: {
+      type: Number,
+      default: 0,
+    },
+    amount: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       fromAccount: null,

@@ -40,7 +40,13 @@
 
 <script>
 export default {
-  props: ["message"],
+  props: {
+    message: {
+      type: String,
+      default: "",
+    }
+  },
+  emits: ["onHideAlert"],
   methods: {
     hideAlert() {
       this.$emit("onHideAlert");

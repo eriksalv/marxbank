@@ -34,9 +34,16 @@
 <script>
 export default {
   props: {
-    type: String,
-    text: String,
+    type: {
+      type: String,
+      default: "",
+    },
+    text: {
+      type: String,
+      default: "",
+    },
   },
+  emits: ["termChanged"],
   methods: {
     isFloat: function (evt) {
       evt = evt ? evt : window.event;

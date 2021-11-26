@@ -20,11 +20,11 @@ export default {
   computed: {
     ...mapGetters(["accountStatus"]),
   },
-  methods: {
-    ...mapActions(["fetchAccounts"]),
-  },
   async created() {
     await this.fetchAccounts();
+  },
+  methods: {
+    ...mapActions(["fetchAccounts"]),
   },
 };
 </script>

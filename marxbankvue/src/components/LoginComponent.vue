@@ -125,9 +125,6 @@ export default defineComponent({
   components: {
     RegisterComponent,
   },
-  computed: {
-    ...mapGetters(["authStatus", "getStatusCode"]),
-  },
   data() {
     return {
       username: "",
@@ -136,6 +133,9 @@ export default defineComponent({
       error: false,
       errorMessage: "",
     };
+  },
+  computed: {
+    ...mapGetters(["authStatus", "getStatusCode"]),
   },
   methods: {
     ...mapActions(["login"]),
