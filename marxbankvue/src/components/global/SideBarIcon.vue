@@ -16,7 +16,7 @@ export default {
       type: String,
       default: "",
     },
-    next: {
+    text: {
       type: String,
       default: "",
     },
