@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import SideBar from "@/components/SideBar.vue";
+import Header from "./components/global/Header.vue";
+import SideBar from "./components/global/SideBar.vue";
 import Loading from "./components/global/Loading.vue";
 import ErrorAlert from "./components/global/ErrorAlert.vue";
 import { mapGetters, mapActions } from "vuex";
@@ -85,6 +85,7 @@ export default {
     },
   },
   created() {
+    //localStorage.removeItem("tokenData");
     this.autoLogin();
   },
   mounted() {
