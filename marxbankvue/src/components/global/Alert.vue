@@ -44,7 +44,7 @@ export default {
     message: {
       type: String,
       default: "",
-    }
+    },
   },
   emits: ["onHideAlert"],
   methods: {
