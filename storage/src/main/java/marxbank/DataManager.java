@@ -312,6 +312,11 @@ public class DataManager {
     return null;
   }
 
+  public static Account getAccount(int accountNumber) {
+    return getAccounts().stream().filter(acc -> acc.getAccountNumber() == accountNumber).findFirst().orElseThrow(
+        () -> new IllegalStateException("Could not find account with given account number: " + accountNumber));
+  }
+
   /**
    * Gets Transaction object given its id
    * 
@@ -383,5 +388,6 @@ public class DataManager {
     userList = new ArrayList<User>();
     accountList = new ArrayList<Account>();
     transactionList = new ArrayList<Transaction>();
+    accountCounter.set(1);
   }
 }
