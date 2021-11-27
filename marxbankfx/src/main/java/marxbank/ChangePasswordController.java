@@ -3,7 +3,7 @@ package marxbank;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
 import marxbank.model.User;
 
 public class ChangePasswordController {
@@ -13,15 +13,15 @@ public class ChangePasswordController {
   @FXML
   private Label currentPasswordLabel;
   @FXML
-  private TextField currentPasswordField;
+  private PasswordField currentPasswordField;
   @FXML
   private Label newPasswordLabel;
   @FXML
-  private TextField newPasswordField;
+  private PasswordField newPasswordField;
   @FXML
   private Label confirmNewPasswordLabel;
   @FXML
-  private TextField confirmNewPasswordField;
+  private PasswordField confirmNewPasswordField;
   @FXML
   private Button saveButton;
   @FXML

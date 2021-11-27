@@ -25,11 +25,7 @@
         text="Årlig rente"
         @termChanged="onInputChanged4" />
     </main>
-    <button
-      class="button w-80"
-      @click="calc">
-      Beregn beløp
-    </button>
+    <button class="button w-80" @click="calc">Beregn beløp</button>
     <div v-if="showTotalAmount">
       <br />
       <br />
