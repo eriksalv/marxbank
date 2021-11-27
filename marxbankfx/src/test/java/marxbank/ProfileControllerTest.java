@@ -102,7 +102,7 @@ public class ProfileControllerTest extends ApplicationTest {
     clickOn("#changePasswordButton");
     clickOn("#currentPasswordField").write("wrongPassword");
     clickOn("#saveButton");
-    assertEquals("Feil passord", lookup("#saveButton").queryAs(Button.class).getText());
+    assertEquals("Feil passord", lookup("#errorMsg").queryAs(Label.class).getText());
   }
 
   @Test
@@ -112,7 +112,7 @@ public class ProfileControllerTest extends ApplicationTest {
     clickOn("#newPasswordField").write("newPassword");
     clickOn("#saveButton");
     assertEquals("Passord kan ikke være tomt",
-        lookup("#saveButton").queryAs(Button.class).getText());
+        lookup("#errorMsg").queryAs(Label.class).getText());
   }
 
   @Test
@@ -122,7 +122,7 @@ public class ProfileControllerTest extends ApplicationTest {
     clickOn("#newPasswordField").write("newPassword");
     clickOn("#confirmNewPasswordField").write("notNewPassword");
     clickOn("#saveButton");
-    assertEquals("Passordene stemmer ikke", lookup("#saveButton").queryAs(Button.class).getText());
+    assertEquals("Passordene stemmer ikke", lookup("#errorMsg").queryAs(Label.class).getText());
   }
 
   @Test
@@ -132,7 +132,7 @@ public class ProfileControllerTest extends ApplicationTest {
     clickOn("#newPasswordField").write(user.getPassword());
     clickOn("#confirmNewPasswordField").write(user.getPassword());
     clickOn("#saveButton");
-    assertEquals("Ikke et nytt passord", lookup("#saveButton").queryAs(Button.class).getText());
+    assertEquals("Ikke et nytt passord", lookup("#errorMsg").queryAs(Label.class).getText());
   }
 
   @Test
@@ -142,9 +142,8 @@ public class ProfileControllerTest extends ApplicationTest {
     clickOn("#newPasswordField").write("newPassword");
     clickOn("#confirmNewPasswordField").write("newPassword");
     clickOn("#saveButton");
-    assertEquals("Oppdatert", lookup("#saveButton").queryAs(Button.class).getText());
+    assertEquals("Oppdatert", lookup("#errorMsg").queryAs(Label.class).getText());
     assertEquals("newPassword", user.getPassword());
-    assertEquals("newPassword", lookup("#passwordLabel").queryAs(Label.class).getText());
   }
 
   private void resetSingleton() {
