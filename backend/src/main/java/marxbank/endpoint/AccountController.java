@@ -47,6 +47,17 @@ public class AccountController {
     this.transactionService = transactionService;
   }
 
+  @GetMapping("/{id}")
+  @Transactional
+  public ResponseEntity<PublicAccountResponse> findById(@PathVariable Long id) {
+    if (!accountRepository.findById(id).isPresent()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
+    }
+    Account acc = accountRepository.findById(id).get();
+
+    return ResponseEntity.status(HttpStatus.OK).body(new PublicAccountResponse(acc));
+  }
+
   /**
    * finds all accounts that a given user has had transactions with.
    * 
