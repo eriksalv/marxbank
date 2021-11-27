@@ -9,7 +9,6 @@ import marxbank.util.AccountType;
 public class AccountResponse {
     
     private Long id;
-    private int accountNumber;
     private String type;
     private Long userId;
     private String name;
@@ -29,7 +28,6 @@ public class AccountResponse {
  */
     public AccountResponse(Account account){
         this.id = account.getId();
-        this.accountNumber = account.getAccountNumber();
         this.type = account.getType().getTypeString();
         this.userId = account.getUser().getId();
         this.name = account.getName();
@@ -46,12 +44,6 @@ public class AccountResponse {
     }
     public Long getId(){
         return this.id;
-    }
-    public void setAccountNumber(int newAccountNumber){
-        this.accountNumber = newAccountNumber;
-    }
-    public int getAccountNumber(){
-        return this.accountNumber;
     }
     public void setType(AccountType newType){
         this.type = newType.getTypeString();

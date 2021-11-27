@@ -12,10 +12,10 @@
       {{ date }}
     </td>
     <td class="px-4 py-3 text-sm">
-      {{ fromAccount.name }}
+      {{ fromAccount.name }} : {{ from }}
     </td>
     <td class="px-4 py-3 text-sm">
-      {{ toAccount.name }}
+      {{ toAccount.name }} : {{ to }}
     </td>
     <td class="px-4 py-3 text-xs">
       <span

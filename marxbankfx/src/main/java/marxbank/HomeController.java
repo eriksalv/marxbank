@@ -62,7 +62,7 @@ public class HomeController {
   private void createFavorites() {
     Account a = user.getAccounts().get(0);
     accountLabel.setText(a.getName());
-    accountNumberLabel.setText(Long.toString(a.getId()));
+    accountNumberLabel.setText(Integer.toString(a.getAccountNumber()));
     amountLabel.setText("kr " + Double.toString(a.getBalance()));
   }
 
