@@ -23,8 +23,6 @@ public class ProfileController {
   @FXML
   private Label usernameLabel;
   @FXML
-  private Label passwordLabel;
-  @FXML
   private Button changePasswordButton;
   @FXML
   private Pane newPane;
@@ -36,7 +34,6 @@ public class ProfileController {
     nameLabel.setText(user.getEmail());
     idLabel.setText(user.getId().toString());
     usernameLabel.setText(user.getUsername());
-    passwordLabel.setText(user.getPassword());
   }
 
   @FXML
@@ -48,10 +45,6 @@ public class ProfileController {
     controller.initData(user, this);
 
     newPane.getChildren().setAll(pane);
-  }
-
-  public void updatePassword() {
-    passwordLabel.setText(user.getPassword());
   }
 
   public void closeChangePassword() {

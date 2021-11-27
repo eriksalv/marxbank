@@ -26,6 +26,8 @@ public class ChangePasswordController {
   private Button saveButton;
   @FXML
   private Button closeButton;
+  @FXML
+  private Label errorMsg;
 
   private User user;
   private ProfileController controller;
@@ -39,32 +41,34 @@ public class ChangePasswordController {
   public void handleSave() {
     if (!currentPasswordField.getText().equals(user.getPassword())
         && !currentPasswordField.getText().equals("")) {
-      saveButton.setText("Feil passord");
+      errorMsg.setText("Feil passord");
       return;
     }
     if ((newPasswordField.getText().equals("") || confirmNewPasswordField.getText().equals(""))
         && !currentPasswordField.getText().equals("")) {
-      saveButton.setText("Passord kan ikke være tomt");
+      errorMsg.setText("Passord kan ikke være tomt");
       return;
     }
     if (newPasswordField.getText().equals(user.getPassword())
         || confirmNewPasswordField.getText().equals(user.getPassword())) {
-      saveButton.setText("Ikke et nytt passord");
+      errorMsg.setText("Ikke et nytt passord");
       return;
     }
     if (!(confirmNewPasswordField.getText().equals(newPasswordField.getText()))) {
-      saveButton.setText("Passordene stemmer ikke");
+      errorMsg.setText("Passordene stemmer ikke");
       return;
     }
 
-    user.setPassword(newPasswordField.getText());
-    saveButton.setText("Oppdatert");
-    controller.updatePassword();
+    try {
+      user.setPassword(newPasswordField.getText());
+      errorMsg.setText("Oppdatert");
+    } catch (IllegalArgumentException e) {
+      errorMsg.setText(e.getMessage());
+    }
     try {
       DataManager.save();
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      errorMsg.setText("Noe gikk galt med lagring");
     }
     return;
 
