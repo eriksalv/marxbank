@@ -17,7 +17,7 @@
           <th class="th px-4 py-3">Kontonavn</th>
           <th class="th px-4 py-3">Disp. beløp</th>
           <th class="th px-4 py-3">Kontotype</th>
-          <th class="th px-4 py-3">Kontonummer</th>
+          <th class="th px-4 py-3">Id</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -25,7 +25,6 @@
           v-for="account in filterAccountsByUserId(getUserId)"
           :id="account.id"
           :key="account.id"
-          :acc-number="account.accNumber"
           :balance="account.balance"
           :acc-name="account.name"
           :type="account.type"

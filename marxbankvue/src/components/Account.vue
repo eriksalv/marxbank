@@ -32,7 +32,7 @@
       {{ type }}
     </td>
     <td class="px-4 py-3 text-sm">
-      {{ accNumber }}
+      {{ id }}
     </td>
   </tr>
 </template>

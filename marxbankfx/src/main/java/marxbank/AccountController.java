@@ -30,7 +30,7 @@ public class AccountController {
     accountName.setText(a.getName());
     accountType.setText(a.getTypeString());
     balance.setText("Disponibelt beløp: " + account.getBalance());
-    accountNumber.setText("Kontonummer: " + account.getId());
+    accountNumber.setText("Kontonummer: " + account.getAccountNumber());
     List<TransactionComponent> l = new ArrayList<TransactionComponent>();
     this.account.getTransactions().stream().forEach(t -> l.add(new TransactionComponent(t)));
     ObservableList<TransactionComponent> ol = FXCollections.observableList(l);

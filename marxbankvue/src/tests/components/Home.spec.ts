@@ -13,7 +13,6 @@ describe("Home", () => {
       {
         id: 1,
         userId: 1,
-        accNumber: 1,
         balance: 200,
         type: "Sparekonto",
         name: "test1",
@@ -22,7 +21,6 @@ describe("Home", () => {
       {
         id: 2,
         userId: 1,
-        accNumber: 2,
         balance: 300,
         type: "Sparekonto",
         name: "test2",

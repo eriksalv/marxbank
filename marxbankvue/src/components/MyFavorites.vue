@@ -4,10 +4,10 @@
       <MyFavorite
         v-for="account in filterAccountsByUserId(getUserId).slice(0, 3)"
         :key="account.id"
-        :acc-number="account.accNumber"
         :balance="account.balance"
         :acc-name="account.name"
         :type="account.type"
+        :id="account.id"
         class="account"
         @click="showAccount(account.id)" />
     </div>

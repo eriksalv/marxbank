@@ -3,6 +3,8 @@ package marxbank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
@@ -17,6 +19,7 @@ public class DataManager {
   private static List<User> userList = new ArrayList<User>();
   private static List<Account> accountList = new ArrayList<Account>();
   private static List<Transaction> transactionList = new ArrayList<Transaction>();
+  private static AtomicInteger accountCounter = new AtomicInteger(1);
 
   private DataManager() {}
 
@@ -58,6 +61,9 @@ public class DataManager {
    */
   public static Account createAccount(String type, User user, String name) {
     Account a = AccountFactory.create(type, user, name);
+    if (a == null) {
+      throw new IllegalArgumentException("No account type provided");
+    }
     addAccount(a);
     return a;
   }
@@ -109,6 +115,11 @@ public class DataManager {
   public static void addAccount(Account a) {
     if (accountList.contains(a))
       throw new IllegalArgumentException("Account already in accountList");
+    if (a.getId().equals(0l)) {
+      a.setId((long) accountCounter.get());
+      a.setAccountNumber(a.generateAccountNumber());
+    }
+    accountCounter.getAndIncrement();
     accountList.add(a);
   }
 
@@ -301,6 +312,11 @@ public class DataManager {
     return null;
   }
 
+  public static Account getAccount(int accountNumber) {
+    return getAccounts().stream().filter(acc -> acc.getAccountNumber() == accountNumber).findFirst().orElseThrow(
+        () -> new IllegalStateException("Could not find account with given account number: " + accountNumber));
+  }
+
   /**
    * Gets Transaction object given its id
    * 
@@ -372,5 +388,6 @@ public class DataManager {
     userList = new ArrayList<User>();
     accountList = new ArrayList<Account>();
     transactionList = new ArrayList<Transaction>();
+    accountCounter.set(1);
   }
 }
