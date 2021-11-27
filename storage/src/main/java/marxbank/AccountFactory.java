@@ -75,7 +75,7 @@ public class AccountFactory {
    * @param accountNumber of account
    * @return a new account object if input is valid, otherwise returns null.
    */
-  public static Account createFrom(String accountType, long id, User user, String name,
+  public static Account createFrom(String accountType, Long id, User user, String name,
       int accountNumber) {
     if ("Sparekonto".equalsIgnoreCase(accountType)) {
       return new SavingsAccount(id, user, 3, name, accountNumber);
