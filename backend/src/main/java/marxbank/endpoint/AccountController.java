@@ -159,8 +159,6 @@ public class AccountController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    a.setAccountNumber(a.generateAccountNumber());
-
     accountRepository.save(a);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(new AccountResponse(a));

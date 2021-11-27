@@ -21,7 +21,8 @@ public abstract class Account {
   @Id
   @GeneratedValue
   private Long id;
-  @Column
+  //account number is only needed for the local storage (fx) version of the app
+  @Column(nullable = true)
   private int accountNumber;
   @Column
   private AccountType type;
