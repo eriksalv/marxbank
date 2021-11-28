@@ -28,7 +28,7 @@ Oversikt over funskjonalitet:
 
 ## Generell klassestruktur
 
-![](../diagrammer/marxBankClassDiagram1.png)
+![](../diagrammer/KlassediagramMedDM(nytt).svg)
 
 ## Arv fra Account klassen
 
