@@ -2,6 +2,7 @@ package marxbank.API;
 
 import marxbank.AccountFactory;
 import marxbank.model.Account;
+import marxbank.util.AccountType;
 
 /**
  * Klassen holder på informasjonen frontenden må formidle fra brukeren når de ønsker å oppprette en ny bankkonto. 
@@ -50,6 +51,6 @@ public class AccountRequest {
  * @return - en ny konto
  */
     public Account buildAccount() {
-       return AccountFactory.create(this.getType(), this.getName());
+       return AccountFactory.create(AccountType.get(this.getType()), this.getName());
     }
 }

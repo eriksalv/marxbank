@@ -23,45 +23,52 @@ public class AccountFactory {
    *         string, null will be returned.
    *         </p>
    */
-  public static Account create(String accountType, User user, String name) {
-    if ("Sparekonto".equalsIgnoreCase(accountType)) {
-      return new SavingsAccount(user, name);
-    } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
-      return new CheckingAccount(user, name);
-    } else if ("Marxkonto".equalsIgnoreCase(accountType)) {
-      return new MarxAccount(user, name);
-    } else if ("Kredittkonto".equalsIgnoreCase(accountType)) {
-      return new CreditAccount(user, name);
+  public static Account create(AccountType accountType, User user, String name) {
+    switch(accountType) {
+      case CHECKING:
+        return new CheckingAccount(user, name);
+      case CREDIT:
+        return new CreditAccount(user, name);
+      case MARX:
+        return new MarxAccount(user, name);
+      case SAVING:
+        return new SavingsAccount(user, name);
+      default:
+        return null;
     }
-
-    return null;
   }
 
-  public static Account create(String type, String name){
+  public static Account create(AccountType accountType, String name){
       Account a = null;
-        if (AccountType.SAVING.getTypeString().equalsIgnoreCase(type)) {
-            a = new SavingsAccount();
-            a.setName(name);
-            a.setInterestRate(3.0);
-            a.setType(AccountType.SAVING);
-        } else if (AccountType.CHECKING.getTypeString().equalsIgnoreCase(type)) {
-            a = new CheckingAccount();
-            a.setName(name);
-            a.setInterestRate(0.5);
-            a.setType(AccountType.CHECKING);
-        } else if (AccountType.CREDIT.getTypeString().equalsIgnoreCase(type)) {
-            a = new CreditAccount();
-            a.setName(name);
-            a.setInterestRate(0);
-            a.setType(AccountType.CREDIT);
-        } else if (AccountType.MARX.getTypeString().equalsIgnoreCase(type)) {
-            a = new MarxAccount();
-            a.setName(name);
-            a.setInterestRate(0.01);
-            a.setType(AccountType.MARX);
-        }
-
-        return a;
+      switch(accountType) {
+        case CHECKING:
+          a = new CheckingAccount();
+          a.setName(name);
+          a.setInterestRate(0.5);
+          a.setType(AccountType.CHECKING);
+          break;
+        case CREDIT:
+          a = new CreditAccount();
+          a.setName(name);
+          a.setInterestRate(0);
+          a.setType(AccountType.CREDIT);
+          break;
+        case MARX:
+          a = new MarxAccount();
+          a.setName(name);
+          a.setInterestRate(0.01);
+          a.setType(AccountType.MARX);
+          break;
+        case SAVING:
+          a = new SavingsAccount();
+          a.setName(name);
+          a.setInterestRate(3.0);
+          a.setType(AccountType.SAVING);
+          break;
+        default:
+          return null;
+      }
+      return a;
     }
 
   /**
@@ -75,18 +82,19 @@ public class AccountFactory {
    * @param accountNumber of account
    * @return a new account object if input is valid, otherwise returns null.
    */
-  public static Account createFrom(String accountType, Long id, User user, String name,
+  public static Account createFrom(AccountType accountType, Long id, User user, String name,
       int accountNumber) {
-    if ("Sparekonto".equalsIgnoreCase(accountType)) {
-      return new SavingsAccount(id, user, 3, name, accountNumber);
-    } else if ("Brukskonto".equalsIgnoreCase(accountType)) {
-      return new CheckingAccount(id, user, 0.5, name, accountNumber);
-    } else if ("Marxkonto".equalsIgnoreCase(accountType)) {
-      return new MarxAccount(id, user, 0, name, accountNumber);
-    } else if ("Kredittkonto".equalsIgnoreCase(accountType)) {
-      return new CreditAccount(id, user, 0, name, accountNumber);
+    switch(accountType) {
+      case CHECKING:
+        return new CheckingAccount(id, user, 0.5, name, accountNumber);
+      case CREDIT:
+        return new CreditAccount(id, user, 0, name, accountNumber);
+      case MARX:
+        return new MarxAccount(id, user, 0, name, accountNumber);
+      case SAVING:
+        return new SavingsAccount(id, user, 3, name, accountNumber);
+      default:
+        return null;
     }
-
-    return null;
   }
 }
