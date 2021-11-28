@@ -32,6 +32,12 @@ public class SavingsCalcController {
     setText();
   }
 
+  public void reset() {
+    this.monthlyAmount.setText("");
+    this.lumpAmount.setText("");
+    this.period.setText("");
+    this.totalAmountText.setText("");
+  }
 
   private void setText() {
     interestRate.setText("1");

@@ -4,15 +4,12 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import marxbank.model.User;
-import javafx.scene.Node;
+import marxbank.util.Loader;
 
 public class ProfileController {
 
@@ -29,6 +26,14 @@ public class ProfileController {
 
   private User user;
 
+  private AnchorPane changePassword;
+  private ChangePasswordController changePasswordController;
+
+  @FXML
+  private void initialize() {
+    loadViews();
+  }
+
   public void initData(User u) {
     this.user = u;
     nameLabel.setText(user.getEmail());
@@ -36,15 +41,21 @@ public class ProfileController {
     usernameLabel.setText(user.getUsername());
   }
 
+  private void loadViews() {
+    try {
+      FXMLLoader changePasswordLoader = Loader.loadFXML(getClass(), "ChangePassword.fxml");
+      this.changePassword = changePasswordLoader.load();
+      this.changePasswordController = changePasswordLoader.getController();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   @FXML
   private void handleChangePassword(ActionEvent e) throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("ChangePassword.fxml"));
-    AnchorPane pane = loader.load();
-    ChangePasswordController controller = loader.getController();
-    controller.initData(user, this);
-
-    newPane.getChildren().setAll(pane);
+    changePasswordController.reset();
+    changePasswordController.initData(user, this);
+    newPane.getChildren().setAll(changePassword);
   }
 
   public void closeChangePassword() {
@@ -55,16 +66,6 @@ public class ProfileController {
   private void handleSignOut(ActionEvent e) throws IOException {
     DataManager.setLoggedInUser(null);
 
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("LogIn.fxml"));
-    Parent tableViewParent = loader.load();
-
-    Scene tableViewScene = new Scene(tableViewParent);
-
-    // Get stage information
-    Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
-
-    window.setScene(tableViewScene);
-    window.show();
+    Loader.changeScene(getClass(), "LogIn.fxml", e);
   }
 }

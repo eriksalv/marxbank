@@ -2,12 +2,12 @@ package marxbank;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import marxbank.model.Account;
-import marxbank.model.CheckingAccount;
 import marxbank.model.User;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class MyTransactionControllerTest extends ApplicationTest {
@@ -85,22 +85,15 @@ public class MyTransactionControllerTest extends ApplicationTest {
   public void testEmptyAccountNum() {
     a.deposit(100);
     clickOn("#amountText").write("100");
-    clickOn("#transactionBtn");
-    assertEquals(100, a.getBalance());
-    assertEquals(0, b.getBalance());
-    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
-
-    clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
-    assertEquals(100, a.getBalance());
-    assertEquals(0, b.getBalance());
-    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
+    Button btn = (Button) lookup("#transactionBtn").queryAs(Button.class);
+    assertTrue(btn.isDisabled());
   }
 
   @Test
-  public void testEmptyAmount() {
+  public void testInvalidAccount() {
     a.deposit(100);
-    clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
     clickOn("#recieverText").write("#" + b.getAccountNumber());
+    clickOn("#amountText").write("100");
     clickOn("#transactionBtn");
     assertEquals(100, a.getBalance());
     assertEquals(0, b.getBalance());
@@ -117,7 +110,8 @@ public class MyTransactionControllerTest extends ApplicationTest {
     clickOn("#transactionBtn");
     assertEquals(100, a.getBalance());
     assertEquals(0, b.getBalance());
-    assertEquals("Ikke nok disponibelt beløp på konto: name. Tilgjengelig beløp: 100.0",
+    assertEquals("Not enough balance on account",
+
         ((Label) lookup("#transactionFailedMsg").query()).getText());
   }
 }

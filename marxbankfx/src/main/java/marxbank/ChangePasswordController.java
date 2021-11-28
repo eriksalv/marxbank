@@ -1,5 +1,7 @@
 package marxbank;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,9 +34,28 @@ public class ChangePasswordController {
   private User user;
   private ProfileController controller;
 
+  @FXML
+  private void initialize() {
+    setBtnDisableProperty();
+  }
+
+  private void setBtnDisableProperty() {
+    BooleanBinding emptyText = Bindings.isEmpty(currentPasswordField.textProperty())
+        .or(Bindings.isEmpty(newPasswordField.textProperty()))
+        .or(Bindings.isEmpty(confirmNewPasswordField.textProperty()));
+    saveButton.disableProperty().bind(emptyText);
+  }
+
   public void initData(User user, ProfileController c) {
     this.controller = c;
     this.user = user;
+  }
+
+  public void reset() {
+    currentPasswordField.setText("");
+    newPasswordField.setText("");
+    confirmNewPasswordField.setText("");
+    errorMsg.setText("");
   }
 
   @FXML

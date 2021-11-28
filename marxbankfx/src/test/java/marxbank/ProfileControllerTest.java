@@ -97,22 +97,12 @@ public class ProfileControllerTest extends ApplicationTest {
   }
 
   @Test
-  @DisplayName("Test currentPassword field does not match users password")
-  public void testInvalidPassword() {
-    clickOn("#changePasswordButton");
-    clickOn("#currentPasswordField").write("wrongPassword");
-    clickOn("#saveButton");
-    assertEquals("Feil passord", lookup("#errorMsg").queryAs(Label.class).getText());
-  }
-
-  @Test
   public void testPasswordsEmpty() {
     clickOn("#changePasswordButton");
     clickOn("#currentPasswordField").write(user.getPassword());
     clickOn("#newPasswordField").write("newPassword");
-    clickOn("#saveButton");
-    assertEquals("Passord kan ikke være tomt",
-        lookup("#errorMsg").queryAs(Label.class).getText());
+    Button btn = (Button) lookup("#saveButton").queryAs(Button.class);
+    assertTrue(btn.isDisabled());
   }
 
   @Test
