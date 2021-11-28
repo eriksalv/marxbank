@@ -24,6 +24,10 @@ public class AccountFactory {
    *         </p>
    */
   public static Account create(AccountType accountType, User user, String name) {
+    if (accountType == null) {
+      return null;
+    }
+
     switch(accountType) {
       case CHECKING:
         return new CheckingAccount(user, name);
@@ -39,37 +43,41 @@ public class AccountFactory {
   }
 
   public static Account create(AccountType accountType, String name){
-      Account a = null;
-      switch(accountType) {
-        case CHECKING:
-          a = new CheckingAccount();
-          a.setName(name);
-          a.setInterestRate(0.5);
-          a.setType(AccountType.CHECKING);
-          break;
-        case CREDIT:
-          a = new CreditAccount();
-          a.setName(name);
-          a.setInterestRate(0);
-          a.setType(AccountType.CREDIT);
-          break;
-        case MARX:
-          a = new MarxAccount();
-          a.setName(name);
-          a.setInterestRate(0.01);
-          a.setType(AccountType.MARX);
-          break;
-        case SAVING:
-          a = new SavingsAccount();
-          a.setName(name);
-          a.setInterestRate(3.0);
-          a.setType(AccountType.SAVING);
-          break;
-        default:
-          return null;
-      }
-      return a;
+    if (accountType == null) {
+      return null;
     }
+
+    Account a = null;
+    switch(accountType) {
+      case CHECKING:
+        a = new CheckingAccount();
+        a.setName(name);
+        a.setInterestRate(0.5);
+        a.setType(AccountType.CHECKING);
+        break;
+      case CREDIT:
+        a = new CreditAccount();
+        a.setName(name);
+        a.setInterestRate(0);
+        a.setType(AccountType.CREDIT);
+        break;
+      case MARX:
+        a = new MarxAccount();
+        a.setName(name);
+        a.setInterestRate(0.01);
+        a.setType(AccountType.MARX);
+        break;
+      case SAVING:
+        a = new SavingsAccount();
+        a.setName(name);
+        a.setInterestRate(3.0);
+        a.setType(AccountType.SAVING);
+        break;
+      default:
+        return null;
+    }
+    return a;
+  }
 
   /**
    * second create method, primarily intended to be used when reading in account from file/database
@@ -84,6 +92,10 @@ public class AccountFactory {
    */
   public static Account createFrom(AccountType accountType, Long id, User user, String name,
       int accountNumber) {
+    if (accountType == null) {
+      return null;
+    }
+
     switch(accountType) {
       case CHECKING:
         return new CheckingAccount(id, user, 0.5, name, accountNumber);
