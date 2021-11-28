@@ -102,10 +102,7 @@
           <h2>egen bolig?</h2>
         </div>
         <div>
-          <button
-            id="calc"
-            class="button w-max"
-            @click="goToCalc">
+          <button id="calc" class="button w-max" @click="goToCalc">
             Prøv sparekalkulatoren!
           </button>
         </div>
@@ -163,7 +160,6 @@ export default {
   background-color: white;
 }
 .image {
-  
   max-height: 180px;
   border-radius: 2px;
 }

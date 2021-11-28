@@ -27,15 +27,9 @@
             </MenuButton>
             <Label text="Til (kontonummer)" />
             <TextField fx:id="recieverText" text="" />
-            <Label text="Forfallsdato (dd-MM-yyyy)" />
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <TextField fx:id="dateText"/>
-               </children>
-            </HBox>
             <Label text="Beløp" />
             <TextField fx:id="amountText" text="" />
-            <Button mnemonicParsing="false" text="Overfør" onAction="#handleCommitTransaction"/>
+            <Button fx:id="transactionBtn" mnemonicParsing="false" text="Overfør" onAction="#handleCommitTransaction"/>
             <Label fx:id="transactionCompleteMsg" text="Overføringen var vellykket" visible="false"/>
             <Label fx:id="transactionFailedMsg" text="" visible="false"/>
          </children>

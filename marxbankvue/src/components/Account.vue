@@ -25,7 +25,7 @@
           rounded-full
           dark:bg-green-700 dark:text-green-100
         ">
-        kr {{ balance }} 
+        kr {{ balance }}
       </span>
     </td>
     <td class="px-4 py-3 text-sm">

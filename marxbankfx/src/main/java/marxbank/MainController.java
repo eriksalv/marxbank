@@ -3,6 +3,7 @@ package marxbank;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -10,17 +11,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import marxbank.model.User;
+import marxbank.util.Loader;
 
 public class MainController {
 
   private User user;
 
   private String currentContent = "Home"; // used for testing
-
-  // public MainController(User user, DataManager dm) {
-  // this.user=user;
-  // this.dm=dm;
-  // }
 
   @FXML
   private AnchorPane main;
@@ -41,9 +38,66 @@ public class MainController {
   @FXML
   private Button savingsCalcMenuBtn;
 
+  private AnchorPane home;
+  private VBox myAccounts;
+  private AnchorPane transaction;
+  private Pane myTransactions;
+  private AnchorPane savingsCalc;
+  private AnchorPane profile;
+  private AnchorPane account;
+
+  private HomeController homeController;
+  private MyAccountsController myAccountsController;
+  private TransactionController transactionController;
+  private MyTransactionsController myTransactionsController;
+  private SavingsCalcController savingsCalcController;
+  private ProfileController profileController;
+  private AccountController accountController;
+
   @FXML
-  private void initialize() {
+  private void initialize() throws IOException {
+    initData();
+    // Loads all views on initialization, and never loads them again
+    loadViews();
     setSizeScaling();
+    handleHome();
+  }
+
+  /**
+   * Loads all views accessed through the main view
+   */
+  private void loadViews() {
+    try {
+      FXMLLoader homeLoader = Loader.loadFXML(getClass(), "Home.fxml");
+      this.home = homeLoader.load();
+      this.homeController = homeLoader.getController();
+
+      FXMLLoader myAccountsLoader = Loader.loadFXML(getClass(), "MyAccounts.fxml");
+      this.myAccounts = myAccountsLoader.load();
+      this.myAccountsController = myAccountsLoader.getController();
+
+      FXMLLoader transactionLoader = Loader.loadFXML(getClass(), "Transaction.fxml");
+      this.transaction = transactionLoader.load();
+      this.transactionController = transactionLoader.getController();
+
+      FXMLLoader myTransactionsLoader = Loader.loadFXML(getClass(), "MyTransactions.fxml");
+      this.myTransactions = myTransactionsLoader.load();
+      this.myTransactionsController = myTransactionsLoader.getController();
+
+      FXMLLoader savingsCalcLoader = Loader.loadFXML(getClass(), "SavingsCalc.fxml");
+      this.savingsCalc = savingsCalcLoader.load();
+      this.savingsCalcController = savingsCalcLoader.getController();
+
+      FXMLLoader profileLoader = Loader.loadFXML(getClass(), "Profile.fxml");
+      this.profile = profileLoader.load();
+      this.profileController = profileLoader.getController();
+
+      FXMLLoader accountLoader = Loader.loadFXML(getClass(), "Account.fxml");
+      this.account = accountLoader.load();
+      this.accountController = accountLoader.getController();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public String getCurrentContent() {
@@ -70,78 +124,48 @@ public class MainController {
       throw new IllegalArgumentException("user cannot be null");
     }
     this.user = user;
-    if (this.user.getAccounts().size() > 0) {
-      handleHome();
-    }
   }
 
   @FXML
   private void handleHome() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Home.fxml"));
-    AnchorPane pane = loader.load();
-    HomeController homeController = loader.getController();
-    homeController.initData(user);
-
-    content.getChildren().setAll(pane);
+    content.getChildren().setAll(home);
+    homeController.initData(user, content, account, accountController);
     currentContent = "Home";
   }
 
   @FXML
   private void handleMyAccounts() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("MyAccounts.fxml"));
-    VBox pane = loader.load();
-    MyAccountsController controller = loader.getController();
-    controller.initData(user);
-
-    content.getChildren().setAll(pane);
+    content.getChildren().setAll(myAccounts);
+    myAccountsController.initData(user, content, account, accountController);
     currentContent = "MyAccounts";
   }
 
   @FXML
   private void handleTransaction() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Transaction.fxml"));
-    AnchorPane pane = loader.load();
-    TransactionController controller = loader.getController();
-    controller.initData(user);
-
-    content.getChildren().setAll(pane);
+    content.getChildren().setAll(transaction);
+    transactionController.reset();
+    transactionController.initData(user);
     currentContent = "Transaction";
   }
 
   @FXML
   private void handleMyTransactions() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("MyTransactions.fxml"));
-    Pane pane = loader.load();
-    MyTransactionsController controller = loader.getController();
-    controller.initData(user);
-
-    content.getChildren().setAll(pane);
+    content.getChildren().setAll(myTransactions);
+    myTransactionsController.initData(user);
     currentContent = "MyTransactions";
   }
 
   @FXML
   private void handleSavingsCalc() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("SavingsCalc.fxml"));
-    AnchorPane pane = loader.load();
-
-    content.getChildren().setAll(pane);
+    content.getChildren().setAll(savingsCalc);
+    savingsCalcController.reset();
     currentContent = "SavingsCalc";
   }
 
   @FXML
   private void handleMyProfile() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Profile.fxml"));
-    AnchorPane pane = loader.load();
-    ProfileController controller = loader.getController();
-    controller.initData(user);
-
-    content.getChildren().setAll(pane);
+    content.getChildren().setAll(profile);
+    profileController.initData(user);
     currentContent = "MyProfile";
   }
 }

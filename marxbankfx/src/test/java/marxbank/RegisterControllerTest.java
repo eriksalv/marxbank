@@ -81,8 +81,8 @@ public class RegisterControllerTest extends ApplicationTest {
     clickOn("#password1Text").write("pass");
     clickOn("#password2Text").write("pass");
     clickOn("#registerBtn");
-    assertTrue(DataManager.getIndexOfUser(existingUser) != -1
-        && DataManager.getUsers().size() == 1);
+    assertTrue(
+        DataManager.getIndexOfUser(existingUser) != -1 && DataManager.getUsers().size() == 1);
   }
 
   @Test
@@ -92,8 +92,8 @@ public class RegisterControllerTest extends ApplicationTest {
     clickOn("#password1Text").write("pass");
     clickOn("#password2Text").write("pass");
     clickOn("#registerBtn");
-    assertTrue(DataManager.getIndexOfUser(existingUser) != -1
-        && DataManager.getUsers().size() == 1);
+    assertTrue(
+        DataManager.getIndexOfUser(existingUser) != -1 && DataManager.getUsers().size() == 1);
     assertEquals("Username is too long, must be 30 characters maximum.",
         ((Label) lookup("#registerFailedMsg").query()).getText());
   }
@@ -105,8 +105,8 @@ public class RegisterControllerTest extends ApplicationTest {
     clickOn("#password1Text").write("rightPassword");
     clickOn("#password2Text").write("wrongPassword");
     clickOn("#registerBtn");
-    assertTrue(DataManager.getIndexOfUser(existingUser) != -1
-        && DataManager.getUsers().size() == 1);
+    assertTrue(
+        DataManager.getIndexOfUser(existingUser) != -1 && DataManager.getUsers().size() == 1);
     assertEquals("Passwords dont match", ((Label) lookup("#registerFailedMsg").query()).getText());
   }
 

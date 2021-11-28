@@ -1,25 +1,25 @@
 package marxbank;
 
 import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import marxbank.model.User;
-import javafx.scene.Node;
+import marxbank.util.Loader;
 
 public class LogInController {
   @FXML
   private TextField typeUsername;
   @FXML
-  private TextField typePassword;
+  private PasswordField typePassword;
   @FXML
   private Label usernameError;
   @FXML
@@ -33,14 +33,16 @@ public class LogInController {
   @FXML
   private Parent root;
 
+  private AnchorPane register;
 
-  public LogInController() {
-    // DataManager.setPath("../data");
-    // try {
-    // DataManager.parse();
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
+  @FXML
+  private void initialize() {
+    try {
+      FXMLLoader loader = Loader.loadFXML(getClass(), "Register.fxml");
+      register = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
@@ -82,29 +84,11 @@ public class LogInController {
 
     DataManager.setLoggedInUser(u);
 
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Main.fxml"));
-    Parent tableViewParent = loader.load();
-
-    Scene tableViewScene = new Scene(tableViewParent);
-
-    // Access the controller and call a method
-    MainController controller = loader.getController();
-    controller.initData();
-
-    // Get stage information
-    Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
-
-    window.setScene(tableViewScene);
-    window.show();
+    Loader.changeScene(getClass(), "Main.fxml", e);
   }
 
   @FXML
   private void handleRegisterButton() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Register.fxml"));
-    AnchorPane pane = loader.load();
-
-    ((AnchorPane) root).getChildren().setAll(pane);
+    ((AnchorPane) root).getChildren().setAll(register);
   }
 }

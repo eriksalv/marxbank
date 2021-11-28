@@ -4,11 +4,11 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
@@ -19,7 +19,7 @@ public class HomeController {
   private User user;
 
   @FXML
-  private AnchorPane home;
+  private Pane content;
   @FXML
   private Label homeLabel;
   @FXML
@@ -41,6 +41,8 @@ public class HomeController {
   @FXML
   private Button accountButton;
 
+  private AnchorPane account;
+  private AccountController accountController;
 
   @FXML
   private void initialize() {
@@ -50,8 +52,12 @@ public class HomeController {
   }
 
 
-  public void initData(User user) {
+  public void initData(User user, Pane content, AnchorPane account,
+      AccountController accountController) {
+    this.content = content;
     this.user = user;
+    this.account = account;
+    this.accountController = accountController;
     createFavorites();
     recentActivity();
   }
@@ -60,6 +66,9 @@ public class HomeController {
    * Adding the first account of the user's accounts into the favorite label at the home side.
    */
   private void createFavorites() {
+    if (user.getAccounts().size() == 0) {
+      return;
+    }
     Account a = user.getAccounts().get(0);
     accountLabel.setText(a.getName());
     accountNumberLabel.setText(Integer.toString(a.getAccountNumber()));
@@ -114,13 +123,9 @@ public class HomeController {
    */
   @FXML
   private void handleSelectAccount(ActionEvent e) throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Account.fxml"));
-    AnchorPane pane = loader.load();
-    AccountController controller = loader.getController();
-    controller.initData(user.getAccountById(Long.parseLong(accountNumberLabel.getText())));
-
-    home.getChildren().setAll(pane);
+    accountController
+        .initData(DataManager.getAccount(Integer.parseInt(accountNumberLabel.getText())));
+    content.getChildren().setAll(account);
   }
 
 }

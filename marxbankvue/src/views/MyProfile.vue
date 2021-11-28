@@ -33,7 +33,10 @@
       type="password"
       placeholder="Nåværende passord"
       class="input" />
-    <button id="edit" class="bg-green-500
+    <button
+      id="edit"
+      class="
+        bg-green-500
         hover:bg-green-400
         text-white
         font-bold
@@ -43,7 +46,8 @@
         hover:border-green-500
         rounded
         w-80
-        mt-4" 
+        mt-4
+      "
       @click="editProfile">
       Lagre endringer
     </button>

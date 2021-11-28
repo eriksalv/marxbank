@@ -32,7 +32,8 @@ public class MainControllerTest extends ApplicationTest {
 
   @Override
   public void start(final Stage stage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("Main_test.fxml"));
+    DataManager.setLoggedInUser(new User("username", "email@email.com", "password"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
     final Parent root = loader.load();
     controller = loader.getController();
     stage.setScene(new Scene(root));
@@ -52,8 +53,6 @@ public class MainControllerTest extends ApplicationTest {
   @BeforeEach
   private void beforeEach() throws IOException {
     DataManager.setPath(tempDir.toFile().getCanonicalPath());
-    User user = new User("username", "email@email.com", "password");
-    controller.initData(user);
   }
 
 

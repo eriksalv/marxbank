@@ -14,77 +14,65 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TokenTest {
-    
-    private User user;
-    private String token;
 
-    @BeforeEach
-    public void setup() {
-        user = new User("username", "email@email.com", "password");
-        token = UUID.randomUUID().toString();
-    }
+  private User user;
+  private String token;
 
-    @Test
-    @DisplayName("testing constructors")
-    public void testingConstructors() {
-        assertAll(
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                Token t = new Token(null, token);
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                Token t = new Token(user, null);
-            })
-        );
-            
-        Token t = new Token(user, token);
-        assertEquals(user, t.getUser());
-        assertEquals(token, t.getToken());
-    }
+  @BeforeEach
+  public void setup() {
+    user = new User("username", "email@email.com", "password");
+    token = UUID.randomUUID().toString();
+  }
 
-    @Test
-    @DisplayName("test setters")
-    public void testSetters() {
-        Token t = new Token();
-        assertAll(
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                t.setId(null);
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                t.setToken(null);
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                t.setToken("");  
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                t.setToken("             ");  
-            }),
-            () -> assertThrows(IllegalArgumentException.class, () -> {
-                t.setUser(null);  
-            })
-        );
+  @Test
+  @DisplayName("testing constructors")
+  public void testingConstructors() {
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      new Token(null, token);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      new Token(user, null);
+    }));
 
-        t.setId((long) 5);
-        t.setToken(token);
-        t.setUser(user);
-        assertAll(
-            () -> assertEquals(5, t.getId()),
-            () -> assertEquals(token, t.getToken()),
-            () -> assertEquals(user, t.getUser())
-        );
-    }
+    Token t = new Token(user, token);
+    assertEquals(user, t.getUser());
+    assertEquals(token, t.getToken());
+  }
 
-    @Test
-    @DisplayName("test equals and hashcode")
-    public void testEqualAndHashcode() {
-        Token t = new Token(user, token);
-        t.setId((long) 5);
-        assertTrue(t.equals(t));
-        assertFalse(t.equals(user));
-        Token t2 = new Token(user, UUID.randomUUID().toString());
-        t2.setId((long) 10);
-        assertFalse(t.equals(t2));
+  @Test
+  @DisplayName("test setters")
+  public void testSetters() {
+    Token t = new Token();
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      t.setId(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      t.setToken(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      t.setToken("");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      t.setToken("             ");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      t.setUser(null);
+    }));
 
-        assertEquals(Objects.hash((long) 5), t.hashCode());
-    }
+    t.setId((long) 5);
+    t.setToken(token);
+    t.setUser(user);
+    assertAll(() -> assertEquals(5, t.getId()), () -> assertEquals(token, t.getToken()),
+        () -> assertEquals(user, t.getUser()));
+  }
+
+  @Test
+  @DisplayName("test equals and hashcode")
+  public void testEqualAndHashcode() {
+    Token t = new Token(user, token);
+    t.setId((long) 5);
+    assertTrue(t.equals(t));
+    assertFalse(t.equals(new Token(user, "sjyefbywsif")));
+    Token t2 = new Token(user, UUID.randomUUID().toString());
+    t2.setId((long) 10);
+    assertFalse(t.equals(t2));
+
+    assertEquals(Objects.hash((long) 5), t.hashCode());
+  }
 
 }

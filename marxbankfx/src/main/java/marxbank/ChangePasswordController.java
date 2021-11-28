@@ -1,9 +1,11 @@
 package marxbank;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
 import marxbank.model.User;
 
 public class ChangePasswordController {
@@ -13,58 +15,81 @@ public class ChangePasswordController {
   @FXML
   private Label currentPasswordLabel;
   @FXML
-  private TextField currentPasswordField;
+  private PasswordField currentPasswordField;
   @FXML
   private Label newPasswordLabel;
   @FXML
-  private TextField newPasswordField;
+  private PasswordField newPasswordField;
   @FXML
   private Label confirmNewPasswordLabel;
   @FXML
-  private TextField confirmNewPasswordField;
+  private PasswordField confirmNewPasswordField;
   @FXML
   private Button saveButton;
   @FXML
   private Button closeButton;
+  @FXML
+  private Label errorMsg;
 
   private User user;
   private ProfileController controller;
+
+  @FXML
+  private void initialize() {
+    setBtnDisableProperty();
+  }
+
+  private void setBtnDisableProperty() {
+    BooleanBinding emptyText = Bindings.isEmpty(currentPasswordField.textProperty())
+        .or(Bindings.isEmpty(newPasswordField.textProperty()))
+        .or(Bindings.isEmpty(confirmNewPasswordField.textProperty()));
+    saveButton.disableProperty().bind(emptyText);
+  }
 
   public void initData(User user, ProfileController c) {
     this.controller = c;
     this.user = user;
   }
 
+  public void reset() {
+    currentPasswordField.setText("");
+    newPasswordField.setText("");
+    confirmNewPasswordField.setText("");
+    errorMsg.setText("");
+  }
+
   @FXML
   public void handleSave() {
     if (!currentPasswordField.getText().equals(user.getPassword())
         && !currentPasswordField.getText().equals("")) {
-      saveButton.setText("Feil passord");
+      errorMsg.setText("Feil passord");
       return;
     }
     if ((newPasswordField.getText().equals("") || confirmNewPasswordField.getText().equals(""))
         && !currentPasswordField.getText().equals("")) {
-      saveButton.setText("Passord kan ikke være tomt");
+      errorMsg.setText("Passord kan ikke være tomt");
       return;
     }
     if (newPasswordField.getText().equals(user.getPassword())
         || confirmNewPasswordField.getText().equals(user.getPassword())) {
-      saveButton.setText("Ikke et nytt passord");
+      errorMsg.setText("Ikke et nytt passord");
       return;
     }
     if (!(confirmNewPasswordField.getText().equals(newPasswordField.getText()))) {
-      saveButton.setText("Passordene stemmer ikke");
+      errorMsg.setText("Passordene stemmer ikke");
       return;
     }
 
-    user.setPassword(newPasswordField.getText());
-    saveButton.setText("Oppdatert");
-    controller.updatePassword();
+    try {
+      user.setPassword(newPasswordField.getText());
+      errorMsg.setText("Oppdatert");
+    } catch (IllegalArgumentException e) {
+      errorMsg.setText(e.getMessage());
+    }
     try {
       DataManager.save();
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      errorMsg.setText("Noe gikk galt med lagring");
     }
     return;
 
