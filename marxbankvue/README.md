@@ -19,17 +19,17 @@ Funksjonalitetmessig er den eneste forskjellen mellom de to appene at man i Vue-
 
 ## Setup
 
-```
+```bash
 npm install
 ```
 
 ### Dev-kompilering
-```
+```bash
 npm run serve
 ```
 
 ### Production-kompilering
-```
+```bash
 npm run build
 ```
 
@@ -39,7 +39,7 @@ Prosjektet er satt opp med **vue-cli** og bygges med **npm**. I tillegg brukes *
 
 ### Bygging med maven fra rotmappe
 
-```
+```bash
 mvn install -pl marxbankvue
 ```
 

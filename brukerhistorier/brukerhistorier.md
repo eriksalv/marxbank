@@ -70,6 +70,7 @@ Som en bankkunde ønsker jeg muligheten til å logge ut slik at uvedkommende ikk
 
 
 ## Sparekalkulator (#5) – middels prioritet
+
 Som en bankkunde ønsker jeg å se hvor mye sparepengene mine kan vokse over en viss tid.
 
 ### Viktig å kunne gjøre
@@ -82,3 +83,36 @@ Som en bankkunde ønsker jeg å se hvor mye sparepengene mine kan vokse over en 
 
 ### Illustrerende skjermbilde
 <img src="Illustration-us5.png" width="400">
+
+## Datalagring i Rest applikasjon (#6) - høy prioritet
+
+Som en bankkunde ønsker jeg at jeg kan få tilgang til bankinformasjonen min overalt.
+
+### Viktig å kunne gjøre
+* Logge inn på samme bruker fra forskjellige maskiner koblet til samme server.
+* Se bankinformasjonen sin fra forskjellige maskiner koblet til samme server.
+
+## Nettklient (#7) - høy prioritet
+
+Som en bankkunde ønsker jeg at jeg kan se bankinformasjonen min lett gjennom en nettleser.
+
+### viktig å kunne gjøre
+* Se bankinformasjonen på en god og intuativ måte
+* Enkel løsning som er lett å bruke
+* Har samme, om ikke mer, funksjonalitet enn FX applikasjonen
+
+## Installerbar applikasjon (#8) - middels prioritet
+
+Som en bankkunde ønsker jeg at jeg kan installere en applikasjon og se bankinformasjonen min.
+
+### Viktig å kunne gjøre
+* Installere marxbankFX
+* lokal lagring av brukerdata
+
+## innskudd og uttak av penger (#9) - lav prioritet
+
+Som en bankkunde ønsker jeg at jeg kan ta ut og sette inn penger på kontene mine.
+
+### Viktig å kunne gjøre:
+* Sette inn penger på konto
+* Ta ut penger
