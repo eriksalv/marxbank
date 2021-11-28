@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full overflow-auto h-80">
+  <div class="shadow w-full overflow-auto max-h-80">
     <table class="w-full border-collapse">
       <thead>
         <tr

@@ -45,13 +45,13 @@
         border-b-4 border-green-700
         hover:border-green-500
         rounded
-        w-80
         mt-4
+        w-full
       "
       @click="editProfile">
       Lagre endringer
     </button>
-    <button id="logout" class="button bg-red-600 w-80" @click="requestLogout">
+    <button id="logout" class="button" @click="requestLogout">
       Logg ut
     </button>
   </div>

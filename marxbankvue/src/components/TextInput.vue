@@ -5,7 +5,7 @@
       <input
         type="number"
         min="0"
-        class="my-input"
+        class="input"
         @input="onInput"
         @keypress="isInteger($event)" />
       <p class="text-ending">kr</p>
@@ -14,7 +14,7 @@
       <input
         type="number"
         min="0"
-        class="my-input"
+        class="input"
         @input="onInput"
         @keypress="isInteger($event)" />
       <p class="text-ending">år</p>
@@ -23,7 +23,7 @@
       <input
         type="number"
         min="0"
-        class="my-input"
+        class="input"
         @input="onInput"
         @keypress="isFloat($event)" />
       <p class="text-ending">%</p>
@@ -82,16 +82,6 @@ export default {
 .year-interest-input-wrapper {
   width: 200px;
   display: flex;
-}
-.my-input {
-  width: 80%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: lpx solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  height: 100%;
 }
 .text-ending {
   padding: 12px 10px;
