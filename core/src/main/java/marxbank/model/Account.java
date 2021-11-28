@@ -243,7 +243,7 @@ public abstract class Account {
     if (t == null) {
       throw new IllegalArgumentException("New transactions cannot be null");
     }
-    this.transactions = t;
+    this.transactions = new LinkedList<>(t);
   }
 
   /**
