@@ -32,6 +32,7 @@ build:
       - job_execution_timeout
       - data_integrity_failure
   script: 
+    - 'cd marxbank'
     - 'mvn clean install -pl -marxbankvue -DskipTests'
 
 test_core:
@@ -45,6 +46,7 @@ test_core:
       - job_execution_timeout
       - data_integrity_failure
   script:
+    - 'cd marxbank'
     - 'mvn install -pl -marxbankvue -DskipTests'
     - mvn jacoco:prepare-agent test -pl core jacoco:report
     - cat core/target/site/jacoco/index.html
@@ -60,6 +62,7 @@ test_storage:
       - job_execution_timeout
       - data_integrity_failure
   script:
+    - 'cd marxbank'
     - 'mvn install -pl -marxbankvue -DskipTests'
     - mvn jacoco:prepare-agent test -pl storage jacoco:report
     - cat storage/target/site/jacoco/index.html
@@ -75,6 +78,7 @@ test_fx:
       - job_execution_timeout
       - data_integrity_failure
   script:
+    - 'cd marxbank'
     - 'mvn install -pl -marxbankvue -DskipTests'
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test -pl marxbankfx jacoco:report
     - cat marxbankfx/target/site/jacoco/index.html
@@ -91,6 +95,7 @@ test_vue:
       - data_integrity_failure
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
+    - cd marxbank/marxbankvue
     - cd marxbankvue
     - mvn install 
 
@@ -105,6 +110,7 @@ test_manual:
       - job_execution_timeout
       - data_integrity_failure
   script:
+    - cd marxbank
     - mvn clean install -DskipTests
     - mvn -Dtestfx.robot=glass -Dtestfx.headless=true jacoco:prepare-agent test jacoco:report
     - cat core/target/site/jacoco/index.html
@@ -124,6 +130,7 @@ test_backend:
       - job_execution_timeout
       - data_integrity_failure
   script:
+    - cd marxbank
     - mvn install -DskipTests
     - mvn jacoco:prepare-agent test -pl backend jacoco:report
     - cat backend/target/site/jacoco/index.html
