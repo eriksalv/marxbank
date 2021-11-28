@@ -22,25 +22,33 @@ Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 stude
 
 ### Kodingsprosjektet
 
-Kodingsprosjektet består av fem moduler: core, backend, storage, marxbankfx og marxbankvue. Se egne readmes i disse mappene for mer detaljer om hva de består av.
+Kodingsprosjektet består av seks moduler: core, backend, api, storage, marxbankfx og marxbankvue. Se egne readmes i disse mappene for mer detaljer om hva de består av.
 
 ## Hvordan kjøre appen
 
-Først kjør
+Du kan installere og kjøre tester på alle modulene gjennom å kjøre:
 
-``` mvn install ```
+```bash
+mvn install
+```
 
 Så start Rest-serveren med
 
-``` mvn spring-boot:run -pl backend ``` 
+```bash
+mvn spring-boot:run -pl backend
+``` 
 
 så kan du enten starte webapplikasjonen med
 
-```mvn frontend:install-node-and-npm frontend:npm@"npm install" frontend:npm@"npm serve" -pl marxbankvue```
+```bash
+mvn frontend:install-node-and-npm frontend:npm@install frontend:npm@serve -pl marxbankvue
+```
 
 eller starte javafx med
 
-``` mvn javafx:run -pl marxbankfx ```
+```bash
+mvn javafx:run -pl marxbankfx
+```
 
 Alternativt kan du starte både Rest-serveren og web-klienten samtidig ved å kjøre `./serve-app.sh` i rotmappa
 
@@ -48,7 +56,7 @@ Alternativt kan du starte både Rest-serveren og web-klienten samtidig ved å kj
 
 ### Installasjon
 
-Åpne terminalen i VSCode og kjør ` mvn install ` og ` mvn clean jacoco:prepare-agent install jacoco:report `
+Åpne en terminal kjør ` mvn install ` og ` mvn clean jacoco:prepare-agent install jacoco:report ` for å generere en testdekningsrapport.
 
 ### For å se rapporten
 
@@ -57,3 +65,7 @@ Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. V
 ## JSON datastruktur
 
 For å se hvordan vi lagrer dataen vår lokalt med json, se [Readme i storage](storage/Readme.md#lagring-i-Json)
+
+## Kall til Databasen
+
+For å se alle forskjellige kall, strukturen på forespørselen, og hva backend kan sende tilbake. Se [full api dokumentasjon](/backend/docs/fullAPI.md)
