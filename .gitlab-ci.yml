@@ -96,7 +96,6 @@ test_vue:
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
     - cd marxbank/marxbankvue
-    - cd marxbankvue
     - mvn install 
 
 test_manual:
