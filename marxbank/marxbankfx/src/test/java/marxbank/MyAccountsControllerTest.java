@@ -50,7 +50,7 @@ public class MyAccountsControllerTest extends ApplicationTest {
     stage.setScene(new Scene(root));
     stage.show();
 
-    FXMLLoader accountLoader = Loader.loadFXML(MainController.class, "Account.fxml");
+    FXMLLoader accountLoader = Loader.loadFxml(MainController.class, "Account.fxml");
     this.accountPane = accountLoader.load();
     this.accountController = accountLoader.getController();
   }

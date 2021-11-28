@@ -105,8 +105,8 @@ public class DataManagerTest {
     assertFalse(DataManager.checkIfAccountExists(99999));
     assertFalse(DataManager.checkIfAccountExists(new SavingsAccount(user, "yeet")));
     assertFalse(DataManager.checkIfTransactionExists(999999999));
-    assertFalse(DataManager.
-        checkIfTransactionExists(new Transaction((long) 1, account, account2, 50.0, false)));
+    assertFalse(DataManager
+        .checkIfTransactionExists(new Transaction((long) 1, account, account2, 50.0, false)));
 
   }
 

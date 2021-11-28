@@ -17,9 +17,9 @@ public enum AccountType {
   }
 
   static {
-      for (AccountType t : AccountType.values()) {
-          lookup.put(t.getTypeString(), t);
-      }
+    for (AccountType t : AccountType.values()) {
+      lookup.put(t.getTypeString(), t);
+    }
   }
 
 

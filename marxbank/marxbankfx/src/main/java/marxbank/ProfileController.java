@@ -43,7 +43,7 @@ public class ProfileController {
 
   private void loadViews() {
     try {
-      FXMLLoader changePasswordLoader = Loader.loadFXML(getClass(), "ChangePassword.fxml");
+      FXMLLoader changePasswordLoader = Loader.loadFxml(getClass(), "ChangePassword.fxml");
       this.changePassword = changePasswordLoader.load();
       this.changePasswordController = changePasswordLoader.getController();
     } catch (IOException e) {

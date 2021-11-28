@@ -1,7 +1,6 @@
 package marxbank;
 
 import java.io.IOException;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
@@ -87,7 +86,7 @@ public class RegisterController {
     }
     try {
       DataManager.save();
-      FXMLLoader loader = Loader.loadFXML(getClass(), "LogIn.fxml");
+      FXMLLoader loader = Loader.loadFxml(getClass(), "LogIn.fxml");
       AnchorPane pane = loader.load();
       register.getChildren().setAll(pane);
 

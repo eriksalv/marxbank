@@ -10,8 +10,8 @@ import marxbank.wrappers.ArrayTransactionsWrapper;
 import marxbank.model.Transaction;
 
 /**
- * Here we use the ArrayAccountWrapper to be able to correctly pass 
- * the arraylist in with the correct type
+ * Here we use the ArrayAccountWrapper to be able to correctly pass the arraylist in with the
+ * correct type
  */
 public class ArrayTransactionSerializer extends StdSerializer<ArrayTransactionsWrapper> {
 
@@ -24,7 +24,8 @@ public class ArrayTransactionSerializer extends StdSerializer<ArrayTransactionsW
     this.module = sm;
   }
 
-  public ArrayTransactionSerializer(Class<ArrayTransactionsWrapper> t, ObjectMapper objectMapper, SimpleModule sm) {
+  public ArrayTransactionSerializer(Class<ArrayTransactionsWrapper> t, ObjectMapper objectMapper,
+      SimpleModule sm) {
     super(t);
     this.objectMapper = objectMapper;
     this.module = sm;

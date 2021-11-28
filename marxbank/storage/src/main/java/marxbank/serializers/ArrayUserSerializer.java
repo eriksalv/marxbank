@@ -10,8 +10,8 @@ import marxbank.wrappers.ArrayUserWrapper;
 import marxbank.model.User;
 
 /**
- * Here we use the ArrayAccountWrapper to be able to correctly pass 
- * the arraylist in with the correct type
+ * Here we use the ArrayAccountWrapper to be able to correctly pass the arraylist in with the
+ * correct type
  */
 public class ArrayUserSerializer extends StdSerializer<ArrayUserWrapper> {
 
@@ -24,7 +24,8 @@ public class ArrayUserSerializer extends StdSerializer<ArrayUserWrapper> {
     this.module = sm;
   }
 
-  public ArrayUserSerializer(Class<ArrayUserWrapper> t, ObjectMapper objectMapper, SimpleModule sm) {
+  public ArrayUserSerializer(Class<ArrayUserWrapper> t, ObjectMapper objectMapper,
+      SimpleModule sm) {
     super(t);
     this.objectMapper = objectMapper;
     this.module = sm;

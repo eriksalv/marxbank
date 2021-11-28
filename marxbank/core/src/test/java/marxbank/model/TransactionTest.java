@@ -137,27 +137,21 @@ public class TransactionTest {
     transaction.setId((long) 50);
     assertEquals(50, transaction.getId());
 
-    assertAll(
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        transaction.setFrom(null);
-      }),
-      () -> assertThrows(IllegalStateException.class, () -> {
-        transaction.setFrom(a2);
-      })
-    );
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      transaction.setFrom(null);
+    }), () -> assertThrows(IllegalStateException.class, () -> {
+      transaction.setFrom(a2);
+    }));
 
     transaction.setFrom(a3);
     assertEquals(a3, transaction.getFrom());
 
     transaction.setFrom(a1);
-    assertAll(
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        transaction.setReciever(null);
-      }),
-      () -> assertThrows(IllegalStateException.class, () -> {
-        transaction.setReciever(a1);
-      })
-    );
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      transaction.setReciever(null);
+    }), () -> assertThrows(IllegalStateException.class, () -> {
+      transaction.setReciever(a1);
+    }));
     transaction.setFrom(a1);
     transaction.setReciever(a2);
     assertEquals(a2, transaction.getReciever());

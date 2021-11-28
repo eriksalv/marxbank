@@ -1,7 +1,6 @@
 package marxbank.util;
 
 import java.io.IOException;
-
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +18,7 @@ public class Loader {
    * @param fileName - filename of fxml file
    * @return FXMLLoader with location set
    */
-  public static <T> FXMLLoader loadFXML(Class<T> cl, String fileName) {
+  public static <T> FXMLLoader loadFxml(Class<T> cl, String fileName) {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(cl.getResource(fileName));
     return loader;
@@ -32,10 +31,10 @@ public class Loader {
    * @param cl - class of the controller
    * @param fileName - filename of fxml file
    * @param e - event that triggered scene change
-   * @throws IOException
+   * @throws IOException if fxml cannot be loaded
    */
   public static <T> void changeScene(Class<T> cl, String fileName, Event e) throws IOException {
-    FXMLLoader loader = loadFXML(cl, fileName);
+    FXMLLoader loader = loadFxml(cl, fileName);
     Parent tableViewParent = loader.load();
 
     Scene tableViewScene = new Scene(tableViewParent);

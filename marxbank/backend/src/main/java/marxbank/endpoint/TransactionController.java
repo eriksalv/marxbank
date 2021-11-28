@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import marxbank.API.TransactionRequest;
 import marxbank.API.TransactionResponse;
 import marxbank.model.Account;
@@ -55,9 +54,9 @@ public class TransactionController {
    * 
    * @param fromId id of account
    * @param token of user
-   * @return a response with body of a list of transaction and code of 200
-   * @return a response with null body and code 401 if token is invalid or account is not the users
-   * @return a resposne with null body and code 404 if account is not found
+   * @return <p> a response with body of a list of transaction and code of 200
+   * a response with null body and code 401 if token is invalid or account is not the users
+   * a resposne with null body and code 404 if account is not found </p>
    */
   @GetMapping("/from/{fromId}")
   @Transactional
@@ -75,7 +74,7 @@ public class TransactionController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
     Account account = optionalAccount.get();
 
-    if (user.getId() != account.getUser().getId())
+    if (!user.getId().equals(account.getUser().getId()))
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
@@ -89,9 +88,9 @@ public class TransactionController {
    * 
    * @param recieverId id of account
    * @param token of user
-   * @return a response with body of a list of transaction and code of 200
-   * @return a response with null body and code 401 if token is invalid or account is not the users
-   * @return a resposne with null body and code 404 if account is not found
+   * @return <p> a response with body of a list of transaction and code of 200
+   *a response with null body and code 401 if token is invalid or account is not the users
+   *a resposne with null body and code 404 if account is not found </p>
    */
   @GetMapping("/reciever/{recieverId}")
   @Transactional
@@ -123,9 +122,9 @@ public class TransactionController {
    * 
    * @param accountId id of account
    * @param token for user
-   * @return a response with body of a list of transaction and code of 200
-   * @return a response with null body and code 401 if token is invalid or account is not the users
-   * @return a resposne with null body and code 404 if account is not found
+   * @return <p> a response with body of a list of transaction and code of 200
+   * a response with null body and code 401 if token is invalid or account is not the users
+   * a resposne with null body and code 404 if account is not found </p>
    */
   @GetMapping("/myTransactions/{accountId}")
   @Transactional
@@ -139,15 +138,15 @@ public class TransactionController {
 
     User user = this.authService.getUserFromToken(token);
 
-    Optional<Account> OptionalAccount = accountRepository.findById(accountId);
-    if (!OptionalAccount.isPresent())
+    Optional<Account> optionalAccount = accountRepository.findById(accountId);
+    if (!optionalAccount.isPresent())
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
-    Account account = OptionalAccount.get();
+    Account account = optionalAccount.get();
 
     if (account == null)
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account doesn't exist");
 
-    if (user.getId() != account.getUser().getId())
+    if (!user.getId().equals(account.getUser().getId()))
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
 
     ArrayList<TransactionResponse> transactions = new ArrayList<TransactionResponse>();
@@ -161,8 +160,8 @@ public class TransactionController {
    * Gets all transactions for user without duplicates
    * 
    * @param token for user
-   * @return a response with body of a list of transaction and code of 200
-   * @return a response with null body and code 401 if token is invalid or account is not the users
+   * @return <p> a response with body of a list of transaction and code of 200
+   * a response with null body and code 401 if token is invalid or account is not the users </p>
    */
   @GetMapping("/myTransactions")
   @Transactional
@@ -187,9 +186,9 @@ public class TransactionController {
    * 
    * @param token for user
    * @param request transfer request data
-   * @return a response with body of a transaction and a status code of 200
-   * @return a response with null body and code 401 if token is invalid
-   * @return a resposne with null body and code 400 the request is not valid
+   * @return <p> a response with body of a transaction and a status code of 200
+   * a response with null body and code 401 if token is invalid
+   * a resposne with null body and code 400 the request is not valid </p>
    */
   @PostMapping("/transfer")
   @Transactional

@@ -3,7 +3,7 @@ package marxbank.model;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-//import java.util.UUID;
+// import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ public abstract class Account {
   @Id
   @GeneratedValue
   private Long id;
-  //account number is only needed for the local storage (fx) version of the app
+  // account number is only needed for the local storage (fx) version of the app
   @Column(nullable = true)
   private int accountNumber;
   @Column
@@ -89,7 +89,7 @@ public abstract class Account {
    */
   public Account(User user, double interestRate, AccountType type, String name) {
     this((long) 0, user, interestRate, type);
-    //this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, user, interestRate, type);
+    // this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, user, interestRate, type);
     validateName(name);
     this.name = name;
   }

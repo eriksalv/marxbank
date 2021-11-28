@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
@@ -116,8 +115,8 @@ public class DataManager {
   public static void addAccount(Account a) {
     if (accountList.contains(a))
       throw new IllegalArgumentException("Account already in accountList");
-    if (a.getId().equals(0l)) {
-      a.setId((long) accountCounter.get());
+    if (a.getId().equals(0L)) {
+      a.setId(Long.valueOf(accountCounter.get()));
       a.setAccountNumber(a.generateAccountNumber());
     }
     accountCounter.getAndIncrement();
@@ -314,8 +313,9 @@ public class DataManager {
   }
 
   public static Account getAccount(int accountNumber) {
-    return getAccounts().stream().filter(acc -> acc.getAccountNumber() == accountNumber).findFirst().orElseThrow(
-        () -> new IllegalStateException("Could not find account with given account number: " + accountNumber));
+    return getAccounts().stream().filter(acc -> acc.getAccountNumber() == accountNumber).findFirst()
+        .orElseThrow(() -> new IllegalStateException(
+            "Could not find account with given account number: " + accountNumber));
   }
 
   /**
@@ -366,7 +366,8 @@ public class DataManager {
    * @throws IllegalStateException if it cannot save data
    */
   public static void save() {
-    boolean saved = DataHandler.save(new ArrayList<User>(userList), new ArrayList<Account>(accountList), new ArrayList<Transaction>(transactionList), dataPath);
+    boolean saved = DataHandler.save(new ArrayList<User>(userList),
+        new ArrayList<Account>(accountList), new ArrayList<Transaction>(transactionList), dataPath);
     if (!saved)
       throw new IllegalStateException();
   }

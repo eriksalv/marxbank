@@ -1,7 +1,6 @@
 package marxbank;
 
 import java.io.IOException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,7 +37,7 @@ public class LogInController {
   @FXML
   private void initialize() {
     try {
-      FXMLLoader loader = Loader.loadFXML(getClass(), "Register.fxml");
+      FXMLLoader loader = Loader.loadFxml(getClass(), "Register.fxml");
       register = loader.load();
     } catch (IOException e) {
       e.printStackTrace();
