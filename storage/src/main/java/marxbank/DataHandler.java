@@ -21,6 +21,9 @@ import marxbank.model.User;
 
 public class DataHandler {
 
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  private static final SimpleModule SIMPLE_MODULE = new SimpleModule();
+
   public static boolean save(ArrayList<User> userList, ArrayList<Account> accountList, 
                               ArrayList<Transaction> transactionList, String path) {
     if (path == null || path.isEmpty() || path.isBlank())
@@ -39,14 +42,12 @@ public class DataHandler {
     }
 
     FileWriter fw;
-    ObjectMapper objectMapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    module.addSerializer(DataManagerWrapper.class, new DataManagerSerializer(objectMapper, module));
-    objectMapper.registerModule(module);
+    SIMPLE_MODULE.addSerializer(DataManagerWrapper.class, new DataManagerSerializer(OBJECT_MAPPER, SIMPLE_MODULE));
+    OBJECT_MAPPER.registerModule(SIMPLE_MODULE);
 
     try {
       fw = new FileWriter(dataFile, Charset.defaultCharset());
-      fw.write(objectMapper.writeValueAsString(d));
+      fw.write(OBJECT_MAPPER.writeValueAsString(d));
       fw.close();
     } catch (IOException e1) {
       return false;
@@ -56,12 +57,10 @@ public class DataHandler {
   }
 
   public static boolean parse(String path) {
-    final ObjectMapper objectMapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    module.addDeserializer(User.class, new UserDeserializer(User.class));
-    module.addDeserializer(Account.class, new AccountDeserializer(Account.class));
-    module.addDeserializer(Transaction.class, new TransactionDeserializer(Transaction.class));
-    objectMapper.registerModule(module);
+    SIMPLE_MODULE.addDeserializer(User.class, new UserDeserializer(User.class));
+    SIMPLE_MODULE.addDeserializer(Account.class, new AccountDeserializer(Account.class));
+    SIMPLE_MODULE.addDeserializer(Transaction.class, new TransactionDeserializer(Transaction.class));
+    OBJECT_MAPPER.registerModule(SIMPLE_MODULE);
 
     File dataFile = new File(String.format("%s/data.json", path));
 
@@ -71,7 +70,7 @@ public class DataHandler {
     JsonNode masterNode;
 
     try {
-      masterNode = objectMapper.readTree(dataFile);
+      masterNode = OBJECT_MAPPER.readTree(dataFile);
     } catch (IOException e) {
       return false;
     }
@@ -81,7 +80,7 @@ public class DataHandler {
     for (JsonNode n : node) {
       User u;
       try {
-        u = objectMapper.treeToValue(n, User.class);
+        u = OBJECT_MAPPER.treeToValue(n, User.class);
         // check if user with id exists
         if (!DataManager.checkIfUserExists(u.getId())) {
           DataManager.addUser(u);
@@ -100,7 +99,7 @@ public class DataHandler {
 
     for (JsonNode a : node) {
       try {
-        Account acc = objectMapper.treeToValue(a, Account.class);
+        Account acc = OBJECT_MAPPER.treeToValue(a, Account.class);
         if (!DataManager.checkIfAccountExists(acc.getId())) {
           DataManager.addAccount(acc);
           continue;
@@ -119,7 +118,7 @@ public class DataHandler {
 
     for (JsonNode t : node) {
       try {
-        Transaction transaction = objectMapper.treeToValue(t, Transaction.class);
+        Transaction transaction = OBJECT_MAPPER.treeToValue(t, Transaction.class);
         if (!DataManager.checkIfTransactionExists(transaction.getId())) {
           DataManager.addTransaction(transaction);
           continue;

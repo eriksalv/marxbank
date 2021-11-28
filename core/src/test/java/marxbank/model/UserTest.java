@@ -73,26 +73,19 @@ public class UserTest {
     user.setPassword("newPassword");
     assertTrue(user.getPassword().equals("newPassword"));
 
-    assertAll(
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        user.setAccounts(null);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        user.addAccount(null);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        user.setEmail(null);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        user.setUsername(null);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        user.setPassword(null);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        user.setPassword("ye");
-      })
-    );
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      user.setAccounts(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      user.addAccount(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      user.setEmail(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      user.setUsername(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      user.setPassword(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      user.setPassword("ye");
+    }));
 
 
     ArrayList<Account> a = new ArrayList<Account>();
@@ -116,6 +109,6 @@ public class UserTest {
   @DisplayName("test equals")
   public void testEquals() {
     user = new User((long) 1, "username", "email@email.com", "password");
-    assertFalse(user.equals("ikkeUser"));
+    assertTrue(user.equals(new User(1l, "username", "email@email.com", "password")));
   }
 }

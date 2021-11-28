@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
 
@@ -17,14 +16,11 @@ public class MyTransactionsController {
   private ListView<TransactionComponent> transactionsContainer;
 
   public void initData(User user) {
-
-    for (Account a : user.getAccounts()) {
-      System.out.println(a.getTransactions());
-    }
-
     if (user.getAccounts().size() == 0) {
       return;
     }
+
+    transactionsContainer.getItems().clear();
 
     List<Transaction> ml = new ArrayList<Transaction>();
     List<TransactionComponent> l = new ArrayList<TransactionComponent>();

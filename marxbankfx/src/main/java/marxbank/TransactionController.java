@@ -3,9 +3,13 @@ package marxbank;
 import marxbank.util.TextFieldFormatter;
 import marxbank.model.Account;
 import marxbank.model.User;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -23,11 +27,11 @@ public class TransactionController {
   @FXML
   private TextField recieverText;
   @FXML
-  private TextField dateText;
-  @FXML
   private TextField amountText;
   @FXML
   private Label transactionCompleteMsg;
+  @FXML
+  private Button transactionBtn;
   @FXML
   private Label transactionFailedMsg;
 
@@ -43,6 +47,14 @@ public class TransactionController {
     transactionCompleteMsg.setVisible(false);
     transactionFailedMsg.setVisible(false);
     setNumericOnlyTextFields();
+    setBtnDisableProperty();
+  }
+
+  private void setBtnDisableProperty() {
+    BooleanBinding emptyText = Bindings.isEmpty(myAccountsList.textProperty())
+        .or(Bindings.isEmpty(recieverText.textProperty()))
+        .or(Bindings.isEmpty(amountText.textProperty()));
+    transactionBtn.disableProperty().bind(emptyText);
   }
 
   public void initData(User user) {
@@ -51,9 +63,10 @@ public class TransactionController {
   }
 
   private void createMyAccountsListItems() {
+    myAccountsList.getItems().clear();
     user.getAccounts().forEach(acc -> {
-      MenuItem item = new MenuItem(String.valueOf(acc.getId()));
-      item.setId(String.valueOf(acc.getId()));
+      MenuItem item = new MenuItem(String.valueOf(acc.getAccountNumber()));
+      item.setId(String.valueOf(acc.getAccountNumber()));
       item.setOnAction(accountsMenuEvent);
       myAccountsList.getItems().add(item);
     });
@@ -64,11 +77,20 @@ public class TransactionController {
     amountText.setTextFormatter(TextFieldFormatter.getNumberFormatter());
   }
 
+  public void reset() {
+    transactionCompleteMsg.setVisible(false);
+    transactionFailedMsg.setVisible(false);
+    myAccountsList.setText("Velg konto");
+    recieverText.setText("");
+    amountText.setText("");
+    transactionFailedMsg.setText("");
+  }
+
   @FXML
   private void handleCommitTransaction(ActionEvent ev) {
     try {
-      from = user.getAccountById(Long.parseLong(myAccountsList.getText()));
-      reciever = user.getAccountById(Long.parseLong(recieverText.getText()));
+      from = DataManager.getAccount(Integer.parseInt(myAccountsList.getText()));
+      reciever = DataManager.getAccount(Integer.parseInt(recieverText.getText()));
       amount = Integer.parseInt(amountText.getText());
 
       DataManager.createTransaction(from, reciever, amount);
@@ -88,8 +110,7 @@ public class TransactionController {
       System.err.println(e.getMessage());
       transactionFailedMsg.setVisible(true);
       transactionCompleteMsg.setVisible(false);
-      transactionFailedMsg.setText("Ikke nok disponibelt beløp på konto: " + from.getName()
-          + ". Tilgjengelig beløp: " + from.getBalance());
+      transactionFailedMsg.setText(e.getMessage());
     }
   }
 }

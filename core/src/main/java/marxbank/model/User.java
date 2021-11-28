@@ -96,7 +96,7 @@ public class User {
     if (newAccountsList == null) {
       throw new IllegalArgumentException("new account list cannot be null");
     }
-    this.accounts = newAccountsList;
+    this.accounts = new ArrayList<>(newAccountsList);
   }
 
   public ArrayList<Account> getAccounts() {

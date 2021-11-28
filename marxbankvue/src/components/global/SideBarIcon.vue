@@ -31,7 +31,7 @@ export default {
 <style>
 a.router-link-exact-active {
   --tw-bg-opacity: 1;
-  background-color: rgba(5, 150, 105, var(--tw-bg-opacity));
+  background-color: rgb(247, 74, 74);
   border-radius: 0.75rem;
   color: white;
 }

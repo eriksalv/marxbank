@@ -30,13 +30,10 @@ Som en bankkunde ønsker jeg muligheten til overføre penger slik at jeg kan bet
 ### Viktig å kunne gjøre
 * Velge hvem jeg skal overføre til
 * Velge beløp
-* Velge forfallsdato
-* Mulighet å kansellere planlagt betaling
 
 ### Viktig å kunne se
-* Hvem jeg overfører til
+* Overfører og mottaker
 * Beløp
-* Forfallsdato
 
 ### Illustrerende skjermbilde
 <img src="Illustration-us2.png" width="400">
@@ -51,8 +48,9 @@ Som en bankkunde ønsker jeg muligheten til ha oversikt over betalinger både ti
 
 ### Viktig å kunne se
 * Tidligere transaksjoner
-* Hvilken konto som er involvert
+* Hvilken konto(er) som er involvert
 * Dato for hver enkelt transaksjon
+* Beløp
 
 ### Illustrerende skjermbilde
 <img src="Illustration-us3.png" width="400">
@@ -77,7 +75,7 @@ Som en bankkunde ønsker jeg å se hvor mye sparepengene mine kan vokse over en 
 ### Viktig å kunne gjøre
 * Fylle inn startbeløp og fast månedlig beløp
 * Sette spareperiode (i år)
-* Sette rente
+* Sette rente (i prosent)
 
 ### Viktig å kunne se
 * Totalbeløp etter perioden (uten skatt)

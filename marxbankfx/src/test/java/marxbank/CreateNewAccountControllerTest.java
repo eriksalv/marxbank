@@ -17,12 +17,12 @@ import org.testfx.framework.junit5.ApplicationTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import marxbank.model.Account;
-import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
 import marxbank.model.User;
 
@@ -56,9 +56,9 @@ public class CreateNewAccountControllerTest extends ApplicationTest {
   public void beforeEachSetup() throws IOException {
     DataManager.setPath(tempDir.toFile().getCanonicalPath());
     this.user = new User(Long.parseLong("56789"), "annaost", "anna.ostmo@gmail.com", "passord");
-    this.account1 = new SavingsAccount(user, "Annas brukskonto");
+    this.account1 = DataManager.createAccount("Sparekonto", user, "Annas brukskonto");
     this.account1.deposit(500);
-    this.account2 = new SavingsAccount(Long.parseLong("12345"), user);
+    this.account2 = DataManager.createAccount("Sparekonto", user, "Sparekonto2");
     new Transaction(Long.parseLong("4040"), account1, account2, 20.0, true);
     this.controller.initData(user);
   }
@@ -66,8 +66,8 @@ public class CreateNewAccountControllerTest extends ApplicationTest {
   @Test
   @DisplayName("test create new account no name")
   public void testCreateNewAccountNoName() {
-    clickOn("#handleCreateAccountButton");
-    assertEquals("Konto trenger et navn.", lookup("#errorMsg").queryAs(Label.class).getText());
+    Button btn = (Button) lookup("#handleCreateAccountButton").queryAs(Button.class);
+    assertTrue(btn.isDisabled());
   }
 
   @Test
@@ -75,7 +75,7 @@ public class CreateNewAccountControllerTest extends ApplicationTest {
   public void testCreateNewAccountNoType() {
     clickOn("#accountName").write("hello");
     clickOn("#handleCreateAccountButton");
-    assertEquals("Ingen kontotype valgt.", lookup("#errorMsg").queryAs(Label.class).getText());
+    assertEquals("No account type provided", lookup("#errorMsg").queryAs(Label.class).getText());
   }
 
   @Test

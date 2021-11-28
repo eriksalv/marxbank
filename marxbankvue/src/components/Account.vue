@@ -25,14 +25,14 @@
           rounded-full
           dark:bg-green-700 dark:text-green-100
         ">
-        {{ balance }} kr
+        kr {{ balance }}
       </span>
     </td>
     <td class="px-4 py-3 text-sm">
       {{ type }}
     </td>
     <td class="px-4 py-3 text-sm">
-      {{ accNumber }}
+      {{ id }}
     </td>
   </tr>
 </template>

@@ -42,6 +42,8 @@ eller starte javafx med
 
 ``` mvn javafx:run -pl marxbankfx ```
 
+Alternativt kan du starte både Rest-serveren og web-klienten samtidig ved å kjøre `./serve-app.sh` i rotmappa
+
 ## Jacoco code coverage
 
 ### Installasjon

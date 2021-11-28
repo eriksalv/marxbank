@@ -2,6 +2,7 @@ package marxbank;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,8 +19,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import marxbank.model.Account;
-import marxbank.model.CheckingAccount;
 import marxbank.model.User;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class MyTransactionControllerTest extends ApplicationTest {
@@ -53,10 +54,11 @@ public class MyTransactionControllerTest extends ApplicationTest {
 
   @BeforeEach
   private void beforeEach() throws IOException {
+    DataManager.resetData();
     DataManager.setPath(tempDir.toFile().getCanonicalPath());
     user = new User("username", "email@email.com", "password");
-    a = new CheckingAccount(user, "test1");
-    b = new CheckingAccount(user, "test2");
+    a = DataManager.createAccount("Sparekonto", user, "test1");
+    b = DataManager.createAccount("Sparekonto", user, "test2");
     controller.initData(user);
   }
 
@@ -68,8 +70,9 @@ public class MyTransactionControllerTest extends ApplicationTest {
   @Test
   public void testValidTransaction() {
     a.deposit(100);
-    clickOn("#myAccountsList").clickOn("#" + a.getId());
-    clickOn("#recieverText").write("#" + b.getId());
+    assertEquals(100, a.getBalance());
+    clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
+    clickOn("#recieverText").write("#" + b.getAccountNumber());
     clickOn("#amountText").write("100");
     clickOn("#transactionBtn");
     assertEquals(0, a.getBalance());
@@ -82,22 +85,15 @@ public class MyTransactionControllerTest extends ApplicationTest {
   public void testEmptyAccountNum() {
     a.deposit(100);
     clickOn("#amountText").write("100");
-    clickOn("#transactionBtn");
-    assertEquals(100, a.getBalance());
-    assertEquals(0, b.getBalance());
-    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
-
-    clickOn("#myAccountsList").clickOn("#" + a.getId());
-    assertEquals(100, a.getBalance());
-    assertEquals(0, b.getBalance());
-    assertEquals("Noe gikk galt.", ((Label) lookup("#transactionFailedMsg").query()).getText());
+    Button btn = (Button) lookup("#transactionBtn").queryAs(Button.class);
+    assertTrue(btn.isDisabled());
   }
 
   @Test
-  public void testEmptyAmount() {
+  public void testInvalidAccount() {
     a.deposit(100);
-    clickOn("#myAccountsList").clickOn("#" + a.getId());
-    clickOn("#recieverText").write("#" + b.getId());
+    clickOn("#recieverText").write("#" + b.getAccountNumber());
+    clickOn("#amountText").write("100");
     clickOn("#transactionBtn");
     assertEquals(100, a.getBalance());
     assertEquals(0, b.getBalance());
@@ -108,13 +104,14 @@ public class MyTransactionControllerTest extends ApplicationTest {
   public void testInvalidAmount() {
     a.deposit(100);
     a.setName("name");
-    clickOn("#myAccountsList").clickOn("#" + a.getId());
-    clickOn("#recieverText").write("#" + b.getId());
+    clickOn("#myAccountsList").clickOn("#" + a.getAccountNumber());
+    clickOn("#recieverText").write("#" + b.getAccountNumber());
     clickOn("#amountText").write("101");
     clickOn("#transactionBtn");
     assertEquals(100, a.getBalance());
     assertEquals(0, b.getBalance());
-    assertEquals("Ikke nok disponibelt beløp på konto: name. Tilgjengelig beløp: 100.0",
+    assertEquals("Not enough balance on account",
+
         ((Label) lookup("#transactionFailedMsg").query()).getText());
   }
 }

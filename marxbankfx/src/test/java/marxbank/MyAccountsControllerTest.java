@@ -21,16 +21,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import marxbank.model.Account;
 import marxbank.model.SavingsAccount;
 import marxbank.model.Transaction;
 import marxbank.model.User;
+import marxbank.util.Loader;
 
 public class MyAccountsControllerTest extends ApplicationTest {
 
   private MyAccountsController controller;
   private User user;
+  private Pane content = new Pane();
+  private AnchorPane accountPane;
+  private AccountController accountController;
   private Account account1;
   private Account account2;
 
@@ -44,6 +49,10 @@ public class MyAccountsControllerTest extends ApplicationTest {
     this.controller = loader.getController();
     stage.setScene(new Scene(root));
     stage.show();
+
+    FXMLLoader accountLoader = Loader.loadFXML(MainController.class, "Account.fxml");
+    this.accountPane = accountLoader.load();
+    this.accountController = accountLoader.getController();
   }
 
   /**
@@ -65,7 +74,7 @@ public class MyAccountsControllerTest extends ApplicationTest {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        controller.initData(user);
+        controller.initData(user, content, accountPane, accountController);
       }
     });
     waitForRunLater();
@@ -80,21 +89,17 @@ public class MyAccountsControllerTest extends ApplicationTest {
   @Test
   @DisplayName("Test handle Select Account")
   public void testHandleSelectAccount() {
-    // clickOn("#menuBtn2");
-    VBox content = lookup("#myAccounts").queryAs(VBox.class);
     VBox r = lookup("#accountBtns").queryAs(VBox.class);
 
     clickOn(r.getChildren().get(0));
-    assertEquals("accountName",
-        ((AnchorPane) content.getChildren().get(0)).getChildren().get(0).getId());
+    assertEquals("accountName", ((Pane) content.getChildren().get(0)).getChildren().get(0).getId());
   }
 
   @Test
   @DisplayName("Test handle create new account")
   public void testHandleCreateNewAccount() {
-    VBox content = lookup("#myAccounts").queryAs(VBox.class);
     clickOn("#createNewAccountButton");
-    assertEquals("createNewAccount", (((AnchorPane) content.getChildren().get(0)).getId()));
+    assertEquals("createNewAccount", (((Pane) content.getChildren().get(0)).getId()));
   }
 
   public static void waitForRunLater() throws InterruptedException {

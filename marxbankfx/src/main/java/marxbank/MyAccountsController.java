@@ -7,9 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import marxbank.model.Account;
 import marxbank.model.User;
+import marxbank.util.Loader;
 
 public class MyAccountsController {
 
@@ -21,8 +23,34 @@ public class MyAccountsController {
   @FXML
   private VBox accountBtns;
 
-  public void initData(User user) {
+  private Pane content;
+  private AnchorPane accountPane;
+  private AnchorPane createNewAccount;
+
+  private AccountController accountController;
+  private CreateNewAccountController createNewAccountController;
+
+  @FXML
+  private void initialize() {
+    loadViews();
+  }
+
+  private void loadViews() {
+    try {
+      FXMLLoader loader = Loader.loadFXML(getClass(), "CreateNewAccount.fxml");
+      this.createNewAccount = loader.load();
+      this.createNewAccountController = loader.getController();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void initData(User user, Pane content, AnchorPane accountPane,
+      AccountController accountController) {
+    this.content = content;
     this.user = user;
+    this.accountPane = accountPane;
+    this.accountController = accountController;
     createAccountButtons();
   }
 
@@ -30,12 +58,13 @@ public class MyAccountsController {
    * Creates a new button for every account on the users account-list
    */
   private void createAccountButtons() {
+    accountBtns.getChildren().clear();
     List<Account> accounts = user.getAccounts();
     for (Account a : accounts) {
       Button accountBtn = new Button();
       accountBtn.getStyleClass().add("accBtn");
-      accountBtn.setText("Kontonummer: " + a.getId());
-      accountBtn.setId(String.format("%d", a.getId()));
+      accountBtn.setText("Kontonummer: " + a.getAccountNumber());
+      accountBtn.setId(String.format("%d", a.getAccountNumber()));
       accountBtn.setOnAction(ev -> {
         account = a;
         try {
@@ -57,23 +86,15 @@ public class MyAccountsController {
    */
   @FXML
   private void handleSelectAccount(ActionEvent e) throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("Account.fxml"));
-    AnchorPane pane = loader.load();
-    AccountController controller = loader.getController();
-    controller.initData(account);
-
-    myAccounts.getChildren().setAll(pane);
+    accountController.initData(account);
+    content.getChildren().setAll(accountPane);
   }
 
   @FXML
   private void handleCreateNewAccount(ActionEvent e) throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("CreateNewAccount.fxml"));
-    AnchorPane pane = loader.load();
-    CreateNewAccountController controller = loader.getController();
-    controller.initData(user);
-    myAccounts.getChildren().setAll(pane);
+    createNewAccountController.reset();
+    createNewAccountController.initData(user);
+    content.getChildren().setAll(createNewAccount);
   }
 
 }

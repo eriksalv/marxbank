@@ -22,7 +22,6 @@ const testState: AccountState = {
       id: 1,
       userId: 1,
       name: "test",
-      accNumber: 200,
       balance: 200,
       interest: 3.0,
       type: "Sparekonto",
@@ -31,7 +30,6 @@ const testState: AccountState = {
       id: 2,
       userId: 2,
       name: "test2",
-      accNumber: 201,
       balance: 200,
       interest: 3.0,
       type: "Sparekonto",
@@ -110,7 +108,6 @@ describe("mutations", () => {
         id: 1,
         userId: 1,
         name: "test",
-        accNumber: 200,
         balance: 200,
         interest: 3.0,
         type: "Sparekonto",
@@ -127,7 +124,6 @@ describe("mutations", () => {
       id: 2,
       userId: 1,
       name: "test2",
-      accNumber: 201,
       balance: 200,
       interest: 3.0,
       type: "Sparekonto",
@@ -145,7 +141,6 @@ describe("mutations", () => {
       id: 2,
       userId: 1,
       name: "updated",
-      accNumber: 201,
       balance: 200,
       interest: 3.0,
       type: "Sparekonto",
@@ -183,7 +178,6 @@ describe("actions", () => {
             id: 2,
             userId: 1,
             name: "test2",
-            accNumber: 201,
             balance: 200,
             interest: 3.0,
             type: "Sparekonto",
@@ -193,7 +187,6 @@ describe("actions", () => {
       const request: number = 3;
       const response: any = {
         id: 3,
-        accountNumber: 96,
         type: "Sparekonto",
         user: 1,
         name: "test",
@@ -203,7 +196,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 3,
         userId: 1,
-        accNumber: 96,
         name: "test",
         balance: 500,
         interest: 5.0,
@@ -234,7 +226,6 @@ describe("actions", () => {
             id: 2,
             userId: 1,
             name: "test2",
-            accNumber: 201,
             balance: 200,
             interest: 3.0,
             type: "Sparekonto",
@@ -244,7 +235,6 @@ describe("actions", () => {
       const request: number = 2;
       const response: any = {
         id: 2,
-        accountNumber: 201,
         type: "Sparekonto",
         user: 1,
         name: "test2",
@@ -254,7 +244,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 2,
         userId: 1,
-        accNumber: 201,
         name: "test2",
         balance: 200,
         interest: 3.0,
@@ -287,7 +276,6 @@ describe("actions", () => {
             id: 2,
             userId: 1,
             name: "test2",
-            accNumber: 201,
             balance: 200,
             interest: 3.0,
             type: "Sparekonto",
@@ -300,7 +288,6 @@ describe("actions", () => {
       };
       const response: any = {
         id: 2,
-        accountNumber: 201,
         type: "Sparekonto",
         user: 1,
         name: "test2",
@@ -310,7 +297,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 2,
         userId: 1,
-        accNumber: 201,
         name: "test2",
         balance: 300,
         interest: 3.0,
@@ -343,7 +329,6 @@ describe("actions", () => {
             id: 2,
             userId: 1,
             name: "test2",
-            accNumber: 201,
             balance: 200,
             interest: 3.0,
             type: "Sparekonto",
@@ -356,7 +341,6 @@ describe("actions", () => {
       };
       const response: any = {
         id: 2,
-        accountNumber: 201,
         type: "Sparekonto",
         user: 1,
         name: "test2",
@@ -366,7 +350,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 2,
         userId: 1,
-        accNumber: 201,
         name: "test2",
         balance: 100,
         interest: 3.0,
@@ -399,7 +382,6 @@ describe("actions", () => {
             id: 2,
             userId: 1,
             name: "test2",
-            accNumber: 201,
             balance: 200,
             interest: 3.0,
             type: "Sparekonto",
@@ -412,7 +394,6 @@ describe("actions", () => {
       };
       const response: any = {
         id: 3,
-        accountNumber: 300,
         type: "Sparekonto",
         user: 1,
         name: "new",
@@ -422,7 +403,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 3,
         userId: 1,
-        accNumber: 300,
         name: "new",
         balance: 0,
         interest: 3.0,
@@ -455,7 +435,6 @@ describe("actions", () => {
       const response: any = [
         {
           id: 3,
-          accountNumber: 300,
           type: "Sparekonto",
           user: 1,
           name: "new",
@@ -467,7 +446,6 @@ describe("actions", () => {
         {
           id: 3,
           userId: 1,
-          accNumber: 300,
           name: "new",
           balance: 0,
           interest: 3.0,
@@ -500,7 +478,6 @@ describe("actions", () => {
           {
             id: 3,
             userId: 1,
-            accNumber: 300,
             name: "new",
             balance: 0,
             interest: 3.0,
@@ -511,7 +488,6 @@ describe("actions", () => {
       const response: any = [
         {
           id: 3,
-          accountNumber: 300,
           type: "Sparekonto",
           userId: 1,
           name: "new",
@@ -520,7 +496,6 @@ describe("actions", () => {
         },
         {
           id: 4,
-          accountNumber: 300,
           type: "Sparekonto",
           userId: 1,
           name: "new2",
@@ -532,7 +507,6 @@ describe("actions", () => {
         {
           id: 3,
           userId: 1,
-          accNumber: 300,
           name: "new",
           balance: null,
           interest: null,
@@ -541,7 +515,6 @@ describe("actions", () => {
         {
           id: 4,
           userId: 1,
-          accNumber: 300,
           name: "new2",
           balance: null,
           interest: null,
@@ -577,7 +550,6 @@ describe("actions", () => {
       const requestId: number = 3;
       const response: any = {
         id: 3,
-        accountNumber: 300,
         type: "Sparekonto",
         userId: 1,
         name: "new",
@@ -587,7 +559,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 3,
         userId: 1,
-        accNumber: 300,
         name: "new",
         balance: null,
         interest: null,
@@ -618,7 +589,6 @@ describe("actions", () => {
           {
             id: 3,
             userId: 1,
-            accNumber: 300,
             name: "new",
             balance: 0,
             interest: 3.0,
@@ -629,7 +599,6 @@ describe("actions", () => {
       const requestId: number = 3;
       const response: any = {
         id: 3,
-        accountNumber: 300,
         type: "Sparekonto",
         userId: 1,
         name: "new",
@@ -639,7 +608,6 @@ describe("actions", () => {
       const expected: Account = {
         id: 3,
         userId: 1,
-        accNumber: 300,
         name: "new",
         balance: null,
         interest: null,

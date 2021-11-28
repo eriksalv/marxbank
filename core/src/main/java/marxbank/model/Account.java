@@ -3,7 +3,7 @@ package marxbank.model;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
+//import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +21,8 @@ public abstract class Account {
   @Id
   @GeneratedValue
   private Long id;
-  @Column
+  //account number is only needed for the local storage (fx) version of the app
+  @Column(nullable = true)
   private int accountNumber;
   @Column
   private AccountType type;
@@ -87,7 +88,8 @@ public abstract class Account {
    * @param name - Name of the account
    */
   public Account(User user, double interestRate, AccountType type, String name) {
-    this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, user, interestRate, type);
+    this((long) 0, user, interestRate, type);
+    //this(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE, user, interestRate, type);
     validateName(name);
     this.name = name;
   }
@@ -241,7 +243,7 @@ public abstract class Account {
     if (t == null) {
       throw new IllegalArgumentException("New transactions cannot be null");
     }
-    this.transactions = t;
+    this.transactions = new LinkedList<>(t);
   }
 
   /**

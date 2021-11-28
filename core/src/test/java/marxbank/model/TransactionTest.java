@@ -158,9 +158,9 @@ public class TransactionTest {
         transaction.setReciever(a1);
       })
     );
-
-    transaction.setReciever(a3);
-    assertEquals(a3, transaction.getReciever());
+    transaction.setFrom(a1);
+    transaction.setReciever(a2);
+    assertEquals(a2, transaction.getReciever());
 
   }
 

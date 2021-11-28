@@ -12,7 +12,6 @@ describe("createTransactionView", () => {
       {
         id: 1,
         userId: 1,
-        accNumber: 1,
         balance: 200,
         type: "Sparekonto",
         name: "test",
@@ -21,7 +20,6 @@ describe("createTransactionView", () => {
       {
         id: 2,
         userId: 1,
-        accNumber: 2,
         balance: 300,
         type: "Sparekonto",
         name: "test2",

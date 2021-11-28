@@ -6,7 +6,7 @@
           {{ accName }}
         </p>
         <p class="text-left text-xs">
-          {{ accNumber }}
+          {{ id }}
         </p>
       </div>
       <p class="text-left mt-2 font-medium">kr {{ balance }}</p>
@@ -26,7 +26,7 @@ export default {
       type: Number,
       default: 0,
     },
-    accNumber: {
+    id: {
       type: Number,
       default: 0,
     },

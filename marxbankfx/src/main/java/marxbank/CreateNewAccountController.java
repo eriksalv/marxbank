@@ -1,8 +1,11 @@
 package marxbank;
 
 import javafx.event.EventHandler;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
@@ -20,15 +23,13 @@ public class CreateNewAccountController {
   private Label creationCompleteMsg;
   @FXML
   private Label errorMsg;
+  @FXML
+  private Button handleCreateAccountButton;
 
   private User user;
   private String accName;
 
   private Account acc;
-
-  public CreateNewAccountController() {
-
-  }
 
   private final EventHandler<ActionEvent> accountsMenuEvent = new EventHandler<ActionEvent>() {
     @Override
@@ -36,6 +37,13 @@ public class CreateNewAccountController {
       selectAccountType.setText(((MenuItem) e.getSource()).getText());
     }
   };
+
+  public void reset() {
+    creationCompleteMsg.setVisible(false);
+    selectAccountType.setText("Velg kontotype");
+    accountName.setText("");
+    creationCompleteMsg.setText("");
+  }
 
   public void initData(User user) {
     this.user = user;
@@ -45,6 +53,13 @@ public class CreateNewAccountController {
   private void initialize() {
     creationCompleteMsg.setVisible(false);
     createSelectAccountTypeItems();
+    setBtnDisableProperty();
+  }
+
+  private void setBtnDisableProperty() {
+    BooleanBinding emptyText = Bindings.isEmpty(selectAccountType.textProperty())
+        .or(Bindings.isEmpty(accountName.textProperty()));
+    handleCreateAccountButton.disableProperty().bind(emptyText);
   }
 
   private void createSelectAccountTypeItems() {
@@ -68,10 +83,7 @@ public class CreateNewAccountController {
     try {
       acc = DataManager.createAccount(selectAccountType.getText(), user, accName);
     } catch (IllegalArgumentException e) {
-      errorMsg.setText(e.getLocalizedMessage());
-    }
-    if (acc == null) {
-      errorMsg.setText("Ingen kontotype valgt.");
+      errorMsg.setText(e.getMessage());
       return;
     }
     creationCompleteMsg.setText("Ny konto med kontonummer: " + acc.getAccountNumber() + " og navn: "

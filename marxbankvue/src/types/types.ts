@@ -39,7 +39,6 @@ export interface Account {
   readonly id: number;
   readonly userId: number;
   name: string;
-  readonly accNumber: number;
   balance: number | null;
   interest: number | null;
   type: string;

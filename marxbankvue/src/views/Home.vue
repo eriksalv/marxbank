@@ -23,7 +23,7 @@
           class="
             absolute
             inset-0
-            bg-green-500 bg-opacity-75
+            bg-red-500 bg-opacity-75
             transition
             duration-300
             ease-in-out
@@ -34,6 +34,7 @@
               Totalbeløp på konto:
             </p>
             <p class="text-white text-2xl mt-2 font-bold">
+              kr
               {{
                 filterAccountsByUserId(getUserId).length
                   ? filterAccountsByUserId(getUserId)
@@ -43,7 +44,6 @@
                       )
                   : 0
               }}
-              kr
             </p>
           </div>
         </div>
@@ -96,27 +96,13 @@
           class="image"
           src="https://img.huffingtonpost.com/asset/5bb675e7250000940039a5e0.jpeg?ops=scalefit_720_noupscale&format=webp"
           alt="" />
-        <div class="text-left text-gray-800 mt-2">
+        <div class="text-left text-gray-800 mt-2 hidden-sm-and-down">
           <h2>Vil du vite hvor mye pensjon du kan</h2>
-          <h2>forvente å ha? Eller ønsker du å spare</h2>
-          <h2>opp til egen bolig?</h2>
+          <h2>forvente å ha? Eller ønsker du å spare til</h2>
+          <h2>egen bolig?</h2>
         </div>
         <div>
-          <button
-            id="calc"
-            class="
-              bg-green-500
-              hover:bg-green-400
-              text-white
-              font-bold
-              py-2
-              px-4
-              border-b-4 border-green-700
-              hover:border-green-500
-              rounded
-              mt-6
-            "
-            @click="goToCalc()">
+          <button id="calc" class="button w-max" @click="goToCalc">
             Prøv sparekalkulatoren!
           </button>
         </div>
@@ -174,9 +160,7 @@ export default {
   background-color: white;
 }
 .image {
-  max-width: 300px;
-
-  max-height: 200px;
+  max-height: 180px;
   border-radius: 2px;
 }
 .text-on-same-line {

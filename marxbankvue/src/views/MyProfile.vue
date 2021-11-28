@@ -1,5 +1,5 @@
 <template>
-  <div class="w-2/3">
+  <div class="w-1/3">
     <Alert :message="successMsg" @onHideAlert="resetMsg" />
     <ErrorAlert :message="errorMsg" @onHideAlert="resetMsg" />
     <h1 class="title">
@@ -33,10 +33,25 @@
       type="password"
       placeholder="Nåværende passord"
       class="input" />
-    <button id="edit" class="button" @click="editProfile">
+    <button
+      id="edit"
+      class="
+        bg-green-500
+        hover:bg-green-400
+        text-white
+        font-bold
+        py-2
+        px-4
+        border-b-4 border-green-700
+        hover:border-green-500
+        rounded
+        w-80
+        mt-4
+      "
+      @click="editProfile">
       Lagre endringer
     </button>
-    <button id="logout" class="button bg-red-600" @click="requestLogout">
+    <button id="logout" class="button bg-red-600 w-80" @click="requestLogout">
       Logg ut
     </button>
   </div>
