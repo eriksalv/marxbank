@@ -1,7 +1,8 @@
 package marxbank.API;
 
 /**
- * Klassen holder på informasjon en bruker sender inn om de ønsker å endre på informasjonen koblet til profilen deres.
+ * Klassen holder på informasjon en bruker sender inn om de ønsker å endre på informasjonen koblet
+ * til profilen deres.
  */
 public class EditUserRequest {
   private String username;
@@ -9,31 +10,32 @@ public class EditUserRequest {
   private String oldPassword;
   private String email;
 
-/**
- * Tom konstruktør.
- */
-    protected EditUserRequest() {
-    }
+  /**
+   * Tom konstruktør.
+   */
+  protected EditUserRequest() {}
 
-/**
- * Konstruktør som oppdaterer this-objektet med ny informasjon.
- * @param username - brukernavn
- * @param password - nytt passord
- * @param oldPassword - gammelt passord(som bruker ønsker å bytte ut)
- * @param email - epostadresse
- */
-    public EditUserRequest(String username, String password, String oldPassword, String email) {
-        this.username = username;
-        this.password = password;
-        this.oldPassword = oldPassword;
-        this.email = email;
-    }
-/**
- * Getters og setters.
- */
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  /**
+   * Konstruktør som oppdaterer this-objektet med ny informasjon.
+   * 
+   * @param username - brukernavn
+   * @param password - nytt passord
+   * @param oldPassword - gammelt passord(som bruker ønsker å bytte ut)
+   * @param email - epostadresse
+   */
+  public EditUserRequest(String username, String password, String oldPassword, String email) {
+    this.username = username;
+    this.password = password;
+    this.oldPassword = oldPassword;
+    this.email = email;
+  }
+
+  /**
+   * Getters og setters.
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
   public String getUsername() {
     return this.username;

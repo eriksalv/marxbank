@@ -33,8 +33,9 @@ public class AccountDeserializer extends StdDeserializer<Account> {
       throw new IllegalStateException("user doesn't exist");
     User owner = DataManager.getUser(node.get("user").get("id").asLong());
 
-    Account account = AccountFactory.createFrom(AccountType.get(type.getTypeString()), node.get("id").asLong(),
-        owner, node.get("name").asText(), node.get("accountNumber").asInt());
+    Account account =
+        AccountFactory.createFrom(AccountType.get(type.getTypeString()), node.get("id").asLong(),
+            owner, node.get("name").asText(), node.get("accountNumber").asInt());
     if (account == null) {
       return null;
     }

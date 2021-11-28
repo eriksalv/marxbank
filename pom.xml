@@ -141,6 +141,8 @@
                     </dependencies>
                     <configuration>
                         <failOnError>false</failOnError>
+                        <htmlOutput>true</htmlOutput>
+                        <excludeFilterFile>config/SpotbugsExclude.xml</excludeFilterFile>
                     </configuration>
                     <executions>
                         <execution>

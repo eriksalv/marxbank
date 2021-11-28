@@ -37,7 +37,7 @@ public class MyAccountsController {
 
   private void loadViews() {
     try {
-      FXMLLoader loader = Loader.loadFXML(getClass(), "CreateNewAccount.fxml");
+      FXMLLoader loader = Loader.loadFxml(getClass(), "CreateNewAccount.fxml");
       this.createNewAccount = loader.load();
       this.createNewAccountController = loader.getController();
     } catch (IOException e) {

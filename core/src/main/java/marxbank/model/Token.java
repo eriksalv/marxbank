@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Token {
 
-  //token expiration time in milliseconds
+  // token expiration time in milliseconds
   public static final int EXPIRES_IN = 900000;
 
   @Id
@@ -28,13 +28,15 @@ public class Token {
   protected Token() {}
 
   public Token(User user, String token) {
-    if (user == null || token == null) throw new IllegalArgumentException();
+    if (user == null || token == null)
+      throw new IllegalArgumentException();
     this.user = user;
     this.token = token;
   }
 
   public void setId(Long id) {
-    if (id == null) throw new IllegalArgumentException();
+    if (id == null)
+      throw new IllegalArgumentException();
     this.id = id;
   }
 
@@ -43,7 +45,8 @@ public class Token {
   }
 
   public void setToken(String token) {
-    if (token == null || token.isEmpty() || token.isBlank()) throw new IllegalArgumentException();
+    if (token == null || token.isEmpty() || token.isBlank())
+      throw new IllegalArgumentException();
     this.token = token;
   }
 
@@ -52,7 +55,8 @@ public class Token {
   }
 
   public void setUser(User user) {
-    if (user == null) throw new IllegalArgumentException();
+    if (user == null)
+      throw new IllegalArgumentException();
     this.user = user;
   }
 

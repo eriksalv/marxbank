@@ -68,14 +68,11 @@ public class AccountTest {
     a.deposit(5000);
     Transaction t = new Transaction((long) 1, a, a2, 500, true);
 
-    assertAll(
-      () -> assertThrows(IllegalStateException.class, () -> {
-        a.addTransaction(t);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        a.addTransaction(null);
-      })
-    );
+    assertAll(() -> assertThrows(IllegalStateException.class, () -> {
+      a.addTransaction(t);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      a.addTransaction(null);
+    }));
 
     assertEquals(4500, a.getBalance());
     assertEquals(500, a2.getBalance());
@@ -87,20 +84,16 @@ public class AccountTest {
     Account a = new SavingsAccount((long) 1, user, 5.0);
 
     // test setName and usernameValidator
-    assertAll(
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        a.setName(null);
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        a.setName("ye");
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        a.setName("suuuuuuuuuuuuuuuuuuuuuuuupeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerloooooooooooooooooooooooooooooongNaaaaaaaaaaaaameeeeeeeeee");
-      }),
-      () -> assertThrows(IllegalArgumentException.class, () -> {
-        a.setName(" ve ry spac y n a m e");
-      })
-    );
+    assertAll(() -> assertThrows(IllegalArgumentException.class, () -> {
+      a.setName(null);
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      a.setName("ye");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      a.setName(
+          "suuuuuuuuuuuuuuuuuuuuuuuupeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerloooooooooooooooooooooooooooooongNaaaaaaaaaaaaameeeeeeeeee");
+    }), () -> assertThrows(IllegalArgumentException.class, () -> {
+      a.setName(" ve ry spac y n a m e");
+    }));
 
     a.setName("yeet");
     assertTrue(a.getName().equals("yeet"));

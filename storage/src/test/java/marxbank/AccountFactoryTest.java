@@ -41,9 +41,12 @@ public class AccountFactoryTest {
   @Test
   @DisplayName("test createFromMethod")
   public void testCreateFromMethod() {
-    Account a2 = AccountFactory.createFrom(AccountType.get("Sparekonto"), (long) 3, user, "Ola Nordmann", 1);
-    Account a3 = AccountFactory.createFrom(AccountType.get("Brukskonto"), (long) 4, user, "Ola Nordmann", 1);
-    Account a4 = AccountFactory.createFrom(AccountType.get("Marxkonto"), (long) 5, user, "Ola Nordmann", 1);
+    Account a2 =
+        AccountFactory.createFrom(AccountType.get("Sparekonto"), (long) 3, user, "Ola Nordmann", 1);
+    Account a3 =
+        AccountFactory.createFrom(AccountType.get("Brukskonto"), (long) 4, user, "Ola Nordmann", 1);
+    Account a4 =
+        AccountFactory.createFrom(AccountType.get("Marxkonto"), (long) 5, user, "Ola Nordmann", 1);
 
     assertTrue(a2 instanceof SavingsAccount);
     assertTrue(a3 instanceof CheckingAccount);

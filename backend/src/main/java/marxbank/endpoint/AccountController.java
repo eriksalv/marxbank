@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import marxbank.repository.AccountRepository;
@@ -99,8 +98,8 @@ public class AccountController {
    * Gets all accounts for an User.
    * 
    * @param token for user
-   * @return returns list of accounts with resposne 200
-   * @return a response with null body and code 401 if token is invalid
+   * @return <p> returns list of accounts with resposne 200
+   * a response with null body and code 401 if token is invalid </p>
    */
   @GetMapping("/myAccounts")
   @Transactional
@@ -124,9 +123,9 @@ public class AccountController {
    * 
    * @param token for user
    * @param id of account
-   * @return account data with response 200 if found
-   * @return a response with null body and a status code 401 if token is invalid
-   * @return a repsonse with null body and status code 404 if account is not found
+   * @return <p> account data with response 200 if found
+   * a response with null body and a status code 401 if token is invalid
+   * a repsonse with null body and status code 404 if account is not found </p>
    */
   @GetMapping("/myAccounts/{id}")
   @Transactional
@@ -149,9 +148,9 @@ public class AccountController {
    * 
    * @param token for user
    * @param request for new account
-   * @return a response with body of the account and a code of 201
-   * @return a response with null body and code 401 if token is invalid
-   * @return a resposne with null body and code 400 if request is invalid
+   * @return <p> a response with body of the account and a code of 201
+   * a response with null body and code 401 if token is invalid
+   * a resposne with null body and code 400 if request is invalid </p>
    */
   @PostMapping("/createAccount")
   @Transactional
@@ -180,9 +179,9 @@ public class AccountController {
    * 
    * @param token for user
    * @param request deposit request with data
-   * @return a response with body of the account and a code of 200
-   * @return a response with null body and code 401 if token is invalid
-   * @return a resposne with null body and code 400 if request is invalid
+   * @return <p> a response with body of the account and a code of 200
+   * a response with null body and code 401 if token is invalid
+   * a resposne with null body and code 400 if request is invalid </p>
    */
   @PostMapping("/deposit")
   @Transactional
@@ -217,9 +216,9 @@ public class AccountController {
    * 
    * @param token for user
    * @param request deposit request with data
-   * @return a response with body of the account and a code of 200
-   * @return a response with null body and code 401 if token is invalid
-   * @return a resposne with null body and code 400 if request is invalid
+   * @return <p> a response with body of the account and a code of 200
+   * a response with null body and code 401 if token is invalid
+   * a resposne with null body and code 400 if request is invalid </p>
    */
   @PostMapping("/withdraw")
   @Transactional

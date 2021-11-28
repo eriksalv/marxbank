@@ -28,7 +28,7 @@ public class AccountFactory {
       return null;
     }
 
-    switch(accountType) {
+    switch (accountType) {
       case CHECKING:
         return new CheckingAccount(user, name);
       case CREDIT:
@@ -42,13 +42,13 @@ public class AccountFactory {
     }
   }
 
-  public static Account create(AccountType accountType, String name){
+  public static Account create(AccountType accountType, String name) {
     if (accountType == null) {
       return null;
     }
 
     Account a = null;
-    switch(accountType) {
+    switch (accountType) {
       case CHECKING:
         a = new CheckingAccount();
         a.setName(name);
@@ -96,7 +96,7 @@ public class AccountFactory {
       return null;
     }
 
-    switch(accountType) {
+    switch (accountType) {
       case CHECKING:
         return new CheckingAccount(id, user, 0.5, name, accountNumber);
       case CREDIT:

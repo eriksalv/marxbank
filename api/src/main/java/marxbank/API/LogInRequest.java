@@ -1,33 +1,34 @@
 package marxbank.API;
 
 /**
- * Klassen holder på informasjon er bruker gi når de ønsker å logge inn på sin profil på nettsiden til banken.
+ * Klassen holder på informasjon er bruker gi når de ønsker å logge inn på sin profil på nettsiden
+ * til banken.
  */
 
 public class LogInRequest {
 
-    private String username;
-    private String password;
+  private String username;
+  private String password;
 
-/**
- * Tom konstruktør.
- */
-    protected LogInRequest() {
-    }
+  /**
+   * Tom konstruktør.
+   */
+  protected LogInRequest() {}
 
-/**
- * Konstruktør for klassen.
- * @param username - brukernavn
- * @param password - passord
- */
-    public LogInRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+  /**
+   * Konstruktør for klassen.
+   * 
+   * @param username - brukernavn
+   * @param password - passord
+   */
+  public LogInRequest(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 
-/**
- * Setters og getters.
- */
+  /**
+   * Setters og getters.
+   */
   public void setUsername(String username) {
     this.username = username;
   }

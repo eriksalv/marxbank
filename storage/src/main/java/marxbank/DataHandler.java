@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,8 +23,8 @@ public class DataHandler {
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
   private static final SimpleModule SIMPLE_MODULE = new SimpleModule();
 
-  public static boolean save(ArrayList<User> userList, ArrayList<Account> accountList, 
-                              ArrayList<Transaction> transactionList, String path) {
+  public static boolean save(ArrayList<User> userList, ArrayList<Account> accountList,
+      ArrayList<Transaction> transactionList, String path) {
     if (path == null || path.isEmpty() || path.isBlank())
       throw new IllegalArgumentException("Path cannot be null, empty or blank");
     File dataFile = new File(String.format("%s/data.json", path));
@@ -41,8 +40,9 @@ public class DataHandler {
       }
     }
 
-    FileWriter fw;
-    SIMPLE_MODULE.addSerializer(DataManagerWrapper.class, new DataManagerSerializer(OBJECT_MAPPER, SIMPLE_MODULE));
+    FileWriter fw = null;
+    SIMPLE_MODULE.addSerializer(DataManagerWrapper.class,
+        new DataManagerSerializer(OBJECT_MAPPER, SIMPLE_MODULE));
     OBJECT_MAPPER.registerModule(SIMPLE_MODULE);
 
     try {
@@ -51,6 +51,19 @@ public class DataHandler {
       fw.close();
     } catch (IOException e1) {
       return false;
+    } finally {
+      if (fw != null) {
+        try {
+          fw.flush();
+        } catch (IOException e) {
+          return false;
+        }
+        try {
+          fw.close();
+        } catch (IOException e) {
+          return false;
+        }
+      }
     }
 
     return true;
@@ -59,7 +72,8 @@ public class DataHandler {
   public static boolean parse(String path) {
     SIMPLE_MODULE.addDeserializer(User.class, new UserDeserializer(User.class));
     SIMPLE_MODULE.addDeserializer(Account.class, new AccountDeserializer(Account.class));
-    SIMPLE_MODULE.addDeserializer(Transaction.class, new TransactionDeserializer(Transaction.class));
+    SIMPLE_MODULE.addDeserializer(Transaction.class,
+        new TransactionDeserializer(Transaction.class));
     OBJECT_MAPPER.registerModule(SIMPLE_MODULE);
 
     File dataFile = new File(String.format("%s/data.json", path));

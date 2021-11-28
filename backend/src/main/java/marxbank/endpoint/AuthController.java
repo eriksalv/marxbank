@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import marxbank.API.LogInRequest;
 import marxbank.API.LogInResponse;
 import marxbank.API.SignUpRequest;

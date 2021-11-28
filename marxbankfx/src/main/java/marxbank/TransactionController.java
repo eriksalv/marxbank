@@ -3,7 +3,6 @@ package marxbank;
 import marxbank.util.TextFieldFormatter;
 import marxbank.model.Account;
 import marxbank.model.User;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;

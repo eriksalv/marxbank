@@ -3,7 +3,6 @@ package marxbank;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -68,31 +67,31 @@ public class MainController {
    */
   private void loadViews() {
     try {
-      FXMLLoader homeLoader = Loader.loadFXML(getClass(), "Home.fxml");
+      FXMLLoader homeLoader = Loader.loadFxml(getClass(), "Home.fxml");
       this.home = homeLoader.load();
       this.homeController = homeLoader.getController();
 
-      FXMLLoader myAccountsLoader = Loader.loadFXML(getClass(), "MyAccounts.fxml");
+      FXMLLoader myAccountsLoader = Loader.loadFxml(getClass(), "MyAccounts.fxml");
       this.myAccounts = myAccountsLoader.load();
       this.myAccountsController = myAccountsLoader.getController();
 
-      FXMLLoader transactionLoader = Loader.loadFXML(getClass(), "Transaction.fxml");
+      FXMLLoader transactionLoader = Loader.loadFxml(getClass(), "Transaction.fxml");
       this.transaction = transactionLoader.load();
       this.transactionController = transactionLoader.getController();
 
-      FXMLLoader myTransactionsLoader = Loader.loadFXML(getClass(), "MyTransactions.fxml");
+      FXMLLoader myTransactionsLoader = Loader.loadFxml(getClass(), "MyTransactions.fxml");
       this.myTransactions = myTransactionsLoader.load();
       this.myTransactionsController = myTransactionsLoader.getController();
 
-      FXMLLoader savingsCalcLoader = Loader.loadFXML(getClass(), "SavingsCalc.fxml");
+      FXMLLoader savingsCalcLoader = Loader.loadFxml(getClass(), "SavingsCalc.fxml");
       this.savingsCalc = savingsCalcLoader.load();
       this.savingsCalcController = savingsCalcLoader.getController();
 
-      FXMLLoader profileLoader = Loader.loadFXML(getClass(), "Profile.fxml");
+      FXMLLoader profileLoader = Loader.loadFxml(getClass(), "Profile.fxml");
       this.profile = profileLoader.load();
       this.profileController = profileLoader.getController();
 
-      FXMLLoader accountLoader = Loader.loadFXML(getClass(), "Account.fxml");
+      FXMLLoader accountLoader = Loader.loadFxml(getClass(), "Account.fxml");
       this.account = accountLoader.load();
       this.accountController = accountLoader.getController();
     } catch (IOException e) {
