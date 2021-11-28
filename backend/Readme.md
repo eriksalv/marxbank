@@ -36,3 +36,7 @@ mvn jacoco:prepare-agent test jacoco:report
 ```
 
 Du finner rapporten i `backend/target/site/jacoco/index.html`
+
+## Sekvensdiagram med REST-kall (i vue GUI)
+
+![](../diagrammer/REST_sequence_diagram.svg)
