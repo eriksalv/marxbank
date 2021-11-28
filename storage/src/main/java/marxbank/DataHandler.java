@@ -48,7 +48,6 @@ public class DataHandler {
     try {
       fw = new FileWriter(dataFile, Charset.defaultCharset());
       fw.write(OBJECT_MAPPER.writeValueAsString(d));
-      fw.close();
     } catch (IOException e1) {
       return false;
     } finally {
