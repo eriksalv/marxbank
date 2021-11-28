@@ -3,11 +3,11 @@
     <div v-if="filterAccountsByUserId(getUserId).length">
       <MyFavorite
         v-for="account in filterAccountsByUserId(getUserId).slice(0, 3)"
+        :id="account.id"
         :key="account.id"
         :balance="account.balance"
         :acc-name="account.name"
         :type="account.type"
-        :id="account.id"
         class="account"
         @click="showAccount(account.id)" />
     </div>
