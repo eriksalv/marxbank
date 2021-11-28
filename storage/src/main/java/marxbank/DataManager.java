@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import marxbank.model.Account;
 import marxbank.model.Transaction;
 import marxbank.model.User;
+import marxbank.util.AccountType;
 import marxbank.util.ValidPath;
 
 public class DataManager {
@@ -60,7 +61,7 @@ public class DataManager {
    * @return account that has been created
    */
   public static Account createAccount(String type, User user, String name) {
-    Account a = AccountFactory.create(type, user, name);
+    Account a = AccountFactory.create(AccountType.get(type), user, name);
     if (a == null) {
       throw new IllegalArgumentException("No account type provided");
     }
