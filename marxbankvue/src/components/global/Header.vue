@@ -5,9 +5,7 @@
         class="mr-6 float-left w-12 h-12 md:w-24 md:h-24"
         src="../../assets/logo.png"
         alt="logo" />
-      <h1 class="title md:top-4 text-3xl md:text-6xl mb-3">
-        Marx Bank
-      </h1>
+      <h1 class="title md:top-4 text-3xl md:text-6xl mb-3">Marx Bank</h1>
     </div>
   </header>
 </template>

@@ -81,7 +81,7 @@ export default {
     },
     async searchForAccount() {
       const searchId = +this.$refs.inputField.value;
-      console.log(searchId)
+      console.log(searchId);
       await this.fetchPublicAccountById(searchId);
       if (this.accountStatus === "error") {
         this.accountNotFound = true;

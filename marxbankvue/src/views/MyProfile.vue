@@ -51,9 +51,7 @@
       @click="editProfile">
       Lagre endringer
     </button>
-    <button id="logout" class="button" @click="requestLogout">
-      Logg ut
-    </button>
+    <button id="logout" class="button" @click="requestLogout">Logg ut</button>
   </div>
 </template>
 
