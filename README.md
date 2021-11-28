@@ -36,7 +36,7 @@ Så start Rest-serveren med
 
 så kan du enten starte webapplikasjonen med
 
-```mvn frontend:install-node-and-npm frontend:npm@"npm install" frontend:npm@"npm serve" -pl marxbankvue```
+```mvn frontend:install-node-and-npm frontend:npm@install frontend:npm@serve -pl marxbankvue```
 
 eller starte javafx med
 
