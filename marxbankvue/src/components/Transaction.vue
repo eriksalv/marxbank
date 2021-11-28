@@ -29,7 +29,7 @@
           rounded-full
           dark:bg-green-700 dark:text-green-100
         ">
-        {{ amount }} kr
+        kr {{ amount }}
       </span>
     </td>
   </tr>
