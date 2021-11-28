@@ -12,6 +12,10 @@ Modulen genererer også en testdeksningsgrad ved hjelp av JaCoCo og kan kjøres 
 
 Rapporten vil ende opp som en egen fil som heter `index.html` som ligger i `marxbankfx/target/site`
 
+## Sekvensdiagram
+
+![](../diagrammer/sekvensdiagram1.png)
+
 ## Forklaring av GUI
 
 Brukergrensesnittet i Marx bank består av seks hovedfaner: "Hovedoversikt", "Mine kontoer", "Overføring", "Betalingsoversikt", "Sparekalkulator" og "Min profil". Navigasjon mellom de ulike fanene styres av `MainController`. I tillegg til dette, må man logge inn/registrere seg i en egen scene når man først åpner appen.
