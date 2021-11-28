@@ -8,6 +8,7 @@ Den nye web-klienten er laget med Vue 3 og TypeScript. Målet var å få denne k
 
 ## Ny funksjonalitet
 
+De fleste nye funksjonene, utover utviklingen av backend og api, ligger i `marxbankvue`. Den første funksjonaliteten vi har er at vi har 
 ### Kryptering av passord
 
 ### Autentisering med token
@@ -21,10 +22,10 @@ Backend-modulen består av 4 endpoints: AuthController, UserController, AccountC
 ## Arbeidsvaner
 
 Vi har hatt de samme arbeidsvanene i release3 som de forrige releasene. Dokumentasjon på dette ligger i `CONTRIBUTING.md`, men kort oppsummert så har vi:
-- brukt issues (utviklingsoppgaver) som utgangspunkt for alt arbeid
-- jobbet i branches knyttet til en bestemt issue
+- brukt oppgaver (issues) som utgangspunkt for alt arbeid
+- jobbet i branches knyttet til en bestemt oppgave
 - brukt conventional commits
-- brukt merge requests og code reviews før noe merges til master branchen
+- brukt sammenfletningsforespørsler og kodegjennomgang før noe sammenfletninger til master branchen
 
 ## Bygging av system
 
@@ -42,7 +43,7 @@ For testing i marxbankvue bruker vi jest, sammen med vue-test-utils for å teste
 
 ### api
 
-Api-modulen testes ikke, siden den bare består av klasser med standard gettere og settere.
+Api-modulen testes ikke, siden den bare består av klasser med standard gettere og settere som er uten logikk. All logikk som brukes i api blir importert fra andre moduler og er testet i sitt respektive modul.
 
 ## Kodekvalitet og formattering
 
@@ -52,7 +53,7 @@ Kodekvalitet skjekkes av ESLint, og prettier brukes for å formattere kode. Mave
 
 ## Shippable produkt
 
-(hmmm)
+(hmmm) veldig enig her (hhhmmmmmm)
 
 
 
