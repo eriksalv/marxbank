@@ -8,8 +8,6 @@
 
 [![coverage report](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/gr2127/badges/master/coverage.svg)](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/gr2127/master) 
 
-Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 studenter. Appen er en bank-app som har vanlige bankfunksjoner som å overføre penger, flytte penger mellom sine egne kontoer, se de forskjellige type kontoene de har og lage nye kontoer.
-
 > Class struggle is inevitable in Object-Oriented Programming
 >
 > -- <cite>Karl Marx</cite>
@@ -22,9 +20,11 @@ Dette er en app utviklet i emnet IT1901 høsten 2021. Gruppen består av 4 stude
 
 ### Kodingsprosjektet
 
-Kodingsprosjektet består av seks moduler: core, backend, api, storage, marxbankfx og marxbankvue. Se egne readmes i disse mappene for mer detaljer om hva de består av.
+Kodingsprosjektet består av seks moduler: core, backend, api, storage, marxbankfx og marxbankvue. Les mer i [marxbank](https://gitlab.stud.idi.ntnu.no/it1901/groups-2021/gr2127/gr2127/-/tree/master/marxbank)
 
 ## Hvordan kjøre appen
+
+Gå først inn i marxbank mappe.
 
 Du kan installere og kjøre tester på alle modulene gjennom å kjøre:
 
