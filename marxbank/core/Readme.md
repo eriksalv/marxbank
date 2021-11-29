@@ -28,8 +28,8 @@ Oversikt over funskjonalitet:
 
 ## Generell klassestruktur
 
-![](../diagrammer/KlassediagramMedDM(nytt).svg)
+![](diagrammer/KlassediagramMedDM(nytt).svg)
 
 ## Arv fra Account klassen
 
-![](../diagrammer/klassediagram_konto_arv.png)
+![](diagrammer/klassediagram_konto_arv.png)
