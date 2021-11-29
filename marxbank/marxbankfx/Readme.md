@@ -14,7 +14,7 @@ Rapporten vil ende opp som en egen fil som heter `index.html` som ligger i `marx
 
 ## Sekvensdiagram
 
-![](../diagrammer/sekvensdiagram1.png)
+![](diagrammer/sekvensdiagram1.png)
 
 ## Forklaring av GUI
 
