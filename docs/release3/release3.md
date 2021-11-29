@@ -74,9 +74,7 @@ Kodekvalitet skjekkes av ESLint, og prettier brukes for å formattere kode. Mave
 
 ## Shippable produkt
 
-MarxbankFX ble gjort shippable gjennom bruk av javafx jlink og jpackage. Installerbar versjon finner dere i denne mappen kalt `marxbankFX.msi`. Den installerbare versjonen er FX versjonen av applikasjonen og støtter derfor ikke de nyeste funksjonalitetene som datalagring gjennom REST serveren og redesignet UI. Den versjonen lagrer data lokalt i hjem lokasjonen til brukeren i en mappe kalt `data`. 
-
-Marxbankvue er shippable gjennom at det er en nettklient. Gruppen har ikke lagt ut klienten på nett enda. Kommer opp på nett ila kvelden.
+MarxbankFX ble gjort shippable gjennom bruk av javafx jlink og jpackage. Installerbar versjon finner dere i rotmappa, og heter `marxbankFX.msi`. Den installerbare versjonen er FX versjonen av applikasjonen og støtter derfor ikke de nyeste funksjonalitetene som datalagring gjennom REST serveren og redesignet UI. Den versjonen lagrer data lokalt i hjem lokasjonen til brukeren i en mappe kalt `data`. 
 
 
 
