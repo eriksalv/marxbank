@@ -64,8 +64,8 @@ Finn ` index.html ` under target/site (alle modulene har en egen target-mappe. V
 
 ## JSON datastruktur
 
-For å se hvordan vi lagrer dataen vår lokalt med json, se [Readme i storage](storage/Readme.md#lagring-i-Json)
+For å se hvordan vi lagrer dataen vår lokalt med json, se [Readme i storage](marxbank/storage/Readme.md#lagring-i-Json)
 
 ## Kall til Databasen
 
-For å se alle forskjellige kall, strukturen på forespørselen, og hva backend kan sende tilbake. Se [full api dokumentasjon](/backend/docs/fullAPI.md)
+For å se alle forskjellige kall, strukturen på forespørselen, og hva backend kan sende tilbake. Se [full api dokumentasjon](marxbank/backend/docs/fullAPI.md)
