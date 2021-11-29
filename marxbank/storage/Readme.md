@@ -23,7 +23,7 @@ Du kan også finne Testdekningsgrad på hovedsiden av Readme.
 
 Hele modulen er bygd rundt det å kunne lagre data lokalt til en json fil og lese data tilbake fra den json filen. Dette skjer gjennom bruk av flere Serializere og Deserializere som serialiserer og deserialserer dataen vår. Alle er egendefinerte og omhandler klasser fra Core. Under ser du hvordan funksjonskallet lagringen skjer i storage.
 
-![Lagrings kall](../diagrammer/storageSerializeDiagram.svg)
+![Lagrings kall](/diagrammer/stalinSerializeDiagram.svg)
 
 ## Lagring i Json
 
