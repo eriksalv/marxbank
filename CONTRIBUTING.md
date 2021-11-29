@@ -4,7 +4,7 @@ Dette prosjektet utvikles og opprettholdes av gruppe 27 i emnet IT1901 på NTNU 
 
 ## Prosjektplanlegging
 
-Gruppen har skrevet en brukerhistorie til hver sprint og alle brukerhistoriene er samlet i en fil kalt [brukerhistorie.md](./brukerhistorier/brukerhistorie.md/)
+Gruppen har skrevet en brukerhistorie til hver sprint og alle brukerhistoriene er samlet i en fil kalt [brukerhistorie.md](brukerhistorier/brukerhistorier.md/)
 Brukerhistoriene beskriver funksjonalitet i appen, og kommer i denne formen:
 ```
 Som en ___ trenger jeg ___ sånn at jeg ___.
