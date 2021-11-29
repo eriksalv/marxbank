@@ -37,7 +37,7 @@ npm run build
 
 Prosjektet er satt opp med **vue-cli** og bygges med **npm**. I tillegg brukes **maven-frontend-plugin** slik at man kan kjøre npm kommandoer gjennom maven.  
 
-### Bygging med maven fra rotmappe
+### Bygging med maven fra marxbank mappe
 
 ```bash
 mvn install -pl marxbankvue
